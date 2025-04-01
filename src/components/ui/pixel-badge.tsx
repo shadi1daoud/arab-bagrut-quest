@@ -17,6 +17,7 @@ const pixelBadgeVariants = cva(
         warning: "bg-yellow-500 border-yellow-700 text-black",
         info: "bg-blue-500 border-blue-700 text-white",
         brown: "bg-amber-700 border-amber-900 text-white",
+        gradient: "bg-gradient-to-r from-orange-400 via-orange-500 to-orange-600 border-orange-700 text-white",
       },
     },
     defaultVariants: {

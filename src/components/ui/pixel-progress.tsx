@@ -9,7 +9,7 @@ interface PixelProgressProps extends React.HTMLAttributes<HTMLDivElement> {
   color?: "default" | "success" | "warning" | "danger" | "info" | "green" | "blue" | "brown"
   showValue?: boolean
   height?: "sm" | "md" | "lg"
-  variant?: "default" | "minecraft"
+  variant?: "default" | "minecraft" | "gradient"
 }
 
 const PixelProgress = React.forwardRef<HTMLDivElement, PixelProgressProps>(
@@ -56,7 +56,8 @@ const PixelProgress = React.forwardRef<HTMLDivElement, PixelProgressProps>(
           className={cn(
             "h-full transition-all",
             colorClass[color],
-            variant === "minecraft" && "bg-opacity-80 bg-[url('data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAAIAAAACCAYAAABytg0kAAAAEklEQVQImWNgYGD4z8DAwMAAAAYEAQCs+27xAAAAAElFTkSuQmCC')]"
+            variant === "minecraft" && "bg-opacity-80 bg-[url('data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAAIAAAACCAYAAABytg0kAAAAEklEQVQImWNgYGD4z8DAwMAAAAYEAQCs+27xAAAAAElFTkSuQmCC')]",
+            variant === "gradient" && "bg-gradient-to-r from-orange-400 via-orange-500 to-orange-600"
           )}
           style={{ 
             width: `${percentage}%`,
