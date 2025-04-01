@@ -7,33 +7,33 @@
 
 @layer base {
   :root {
-    --background: 0 0% 7%;
+    --background: 0 0% 0%;
     --foreground: 0 0% 98%;
 
-    --card: 0 0% 12%;
+    --card: 0 0% 7%;
     --card-foreground: 0 0% 98%;
 
-    --popover: 0 0% 12%;
+    --popover: 0 0% 7%;
     --popover-foreground: 0 0% 98%;
 
-    --primary: 24 100% 50%;
+    --primary: 16 100% 50%;
     --primary-foreground: 0 0% 98%;
 
-    --secondary: 30 100% 60%;
-    --secondary-foreground: 0 0% 12%;
+    --secondary: 16 90% 65%;
+    --secondary-foreground: 0 0% 7%;
 
     --muted: 0 0% 15%;
     --muted-foreground: 0 0% 70%;
 
-    --accent: 40 100% 50%;
-    --accent-foreground: 0 0% 12%;
+    --accent: 16 100% 50%;
+    --accent-foreground: 0 0% 7%;
 
     --destructive: 0 100% 50%;
     --destructive-foreground: 0 0% 98%;
 
     --border: 0 0% 20%;
     --input: 0 0% 20%;
-    --ring: 24 100% 50%;
+    --ring: 16 100% 50%;
 
     --radius: 0.5rem;
   }
@@ -48,19 +48,18 @@
   }
 
   body {
-    @apply bg-game-background text-game-text-primary;
-    background-image: radial-gradient(circle at center, rgba(255, 85, 0, 0.05) 0%, rgba(0, 0, 0, 0) 70%);
+    @apply bg-black text-white;
   }
 }
 
 @layer components {
   .game-card {
-    @apply bg-game-card-bg border border-gray-800 rounded-lg p-4 shadow-lg relative overflow-hidden;
+    @apply bg-black border border-gray-800 rounded-lg p-4 shadow-lg relative overflow-hidden;
   }
   
   .game-card::before {
     content: '';
-    @apply absolute inset-0 border border-game-primary opacity-0 rounded-lg transition-opacity duration-300;
+    @apply absolute inset-0 border border-orange-500 opacity-0 rounded-lg transition-opacity duration-300;
   }
   
   .game-card:hover::before {
@@ -68,7 +67,7 @@
   }
   
   .game-btn {
-    @apply bg-game-primary text-white py-2 px-4 rounded-md font-semibold relative overflow-hidden transition-all hover:brightness-110 active:brightness-90 focus:outline-none focus:ring-2 focus:ring-game-accent focus:ring-opacity-50;
+    @apply bg-orange-500 text-white py-2 px-4 rounded-md font-semibold relative overflow-hidden transition-all hover:brightness-110 active:brightness-90 focus:outline-none focus:ring-2 focus:ring-orange-400 focus:ring-opacity-50;
   }
 
   .game-btn::after {
@@ -85,20 +84,20 @@
   }
   
   .game-title {
-    @apply font-bold text-2xl text-game-primary mb-4;
+    @apply font-bold text-2xl text-orange-500 mb-4;
     text-shadow: 0 0 10px rgba(255, 85, 0, 0.5);
   }
   
   .game-subtitle {
-    @apply font-semibold text-xl text-game-text-primary mb-3;
+    @apply font-semibold text-xl text-white mb-3;
   }
   
   .game-progress-bar {
-    @apply h-2 bg-gray-700 rounded-full overflow-hidden relative;
+    @apply h-2 bg-gray-800 rounded-full overflow-hidden relative;
   }
 
   .game-progress-fill {
-    @apply h-full bg-game-primary rounded-full animate-xp-fill;
+    @apply h-full bg-orange-500 rounded-full animate-xp-fill;
   }
   
   .arcade-meter {
@@ -114,7 +113,6 @@
   }
 
   .game-panel {
-    @apply bg-game-card-bg border border-gray-800 rounded-lg p-5 shadow-lg;
-    box-shadow: 0 0 15px rgba(0, 0, 0, 0.3), inset 0 0 3px rgba(255, 85, 0, 0.2);
+    @apply bg-black border border-gray-800 rounded-lg p-5 shadow-lg;
   }
 }

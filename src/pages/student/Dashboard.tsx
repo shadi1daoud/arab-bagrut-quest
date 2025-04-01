@@ -2,34 +2,18 @@
 import { useState } from 'react';
 import { Link } from 'react-router-dom';
 import { useAuth } from '@/contexts/AuthContext';
-import { ChevronLeft, Trophy, Star, CheckCircle, Clock } from 'lucide-react';
+import { ChevronLeft, Trophy, Star, CheckCircle, Clock, Edit } from 'lucide-react';
 
 // Dummy activity data for the chart
 const weeklyActivity = [
   { day: 'الأحد', hours: 1.5 },
   { day: 'الإثنين', hours: 2.2 },
   { day: 'الثلاثاء', hours: 0.8 },
-  { day: 'الأربعاء', hours: 1.7 },
-  { day: 'الخميس', hours: 2.5 },
-  { day: 'الجمعة', hours: 0.5 },
-  { day: 'السبت', hours: 3.0 },
+  { day: 'الأربعاء', hours: 3.0 },
+  { day: 'الخميس', hours: 0.5 },
+  { day: 'الجمعة', hours: 1.5 },
+  { day: 'السبت', hours: 0.8 },
 ];
-
-// Calculate user level based on XP
-const calculateLevel = (xp: number): string => {
-  if (xp < 5000) return 'مبتدئ';
-  if (xp < 10000) return 'متوسط';
-  if (xp < 20000) return 'متقدم';
-  return 'خبير';
-};
-
-// Calculate percentage to next level
-const calculateLevelProgress = (xp: number): number => {
-  if (xp < 5000) return (xp / 5000) * 100;
-  if (xp < 10000) return ((xp - 5000) / 5000) * 100;
-  if (xp < 20000) return ((xp - 10000) / 10000) * 100;
-  return 100;
-};
 
 // Sample announcements
 const announcements = [
@@ -49,222 +33,219 @@ const announcements = [
 
 const Dashboard = () => {
   const { user } = useAuth();
-  const [isBouncing, setIsBouncing] = useState(false);
   
-  const currentLevel = calculateLevel(user?.xp || 0);
-  const nextLevel = currentLevel === 'مبتدئ' ? 'متوسط' : 
-                    currentLevel === 'متوسط' ? 'متقدم' : 
-                    currentLevel === 'متقدم' ? 'خبير' : 'خبير';
-  const progressPercentage = calculateLevelProgress(user?.xp || 0);
+  const maxActivityHours = Math.max(...weeklyActivity.map(day => day.hours));
   
-  // Function to trigger XP animation
-  const triggerXPAnimation = () => {
-    setIsBouncing(true);
-    setTimeout(() => setIsBouncing(false), 1000);
-  };
-
   return (
     <div className="space-y-6">
-      <div className="flex flex-col md:flex-row gap-2 items-start">
-        <h1 className="text-2xl font-bold text-white">أهلا بعودتك، {user?.name.split(' ')[0]}</h1>
-      </div>
-      
       <div className="grid grid-cols-1 lg:grid-cols-3 gap-6">
-        {/* Main User Stats Panel */}
-        <div className="game-panel col-span-1 lg:col-span-2 space-y-6">
-          <div className="flex flex-col sm:flex-row gap-6 items-start sm:items-center">
-            {/* User Avatar */}
-            <div className="h-20 w-20 rounded-full bg-game-primary flex items-center justify-center overflow-hidden border-2 border-game-secondary">
-              {user?.avatar ? (
-                <img src={user.avatar} alt={user.name} className="h-full w-full object-cover" />
-              ) : (
-                <span className="text-white text-2xl font-bold">{user?.name?.charAt(0)}</span>
-              )}
-            </div>
-            
-            {/* User Basic Info */}
-            <div className="flex-1">
-              <h2 className="text-xl font-bold text-white">{user?.name}</h2>
-              <div className="flex items-center gap-2 text-gray-400 text-sm">
-                <span>{user?.grade} • {user?.city}</span>
-              </div>
-              
-              {/* Level Progress */}
-              <div className="mt-3">
-                <div className="flex justify-between items-center mb-1">
-                  <span className="text-sm text-game-primary font-medium">{currentLevel}</span>
-                  <span className="text-sm text-gray-400">{nextLevel}</span>
-                </div>
-                <div className="h-2 w-full bg-gray-800 rounded-full overflow-hidden">
-                  <div 
-                    className="h-full bg-game-primary rounded-full"
-                    style={{ width: `${progressPercentage}%` }}
-                  ></div>
-                </div>
-                <div className="text-xs text-gray-400 mt-1 text-center">
-                  تبقى لك {currentLevel === 'مبتدئ' ? '7' : currentLevel === 'متوسط' ? '5' : '3'} من أصل 10 مستويات لتنتقل إلى مرحلة {nextLevel}
-                </div>
-              </div>
-            </div>
+        {/* User Profile Panel */}
+        <div className="bg-black border border-gray-800 rounded-lg p-5">
+          <div className="flex justify-between items-start mb-2">
+            <h3 className="text-lg font-medium text-white">الملف الشخصي</h3>
+            <button className="text-gray-400 hover:text-white">
+              <Edit className="h-5 w-5" />
+            </button>
           </div>
           
-          {/* User Stats Grid */}
-          <div className="grid grid-cols-2 sm:grid-cols-4 gap-4">
-            {/* Streak */}
-            <div className="bg-gray-800 rounded-lg p-3 text-center">
-              <div className="flex justify-center items-center text-2xl mb-1">
-                <span>🔥</span>
-                <span className="font-bold text-white mr-1">{user?.streak}</span>
+          <div className="flex flex-col items-center">
+            <div className="relative mb-3">
+              <div className="h-24 w-24 rounded-full overflow-hidden border-2 border-orange-500">
+                {user?.avatar ? (
+                  <img src={user.avatar} alt={user.name} className="h-full w-full object-cover" />
+                ) : (
+                  <span className="text-white text-2xl font-bold flex items-center justify-center h-full bg-gray-700">
+                    {user?.name?.charAt(0)}
+                  </span>
+                )}
               </div>
-              <span className="text-sm text-gray-400">يوم متواصل</span>
+              <div className="absolute bottom-0 right-0 bg-green-500 h-4 w-4 rounded-full border-2 border-black"></div>
             </div>
             
-            {/* XP Points */}
-            <div 
-              className={`bg-gray-800 rounded-lg p-3 text-center cursor-pointer transition-transform ${isBouncing ? 'animate-float' : ''}`}
-              onClick={triggerXPAnimation}
-            >
-              <div className="text-2xl font-bold text-game-primary glow-text mb-1">
-                {user?.xp?.toLocaleString()}
-              </div>
-              <span className="text-sm text-gray-400">نقاطي</span>
-            </div>
+            <h2 className="text-white font-medium">{user?.name}</h2>
+            <p className="text-gray-400 text-sm mb-4">{user?.grade} - {user?.city}</p>
             
-            {/* Ranking */}
-            <div className="bg-gray-800 rounded-lg p-3 text-center">
-              <div className="flex justify-center items-center mb-1">
-                <Trophy className="w-5 h-5 text-game-accent" />
-                <span className="font-bold text-white mr-1">#3</span>
+            <div className="w-full space-y-3">
+              <div className="flex justify-between items-center text-sm">
+                <span className="text-orange-500">مبتدئ</span>
+                <span className="text-sm text-gray-400">10</span>
               </div>
-              <span className="text-sm text-gray-400">بين أصدقائك</span>
-            </div>
-            
-            {/* Tasks Completed */}
-            <div className="bg-gray-800 rounded-lg p-3 text-center">
-              <div className="text-2xl font-bold text-white mb-1">150</div>
-              <span className="text-sm text-gray-400">مهمة مكتملة</span>
+              
+              <div className="w-full h-1.5 bg-gray-800 rounded-full overflow-hidden">
+                <div className="h-full bg-orange-500 rounded-full" style={{ width: "30%" }}></div>
+              </div>
+              
+              <p className="text-xs text-gray-500 text-center">
+                تبقى لك 7 من أصل 10 مستويات لتنتقل إلى مرحلة متوسط
+              </p>
             </div>
           </div>
         </div>
         
-        {/* Activity Panel */}
-        <div className="game-panel space-y-4">
-          <h3 className="text-lg font-semibold text-white">نشاطي الأسبوعي</h3>
-          
-          <div className="h-48 flex items-end justify-between gap-1">
-            {weeklyActivity.map((day) => (
-              <div key={day.day} className="flex-1 flex flex-col items-center">
-                <div className="w-full bg-gray-800 rounded-t-sm" style={{ height: `${day.hours * 20}px` }}>
-                  <div 
-                    className="w-full bg-game-primary rounded-t-sm transition-all duration-500 hover:bg-game-secondary group relative"
-                    style={{ height: `${day.hours * 20}px` }}
-                  >
-                    <div className="absolute opacity-0 group-hover:opacity-100 bottom-full mb-1 left-1/2 transform -translate-x-1/2 bg-gray-900 text-white text-xs rounded px-2 py-1 pointer-events-none transition-opacity">
-                      {day.hours} ساعة
-                    </div>
-                  </div>
-                </div>
-                <span className="text-xs text-gray-400 mt-1">{day.day}</span>
+        {/* Center Stats Grid */}
+        <div className="space-y-6">
+          {/* Streak Counter */}
+          <div className="bg-black border border-gray-800 rounded-lg p-5 flex items-center justify-between">
+            <div className="text-center">
+              <h3 className="text-gray-400 text-sm mb-1">دخول متواصل</h3>
+              <div className="flex items-center justify-center">
+                <span className="text-2xl font-bold text-white">20</span>
+                <span className="text-orange-500 text-2xl ml-1">🔥</span>
               </div>
-            ))}
+            </div>
+            
+            <div className="h-10 w-10 bg-black border border-orange-500 rounded-full flex items-center justify-center">
+              <svg width="20" height="20" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+                <path d="M12 2C6.48 2 2 6.48 2 12C2 17.52 6.48 22 12 22C17.52 22 22 17.52 22 12C22 6.48 17.52 2 12 2ZM16 13H13V16C13 16.55 12.55 17 12 17C11.45 17 11 16.55 11 16V13H8C7.45 13 7 12.55 7 12C7 11.45 7.45 11 8 11H11V8C11 7.45 11.45 7 12 7C12.55 7 13 7.45 13 8V11H16C16.55 11 17 11.45 17 12C17 12.55 16.55 13 16 13Z" fill="#FF5500"/>
+              </svg>
+            </div>
           </div>
           
-          <div className="text-center pt-2 border-t border-gray-800">
-            <p className="text-sm text-gray-400">
-              <span className="text-game-primary font-bold">{weeklyActivity.reduce((sum, day) => sum + day.hours, 0)}</span> ساعة دراسة هذا الأسبوع
-            </p>
+          {/* Tasks Count */}
+          <div className="bg-black border border-gray-800 rounded-lg p-5 flex items-center justify-between">
+            <div className="text-center">
+              <h3 className="text-gray-400 text-sm mb-1">مهمة</h3>
+              <div className="text-2xl font-bold text-white">150</div>
+            </div>
+            
+            <div className="h-10 w-10 bg-black border border-orange-500 rounded-full flex items-center justify-center">
+              <svg width="20" height="20" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+                <path d="M12 2C6.48 2 2 6.48 2 12C2 17.52 6.48 22 12 22C17.52 22 22 17.52 22 12C22 6.48 17.52 2 12 2ZM10 17L5 12L6.41 10.59L10 14.17L17.59 6.58L19 8L10 17Z" fill="#FF5500"/>
+              </svg>
+            </div>
+          </div>
+          
+          {/* Ranking */}
+          <div className="bg-black border border-gray-800 rounded-lg p-5 flex items-center justify-between">
+            <div className="text-center">
+              <h3 className="text-gray-400 text-sm mb-1">بين أصدقائي</h3>
+              <div className="text-2xl font-bold text-white">#3</div>
+            </div>
+            
+            <div className="h-10 w-10 bg-black border border-orange-500 rounded-full flex items-center justify-center">
+              <svg width="20" height="20" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+                <path d="M17 2H7C5.9 2 5 2.9 5 4V20C5 21.1 5.9 22 7 22H17C18.1 22 19 21.1 19 20V4C19 2.9 18.1 2 17 2ZM12 19C10.9 19 10 18.1 10 17C10 15.9 10.9 15 12 15C13.1 15 14 15.9 14 17C14 18.1 13.1 19 12 19ZM16 10H8V8H16V10ZM16 6H8V4H16V6Z" fill="#FF5500"/>
+              </svg>
+            </div>
+          </div>
+        </div>
+        
+        {/* Performance Panel */}
+        <div className="bg-black border border-gray-800 rounded-lg p-5">
+          <div className="flex justify-between items-center mb-4">
+            <h3 className="text-lg font-medium text-white">الاداء</h3>
+            <select className="bg-black border border-gray-700 text-gray-400 text-sm rounded-lg p-1">
+              <option>شهري</option>
+              <option>أسبوعي</option>
+              <option>يومي</option>
+            </select>
+          </div>
+          
+          <div className="flex flex-col items-center justify-center">
+            <div className="relative h-32 w-32 mb-3">
+              {/* Circular gauge background */}
+              <svg className="absolute" width="128" height="128" viewBox="0 0 128 128">
+                <circle 
+                  cx="64" 
+                  cy="64" 
+                  r="60" 
+                  fill="none" 
+                  stroke="#2A2A2A" 
+                  strokeWidth="8" 
+                />
+                {/* Colored progress arc - in this case 75% around the circle */}
+                <circle 
+                  cx="64" 
+                  cy="64" 
+                  r="60" 
+                  fill="none" 
+                  stroke="#FF5500" 
+                  strokeWidth="8" 
+                  strokeDasharray="377"
+                  strokeDashoffset="94"
+                  transform="rotate(-90 64 64)"
+                />
+              </svg>
+              
+              {/* Needle pointing to current value */}
+              <div 
+                className="absolute top-1/2 left-1/2 h-32 w-1 bg-orange-500 origin-bottom" 
+                style={{ transform: "translate(-50%, -100%) rotate(60deg)" }}
+              >
+                <div className="h-2 w-2 rounded-full bg-orange-500 absolute -left-0.5 top-0"></div>
+              </div>
+              
+              {/* Center point */}
+              <div className="absolute top-1/2 left-1/2 h-4 w-4 bg-black border-2 border-gray-600 rounded-full transform -translate-x-1/2 -translate-y-1/2"></div>
+            </div>
+            
+            <div className="text-center">
+              <h3 className="text-white">نقاطك: <span className="text-orange-500 text-2xl font-bold">8,966</span></h3>
+              <p className="text-orange-500 text-sm flex items-center justify-center mt-1">
+                <span>🔥</span> مرتبة 3 بين 3 أصدقائك
+              </p>
+            </div>
           </div>
         </div>
       </div>
       
-      {/* Courses Preview & Announcements */}
+      {/* Activity Chart and Announcements */}
       <div className="grid grid-cols-1 lg:grid-cols-3 gap-6">
-        {/* Courses Preview */}
-        <div className="game-panel lg:col-span-2">
-          <div className="flex justify-between items-center mb-4">
-            <h3 className="text-lg font-semibold text-white">كورساتي الحالية</h3>
-            <Link to="/courses" className="text-game-primary hover:text-game-secondary text-sm flex items-center">
-              عرض الكل <ChevronLeft className="h-4 w-4" />
-            </Link>
-          </div>
+        {/* Activity Chart */}
+        <div className="bg-black border border-gray-800 rounded-lg p-5 lg:col-span-2">
+          <h3 className="text-lg font-medium text-white mb-6">ساعات نشاطي</h3>
           
-          <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
-            {/* Course 1 */}
-            <div className="bg-gray-800 rounded-lg p-4 border border-gray-700 hover:border-game-primary transition-colors">
-              <div className="flex items-start gap-3">
-                <div className="h-12 w-12 rounded-md bg-blue-600 flex items-center justify-center">
-                  <span className="text-xl">🧮</span>
-                </div>
-                
-                <div className="flex-1">
-                  <h4 className="font-medium text-white">رياضيات</h4>
-                  <div className="flex justify-between text-xs text-gray-400 mb-2">
-                    <span>الصف الثاني عشر</span>
-                    <span>5 وحدات</span>
-                  </div>
-                  
-                  <div className="w-full bg-gray-700 h-1.5 rounded-full overflow-hidden">
-                    <div className="bg-blue-600 h-full rounded-full" style={{ width: '35%' }}></div>
-                  </div>
-                  
-                  <div className="flex justify-between items-center mt-3">
-                    <span className="text-xs text-gray-400">35% مكتمل</span>
-                    <Link 
-                      to="/courses/1" 
-                      className="px-3 py-1 text-xs bg-gray-700 hover:bg-gray-600 text-white rounded"
-                    >
-                      تابع الكورس
-                    </Link>
-                  </div>
-                </div>
-              </div>
+          <div className="relative h-56">
+            {/* Y-axis labels */}
+            <div className="absolute inset-y-0 right-0 flex flex-col justify-between text-xs text-gray-500 pr-2">
+              <span>12</span>
+              <span>8</span>
+              <span>4</span>
+              <span>0</span>
             </div>
             
-            {/* Course 2 */}
-            <div className="bg-gray-800 rounded-lg p-4 border border-gray-700 hover:border-game-primary transition-colors">
-              <div className="flex items-start gap-3">
-                <div className="h-12 w-12 rounded-md bg-green-600 flex items-center justify-center">
-                  <span className="text-xl">🔤</span>
-                </div>
-                
-                <div className="flex-1">
-                  <h4 className="font-medium text-white">إنجليزي</h4>
-                  <div className="flex justify-between text-xs text-gray-400 mb-2">
-                    <span>الصف الثاني عشر</span>
-                    <span>5 وحدات</span>
-                  </div>
-                  
-                  <div className="w-full bg-gray-700 h-1.5 rounded-full overflow-hidden">
-                    <div className="bg-green-600 h-full rounded-full" style={{ width: '65%' }}></div>
-                  </div>
-                  
-                  <div className="flex justify-between items-center mt-3">
-                    <span className="text-xs text-gray-400">65% مكتمل</span>
-                    <Link 
-                      to="/courses/2" 
-                      className="px-3 py-1 text-xs bg-gray-700 hover:bg-gray-600 text-white rounded"
+            {/* Chart content */}
+            <div className="absolute inset-0 right-8 flex items-end">
+              <div className="flex-1 flex items-end justify-between h-full">
+                {weeklyActivity.map((day, index) => (
+                  <div key={day.day} className="flex flex-col items-center group relative">
+                    {/* Tooltip showing hours */}
+                    {day.hours === maxActivityHours && (
+                      <div className="absolute bottom-full mb-1 bg-orange-500 text-white text-xs rounded px-2 py-0.5 z-10">
+                        {day.hours} ساعات
+                      </div>
+                    )}
+                    
+                    {/* Bar */}
+                    <div 
+                      className={`w-8 ${day.hours === maxActivityHours ? 'bg-orange-500' : 'bg-gray-700'} rounded-sm relative group`}
+                      style={{ height: `${(day.hours / 12) * 100}%` }}
                     >
-                      تابع الكورس
-                    </Link>
+                      {/* Hidden tooltip that shows on hover */}
+                      <div className="opacity-0 group-hover:opacity-100 absolute bottom-full mb-1 left-1/2 transform -translate-x-1/2 bg-gray-800 text-white text-xs rounded px-2 py-0.5 z-10 transition-opacity">
+                        {day.hours} ساعات
+                      </div>
+                    </div>
+                    
+                    {/* Day label */}
+                    <span className="text-gray-500 text-xs mt-2">{day.day}</span>
                   </div>
-                </div>
+                ))}
               </div>
             </div>
           </div>
         </div>
         
         {/* Announcements */}
-        <div className="game-panel">
-          <h3 className="text-lg font-semibold text-white mb-4">إعلانات</h3>
+        <div className="bg-black border border-gray-800 rounded-lg p-5">
+          <h3 className="text-lg font-medium text-white mb-4">إعلانات</h3>
           
           <div className="space-y-4">
             {announcements.map((announcement) => (
-              <div key={announcement.id} className="bg-gray-800 rounded-lg p-3 border border-gray-700">
+              <div key={announcement.id} className="border-b border-gray-800 pb-3 last:border-0 last:pb-0">
                 <h4 className="font-medium text-white text-sm">{announcement.title}</h4>
                 <p className="text-gray-400 text-xs mt-1">{announcement.content}</p>
-                <div className="flex justify-between items-center mt-2 text-xs">
-                  <span className="text-gray-500">{announcement.date}</span>
-                </div>
+                <div className="text-gray-500 text-xs mt-2">{announcement.date}</div>
               </div>
             ))}
           </div>
