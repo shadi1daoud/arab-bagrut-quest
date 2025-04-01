@@ -1,5 +1,5 @@
 
-@import url('https://fonts.googleapis.com/css2?family=Press+Start+2P&family=VT323&family=Noto+Sans+Arabic:wght@400;500;600;700;800&display=swap');
+@import url('https://fonts.googleapis.com/css2?family=Cairo:wght@300;400;500;600;700&family=Tajawal:wght@300;400;500;700&display=swap');
 
 @tailwind base;
 @tailwind components;
@@ -7,35 +7,85 @@
 
 @layer base {
   :root {
-    --background: 0 0% 0%;
-    --foreground: 0 0% 98%;
+    --background: 222 47% 11%;
+    --foreground: 210 40% 98%;
 
-    --card: 0 0% 7%;
-    --card-foreground: 0 0% 98%;
+    --card: 222 47% 11%;
+    --card-foreground: 210 40% 98%;
 
-    --popover: 0 0% 7%;
-    --popover-foreground: 0 0% 98%;
+    --popover: 222 47% 11%;
+    --popover-foreground: 210 40% 98%;
 
     --primary: 16 100% 50%;
-    --primary-foreground: 0 0% 98%;
+    --primary-foreground: 210 40% 98%;
 
-    --secondary: 16 90% 65%;
-    --secondary-foreground: 0 0% 7%;
+    --secondary: 217 33% 17%;
+    --secondary-foreground: 210 40% 98%;
 
-    --muted: 0 0% 15%;
-    --muted-foreground: 0 0% 70%;
+    --muted: 217 33% 17%;
+    --muted-foreground: 215 20% 65%;
 
     --accent: 16 100% 50%;
-    --accent-foreground: 0 0% 7%;
+    --accent-foreground: 210 40% 98%;
 
-    --destructive: 0 100% 50%;
-    --destructive-foreground: 0 0% 98%;
+    --destructive: 0 62% 30%;
+    --destructive-foreground: 210 40% 98%;
 
-    --border: 0 0% 20%;
-    --input: 0 0% 20%;
+    --border: 217 33% 17%;
+    --input: 217 33% 17%;
     --ring: 16 100% 50%;
 
-    --radius: 0.5rem;
+    --radius: 0.75rem;
+
+    /* Sidebar colors */
+    --sidebar-background: 224 71% 4%;
+    --sidebar-foreground: 213 31% 91%;
+    --sidebar-primary: 16 100% 50%;
+    --sidebar-primary-foreground: 0 0% 100%;
+    --sidebar-accent: 217 33% 17%;
+    --sidebar-accent-foreground: 210 40% 98%;
+    --sidebar-border: 215 27% 19%;
+    --sidebar-ring: 216 34% 17%;
+  }
+
+  .light {
+    --background: 0 0% 100%;
+    --foreground: 222 47% 11%;
+
+    --card: 0 0% 100%;
+    --card-foreground: 222 47% 11%;
+
+    --popover: 0 0% 100%;
+    --popover-foreground: 222 47% 11%;
+
+    --primary: 16 100% 50%;
+    --primary-foreground: 210 40% 98%;
+
+    --secondary: 210 40% 96.1%;
+    --secondary-foreground: 222 47% 11%;
+
+    --muted: 210 40% 96.1%;
+    --muted-foreground: 215 16% 47%;
+
+    --accent: 16 100% 50%;
+    --accent-foreground: 210 40% 98%;
+
+    --destructive: 0 84.2% 60.2%;
+    --destructive-foreground: 210 40% 98%;
+
+    --border: 214.3 31.8% 91.4%;
+    --input: 214.3 31.8% 91.4%;
+    --ring: 16 100% 50%;
+
+    /* Sidebar colors */
+    --sidebar-background: 0 0% 98%;
+    --sidebar-foreground: 222 47% 11%;
+    --sidebar-primary: 16 100% 50%;
+    --sidebar-primary-foreground: 0 0% 100%;
+    --sidebar-accent: 210 40% 96.1%;
+    --sidebar-accent-foreground: 222 47% 11%;
+    --sidebar-border: 214.3 31.8% 91.4%;
+    --sidebar-ring: 16 100% 50%;
   }
 
   * {
@@ -44,161 +94,241 @@
 
   html {
     direction: rtl;
-    font-family: 'Noto Sans Arabic', 'VT323', 'Press Start 2P', sans-serif;
+    font-family: 'Tajawal', 'Cairo', sans-serif;
   }
 
   body {
-    @apply bg-black text-white;
-    background-image: url('data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAADIAAAAyCAYAAAAeP4ixAAAACXBIWXMAAAsTAAALEwEAmpwYAAAAIGNIUk0AAHolAACAgwAA+f8AAIDpAAB1MAAA6mAAADqYAAAXb5JfxUYAAAGuSURBVHja7Nk9UsMwEAXgZ8dJQQouYHEDOAKdcwJOwBk4Qo7AEegyBTfgCJRJw8wWI3kkr2NbMdJIv2Njkk/r1a4UZoYm1lJrpa5Yl1oLrYo1t5ZYM2uONbWmWNFKvHVFMIa1wBpZ86zIGmMNHGC8V2dXLAOrb/UqKLL6DqxeVyyi6KvAlXI7VicHrq72t/6LoKwcuDo6qmsw0nLg9LSLtxSrnQNXS/twLcbKgauRV3llGCsHrkbV3EqMlQNXrV3ZUow5cWfVLKDKxlrKgauWqV+JkXLgqrk5KMNIOXDVusMpw0g5cNW8Uy3DaDlw1bo7L8NIOXBVnUAUYaQcuKpOkYowWg68ZNe5DqPlwEt2GyoxUg68ZPe5EiPlwEt2BysxUg68JMdKhNFy4CU5viKMlAMvydE5YbQceMkx3GGiB54bRjvwXDHSgeeO0Q48F4x24LlhtAPPBaMdeG4Y7cBzwWgHnhtGO/BcMNqB54bRDjwXjHbguWG0A88Fox14bhjtwHPBaAc+WF1dZLvgZvUxcOqwvP6hzk/qjI7aYPUlntdMYhmApgYYzwIf9+bGN21XXwMAn1KHaGj34S0AAAAASUVORK5CYII=');
-    background-repeat: repeat;
+    @apply bg-background text-foreground antialiased min-h-screen;
+    background-image: url('data:image/svg+xml,%3Csvg xmlns="http://www.w3.org/2000/svg" width="100" height="100" viewBox="0 0 100 100"%3E%3Cg fill-rule="evenodd"%3E%3Cg fill="%23ffffff" fill-opacity="0.03"%3E%3Cpath opacity=".5" d="M96 95h4v1h-4v4h-1v-4h-9v4h-1v-4h-9v4h-1v-4h-9v4h-1v-4h-9v4h-1v-4h-9v4h-1v-4h-9v4h-1v-4h-9v4h-1v-4h-9v4h-1v-4H0v-1h15v-9H0v-1h15v-9H0v-1h15v-9H0v-1h15v-9H0v-1h15v-9H0v-1h15v-9H0v-1h15v-9H0v-1h15v-9H0v-1h15V0h1v15h9V0h1v15h9V0h1v15h9V0h1v15h9V0h1v15h9V0h1v15h9V0h1v15h9V0h1v15h9V0h1v15h4v1h-4v9h4v1h-4v9h4v1h-4v9h4v1h-4v9h4v1h-4v9h4v1h-4v9h4v1h-4v9h4v1h-4v9zm-1 0v-9h-9v9h9zm-10 0v-9h-9v9h9zm-10 0v-9h-9v9h9zm-10 0v-9h-9v9h9zm-10 0v-9h-9v9h9zm-10 0v-9h-9v9h9zm-10 0v-9h-9v9h9zm-10 0v-9h-9v9h9zm-9-10h9v-9h-9v9zm10 0h9v-9h-9v9zm10 0h9v-9h-9v9zm10 0h9v-9h-9v9zm10 0h9v-9h-9v9zm10 0h9v-9h-9v9zm10 0h9v-9h-9v9zm10 0h9v-9h-9v9zm9-10v-9h-9v9h9zm-10 0v-9h-9v9h9zm-10 0v-9h-9v9h9zm-10 0v-9h-9v9h9zm-10 0v-9h-9v9h9zm-10 0v-9h-9v9h9zm-10 0v-9h-9v9h9zm-10 0v-9h-9v9h9zm-9-10h9v-9h-9v9zm10 0h9v-9h-9v9zm10 0h9v-9h-9v9zm10 0h9v-9h-9v9zm10 0h9v-9h-9v9zm10 0h9v-9h-9v9zm10 0h9v-9h-9v9zm10 0h9v-9h-9v9zm9-10v-9h-9v9h9zm-10 0v-9h-9v9h9zm-10 0v-9h-9v9h9zm-10 0v-9h-9v9h9zm-10 0v-9h-9v9h9zm-10 0v-9h-9v9h9zm-10 0v-9h-9v9h9zm-10 0v-9h-9v9h9zm-9-10h9v-9h-9v9zm10 0h9v-9h-9v9zm10 0h9v-9h-9v9zm10 0h9v-9h-9v9zm10 0h9v-9h-9v9zm10 0h9v-9h-9v9zm10 0h9v-9h-9v9zm10 0h9v-9h-9v9zm9-10v-9h-9v9h9zm-10 0v-9h-9v9h9zm-10 0v-9h-9v9h9zm-10 0v-9h-9v9h9zm-10 0v-9h-9v9h9zm-10 0v-9h-9v9h9zm-10 0v-9h-9v9h9zm-10 0v-9h-9v9h9zm-9-10h9v-9h-9v9zm10 0h9v-9h-9v9zm10 0h9v-9h-9v9zm10 0h9v-9h-9v9zm10 0h9v-9h-9v9zm10 0h9v-9h-9v9zm10 0h9v-9h-9v9zm10 0h9v-9h-9v9z"/%3E%3Cpath d="M6 5V0H5v5H0v1h5v94h1V6h94V5H6z"/%3E%3C/g%3E%3C/g%3E%3C/svg%3E');
   }
 }
 
 @layer components {
-  /* Minecraft/Arcade style components */
-  .pixel-corners {
-    clip-path: polygon(
-      0% 4px, 4px 4px, 4px 0%, calc(100% - 4px) 0%, calc(100% - 4px) 4px, 100% 4px,
-      100% calc(100% - 4px), calc(100% - 4px) calc(100% - 4px), calc(100% - 4px) 100%, 4px 100%, 4px calc(100% - 4px), 0% calc(100% - 4px)
-    );
+  /* Modern UI Components */
+  .futuristic-card {
+    @apply bg-secondary/80 backdrop-blur-md border border-border/50 rounded-xl p-5 shadow-lg relative overflow-hidden transition-all hover:shadow-xl;
   }
   
-  .pixel-text {
-    @apply font-['VT323'] tracking-wider;
-  }
-  
-  .pixel-text-bold {
-    @apply font-['Press_Start_2P'] text-xs leading-relaxed tracking-wide;
-  }
-  
-  .game-card {
-    @apply bg-black/80 border-2 border-gray-800 rounded-lg p-4 shadow-lg relative overflow-hidden pixel-corners;
-    image-rendering: pixelated;
-  }
-  
-  .game-card::before {
+  .futuristic-card::before {
     content: '';
-    @apply absolute inset-0 border-2 border-orange-500 opacity-0 transition-opacity duration-300;
-    clip-path: inherit;
+    @apply absolute inset-0 bg-gradient-to-br from-primary/10 to-transparent opacity-0 transition-opacity duration-300;
   }
   
-  .game-card:hover::before {
-    @apply opacity-50;
+  .futuristic-card:hover::before {
+    @apply opacity-100;
   }
   
-  .game-btn {
-    @apply bg-orange-500 text-white py-2 px-4 rounded-md font-semibold relative overflow-hidden transition-all hover:brightness-110 active:brightness-90 focus:outline-none focus:ring-2 focus:ring-orange-400 focus:ring-opacity-50 pixel-corners;
+  .futuristic-btn {
+    @apply bg-gradient-to-r from-primary to-primary/80 text-white py-2 px-4 rounded-lg font-medium relative overflow-hidden transition-all hover:shadow-md hover:shadow-primary/20 active:scale-95 focus:outline-none focus:ring-2 focus:ring-primary/50 focus:ring-opacity-50;
   }
 
-  .game-btn::after {
+  .futuristic-btn::after {
     content: '';
     @apply absolute inset-0 bg-white opacity-0 transition-opacity duration-300;
   }
   
-  .game-btn:hover::after {
+  .futuristic-btn:hover::after {
     @apply opacity-10;
   }
   
-  .game-btn:active::after {
+  .futuristic-btn:active::after {
     @apply opacity-20;
   }
   
-  .game-title {
-    @apply font-bold text-2xl text-orange-500 mb-4 pixel-text;
-    text-shadow: 2px 2px 0px rgba(0, 0, 0, 0.7);
+  .futuristic-title {
+    @apply font-bold text-2xl text-transparent bg-clip-text bg-gradient-to-r from-primary via-primary to-primary/70 mb-4;
+    text-shadow: 0 0 20px rgba(255, 85, 0, 0.3);
   }
   
-  .game-subtitle {
-    @apply font-semibold text-xl text-white mb-3 pixel-text;
-    text-shadow: 1px 1px 0px rgba(0, 0, 0, 0.7);
+  .futuristic-subtitle {
+    @apply font-semibold text-xl text-foreground mb-3;
   }
   
-  .game-progress-bar {
-    @apply h-2 bg-gray-800 rounded-none border border-gray-700 overflow-hidden relative;
+  .futuristic-progress-bar {
+    @apply h-2 bg-secondary rounded-full overflow-hidden relative;
   }
 
-  .game-progress-fill {
-    @apply h-full bg-orange-500 rounded-none animate-xp-fill;
-    box-shadow: 0 0 4px rgba(255, 85, 0, 0.8);
+  .futuristic-progress-fill {
+    @apply h-full bg-gradient-to-r from-primary to-primary/80 rounded-full animate-shimmer;
+    background-size: 200% 100%;
   }
   
-  .arcade-meter {
-    @apply relative w-full h-6 bg-gray-800 rounded-none overflow-hidden border border-gray-700 pixel-corners;
+  .modern-meter {
+    @apply relative w-full h-6 bg-secondary rounded-full overflow-hidden;
   }
 
   .glow-text {
-    text-shadow: 0 0 5px currentColor;
+    @apply animate-glow;
   }
 
   .glow-border {
-    box-shadow: 0 0 5px var(--glow-color, rgba(255, 85, 0, 0.7));
+    box-shadow: 0 0 10px var(--glow-color, rgba(255, 85, 0, 0.5));
   }
 
-  .game-panel {
-    @apply bg-black/80 border-2 border-gray-800 rounded-none p-5 shadow-lg pixel-corners;
+  .futuristic-panel {
+    @apply bg-card/80 backdrop-blur-md border border-border/50 rounded-xl p-5 shadow-lg;
   }
   
-  /* Pixelated UI elements */
-  .pixelated-panel {
-    @apply bg-black/90 border-2 border-gray-700 p-4 pixel-corners;
-    box-shadow: inset 0 0 10px rgba(0, 0, 0, 0.5);
+  /* UI elements */
+  .glass-panel {
+    @apply bg-secondary/30 backdrop-blur-xl border border-white/10 rounded-xl p-4;
+    box-shadow: 0 10px 30px -10px rgba(0, 0, 0, 0.3);
   }
   
-  .pixel-icon {
-    @apply inline-block;
-    image-rendering: pixelated;
+  .modern-icon {
+    @apply inline-flex items-center justify-center rounded-lg bg-secondary/70 p-2 transition-all hover:bg-primary/20;
   }
   
-  .minecraft-progress {
-    @apply h-4 w-full rounded-none bg-gray-900 border border-gray-700 overflow-hidden;
+  .modern-progress {
+    @apply h-2 w-full rounded-full bg-secondary overflow-hidden;
   }
   
-  .minecraft-progress-fill {
-    @apply h-full bg-orange-500;
-    background-image: linear-gradient(
-      45deg, 
-      rgba(255, 255, 255, 0.15) 25%, 
-      transparent 25%, 
-      transparent 50%, 
-      rgba(255, 255, 255, 0.15) 50%, 
-      rgba(255, 255, 255, 0.15) 75%, 
-      transparent 75%, 
-      transparent
-    );
-    background-size: 8px 8px;
+  .modern-progress-fill {
+    @apply h-full bg-gradient-to-r from-primary to-primary/80;
+    animation: shimmer 3s infinite linear;
+    background-size: 200% 100%;
   }
   
-  .pixel-badge {
-    @apply inline-flex items-center justify-center bg-black/50 border border-gray-700 text-white px-2 py-1 text-sm pixel-text;
-    image-rendering: pixelated;
+  .modern-badge {
+    @apply inline-flex items-center justify-center bg-secondary/70 backdrop-blur-sm text-foreground px-2 py-1 text-xs font-medium rounded-full;
+    box-shadow: 0 2px 10px -2px rgba(0, 0, 0, 0.2);
   }
   
-  .xp-counter {
-    @apply text-orange-400 font-bold pixel-text text-lg;
-    text-shadow: 0 0 5px rgba(255, 85, 0, 0.5);
+  .stat-counter {
+    @apply text-primary font-bold text-lg;
+    text-shadow: 0 0 10px rgba(255, 85, 0, 0.3);
   }
   
   .streak-counter {
-    @apply flex items-center gap-1 text-orange-400 font-bold pixel-text;
+    @apply flex items-center gap-1 text-primary font-bold;
   }
   
-  .pixel-header {
-    @apply text-xl font-bold mb-4 text-orange-400 pixel-text;
-    text-shadow: 2px 2px 0px rgba(0, 0, 0, 0.7);
+  .modern-header {
+    @apply text-xl font-bold mb-4 text-transparent bg-clip-text bg-gradient-to-r from-primary via-primary to-primary/70;
+  }
+  
+  /* Animation classes */
+  .hover-scale {
+    @apply transition-transform duration-300 hover:scale-105;
+  }
+  
+  .hover-glow {
+    @apply transition-shadow duration-300;
+  }
+  
+  .hover-glow:hover {
+    box-shadow: 0 0 15px rgba(255, 85, 0, 0.5);
+  }
+  
+  .floating {
+    @apply animate-float;
+  }
+  
+  .shimmer {
+    @apply relative overflow-hidden;
+  }
+  
+  .shimmer::after {
+    content: '';
+    @apply absolute inset-0 animate-shimmer;
+    background: linear-gradient(90deg, transparent, rgba(255, 255, 255, 0.1), transparent);
+    background-size: 200% 100%;
+  }
+  
+  .gradient-text {
+    @apply text-transparent bg-clip-text bg-gradient-to-r from-primary via-primary to-primary/70;
+  }
+  
+  .blur-bg {
+    @apply backdrop-blur-md bg-background/30;
+  }
+  
+  .card-hover {
+    @apply transition-all duration-300 hover:translate-y-[-5px] hover:shadow-xl;
   }
 }
 
-@layer utilities {
-  .text-shadow-pixel {
-    text-shadow: 2px 2px 0 rgba(0, 0, 0, 0.7);
-  }
-  
-  .pixel-animated {
-    transition: all 0.2s steps(5);
-  }
-  
-  .pixel-border {
-    @apply border-2 border-gray-700;
-    box-shadow: inset 0 0 0 2px rgba(0, 0, 0, 0.5);
-  }
+/* Scrollbar styling */
+::-webkit-scrollbar {
+  width: 8px;
+  height: 8px;
+}
+
+::-webkit-scrollbar-track {
+  @apply bg-secondary/30;
+}
+
+::-webkit-scrollbar-thumb {
+  @apply bg-primary/50 rounded-full hover:bg-primary/70;
+}
+
+/* Theme toggle animation */
+.theme-toggle {
+  @apply relative rounded-full h-6 w-12 transition-colors duration-300;
+}
+
+.theme-toggle::after {
+  content: '';
+  @apply absolute top-1 left-1 h-4 w-4 rounded-full bg-white transform transition-transform duration-300;
+}
+
+.theme-toggle.dark {
+  @apply bg-primary;
+}
+
+.theme-toggle.dark::after {
+  @apply translate-x-6;
+}
+
+.theme-toggle.light {
+  @apply bg-secondary;
+}
+
+/* Tooltip styles */
+.tooltip {
+  @apply absolute invisible opacity-0 bg-secondary/80 backdrop-blur-sm text-foreground rounded-lg py-1 px-2 text-xs transition-all duration-300 z-50;
+  transform: translateY(10px);
+}
+
+.tooltip-trigger:hover .tooltip {
+  @apply visible opacity-100;
+  transform: translateY(0);
+}
+
+/* Loading animation */
+.loading-dots {
+  @apply inline-flex space-x-1;
+}
+
+.loading-dots div {
+  @apply w-2 h-2 rounded-full bg-primary animate-pulse;
+}
+
+.loading-dots div:nth-child(2) {
+  animation-delay: 0.2s;
+}
+
+.loading-dots div:nth-child(3) {
+  animation-delay: 0.4s;
+}
+
+/* Notifications */
+.notification-badge {
+  @apply absolute -top-1 -right-1 flex items-center justify-center min-w-[18px] h-[18px] rounded-full bg-primary text-white text-xs font-medium;
+}
+
+/* Avatar glow effect */
+.avatar-glow {
+  @apply relative;
+}
+
+.avatar-glow::after {
+  content: '';
+  @apply absolute inset-0 rounded-full animate-pulse-glow;
+}
+
+/* Grid layout */
+.auto-grid {
+  @apply grid gap-4;
+  grid-template-columns: repeat(auto-fill, minmax(250px, 1fr));
 }

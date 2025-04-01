@@ -63,19 +63,19 @@ export default {
 					border: 'hsl(var(--sidebar-border))',
 					ring: 'hsl(var(--sidebar-ring))'
 				},
-				// Game theme colors - updated for arcade/minecraft style
+				// Game theme colors - updated for modern futuristic style
 				game: {
 					primary: '#FF5500',
 					secondary: '#FF7733',
 					accent: '#FFCC00',
-					background: '#000000',
-					'card-bg': '#111111',
+					background: '#0F1215',
+					'card-bg': '#171C21',
 					'text-primary': '#FFFFFF',
-					'text-secondary': '#999999',
-					success: '#22CC22',
-					danger: '#FF0000',
-					info: '#00AAFF',
-					warning: '#FFAA00',
+					'text-secondary': '#A1A1AA',
+					success: '#22DD88',
+					danger: '#FF3366',
+					info: '#33AAFF',
+					warning: '#FFAA33',
 				}
 			},
 			borderRadius: {
@@ -126,31 +126,30 @@ export default {
 					'0%, 100%': { transform: 'translateY(0)' },
 					'50%': { transform: 'translateY(-10px)' }
 				},
-				'pixel-pulse': {
-					'0%, 100%': { 
-						transform: 'scale(1)',
-						opacity: '1'
-					},
-					'50%': { 
-						transform: 'scale(1.05)',
-						opacity: '0.9'
-					}
+				'shimmer': {
+					'0%': { backgroundPosition: '-1000px 0' },
+					'100%': { backgroundPosition: '1000px 0' }
 				},
-				'pixel-bounce': {
-					'0%, 100%': { 
-						transform: 'translateY(0)'
-					},
-					'50%': { 
-						transform: 'translateY(-4px)'
-					}
+				'gradient-shift': {
+					'0%': { backgroundPosition: '0% 50%' },
+					'50%': { backgroundPosition: '100% 50%' },
+					'100%': { backgroundPosition: '0% 50%' }
 				},
-				'scanline': {
-					'0%': { 
-						transform: 'translateY(0%)'
-					},
-					'100%': { 
-						transform: 'translateY(100%)'
-					}
+				'blur-in': {
+					'0%': { filter: 'blur(12px)', opacity: '0' },
+					'100%': { filter: 'blur(0px)', opacity: '1' }
+				},
+				'slide-up': {
+					'0%': { transform: 'translateY(20px)', opacity: '0' },
+					'100%': { transform: 'translateY(0)', opacity: '1' }
+				},
+				'slide-down': {
+					'0%': { transform: 'translateY(-20px)', opacity: '0' },
+					'100%': { transform: 'translateY(0)', opacity: '1' }
+				},
+				'glow': {
+					'0%, 100%': { textShadow: '0 0 5px rgba(255, 85, 0, 0.5)' },
+					'50%': { textShadow: '0 0 20px rgba(255, 85, 0, 0.8)' }
 				}
 			},
 			animation: {
@@ -161,9 +160,18 @@ export default {
 				'xp-fill': 'xp-fill 1s ease-out forwards',
 				'scale-in': 'scale-in 0.3s ease-out',
 				'float': 'float 3s infinite ease-in-out',
-				'pixel-pulse': 'pixel-pulse 2s infinite steps(4)',
-				'pixel-bounce': 'pixel-bounce 1s infinite steps(8)',
-				'scanline': 'scanline 8s linear infinite'
+				'shimmer': 'shimmer 3s infinite linear',
+				'gradient-shift': 'gradient-shift 5s ease infinite',
+				'blur-in': 'blur-in 0.5s ease-out',
+				'slide-up': 'slide-up 0.5s ease-out',
+				'slide-down': 'slide-down 0.5s ease-out',
+				'glow': 'glow 2s infinite ease-in-out'
+			},
+			backgroundImage: {
+				'hero-pattern': "url('/lovable-uploads/94fe6055-e6c6-45e4-9417-a528e701d1f6.png')",
+				'gradient-radial': 'radial-gradient(var(--tw-gradient-stops))',
+				'dots': "url(\"data:image/svg+xml,%3Csvg width='24' height='24' viewBox='0 0 24 24' xmlns='http://www.w3.org/2000/svg'%3E%3Ccircle fill='%23ffffff' fill-opacity='0.05' cx='2' cy='2' r='1'/%3E%3C/svg%3E\")",
+				'grid': "url(\"data:image/svg+xml,%3Csvg width='40' height='40' viewBox='0 0 40 40' xmlns='http://www.w3.org/2000/svg'%3E%3Cg fill='%23ffffff' fill-opacity='0.03' fill-rule='evenodd'%3E%3Cpath d='M0 38.59l2.83-2.83 1.41 1.41L1.41 40H0v-1.41zM0 1.4l2.83 2.83 1.41-1.41L1.41 0H0v1.41zM38.59 40l-2.83-2.83 1.41-1.41L40 38.59V40h-1.41zM40 1.41l-2.83 2.83-1.41-1.41L38.59 0H40v1.41zM20 18.6l2.83-2.83 1.41 1.41L21.41 20l2.83 2.83-1.41 1.41L20 21.41l-2.83 2.83-1.41-1.41L18.59 20l-2.83-2.83 1.41-1.41L20 18.59z'/%3E%3C/g%3E%3C/svg%3E\")"
 			}
 		}
 	},

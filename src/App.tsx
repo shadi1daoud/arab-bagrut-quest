@@ -5,6 +5,7 @@ import { TooltipProvider } from "@/components/ui/tooltip";
 import { QueryClient, QueryClientProvider } from "@tanstack/react-query";
 import { BrowserRouter, Routes, Route } from "react-router-dom";
 import { AuthProvider } from "./contexts/AuthContext";
+import { ThemeProvider } from "./contexts/ThemeContext";
 import StudentLayout from "./layouts/StudentLayout";
 import AdminLayout from "./layouts/AdminLayout";
 import Dashboard from "./pages/student/Dashboard";
@@ -27,50 +28,60 @@ const queryClient = new QueryClient();
 const App = () => (
   <QueryClientProvider client={queryClient}>
     <BrowserRouter>
-      <AuthProvider>
-        <TooltipProvider>
-          <Toaster />
-          <Sonner />
-          <Routes>
-            <Route path="/login" element={<Login />} />
-            
-            {/* Student Routes */}
-            <Route 
-              path="/" 
-              element={
-                <ProtectedRoute>
-                  <StudentLayout />
-                </ProtectedRoute>
-              }
-            >
-              <Route index element={<Dashboard />} />
-              <Route path="courses" element={<Courses />} />
-              <Route path="courses/:id" element={<CourseDetail />} />
-              <Route path="shop" element={<Shop />} />
-              <Route path="community" element={<Community />} />
-              <Route path="settings" element={<Settings />} />
-            </Route>
-            
-            {/* Admin Routes */}
-            <Route 
-              path="/admin" 
-              element={
-                <ProtectedRoute requiresAdmin>
-                  <AdminLayout />
-                </ProtectedRoute>
-              }
-            >
-              <Route index element={<AdminDashboard />} />
-              <Route path="courses" element={<AdminCourses />} />
-              <Route path="courses/upload" element={<AdminUploadCourse />} />
-              <Route path="courses/edit/:id" element={<AdminEditCourse />} />
-              <Route path="users" element={<AdminUsers />} />
-            </Route>
-            
-            <Route path="*" element={<NotFound />} />
-          </Routes>
-        </TooltipProvider>
-      </AuthProvider>
+      <ThemeProvider>
+        <AuthProvider>
+          <TooltipProvider>
+            <div className="relative min-h-screen">
+              {/* Background grid pattern */}
+              <div className="fixed inset-0 bg-dots pointer-events-none"></div>
+              {/* Animated radial gradients for visual interest */}
+              <div className="fixed top-0 left-0 w-[600px] h-[600px] bg-primary/5 rounded-full blur-3xl opacity-30 animate-pulse"></div>
+              <div className="fixed bottom-0 right-0 w-[600px] h-[600px] bg-blue-500/5 rounded-full blur-3xl opacity-30 animate-pulse" style={{ animationDelay: "1s" }}></div>
+              
+              <Toaster />
+              <Sonner />
+              <Routes>
+                <Route path="/login" element={<Login />} />
+                
+                {/* Student Routes */}
+                <Route 
+                  path="/" 
+                  element={
+                    <ProtectedRoute>
+                      <StudentLayout />
+                    </ProtectedRoute>
+                  }
+                >
+                  <Route index element={<Dashboard />} />
+                  <Route path="courses" element={<Courses />} />
+                  <Route path="courses/:id" element={<CourseDetail />} />
+                  <Route path="shop" element={<Shop />} />
+                  <Route path="community" element={<Community />} />
+                  <Route path="settings" element={<Settings />} />
+                </Route>
+                
+                {/* Admin Routes */}
+                <Route 
+                  path="/admin" 
+                  element={
+                    <ProtectedRoute requiresAdmin>
+                      <AdminLayout />
+                    </ProtectedRoute>
+                  }
+                >
+                  <Route index element={<AdminDashboard />} />
+                  <Route path="courses" element={<AdminCourses />} />
+                  <Route path="courses/upload" element={<AdminUploadCourse />} />
+                  <Route path="courses/edit/:id" element={<AdminEditCourse />} />
+                  <Route path="users" element={<AdminUsers />} />
+                </Route>
+                
+                <Route path="*" element={<NotFound />} />
+              </Routes>
+            </div>
+          </TooltipProvider>
+        </AuthProvider>
+      </ThemeProvider>
     </BrowserRouter>
   </QueryClientProvider>
 );

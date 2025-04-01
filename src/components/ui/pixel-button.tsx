@@ -6,17 +6,14 @@ import { cva, type VariantProps } from "class-variance-authority"
 import { cn } from "@/lib/utils"
 
 const pixelButtonVariants = cva(
-  "inline-flex items-center justify-center gap-2 whitespace-nowrap font-medium transition-colors focus-visible:outline-none disabled:pointer-events-none disabled:opacity-50 pixel-corners border-2 pixel-text",
+  "inline-flex items-center justify-center gap-2 whitespace-nowrap font-medium transition-all focus-visible:outline-none disabled:pointer-events-none disabled:opacity-50 rounded-lg backdrop-blur-sm border relative overflow-hidden group hover:scale-[1.02] active:scale-[0.98]",
   {
     variants: {
       variant: {
-        default: "bg-orange-500 border-orange-600 text-white hover:bg-orange-600 active:bg-orange-700",
-        destructive:
-          "bg-red-500 border-red-600 text-white hover:bg-red-600 active:bg-red-700",
-        outline:
-          "bg-transparent border-gray-700 text-white hover:border-orange-500 hover:text-orange-500",
-        secondary:
-          "bg-gray-800 border-gray-700 text-white hover:bg-gray-700 active:bg-gray-600",
+        default: "bg-gradient-to-br from-orange-500 to-orange-600 border-orange-400 text-white hover:shadow-md hover:shadow-orange-500/20",
+        secondary: "bg-gradient-to-br from-gray-800 to-gray-900 border-gray-700 text-white hover:shadow-md hover:shadow-gray-800/20",
+        outline: "bg-transparent border-gray-700 text-white hover:border-orange-500 hover:text-orange-500",
+        destructive: "bg-gradient-to-br from-red-500 to-red-600 border-red-400 text-white hover:shadow-md hover:shadow-red-500/20",
         ghost: "border-transparent bg-transparent text-white hover:bg-gray-800 hover:border-gray-700",
         link: "border-transparent text-orange-500 underline-offset-4 hover:underline",
       },
@@ -48,7 +45,12 @@ const PixelButton = React.forwardRef<HTMLButtonElement, PixelButtonProps>(
         className={cn(pixelButtonVariants({ variant, size, className }))}
         ref={ref}
         {...props}
-      />
+      >
+        <span className="relative z-10 flex items-center gap-2">
+          {props.children}
+        </span>
+        <span className="absolute inset-0 bg-white opacity-0 transition-opacity duration-300 group-hover:opacity-10 group-active:opacity-20" />
+      </Comp>
     )
   }
 )
