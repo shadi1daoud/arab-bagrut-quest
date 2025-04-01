@@ -67,30 +67,22 @@ export default {
 					border: 'hsl(var(--sidebar-border))',
 					ring: 'hsl(var(--sidebar-ring))'
 				},
-				// Minecraft theme colors
-				minecraft: {
-					primary: '#FF5500',
-					secondary: '#FF7733',
-					accent: '#FFCC00',
-					background: '#0F1215',
-					'card-bg': '#171C21',
+				// Game theme colors
+				game: {
+					primary: '#FF3C80',    // Neon pink
+					secondary: '#332e59',  // Deep blue/navy
+					accent: '#FFB800',     // Gold
+					teal: '#00FFD5',       // Teal
+					green: '#A3FF12',      // Glowing green
+					bg: '#101524',         // Deep background
+					card: '#1a1c2d',       // Card background
+					border: '#332e59',     // Border color
 					'text-primary': '#FFFFFF',
 					'text-secondary': '#A1A1AA',
-					success: '#22DD88',
+					success: '#A3FF12',
 					danger: '#FF3366',
-					info: '#33AAFF',
-					warning: '#FFAA33',
-					// Block colors
-					dirt: '#8B5A2B',
-					stone: '#7D7D7D',
-					grass: '#5DA130',
-					'grass-top': '#91BD59',
-					wood: '#9F703A',
-					leaves: '#3A5E25',
-					water: '#2F5DC6',
-					lava: '#D75908',
-					obsidian: '#1F1347',
-					bedrock: '#252525',
+					info: '#00FFD5',
+					warning: '#FFB800',
 				}
 			},
 			borderRadius: {
@@ -117,11 +109,11 @@ export default {
 				},
 				'pulse-glow': {
 					'0%, 100%': { 
-						boxShadow: '0 0 5px 0px #FF5500',
+						boxShadow: '0 0 5px 0px #FF3C80',
 						opacity: '0.8'
 					},
 					'50%': { 
-						boxShadow: '0 0 15px 5px #FF5500',
+						boxShadow: '0 0 15px 5px #FF3C80',
 						opacity: '1'
 					}
 				},
@@ -156,6 +148,18 @@ export default {
 				'block-place': {
 					'0%': { transform: 'translateY(-10px)', opacity: '0' },
 					'100%': { transform: 'translateY(0)', opacity: '1' }
+				},
+				'coin-spin': {
+					'0%': { transform: 'rotateY(0deg)' },
+					'100%': { transform: 'rotateY(360deg)' }
+				},
+				'fire-flicker': {
+					'0%, 100%': { transform: 'scale(1) translateY(0)', opacity: '0.9' },
+					'50%': { transform: 'scale(1.1) translateY(-2px)', opacity: '1' }
+				},
+				'sparkle': {
+					'0%, 100%': { opacity: '0.2', transform: 'scale(0.8)' },
+					'50%': { opacity: '1', transform: 'scale(1.2)' }
 				}
 			},
 			animation: {
@@ -169,20 +173,18 @@ export default {
 				'shimmer': 'shimmer 3s infinite linear',
 				'pixelated-pulse': 'pixelated-pulse 1s steps(2) infinite',
 				'pixel-bounce': 'pixel-bounce 0.5s infinite steps(2)',
-				'block-place': 'block-place 0.3s ease-out'
+				'block-place': 'block-place 0.3s ease-out',
+				'coin-spin': 'coin-spin 1s linear infinite',
+				'fire-flicker': 'fire-flicker 0.8s ease-in-out infinite',
+				'sparkle': 'sparkle 1.5s ease-in-out infinite'
 			},
 			backgroundImage: {
+				'pixel-pattern': "url('data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAAIAAAACCAYAAABytg0kAAAAGXRFWHRTb2Z0d2FyZQBBZG9iZSBJbWFnZVJlYWR5ccllPAAAABhJREFUeNpiYGBg+M+AJf7//38GJgYQAADw/wHHQ4SCcQAAAABJRU5ErkJggg==')",
 				'dirt-pattern': "url('data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAABAAAAAQCAYAAAAf8/9hAAAApElEQVQ4T2NkoBAwUqifAbcB/2EA3SJsMsR4AqcX0A1Al2CNXOyaQQDDAOxhgB42hAJKQnEo9wTpYcDwAqE0QGxCImQoxRpABmAzBJch2NIAzgBENwRbIGKLA9wGYDOEUCDi9AK6AbgSESyQCcUFOAMR3RBceQGbIdgCE6sBuAxBNgRXYGIMRFyG4AtsrLGAHIjYEhKuxITTC+gGUJwbiXYB1QwAAACb0iJEDLO7VAAAAABJRU5ErkJggg==')",
 				'stone-pattern': "url('data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAABAAAAAQCAYAAAAf8/9hAAAASElEQVQ4T2NkoBAwUqifgWQDQJpramqIci5y/MM1EW0AofAgZAhFBqAHFnJ6QY9ndEOIjgVCsYCc+ISCk2QvIBtCUUJCNgAA1K4cEVm0kYMAAAAASUVORK5CYII=')",
 				'grass-pattern': "url('data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAABAAAAAQCAYAAAAf8/9hAAAAnklEQVQ4T52TyxHAIAhEOdMCKcpeSPH0Zia6wbAPTfYkCo8FY8zbWutzpZRzGGNOvQYopdxCiE+CC8BWwBhzZubNOXcUCdj3vRPw2FqfGKAHoHU0Ywt472slVKUUeQSt5KGALaUQQYvGVgr9nVIC6O/AxEIIrfN7J4jIwt5ZAVJrZ/VCKPsGw30DM+FIV28xT2BgJnAA1sq/AVB5FeYvghdtCywRHqbUvAAAAABJRU5ErkJggg==')",
-				'obsidian-pattern': "url('data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAABAAAAAQCAYAAAAf8/9hAAAAYklEQVQ4T2NkoBAwUqifAacB////J9pSRkZG7AagG0KMAQQNQDaEWANwGoDNEFIMwGsAsiGkGkDQAJAhpBhA0ACQIaQaQNQgImbooxtA1DCglicoTsrEpgV0A6ieF6hqAAD35S8RixLmwwAAAABJRU5ErkJggg==')",
-				'wood-pattern': "url('data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAABAAAAAQCAYAAAAf8/9hAAAAnElEQVQ4T2NkgID/DAwMjFBaAYgdgPgFEIPYD4GYGYgZkAG6ZpBGYjQRZQBM8////zOANCJrRjcM3RCsBhBjCFYD8BkCMgCXZpwG4DIEqwGEDEE2AKdhWA0gZAjMAKyGYTOAGEOQDcBqGLoBxBoCMgCrYegGkGIIsgG4DYAZQKohyAbgNARkQA2yIaQagmwATkOQNQIAI/IvEbWlLB4AAAAASUVORK5CYII=')",
+				'sky-pattern': "url('data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAABAAAAAQCAYAAAAf8/9hAAAAVklEQVQ4T2NkoBAwUqifYdQABpAXnGTF/4PRMZhNSD1MDcxFIHk4G2QASBOMDTMAJg7SwAjzBowNEgM5Ba4J5BKYRpgYSA7kFbg4SA3MBXhDgRqu9E4FAF17FBEpwGZtAAAAAElFTkSuQmCC')",
 				'hero-pattern': "url('/lovable-uploads/94fe6055-e6c6-45e4-9417-a528e701d1f6.png')",
-				'minecraft-dirt': "url('/lovable-uploads/45021bdb-020e-4bbb-994c-a3ee3a2247bd.png')",
-				'minecraft-stone': "url('/lovable-uploads/a1720fdf-6a93-4286-beb9-490341339f14.png')",
-				'minecraft-grass': "url('/lovable-uploads/4d57e7ee-a6ad-43e6-a5f2-31128650a71b.png')",
-				'minecraft-pattern': "url('/lovable-uploads/d98cc1f4-a7d5-475a-b052-0f55de4f75c7.png')",
-				'minecraft-character': "url('/lovable-uploads/4a94efb7-b0d5-465d-8a6d-555d8d853904.png')",
 			}
 		}
 	},
