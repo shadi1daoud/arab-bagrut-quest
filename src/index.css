@@ -1,6 +1,4 @@
 
-@import url('https://fonts.googleapis.com/css2?family=Press+Start+2P&display=swap');
-@import url('https://fonts.googleapis.com/css2?family=IBM+Plex+Mono:wght@400;500;600;700&display=swap');
 @import url('https://fonts.googleapis.com/css2?family=Noto+Sans+Arabic:wght@400;500;600;700;800&display=swap');
 
 @tailwind base;
@@ -9,110 +7,67 @@
 
 @layer base {
   :root {
-    --background: 240 25% 8%;
+    --background: 0 0% 0%;
     --foreground: 0 0% 98%;
 
-    --card: 240 20% 10%;
+    --card: 0 0% 7%;
     --card-foreground: 0 0% 98%;
 
-    --popover: 240 20% 10%;
+    --popover: 0 0% 7%;
     --popover-foreground: 0 0% 98%;
 
-    --primary: 180 100% 50%;
-    --primary-foreground: 240 20% 10%;
+    --primary: 16 100% 50%;
+    --primary-foreground: 0 0% 98%;
 
-    --secondary: 300 100% 65%;
-    --secondary-foreground: 0 0% 98%;
+    --secondary: 16 90% 65%;
+    --secondary-foreground: 0 0% 7%;
 
-    --muted: 240 20% 15%;
+    --muted: 0 0% 15%;
     --muted-foreground: 0 0% 70%;
 
-    --accent: 60 100% 50%;
-    --accent-foreground: 240 20% 10%;
+    --accent: 16 100% 50%;
+    --accent-foreground: 0 0% 7%;
 
     --destructive: 0 100% 50%;
     --destructive-foreground: 0 0% 98%;
 
-    --border: 240 20% 20%;
-    --input: 240 20% 20%;
-    --ring: 180 100% 50%;
+    --border: 0 0% 20%;
+    --input: 0 0% 20%;
+    --ring: 16 100% 50%;
 
-    --radius: 0;
+    --radius: 0.5rem;
   }
 
   * {
     @apply border-border;
-    image-rendering: pixelated;
   }
 
   html {
     direction: rtl;
-    font-family: 'Noto Sans Arabic', 'IBM Plex Mono', monospace;
+    font-family: 'Noto Sans Arabic', sans-serif;
   }
 
   body {
-    @apply bg-background text-foreground;
-    background-image: 
-      linear-gradient(to bottom, #0F0F1A 0%, #12122A 100%),
-      radial-gradient(at 50% 0%, rgba(0, 255, 255, 0.1) 0px, transparent 70%),
-      radial-gradient(at 0% 100%, rgba(255, 136, 255, 0.1) 0px, transparent 50%);
-    background-attachment: fixed;
+    @apply bg-black text-white;
   }
 }
 
 @layer components {
-  .pixel-border {
-    @apply relative;
-    box-shadow: 
-      0 0 0 2px #0F0F1A,
-      0 0 0 4px rgba(0, 255, 255, 0.5);
-  }
-
-  .pixel-border-accent {
-    @apply relative;
-    box-shadow: 
-      0 0 0 2px #0F0F1A,
-      0 0 0 4px rgba(255, 204, 0, 0.5);
-  }
-
-  .pixel-heading {
-    font-family: 'Press Start 2P', cursive;
-    @apply tracking-wide text-shadow-neon;
-  }
-
-  .pixel-text {
-    font-family: 'IBM Plex Mono', monospace;
-    @apply tracking-wide;
-  }
-
-  .text-shadow-neon {
-    text-shadow: 0 0 5px rgba(0, 255, 255, 0.7), 0 0 10px rgba(0, 255, 255, 0.3);
-  }
-
-  .text-shadow-neon-accent {
-    text-shadow: 0 0 5px rgba(255, 204, 0, 0.7), 0 0 10px rgba(255, 204, 0, 0.3);
-  }
-
-  .glow-neon {
-    box-shadow: 0 0 10px rgba(0, 255, 255, 0.5), 0 0 20px rgba(0, 255, 255, 0.3);
-  }
-
-  .glow-neon-accent {
-    box-shadow: 0 0 10px rgba(255, 204, 0, 0.5), 0 0 20px rgba(255, 204, 0, 0.3);
-  }
-
   .game-card {
-    @apply bg-card border-2 border-primary/30 p-4 relative overflow-hidden transition-all duration-300;
+    @apply bg-black border border-gray-800 rounded-lg p-4 shadow-lg relative overflow-hidden;
   }
   
-  .game-card:hover {
-    @apply border-primary/70;
-    box-shadow: 0 0 10px rgba(0, 255, 255, 0.5), 0 0 20px rgba(0, 255, 255, 0.2);
+  .game-card::before {
+    content: '';
+    @apply absolute inset-0 border border-orange-500 opacity-0 rounded-lg transition-opacity duration-300;
+  }
+  
+  .game-card:hover::before {
+    @apply opacity-50;
   }
   
   .game-btn {
-    @apply bg-primary text-primary-foreground py-2 px-4 border-2 border-primary/80 font-bold relative overflow-hidden transition-all hover:brightness-110 active:brightness-90 focus:outline-none focus:ring-2 focus:ring-primary/50;
-    image-rendering: pixelated;
+    @apply bg-orange-500 text-white py-2 px-4 rounded-md font-semibold relative overflow-hidden transition-all hover:brightness-110 active:brightness-90 focus:outline-none focus:ring-2 focus:ring-orange-400 focus:ring-opacity-50;
   }
 
   .game-btn::after {
@@ -124,106 +79,40 @@
     @apply opacity-10;
   }
   
-  .game-btn:hover {
-    transform: translateY(-2px);
-    box-shadow: 0 0 10px rgba(0, 255, 255, 0.7);
-  }
-  
-  .game-btn:active {
-    transform: translateY(1px);
+  .game-btn:active::after {
+    @apply opacity-20;
   }
   
   .game-title {
-    font-family: 'Press Start 2P', cursive;
-    @apply font-bold text-xl text-primary mb-4 tracking-wide;
-    text-shadow: 0 0 5px rgba(0, 255, 255, 0.7), 0 0 10px rgba(0, 255, 255, 0.3);
+    @apply font-bold text-2xl text-orange-500 mb-4;
+    text-shadow: 0 0 10px rgba(255, 85, 0, 0.5);
   }
   
   .game-subtitle {
-    font-family: 'IBM Plex Mono', monospace;
-    @apply font-semibold text-lg text-white mb-3 tracking-wide;
+    @apply font-semibold text-xl text-white mb-3;
   }
   
   .game-progress-bar {
-    @apply h-2 bg-muted rounded-none overflow-hidden relative border border-primary/30;
+    @apply h-2 bg-gray-800 rounded-full overflow-hidden relative;
   }
 
   .game-progress-fill {
-    @apply h-full bg-primary rounded-none animate-xp-fill;
-    box-shadow: 0 0 10px rgba(0, 255, 255, 0.7);
+    @apply h-full bg-orange-500 rounded-full animate-xp-fill;
   }
   
   .arcade-meter {
-    @apply relative w-full h-6 bg-muted overflow-hidden border-2 border-primary/30;
+    @apply relative w-full h-6 bg-gray-800 rounded-full overflow-hidden border border-gray-700;
   }
 
   .glow-text {
-    text-shadow: 0 0 5px currentColor, 0 0 10px currentColor;
+    text-shadow: 0 0 5px currentColor;
   }
 
   .glow-border {
-    box-shadow: 0 0 5px var(--glow-color, rgba(0, 255, 255, 0.7)), 0 0 10px var(--glow-color, rgba(0, 255, 255, 0.4));
+    box-shadow: 0 0 5px var(--glow-color, rgba(255, 85, 0, 0.7));
   }
 
   .game-panel {
-    @apply bg-card border-2 border-primary/30 p-5;
-  }
-
-  .pixel-avatar {
-    @apply relative overflow-hidden border-2 border-primary/50;
-    box-shadow: 0 0 0 2px #0F0F1A, 0 0 10px rgba(0, 255, 255, 0.5);
-  }
-
-  .pixel-avatar-active::after {
-    content: '';
-    @apply absolute bottom-0 right-0 bg-green-500 h-3 w-3 border-2 border-card;
-  }
-
-  .pixel-icon-container {
-    @apply flex items-center justify-center h-10 w-10 border-2 border-primary/50 bg-muted;
-    box-shadow: 0 0 5px rgba(0, 255, 255, 0.3);
-  }
-
-  .pixel-table th {
-    @apply px-4 py-2 text-sm font-medium text-gray-400 border-b-2 border-primary/30 bg-muted;
-  }
-
-  .pixel-table td {
-    @apply px-4 py-3 border-b border-primary/20;
-  }
-
-  .pixel-table tr:hover {
-    @apply bg-primary/5;
-  }
-
-  /* Animations */
-  @keyframes pulse-pixel {
-    0%, 100% { opacity: 1; }
-    50% { opacity: 0.7; }
-  }
-
-  .animate-pulse-pixel {
-    animation: pulse-pixel 2s infinite;
-  }
-
-  @keyframes float-pixel {
-    0%, 100% { transform: translateY(0); }
-    50% { transform: translateY(-5px); }
-  }
-
-  .animate-float-pixel {
-    animation: float-pixel 3s ease-in-out infinite;
-  }
-
-  @keyframes shine-pixel {
-    0% { background-position: -100px; }
-    40%, 100% { background-position: 300px; }
-  }
-
-  .animate-shine-pixel {
-    background: linear-gradient(to right, transparent 0%, rgba(0, 255, 255, 0.3) 50%, transparent 100%);
-    background-size: 100px 100%;
-    background-repeat: no-repeat;
-    animation: shine-pixel 3s infinite;
+    @apply bg-black border border-gray-800 rounded-lg p-5 shadow-lg;
   }
 }

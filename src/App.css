@@ -1,4 +1,3 @@
-
 #root {
   max-width: 1280px;
   margin: 0 auto;
@@ -11,13 +10,12 @@
   padding: 1.5em;
   will-change: filter;
   transition: filter 300ms;
-  image-rendering: pixelated;
 }
 .logo:hover {
-  filter: drop-shadow(0 0 2em #00FFFFFF);
+  filter: drop-shadow(0 0 2em #646cffaa);
 }
 .logo.react:hover {
-  filter: drop-shadow(0 0 2em #00FFFFFF);
+  filter: drop-shadow(0 0 2em #61dafbaa);
 }
 
 @keyframes logo-spin {
@@ -41,104 +39,4 @@
 
 .read-the-docs {
   color: #888;
-}
-
-/* Pixel Art Styling */
-.pixel-art {
-  image-rendering: pixelated;
-  image-rendering: -moz-crisp-edges;
-  image-rendering: crisp-edges;
-}
-
-/* Glowing Elements */
-.glow-blue {
-  filter: drop-shadow(0 0 5px #00FFFF);
-}
-
-.glow-pink {
-  filter: drop-shadow(0 0 5px #FF88FF);
-}
-
-.glow-yellow {
-  filter: drop-shadow(0 0 5px #FFCC00);
-}
-
-/* XP Gain Animation */
-@keyframes xp-gained {
-  0% {
-    opacity: 1;
-    transform: translateY(0);
-  }
-  100% {
-    opacity: 0;
-    transform: translateY(-20px);
-  }
-}
-
-.xp-gained {
-  animation: xp-gained 1.5s ease-out forwards;
-  color: #00FFFF;
-  font-family: 'Press Start 2P', cursive;
-  position: absolute;
-  pointer-events: none;
-}
-
-/* Coin Animation */
-@keyframes coin-spin {
-  0% { transform: scale(1) rotateY(0deg); }
-  50% { transform: scale(1.1) rotateY(180deg); }
-  100% { transform: scale(1) rotateY(360deg); }
-}
-
-.coin-icon {
-  color: #FFCC00;
-  display: inline-block;
-  animation: coin-spin 1s infinite linear;
-  transform-style: preserve-3d;
-}
-
-/* Pixelated Progress Bar */
-.pixel-progress {
-  height: 10px;
-  background-color: #1a1a2a;
-  border: 2px solid #00FFFF;
-  position: relative;
-  overflow: hidden;
-}
-
-.pixel-progress-fill {
-  height: 100%;
-  background-color: #00FFFF;
-  position: absolute;
-  top: 0;
-  left: 0;
-  box-shadow: 0 0 10px #00FFFF;
-}
-
-/* Pixel Border */
-.pixel-border {
-  position: relative;
-}
-
-.pixel-border::after {
-  content: '';
-  position: absolute;
-  top: 0;
-  left: 0;
-  right: 0;
-  bottom: 0;
-  border: 2px solid #00FFFF;
-  pointer-events: none;
-}
-
-/* Fire Animation for Streak */
-@keyframes fire-flicker {
-  0%, 100% { opacity: 1; transform: scale(1); }
-  50% { opacity: 0.8; transform: scale(0.95); }
-}
-
-.fire-icon {
-  color: #FF6600;
-  animation: fire-flicker 0.5s infinite alternate;
-  display: inline-block;
 }
