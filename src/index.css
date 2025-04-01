@@ -7,50 +7,85 @@
 
 @layer base {
   :root {
-    /* Dark pixel game theme */
-    --background: 220 30% 10%;
+    --background: 222 47% 11%;
     --foreground: 210 40% 98%;
 
-    --card: 221 39% 15%;
+    --card: 222 47% 11%;
     --card-foreground: 210 40% 98%;
 
-    --popover: 221 39% 15%;
+    --popover: 222 47% 11%;
     --popover-foreground: 210 40% 98%;
 
-    /* Neon pink */
-    --primary: 338 100% 56%;
+    --primary: 16 100% 50%;
     --primary-foreground: 210 40% 98%;
 
-    /* Deep blue / navy */
-    --secondary: 222 47% 20%;
+    --secondary: 217 33% 17%;
     --secondary-foreground: 210 40% 98%;
 
     --muted: 217 33% 17%;
     --muted-foreground: 215 20% 65%;
 
-    /* Gold */
-    --accent: 41 100% 50%;
+    --accent: 16 100% 50%;
     --accent-foreground: 210 40% 98%;
 
-    /* Danger red */
     --destructive: 0 62% 30%;
     --destructive-foreground: 210 40% 98%;
 
-    --border: 222 47% 25%;
+    --border: 217 33% 17%;
     --input: 217 33% 17%;
-    --ring: 338 100% 56%;
+    --ring: 16 100% 50%;
 
     --radius: 0;
 
-    /* Game colors */
-    --game-primary: #FF3C80;
-    --game-secondary: #332e59;
-    --game-accent: #FFB800;
-    --game-teal: #00FFD5;
-    --game-green: #A3FF12;
-    --game-bg: #101524;
-    --game-card: #1a1c2d;
-    --game-border: #332e59;
+    /* Sidebar colors */
+    --sidebar-background: 224 71% 4%;
+    --sidebar-foreground: 213 31% 91%;
+    --sidebar-primary: 16 100% 50%;
+    --sidebar-primary-foreground: 0 0% 100%;
+    --sidebar-accent: 217 33% 17%;
+    --sidebar-accent-foreground: 210 40% 98%;
+    --sidebar-border: 215 27% 19%;
+    --sidebar-ring: 216 34% 17%;
+  }
+
+  .light {
+    --background: 0 0% 100%;
+    --foreground: 222 47% 11%;
+
+    --card: 0 0% 100%;
+    --card-foreground: 222 47% 11%;
+
+    --popover: 0 0% 100%;
+    --popover-foreground: 222 47% 11%;
+
+    --primary: 16 100% 50%;
+    --primary-foreground: 210 40% 98%;
+
+    --secondary: 210 40% 96.1%;
+    --secondary-foreground: 222 47% 11%;
+
+    --muted: 210 40% 96.1%;
+    --muted-foreground: 215 16% 47%;
+
+    --accent: 16 100% 50%;
+    --accent-foreground: 210 40% 98%;
+
+    --destructive: 0 84.2% 60.2%;
+    --destructive-foreground: 210 40% 98%;
+
+    --border: 214.3 31.8% 91.4%;
+    --input: 214.3 31.8% 91.4%;
+    --ring: 16 100% 50%;
+
+    /* Sidebar colors */
+    --sidebar-background: 0 0% 98%;
+    --sidebar-foreground: 222 47% 11%;
+    --sidebar-primary: 16 100% 50%;
+    --sidebar-primary-foreground: 0 0% 100%;
+    --sidebar-accent: 210 40% 96.1%;
+    --sidebar-accent-foreground: 222 47% 11%;
+    --sidebar-border: 214.3 31.8% 91.4%;
+    --sidebar-ring: 16 100% 50%;
   }
 
   * {
@@ -63,23 +98,17 @@
   }
 
   body {
-    @apply bg-game-bg text-foreground antialiased min-h-screen;
-    background-image: url('data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAAIAAAACCAYAAABytg0kAAAAGXRFWHRTb2Z0d2FyZQBBZG9iZSBJbWFnZVJlYWR5ccllPAAAABhJREFUeNpiYGBg+M+AJf7//38GJgYQAADw/wHHQ4SCcQAAAABJRU5ErkJggg==');
+    @apply bg-background text-foreground antialiased min-h-screen;
+    background-image: url('data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAABQAAAAUCAYAAACNiR0NAAAAGXRFWHRTb2Z0d2FyZQBBZG9iZSBJbWFnZVJlYWR5ccllPAAAAyhpVFh0WE1MOmNvbS5hZG9iZS54bXAAAAAAADw/eHBhY2tldCBiZWdpbj0i77u/IiBpZD0iVzVNME1wQ2VoaUh6cmVTek5UY3prYzlkIj8+IDx4OnhtcG1ldGEgeG1sbnM6eD0iYWRvYmU6bnM6bWV0YS8iIHg6eG1wdGs9IkFkb2JlIFhNUCBDb3JlIDUuNi1jMTM4IDc5LjE1OTgyNCwgMjAxNi8wOS8xNC0wMTowOTowMSAgICAgICAgIj4gPHJkZjpSREYgeG1sbnM6cmRmPSJodHRwOi8vd3d3LnczLm9yZy8xOTk5LzAyLzIyLXJkZi1zeW50YXgtbnMjIj4gPHJkZjpEZXNjcmlwdGlvbiByZGY6YWJvdXQ9IiIgeG1sbnM6eG1wPSJodHRwOi8vbnMuYWRvYmUuY29tL3hhcC8xLjAvIiB4bWxuczp4bXBNTT0iaHR0cDovL25zLmFkb2JlLmNvbS94YXAvMS4wL21tLyIgeG1sbnM6c3RSZWY9Imh0dHA6Ly9ucy5hZG9iZS5jb20veGFwLzEuMC9zVHlwZS9SZXNvdXJjZVJlZiMiIHhtcDpDcmVhdG9yVG9vbD0iQWRvYmUgUGhvdG9zaG9wIENDIDIwMTcgKE1hY2ludG9zaCkiIHhtcE1NOkluc3RhbmNlSUQ9InhtcC5paWQ6RTU4MjBDRURERjVCMTFFNzkzRDk4RDg2NjU1ODJBQUEiIHhtcE1NOkRvY3VtZW50SUQ9InhtcC5kaWQ6RTU4MjBDRUVERjVCMTFFNzkzRDk4RDg2NjU1ODJBQUEiPiA8eG1wTU06RGVyaXZlZEZyb20gc3RSZWY6aW5zdGFuY2VJRD0ieG1wLmlpZDo0RjI0M0ZEQURGNTBCMUU3OTNEOThEODY2NTU4MkFBQSIgc3RSZWY6ZG9jdW1lbnRJRD0ieG1wLmRpZDpFNTgyMENFQ0RGNUIxMUU3OTNEOThEODY2NTU4MkFBQSIvPiA8L3JkZjpEZXNjcmlwdGlvbj4gPC9yZGY6UkRGPiA8L3g6eG1wbWV0YT4gPD94cGFja2V0IGVuZD0iciI/PuFgpJQAAADRSURBVHjaYvq/qI4JFHQD8VsgfgHEL4H4DRC3A7E5EHMCMQsQAw3ixaG5C4hZGUgA2DQPxLDx8WkehmHuJsVgIJuD8Bt8cQE6vBiLmg9APJcYg4ECK5EQjXQ2E0wjIxqfkYBmGN8FxlkmAaEgQMAgZkIsFSJgEFwzC57wDCTCsA9A/B6In+ELTB4owU+MQSAD0/AlM5DthPgXlzqQZp88BnGgCgA/+YFmwNNSIhNSHBC/gtJY00c6EBdC8VsgtiFGMxOUj83VzKMlAxBgAF7YHACgJb0VAAAAAElFTkSuQmCC');
     image-rendering: pixelated;
   }
 }
 
 @layer components {
-  /* Pixel art styling */
-  .pixel-art {
-    image-rendering: pixelated;
-    image-rendering: -moz-crisp-edges;
-    image-rendering: crisp-edges;
-  }
-  
-  /* Minecraft-style blocks */
+  /* Minecraft blocks */
   .block {
-    @apply border-2 border-gray-900 relative pixel-art;
+    @apply border-2 border-gray-900 relative;
+    image-rendering: pixelated;
   }
   
   .dirt-block {
@@ -99,32 +128,38 @@
     @apply absolute top-0 left-0 right-0 h-1/4 bg-green-400;
   }
   
-  /* Game UI Components */
-  .game-card {
-    @apply bg-game-card border-2 border-game-border p-4 shadow-md relative;
+  /* Minecraft UI Components */
+  .minecraft-card {
+    @apply bg-gray-800/90 border-2 border-gray-900 p-4 shadow-md relative;
     box-shadow:
       inset -3px -3px 0 0 rgba(0, 0, 0, 0.3),
       inset 3px 3px 0 0 rgba(255, 255, 255, 0.1);
   }
   
-  .game-header {
-    @apply font-minecraft text-xl uppercase text-game-accent mb-4;
+  .minecraft-header {
+    @apply font-minecraft text-xl uppercase text-orange-400 mb-4;
     text-shadow: 2px 2px 0 #000;
   }
   
-  .game-text {
+  .minecraft-text {
     @apply font-minecraft text-sm;
   }
   
-  .game-input {
-    @apply bg-game-secondary border-2 border-gray-900 text-white px-3 py-2;
+  .pixel-art {
+    image-rendering: pixelated;
+    image-rendering: -moz-crisp-edges;
+    image-rendering: crisp-edges;
+  }
+  
+  .minecraft-input {
+    @apply bg-gray-700 border-2 border-gray-900 text-white px-3 py-2;
     box-shadow:
       inset -2px -2px 0 0 rgba(0, 0, 0, 0.3),
       inset 2px 2px 0 0 rgba(255, 255, 255, 0.1);
   }
   
-  .game-select {
-    @apply bg-game-secondary border-2 border-gray-900 text-white px-3 py-2 appearance-none pr-8;
+  .minecraft-select {
+    @apply bg-gray-700 border-2 border-gray-900 text-white px-3 py-2 appearance-none pr-8;
     box-shadow:
       inset -2px -2px 0 0 rgba(0, 0, 0, 0.3),
       inset 2px 2px 0 0 rgba(255, 255, 255, 0.1);
@@ -134,9 +169,17 @@
     background-size: 8px;
   }
   
-  /* Game Panel Styling */
+  /* Futuristic Panel Styling Modified for Minecraft */
   .game-panel {
-    @apply bg-game-card backdrop-blur-sm border-2 border-game-border p-4 shadow-md relative;
+    @apply bg-gray-800/90 backdrop-blur-sm border-2 border-gray-900 p-4 shadow-md relative;
+    box-shadow:
+      inset -3px -3px 0 0 rgba(0, 0, 0, 0.3),
+      inset 3px 3px 0 0 rgba(255, 255, 255, 0.1);
+  }
+  
+  /* Modern UI Components Pixelated */
+  .pixel-card {
+    @apply bg-gray-800/90 backdrop-blur-sm border-2 border-gray-900 p-4 relative;
     box-shadow:
       inset -3px -3px 0 0 rgba(0, 0, 0, 0.3),
       inset 3px 3px 0 0 rgba(255, 255, 255, 0.1);
@@ -148,29 +191,7 @@
   }
   
   .xp-fill {
-    @apply h-full bg-game-green transition-all duration-500;
-  }
-  
-  /* Game Button style */
-  .game-btn {
-    @apply px-3 py-1 bg-game-primary text-white rounded-none border-b-2 border-r-2 border-gray-900 hover:bg-game-primary/80 transition-colors font-minecraft text-xs uppercase shadow-md hover:shadow-lg hover:translate-y-[-2px] active:translate-y-[1px] active:shadow-none;
-    text-shadow: 1px 1px 0 rgba(0, 0, 0, 0.5);
-  }
-  
-  .game-btn-secondary {
-    @apply bg-game-secondary border-gray-900 hover:bg-game-secondary/80;
-  }
-  
-  .game-btn-accent {
-    @apply bg-game-accent border-amber-800 hover:bg-game-accent/80;
-  }
-  
-  .game-btn-teal {
-    @apply bg-game-teal border-teal-800 hover:bg-game-teal/80;
-  }
-  
-  .game-btn-green {
-    @apply bg-game-green border-green-800 hover:bg-game-green/80;
+    @apply h-full bg-green-500 transition-all duration-500;
   }
 }
 
@@ -181,29 +202,29 @@
 }
 
 ::-webkit-scrollbar-track {
-  @apply bg-game-secondary;
+  @apply bg-gray-800;
   image-rendering: pixelated;
   background-image: url('data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAAIAAAACCAYAAABytg0kAAAAEklEQVQImWNgYGD4z8DAwMAAAAYEAQCs+27xAAAAAElFTkSuQmCC');
 }
 
 ::-webkit-scrollbar-thumb {
-  @apply bg-game-primary border-2 border-game-primary/70;
+  @apply bg-orange-500 border-2 border-orange-700;
 }
 
 ::-webkit-scrollbar-thumb:hover {
-  @apply bg-game-primary/80;
+  @apply bg-orange-400;
 }
 
 /* Tooltip styles */
-.game-tooltip {
-  @apply absolute invisible opacity-0 bg-game-card/90 border-2 border-game-border py-1 px-2 text-xs font-minecraft text-white transition-all duration-300 z-50;
+.minecraft-tooltip {
+  @apply absolute invisible opacity-0 bg-gray-800/90 border-2 border-gray-900 py-1 px-2 text-xs font-minecraft text-white transition-all duration-300 z-50;
   box-shadow:
     inset -2px -2px 0 0 rgba(0, 0, 0, 0.3),
     inset 2px 2px 0 0 rgba(255, 255, 255, 0.1);
   transform: translateY(10px);
 }
 
-.tooltip-trigger:hover .game-tooltip {
+.tooltip-trigger:hover .minecraft-tooltip {
   @apply visible opacity-100;
   transform: translateY(0);
 }
@@ -214,7 +235,7 @@
 }
 
 .loading-dots div {
-  @apply w-2 h-2 bg-game-primary border border-game-primary/70 animate-pulse;
+  @apply w-2 h-2 bg-orange-500 border border-orange-700 animate-pulse;
 }
 
 .loading-dots div:nth-child(2) {
@@ -223,201 +244,4 @@
 
 .loading-dots div:nth-child(3) {
   animation-delay: 0.4s;
-}
-
-/* Text shadow for pixel art style */
-.text-shadow-pixel {
-  text-shadow: 2px 2px 0 rgba(0, 0, 0, 0.5);
-}
-
-/* Font for pixel game style */
-.font-minecraft {
-  font-family: 'Press Start 2P', 'VT323', monospace;
-  letter-spacing: 0.05em;
-}
-
-/* Animations */
-@keyframes bounce {
-  0%, 100% { transform: translateY(0); }
-  50% { transform: translateY(-10px); }
-}
-
-.animate-bounce-slow {
-  animation: bounce 2s infinite;
-}
-
-@keyframes pulse-glow {
-  0%, 100% { box-shadow: 0 0 5px rgba(255, 60, 128, 0.5); }
-  50% { box-shadow: 0 0 20px rgba(255, 60, 128, 0.8); }
-}
-
-.animate-pulse-glow {
-  animation: pulse-glow 2s infinite;
-}
-
-@keyframes shimmer {
-  0% { opacity: 0.7; }
-  50% { opacity: 1; }
-  100% { opacity: 0.7; }
-}
-
-.animate-shimmer {
-  animation: shimmer 2s infinite;
-}
-
-@keyframes blur-in {
-  0% { filter: blur(10px); opacity: 0; }
-  100% { filter: blur(0); opacity: 1; }
-}
-
-.animate-blur-in {
-  animation: blur-in 0.5s ease-out forwards;
-}
-
-@keyframes slide-down {
-  0% { transform: translateY(-20px); opacity: 0; }
-  100% { transform: translateY(0); opacity: 1; }
-}
-
-.animate-slide-down {
-  animation: slide-down 0.5s ease-out forwards;
-}
-
-@keyframes spin-coin {
-  0% { transform: rotateY(0deg); }
-  100% { transform: rotateY(360deg); }
-}
-
-.animate-spin-coin {
-  animation: spin-coin 1s linear infinite;
-}
-
-@keyframes pixel-flame {
-  0%, 100% { transform: scale(1) translateY(0); opacity: 0.9; }
-  50% { transform: scale(1.1) translateY(-2px); opacity: 1; }
-}
-
-.animate-flame {
-  animation: pixel-flame 0.8s ease-in-out infinite;
-  transform-origin: center bottom;
-}
-
-@keyframes pixel-sparkle {
-  0%, 100% { opacity: 0.2; transform: scale(0.8); }
-  50% { opacity: 1; transform: scale(1.2); }
-}
-
-.animate-sparkle {
-  animation: pixel-sparkle 1.5s ease-in-out infinite;
-}
-
-/* Hover effect for cards */
-.hover-scale {
-  transition: transform 0.2s ease-out, box-shadow 0.2s ease-out;
-}
-
-.hover-scale:hover {
-  transform: translateY(-5px);
-  box-shadow: 0 10px 15px -3px rgba(0, 0, 0, 0.2), 0 4px 6px -2px rgba(0, 0, 0, 0.1);
-}
-
-/* Game-style avatar */
-.game-avatar {
-  @apply relative flex items-center justify-center rounded-none border-2 border-game-border overflow-hidden;
-  box-shadow:
-    inset -2px -2px 0 0 rgba(0, 0, 0, 0.3),
-    inset 2px 2px 0 0 rgba(255, 255, 255, 0.1);
-}
-
-/* XP Progress bar with glow */
-.xp-progress {
-  @apply relative h-5 w-full bg-gray-800 border-2 border-gray-900 overflow-hidden;
-}
-
-.xp-progress-fill {
-  @apply absolute top-0 left-0 h-full bg-game-green transition-all duration-500;
-  box-shadow: 0 0 10px rgba(163, 255, 18, 0.7);
-}
-
-/* Coin icon */
-.coin-icon {
-  @apply inline-block h-5 w-5 bg-game-accent rounded-full border border-amber-800 text-center font-bold text-amber-900 leading-tight;
-  text-shadow: 0 1px 0 rgba(255, 255, 255, 0.5);
-}
-
-/* Pixelated Fire Animation */
-.fire-icon {
-  @apply inline-flex justify-center items-center;
-  color: #FF3C00;
-  position: relative;
-}
-
-.fire-icon::before {
-  content: '🔥';
-  @apply animate-flame;
-}
-
-/* Trophy icon */
-.trophy-icon {
-  @apply inline-block text-game-accent;
-  text-shadow: 0 0 5px rgba(255, 184, 0, 0.7);
-}
-
-/* Level badge */
-.level-badge {
-  @apply inline-flex items-center justify-center bg-game-secondary px-2 py-1 text-xs font-minecraft text-white border-2 border-gray-900;
-}
-
-/* Rank colors */
-.rank-bronze {
-  @apply text-amber-600;
-  text-shadow: 0 0 5px rgba(180, 83, 9, 0.7);
-}
-
-.rank-silver {
-  @apply text-gray-400;
-  text-shadow: 0 0 5px rgba(156, 163, 175, 0.7);
-}
-
-.rank-gold {
-  @apply text-game-accent;
-  text-shadow: 0 0 5px rgba(255, 184, 0, 0.7);
-}
-
-.rank-diamond {
-  @apply text-game-teal;
-  text-shadow: 0 0 5px rgba(0, 255, 213, 0.7);
-}
-
-/* Sparkle effect */
-.sparkle {
-  @apply absolute w-1 h-1 bg-white rounded-full animate-sparkle;
-}
-
-/* Inventory slot */
-.inventory-slot {
-  @apply w-16 h-16 bg-game-secondary border-2 border-gray-900 flex items-center justify-center relative pixel-art;
-  box-shadow:
-    inset -2px -2px 0 0 rgba(0, 0, 0, 0.3),
-    inset 2px 2px 0 0 rgba(255, 255, 255, 0.1);
-}
-
-/* Podium steps */
-.podium-step {
-  @apply relative border-2 border-game-border bg-game-secondary;
-  box-shadow:
-    inset -2px -2px 0 0 rgba(0, 0, 0, 0.3),
-    inset 2px 2px 0 0 rgba(255, 255, 255, 0.1);
-}
-
-.podium-first {
-  @apply h-24;
-}
-
-.podium-second {
-  @apply h-20;
-}
-
-.podium-third {
-  @apply h-16;
 }

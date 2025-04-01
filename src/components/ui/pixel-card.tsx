@@ -5,38 +5,24 @@ import { cn } from "@/lib/utils"
 
 const PixelCard = React.forwardRef<
   HTMLDivElement,
-  React.HTMLAttributes<HTMLDivElement> & { 
-    variant?: 'default' | 'primary' | 'secondary' | 'gold' | 'teal' | 'green',
-    glow?: boolean
-  }
->(({ className, variant = 'default', glow = false, ...props }, ref) => {
+  React.HTMLAttributes<HTMLDivElement> & { variant?: 'dirt' | 'stone' | 'wood' | 'obsidian' | 'default' }
+>(({ className, variant = 'default', ...props }, ref) => {
   const variantClasses = {
-    default: "bg-game-card border-game-border",
-    primary: "bg-game-card border-game-primary",
-    secondary: "bg-game-card border-game-secondary",
-    gold: "bg-game-card border-game-accent",
-    teal: "bg-game-card border-game-teal",
-    green: "bg-game-card border-game-green"
+    dirt: "bg-amber-800 border-amber-900",
+    stone: "bg-gray-600 border-gray-800",
+    wood: "bg-amber-600 border-amber-800",
+    obsidian: "bg-purple-900 border-purple-950",
+    default: "bg-gray-800/90 border-gray-900"
   }
 
   return (
     <div
       ref={ref}
       className={cn(
-        "rounded-none border-2 text-white shadow-md relative",
+        "rounded-none border-2 text-white shadow-md",
         variantClasses[variant],
-        glow && "animate-pulse-glow",
         className
       )}
-      style={{
-        boxShadow: glow ? 
-          variant === 'primary' ? "0 0 10px rgba(255, 60, 128, 0.5)" :
-          variant === 'secondary' ? "0 0 10px rgba(51, 46, 89, 0.5)" :
-          variant === 'gold' ? "0 0 10px rgba(255, 184, 0, 0.5)" :
-          variant === 'teal' ? "0 0 10px rgba(0, 255, 213, 0.5)" :
-          variant === 'green' ? "0 0 10px rgba(163, 255, 18, 0.5)" :
-          "0 0 10px rgba(51, 46, 89, 0.5)" : "",
-      }}
       {...props}
     />
   )
@@ -62,7 +48,7 @@ const PixelCardTitle = React.forwardRef<
   <h3
     ref={ref}
     className={cn(
-      "text-xl font-minecraft leading-none tracking-wider text-game-accent uppercase",
+      "text-xl font-minecraft leading-none tracking-wider text-orange-400 uppercase",
       className
     )}
     {...props}

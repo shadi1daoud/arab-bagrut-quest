@@ -6,10 +6,10 @@ import { cn } from "@/lib/utils"
 interface PixelProgressProps extends React.HTMLAttributes<HTMLDivElement> {
   value?: number
   max?: number
-  color?: "default" | "success" | "warning" | "danger" | "info" | "green" | "pink" | "gold" | "teal"
+  color?: "default" | "success" | "warning" | "danger" | "info" | "green" | "blue" | "brown"
   showValue?: boolean
   height?: "sm" | "md" | "lg"
-  variant?: "default" | "minecraft" | "gradient" | "glow"
+  variant?: "default" | "minecraft" | "gradient"
 }
 
 const PixelProgress = React.forwardRef<HTMLDivElement, PixelProgressProps>(
@@ -32,30 +32,14 @@ const PixelProgress = React.forwardRef<HTMLDivElement, PixelProgressProps>(
     }
     
     const colorClass = {
-      default: "bg-game-primary",
-      success: "bg-game-green",
-      warning: "bg-game-accent",
+      default: "bg-orange-500",
+      success: "bg-green-500",
+      warning: "bg-yellow-500",
       danger: "bg-red-500",
-      info: "bg-game-teal",
-      green: "bg-game-green",
-      pink: "bg-game-primary",
-      gold: "bg-game-accent",
-      teal: "bg-game-teal",
-    }
-
-    const variantClass = {
-      default: "",
-      minecraft: "bg-opacity-80 bg-[url('data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAAIAAAACCAYAAABytg0kAAAAEklEQVQImWNgYGD4z8DAwMAAAAYEAQCs+27xAAAAAElFTkSuQmCC')]",
-      gradient: color === "default" ? "bg-gradient-to-r from-game-primary via-game-primary to-pink-500" :
-                color === "success" ? "bg-gradient-to-r from-green-400 via-game-green to-green-500" :
-                color === "warning" ? "bg-gradient-to-r from-yellow-400 via-game-accent to-yellow-500" :
-                color === "danger" ? "bg-gradient-to-r from-red-400 via-red-500 to-red-600" :
-                color === "info" ? "bg-gradient-to-r from-cyan-400 via-game-teal to-cyan-500" :
-                color === "green" ? "bg-gradient-to-r from-green-400 via-game-green to-green-500" :
-                color === "pink" ? "bg-gradient-to-r from-pink-400 via-game-primary to-pink-500" :
-                color === "gold" ? "bg-gradient-to-r from-yellow-400 via-game-accent to-yellow-500" :
-                "bg-gradient-to-r from-cyan-400 via-game-teal to-cyan-500",
-      glow: "",
+      info: "bg-blue-500",
+      green: "bg-green-500",
+      blue: "bg-blue-500",
+      brown: "bg-amber-700",
     }
     
     return (
@@ -72,21 +56,12 @@ const PixelProgress = React.forwardRef<HTMLDivElement, PixelProgressProps>(
           className={cn(
             "h-full transition-all",
             colorClass[color],
-            variantClass[variant]
+            variant === "minecraft" && "bg-opacity-80 bg-[url('data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAAIAAAACCAYAAABytg0kAAAAEklEQVQImWNgYGD4z8DAwMAAAAYEAQCs+27xAAAAAElFTkSuQmCC')]",
+            variant === "gradient" && "bg-gradient-to-r from-orange-400 via-orange-500 to-orange-600"
           )}
           style={{ 
             width: `${percentage}%`,
-            imageRendering: "pixelated",
-            boxShadow: variant === "glow" ? 
-              color === "default" ? "0 0 10px rgba(255, 60, 128, 0.7)" :
-              color === "success" ? "0 0 10px rgba(163, 255, 18, 0.7)" :
-              color === "warning" ? "0 0 10px rgba(255, 184, 0, 0.7)" :
-              color === "danger" ? "0 0 10px rgba(255, 51, 102, 0.7)" :
-              color === "info" ? "0 0 10px rgba(0, 255, 213, 0.7)" :
-              color === "green" ? "0 0 10px rgba(163, 255, 18, 0.7)" :
-              color === "pink" ? "0 0 10px rgba(255, 60, 128, 0.7)" :
-              color === "gold" ? "0 0 10px rgba(255, 184, 0, 0.7)" :
-              "0 0 10px rgba(0, 255, 213, 0.7)" : "none"
+            imageRendering: "pixelated"
           }}
         >
           {variant === "minecraft" && (
