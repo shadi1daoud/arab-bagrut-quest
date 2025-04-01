@@ -63,7 +63,7 @@ export default {
 					border: 'hsl(var(--sidebar-border))',
 					ring: 'hsl(var(--sidebar-ring))'
 				},
-				// Game theme colors - updated to match the image
+				// Game theme colors - updated for arcade/minecraft style
 				game: {
 					primary: '#FF5500',
 					secondary: '#FF7733',
@@ -125,6 +125,32 @@ export default {
 				'float': {
 					'0%, 100%': { transform: 'translateY(0)' },
 					'50%': { transform: 'translateY(-10px)' }
+				},
+				'pixel-pulse': {
+					'0%, 100%': { 
+						transform: 'scale(1)',
+						opacity: '1'
+					},
+					'50%': { 
+						transform: 'scale(1.05)',
+						opacity: '0.9'
+					}
+				},
+				'pixel-bounce': {
+					'0%, 100%': { 
+						transform: 'translateY(0)'
+					},
+					'50%': { 
+						transform: 'translateY(-4px)'
+					}
+				},
+				'scanline': {
+					'0%': { 
+						transform: 'translateY(0%)'
+					},
+					'100%': { 
+						transform: 'translateY(100%)'
+					}
 				}
 			},
 			animation: {
@@ -134,7 +160,10 @@ export default {
 				'flash': 'flash 2s infinite ease-in-out',
 				'xp-fill': 'xp-fill 1s ease-out forwards',
 				'scale-in': 'scale-in 0.3s ease-out',
-				'float': 'float 3s infinite ease-in-out'
+				'float': 'float 3s infinite ease-in-out',
+				'pixel-pulse': 'pixel-pulse 2s infinite steps(4)',
+				'pixel-bounce': 'pixel-bounce 1s infinite steps(8)',
+				'scanline': 'scanline 8s linear infinite'
 			}
 		}
 	},

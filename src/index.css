@@ -1,5 +1,5 @@
 
-@import url('https://fonts.googleapis.com/css2?family=Noto+Sans+Arabic:wght@400;500;600;700;800&display=swap');
+@import url('https://fonts.googleapis.com/css2?family=Press+Start+2P&family=VT323&family=Noto+Sans+Arabic:wght@400;500;600;700;800&display=swap');
 
 @tailwind base;
 @tailwind components;
@@ -44,22 +44,42 @@
 
   html {
     direction: rtl;
-    font-family: 'Noto Sans Arabic', sans-serif;
+    font-family: 'Noto Sans Arabic', 'VT323', 'Press Start 2P', sans-serif;
   }
 
   body {
     @apply bg-black text-white;
+    background-image: url('data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAADIAAAAyCAYAAAAeP4ixAAAACXBIWXMAAAsTAAALEwEAmpwYAAAAIGNIUk0AAHolAACAgwAA+f8AAIDpAAB1MAAA6mAAADqYAAAXb5JfxUYAAAGuSURBVHja7Nk9UsMwEAXgZ8dJQQouYHEDOAKdcwJOwBk4Qo7AEegyBTfgCJRJw8wWI3kkr2NbMdJIv2Njkk/r1a4UZoYm1lJrpa5Yl1oLrYo1t5ZYM2uONbWmWNFKvHVFMIa1wBpZ86zIGmMNHGC8V2dXLAOrb/UqKLL6DqxeVyyi6KvAlXI7VicHrq72t/6LoKwcuDo6qmsw0nLg9LSLtxSrnQNXS/twLcbKgauRV3llGCsHrkbV3EqMlQNXrV3ZUow5cWfVLKDKxlrKgauWqV+JkXLgqrk5KMNIOXDVusMpw0g5cNW8Uy3DaDlw1bo7L8NIOXBVnUAUYaQcuKpOkYowWg68ZNe5DqPlwEt2GyoxUg68ZPe5EiPlwEt2BysxUg68JMdKhNFy4CU5viKMlAMvydE5YbQceMkx3GGiB54bRjvwXDHSgeeO0Q48F4x24LlhtAPPBaMdeG4Y7cBzwWgHnhtGO/BcMNqB54bRDjwXjHbguWG0A88Fox14bhjtwHPBaAc+WF1dZLvgZvUxcOqwvP6hzk/qjI7aYPUlntdMYhmApgYYzwIf9+bGN21XXwMAn1KHaGj34S0AAAAASUVORK5CYII=');
+    background-repeat: repeat;
   }
 }
 
 @layer components {
+  /* Minecraft/Arcade style components */
+  .pixel-corners {
+    clip-path: polygon(
+      0% 4px, 4px 4px, 4px 0%, calc(100% - 4px) 0%, calc(100% - 4px) 4px, 100% 4px,
+      100% calc(100% - 4px), calc(100% - 4px) calc(100% - 4px), calc(100% - 4px) 100%, 4px 100%, 4px calc(100% - 4px), 0% calc(100% - 4px)
+    );
+  }
+  
+  .pixel-text {
+    @apply font-['VT323'] tracking-wider;
+  }
+  
+  .pixel-text-bold {
+    @apply font-['Press_Start_2P'] text-xs leading-relaxed tracking-wide;
+  }
+  
   .game-card {
-    @apply bg-black border border-gray-800 rounded-lg p-4 shadow-lg relative overflow-hidden;
+    @apply bg-black/80 border-2 border-gray-800 rounded-lg p-4 shadow-lg relative overflow-hidden pixel-corners;
+    image-rendering: pixelated;
   }
   
   .game-card::before {
     content: '';
-    @apply absolute inset-0 border border-orange-500 opacity-0 rounded-lg transition-opacity duration-300;
+    @apply absolute inset-0 border-2 border-orange-500 opacity-0 transition-opacity duration-300;
+    clip-path: inherit;
   }
   
   .game-card:hover::before {
@@ -67,7 +87,7 @@
   }
   
   .game-btn {
-    @apply bg-orange-500 text-white py-2 px-4 rounded-md font-semibold relative overflow-hidden transition-all hover:brightness-110 active:brightness-90 focus:outline-none focus:ring-2 focus:ring-orange-400 focus:ring-opacity-50;
+    @apply bg-orange-500 text-white py-2 px-4 rounded-md font-semibold relative overflow-hidden transition-all hover:brightness-110 active:brightness-90 focus:outline-none focus:ring-2 focus:ring-orange-400 focus:ring-opacity-50 pixel-corners;
   }
 
   .game-btn::after {
@@ -84,24 +104,26 @@
   }
   
   .game-title {
-    @apply font-bold text-2xl text-orange-500 mb-4;
-    text-shadow: 0 0 10px rgba(255, 85, 0, 0.5);
+    @apply font-bold text-2xl text-orange-500 mb-4 pixel-text;
+    text-shadow: 2px 2px 0px rgba(0, 0, 0, 0.7);
   }
   
   .game-subtitle {
-    @apply font-semibold text-xl text-white mb-3;
+    @apply font-semibold text-xl text-white mb-3 pixel-text;
+    text-shadow: 1px 1px 0px rgba(0, 0, 0, 0.7);
   }
   
   .game-progress-bar {
-    @apply h-2 bg-gray-800 rounded-full overflow-hidden relative;
+    @apply h-2 bg-gray-800 rounded-none border border-gray-700 overflow-hidden relative;
   }
 
   .game-progress-fill {
-    @apply h-full bg-orange-500 rounded-full animate-xp-fill;
+    @apply h-full bg-orange-500 rounded-none animate-xp-fill;
+    box-shadow: 0 0 4px rgba(255, 85, 0, 0.8);
   }
   
   .arcade-meter {
-    @apply relative w-full h-6 bg-gray-800 rounded-full overflow-hidden border border-gray-700;
+    @apply relative w-full h-6 bg-gray-800 rounded-none overflow-hidden border border-gray-700 pixel-corners;
   }
 
   .glow-text {
@@ -113,6 +135,70 @@
   }
 
   .game-panel {
-    @apply bg-black border border-gray-800 rounded-lg p-5 shadow-lg;
+    @apply bg-black/80 border-2 border-gray-800 rounded-none p-5 shadow-lg pixel-corners;
+  }
+  
+  /* Pixelated UI elements */
+  .pixelated-panel {
+    @apply bg-black/90 border-2 border-gray-700 p-4 pixel-corners;
+    box-shadow: inset 0 0 10px rgba(0, 0, 0, 0.5);
+  }
+  
+  .pixel-icon {
+    @apply inline-block;
+    image-rendering: pixelated;
+  }
+  
+  .minecraft-progress {
+    @apply h-4 w-full rounded-none bg-gray-900 border border-gray-700 overflow-hidden;
+  }
+  
+  .minecraft-progress-fill {
+    @apply h-full bg-orange-500;
+    background-image: linear-gradient(
+      45deg, 
+      rgba(255, 255, 255, 0.15) 25%, 
+      transparent 25%, 
+      transparent 50%, 
+      rgba(255, 255, 255, 0.15) 50%, 
+      rgba(255, 255, 255, 0.15) 75%, 
+      transparent 75%, 
+      transparent
+    );
+    background-size: 8px 8px;
+  }
+  
+  .pixel-badge {
+    @apply inline-flex items-center justify-center bg-black/50 border border-gray-700 text-white px-2 py-1 text-sm pixel-text;
+    image-rendering: pixelated;
+  }
+  
+  .xp-counter {
+    @apply text-orange-400 font-bold pixel-text text-lg;
+    text-shadow: 0 0 5px rgba(255, 85, 0, 0.5);
+  }
+  
+  .streak-counter {
+    @apply flex items-center gap-1 text-orange-400 font-bold pixel-text;
+  }
+  
+  .pixel-header {
+    @apply text-xl font-bold mb-4 text-orange-400 pixel-text;
+    text-shadow: 2px 2px 0px rgba(0, 0, 0, 0.7);
+  }
+}
+
+@layer utilities {
+  .text-shadow-pixel {
+    text-shadow: 2px 2px 0 rgba(0, 0, 0, 0.7);
+  }
+  
+  .pixel-animated {
+    transition: all 0.2s steps(5);
+  }
+  
+  .pixel-border {
+    @apply border-2 border-gray-700;
+    box-shadow: inset 0 0 0 2px rgba(0, 0, 0, 0.5);
   }
 }
