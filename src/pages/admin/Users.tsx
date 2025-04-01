@@ -172,31 +172,39 @@ const AdminUsers = () => {
     }
   };
 
+  const renderPixelAvatar = (avatar: string) => {
+    return (
+      <div className="h-10 w-10 pixel-avatar flex items-center justify-center text-xl">
+        {avatar}
+      </div>
+    );
+  };
+
   return (
     <div className="space-y-6">
       <div className="flex flex-col md:flex-row justify-between items-start md:items-center gap-4">
         <div>
-          <h1 className="text-2xl font-bold text-white">إدارة المستخدمين</h1>
-          <p className="text-gray-400 mt-1">عرض وإدارة طلاب المنصة</p>
+          <h1 className="pixel-heading text-2xl text-primary mb-2">إدارة المستخدمين</h1>
+          <p className="pixel-text text-gray-400 mt-1">عرض وإدارة طلاب المنصة</p>
         </div>
         
-        <div className="flex items-center gap-2">
-          <span className="text-gray-400 text-sm">
+        <div className="flex items-center gap-2 pixel-text">
+          <span className="text-accent text-sm">
             إجمالي الطلاب: {users.length}
           </span>
         </div>
       </div>
       
       {/* Filters */}
-      <div className="bg-gray-800 rounded-lg p-4 border border-gray-700">
+      <div className="game-panel">
         <div className="flex flex-col sm:flex-row gap-4">
           <div className="relative flex-1">
             <div className="absolute inset-y-0 right-0 flex items-center pr-3 pointer-events-none">
-              <Search className="h-4 w-4 text-gray-400" />
+              <Search className="h-4 w-4 text-primary" />
             </div>
             <input
               type="text"
-              className="py-2 px-4 pr-10 bg-gray-700 border border-gray-600 rounded-md text-white w-full focus:outline-none focus:ring-1 focus:ring-blue-500"
+              className="py-2 px-4 pr-10 bg-muted border-2 border-primary/30 text-white w-full focus:outline-none focus:ring-1 focus:border-primary/70 focus:ring-primary/30 pixel-text"
               placeholder="ابحث عن طالب..."
               value={searchTerm}
               onChange={(e) => setSearchTerm(e.target.value)}
@@ -207,7 +215,7 @@ const AdminUsers = () => {
             <select
               value={filterGrade}
               onChange={(e) => setFilterGrade(e.target.value)}
-              className="py-2 px-3 bg-gray-700 border border-gray-600 rounded-md text-white focus:outline-none focus:ring-1 focus:ring-blue-500"
+              className="py-2 px-3 bg-muted border-2 border-primary/30 text-white focus:outline-none focus:ring-1 focus:border-primary/70 focus:ring-primary/30 pixel-text"
             >
               <option value="all">جميع الصفوف</option>
               {grades.map((grade) => (
@@ -218,7 +226,7 @@ const AdminUsers = () => {
             <select
               value={filterStatus}
               onChange={(e) => setFilterStatus(e.target.value)}
-              className="py-2 px-3 bg-gray-700 border border-gray-600 rounded-md text-white focus:outline-none focus:ring-1 focus:ring-blue-500"
+              className="py-2 px-3 bg-muted border-2 border-primary/30 text-white focus:outline-none focus:ring-1 focus:border-primary/70 focus:ring-primary/30 pixel-text"
             >
               <option value="all">جميع الحالات</option>
               <option value="active">نشط</option>
@@ -229,70 +237,80 @@ const AdminUsers = () => {
       </div>
       
       {/* Users Table */}
-      <div className="bg-gray-800 rounded-lg border border-gray-700 overflow-hidden">
+      <div className="game-panel overflow-hidden">
         <div className="overflow-x-auto">
-          <table className="w-full table-auto">
+          <table className="w-full table-auto pixel-table">
             <thead>
-              <tr className="bg-gray-900 text-right">
-                <th className="px-4 py-3 text-sm font-medium text-gray-400">الطالب</th>
-                <th className="px-4 py-3 text-sm font-medium text-gray-400">المستوى</th>
-                <th className="px-4 py-3 text-sm font-medium text-gray-400">الصف / المدينة</th>
-                <th className="px-4 py-3 text-sm font-medium text-gray-400">الكورسات</th>
-                <th className="px-4 py-3 text-sm font-medium text-gray-400">آخر نشاط</th>
-                <th className="px-4 py-3 text-sm font-medium text-gray-400">الحالة</th>
-                <th className="px-4 py-3 text-sm font-medium text-gray-400">الإجراءات</th>
+              <tr className="text-right">
+                <th className="pixel-heading">الطالب</th>
+                <th className="pixel-heading">المستوى</th>
+                <th className="pixel-heading">الصف / المدينة</th>
+                <th className="pixel-heading">الكورسات</th>
+                <th className="pixel-heading">آخر نشاط</th>
+                <th className="pixel-heading">الحالة</th>
+                <th className="pixel-heading">الإجراءات</th>
               </tr>
             </thead>
             <tbody>
               {filteredUsers.map((user) => (
-                <tr key={user.id} className="border-t border-gray-700 hover:bg-gray-700/50 transition-colors">
+                <tr key={user.id} className="hover:bg-muted/50 transition-colors">
                   <td className="px-4 py-3">
                     <div className="flex items-center gap-3">
-                      <div className="h-10 w-10 rounded-full bg-gray-700 flex items-center justify-center text-xl border border-gray-600">
-                        {user.avatar}
-                      </div>
+                      {renderPixelAvatar(user.avatar)}
                       <div>
-                        <div className="font-medium text-white">{user.name}</div>
-                        <div className="text-xs text-gray-400">{user.email}</div>
+                        <div className="font-medium text-white pixel-text">{user.name}</div>
+                        <div className="text-xs text-gray-400 pixel-text">{user.email}</div>
                       </div>
                     </div>
                   </td>
                   <td className="px-4 py-3">
                     <div className="flex flex-col items-start">
                       <div className="flex items-center gap-1">
-                        <Award className="h-4 w-4 text-yellow-500" />
-                        <span className="text-white">المستوى {user.level}</span>
+                        <div className="text-accent animate-pulse-pixel">★</div>
+                        <span className="text-white pixel-text">المستوى {user.level}</span>
                       </div>
-                      <div className="text-xs text-gray-400 mt-1">
+                      <div className="text-xs text-gray-400 mt-1 pixel-text">
                         {user.xp.toLocaleString()} XP
+                        <div className="w-16 h-1 mt-1 bg-muted overflow-hidden">
+                          <div 
+                            className="h-full bg-accent animate-shine-pixel" 
+                            style={{ width: `${(user.xp % 1000) / 10}%` }}
+                          ></div>
+                        </div>
                       </div>
                     </div>
                   </td>
                   <td className="px-4 py-3">
-                    <div className="text-white">{user.grade}</div>
-                    <div className="text-xs text-gray-400">{user.city}</div>
+                    <div className="text-white pixel-text">{user.grade}</div>
+                    <div className="text-xs text-gray-400 pixel-text">{user.city}</div>
                   </td>
                   <td className="px-4 py-3">
                     <div className="flex items-center gap-1">
-                      <span className="text-white">{user.coursesEnrolled}</span>
-                      <span className="text-xs text-gray-400">مسجل</span>
+                      <span className="text-white pixel-text">{user.coursesEnrolled}</span>
+                      <span className="text-xs text-gray-400 pixel-text">مسجل</span>
                     </div>
-                    <div className="flex items-center gap-1 text-xs text-gray-400 mt-1">
+                    <div className="flex items-center gap-1 text-xs text-gray-400 mt-1 pixel-text">
                       <span>{user.coursesCompleted}</span>
                       <span>مكتمل</span>
+                      <div className="w-16 h-1 mr-1 bg-muted overflow-hidden">
+                        <div 
+                          className="h-full bg-primary" 
+                          style={{ width: `${(user.coursesCompleted / user.coursesEnrolled) * 100}%` }}
+                        ></div>
+                      </div>
                     </div>
                   </td>
-                  <td className="px-4 py-3 text-sm text-gray-400">
+                  <td className="px-4 py-3 text-sm text-gray-400 pixel-text">
                     {new Date(user.lastActive).toLocaleDateString('ar-EG')}
                   </td>
                   <td className="px-4 py-3">
                     {user.isBlocked ? (
-                      <span className="inline-flex items-center px-2 py-1 rounded text-xs bg-red-900/20 text-red-500">
+                      <span className="inline-flex items-center px-2 py-1 text-xs bg-red-900/20 text-red-500 border border-red-500/50 pixel-text">
                         <AlertTriangle className="h-3 w-3 mr-1" />
                         محظور
                       </span>
                     ) : (
-                      <span className="inline-flex items-center px-2 py-1 rounded text-xs bg-green-900/20 text-green-500">
+                      <span className="inline-flex items-center px-2 py-1 text-xs bg-green-900/20 text-green-500 border border-green-500/50 pixel-text">
                         <CheckCircle className="h-3 w-3 mr-1" />
                         نشط
                       </span>
@@ -302,17 +320,17 @@ const AdminUsers = () => {
                     <div className="flex items-center gap-2 justify-end">
                       <button
                         onClick={() => handleResetPassword(user.id)}
-                        className="p-1.5 bg-blue-600/20 text-blue-500 rounded hover:bg-blue-600/30 transition-colors"
+                        className="p-1.5 bg-primary/20 text-primary rounded-none border border-primary/50 hover:bg-primary/30 transition-colors"
                         title="إعادة تعيين كلمة المرور"
                       >
                         <Lock className="h-4 w-4" />
                       </button>
                       <button
                         onClick={() => handleToggleBlock(user.id, user.isBlocked)}
-                        className={`p-1.5 rounded transition-colors ${
+                        className={`p-1.5 rounded-none border transition-colors ${
                           user.isBlocked 
-                            ? 'bg-green-600/20 text-green-500 hover:bg-green-600/30' 
-                            : 'bg-red-600/20 text-red-500 hover:bg-red-600/30'
+                            ? 'bg-green-600/20 text-green-500 border-green-500/50 hover:bg-green-600/30' 
+                            : 'bg-red-600/20 text-red-500 border-red-500/50 hover:bg-red-600/30'
                         }`}
                         title={user.isBlocked ? 'إلغاء الحظر' : 'حظر المستخدم'}
                       >
@@ -332,7 +350,7 @@ const AdminUsers = () => {
         
         {filteredUsers.length === 0 && (
           <div className="text-center py-12">
-            <p className="text-gray-400">لم يتم العثور على طلاب مطابقين</p>
+            <p className="text-gray-400 pixel-text">لم يتم العثور على طلاب مطابقين</p>
           </div>
         )}
       </div>
@@ -340,22 +358,22 @@ const AdminUsers = () => {
       {/* Reset Password Modal */}
       {isResetModalOpen && (
         <div className="fixed inset-0 bg-black bg-opacity-70 flex items-center justify-center z-50 p-4">
-          <div className="bg-gray-800 rounded-lg max-w-md w-full p-6 animate-scale-in">
-            <h3 className="text-xl font-semibold text-white mb-4">إعادة تعيين كلمة المرور</h3>
-            <p className="text-gray-400 mb-6">
+          <div className="game-panel max-w-md w-full animate-scale-in">
+            <h3 className="pixel-heading text-xl text-primary mb-4">إعادة تعيين كلمة المرور</h3>
+            <p className="pixel-text text-gray-400 mb-6">
               هل أنت متأكد من رغبتك في إعادة تعيين كلمة المرور لهذا المستخدم؟ سيتم إرسال رابط إعادة التعيين إلى بريده الإلكتروني.
             </p>
             
             <div className="flex justify-end items-center gap-4">
               <button
                 onClick={() => setIsResetModalOpen(false)}
-                className="px-4 py-2 bg-gray-700 text-white rounded hover:bg-gray-600 transition-colors"
+                className="px-4 py-2 bg-muted text-white border-2 border-primary/30 hover:bg-muted/80 transition-colors pixel-text"
               >
                 إلغاء
               </button>
               <button
                 onClick={confirmResetPassword}
-                className="px-4 py-2 bg-blue-600 text-white rounded hover:bg-blue-700 transition-colors"
+                className="game-btn"
               >
                 تأكيد
               </button>
@@ -367,11 +385,11 @@ const AdminUsers = () => {
       {/* Block/Unblock Modal */}
       {isBlockModalOpen && (
         <div className="fixed inset-0 bg-black bg-opacity-70 flex items-center justify-center z-50 p-4">
-          <div className="bg-gray-800 rounded-lg max-w-md w-full p-6 animate-scale-in">
-            <h3 className="text-xl font-semibold text-white mb-4">
+          <div className="game-panel max-w-md w-full animate-scale-in">
+            <h3 className="pixel-heading text-xl text-primary mb-4">
               {isBlocking ? 'حظر المستخدم' : 'إلغاء حظر المستخدم'}
             </h3>
-            <p className="text-gray-400 mb-6">
+            <p className="pixel-text text-gray-400 mb-6">
               {isBlocking 
                 ? 'هل أنت متأكد من رغبتك في حظر هذا المستخدم؟ لن يتمكن من الوصول إلى المنصة حتى يتم إلغاء الحظر.'
                 : 'هل أنت متأكد من رغبتك في إلغاء حظر هذا المستخدم؟ سيتمكن من الوصول إلى المنصة مرة أخرى.'
@@ -381,16 +399,16 @@ const AdminUsers = () => {
             <div className="flex justify-end items-center gap-4">
               <button
                 onClick={() => setIsBlockModalOpen(false)}
-                className="px-4 py-2 bg-gray-700 text-white rounded hover:bg-gray-600 transition-colors"
+                className="px-4 py-2 bg-muted text-white border-2 border-primary/30 hover:bg-muted/80 transition-colors pixel-text"
               >
                 إلغاء
               </button>
               <button
                 onClick={confirmToggleBlock}
-                className={`px-4 py-2 text-white rounded ${
+                className={`px-4 py-2 text-white border-2 pixel-text ${
                   isBlocking 
-                    ? 'bg-red-600 hover:bg-red-700' 
-                    : 'bg-green-600 hover:bg-green-700'
+                    ? 'bg-red-600 border-red-500 hover:bg-red-700' 
+                    : 'bg-green-600 border-green-500 hover:bg-green-700'
                 } transition-colors`}
               >
                 تأكيد

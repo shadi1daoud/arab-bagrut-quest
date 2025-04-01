@@ -63,19 +63,19 @@ export default {
 					border: 'hsl(var(--sidebar-border))',
 					ring: 'hsl(var(--sidebar-ring))'
 				},
-				// Game theme colors - updated to match the image
+				// Game theme colors - updated to match the pixel-art arcade aesthetic
 				game: {
-					primary: '#FF5500',
-					secondary: '#FF7733',
-					accent: '#FFCC00',
-					background: '#000000',
-					'card-bg': '#111111',
-					'text-primary': '#FFFFFF',
-					'text-secondary': '#999999',
-					success: '#22CC22',
-					danger: '#FF0000',
-					info: '#00AAFF',
-					warning: '#FFAA00',
+					primary: '#00FFFF', // Neon blue
+					secondary: '#FF88FF', // Neon pink/purple
+					accent: '#FFCC00', // Yellow/gold
+					background: '#0F0F1A', // Deep navy
+					'card-bg': '#191930', // Slightly lighter navy
+					'text-primary': '#FFFFFF', // White
+					'text-secondary': '#AAAAAA', // Gray
+					success: '#22CC22', // Green
+					danger: '#FF0000', // Red
+					info: '#00AAFF', // Blue
+					warning: '#FFAA00', // Orange
 				}
 			},
 			borderRadius: {
@@ -102,11 +102,11 @@ export default {
 				},
 				'pulse-glow': {
 					'0%, 100%': { 
-						boxShadow: '0 0 5px 0px #FF5500',
+						boxShadow: '0 0 5px 0px #00FFFF',
 						opacity: '0.8'
 					},
 					'50%': { 
-						boxShadow: '0 0 15px 5px #FF5500',
+						boxShadow: '0 0 15px 5px #00FFFF',
 						opacity: '1'
 					}
 				},
@@ -125,6 +125,20 @@ export default {
 				'float': {
 					'0%, 100%': { transform: 'translateY(0)' },
 					'50%': { transform: 'translateY(-10px)' }
+				},
+				'sparkle': {
+					'0%, 100%': { 
+						opacity: '0',
+						transform: 'scale(0)'
+					},
+					'50%': { 
+						opacity: '1',
+						transform: 'scale(1)'
+					}
+				},
+				'spin-coin': {
+					'0%': { transform: 'rotateY(0deg)' },
+					'100%': { transform: 'rotateY(360deg)' }
 				}
 			},
 			animation: {
@@ -134,7 +148,9 @@ export default {
 				'flash': 'flash 2s infinite ease-in-out',
 				'xp-fill': 'xp-fill 1s ease-out forwards',
 				'scale-in': 'scale-in 0.3s ease-out',
-				'float': 'float 3s infinite ease-in-out'
+				'float': 'float 3s infinite ease-in-out',
+				'sparkle': 'sparkle 1.5s infinite ease-in-out',
+				'spin-coin': 'spin-coin 1s infinite linear'
 			}
 		}
 	},

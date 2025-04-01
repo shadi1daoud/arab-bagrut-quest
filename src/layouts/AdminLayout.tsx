@@ -29,50 +29,50 @@ const AdminLayout = () => {
       <NavLink 
         to={path}
         className={({ isActive }) => cn(
-          "flex items-center gap-3 py-3 transition-all",
+          "flex items-center gap-3 py-3 transition-all pixel-text",
           isActive 
-            ? "text-orange-500" 
-            : "text-gray-400 hover:text-gray-300"
+            ? "text-primary glow-text" 
+            : "text-gray-400 hover:text-gray-300 hover:translate-x-1"
         )}
       >
-        <Icon className="h-5 w-5" />
+        <Icon className={cn("h-5 w-5", isActive && "animate-pulse-pixel")} />
         <span>{label}</span>
       </NavLink>
     );
   };
 
   return (
-    <div className="min-h-screen bg-black flex">
+    <div className="min-h-screen bg-background flex">
       {/* Sidebar */}
       <aside 
         className={cn(
-          "bg-black border-l border-gray-800 w-64 fixed inset-y-0 right-0 z-30 transform transition-transform duration-200 lg:translate-x-0 lg:static flex flex-col",
+          "bg-card border-l-2 border-primary/30 w-64 fixed inset-y-0 right-0 z-30 transform transition-transform duration-200 lg:translate-x-0 lg:static flex flex-col",
           isMobileMenuOpen ? "translate-x-0" : "translate-x-full"
         )}
       >
         <div className="p-4 mb-2 flex justify-center">
           <div className="flex items-center gap-1">
-            <span className="text-white text-2xl font-bold">درسني</span>
-            <span className="bg-orange-500 p-1 rounded">
+            <span className="text-white text-2xl font-bold pixel-heading">درسني</span>
+            <span className="bg-primary p-1">
               <svg width="16" height="16" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
-                <path d="M21 10C21 10 18.995 7.26822 17.3662 5.63824C15.7373 4.00827 13.4864 3 11 3C6.02944 3 2 7.02944 2 12C2 16.9706 6.02944 21 11 21C15.9706 21 20 16.9706 20 12" stroke="white" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"/>
-                <path d="M22 2L13 11" stroke="white" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"/>
+                <path d="M21 10C21 10 18.995 7.26822 17.3662 5.63824C15.7373 4.00827 13.4864 3 11 3C6.02944 3 2 7.02944 2 12C2 16.9706 6.02944 21 11 21C15.9706 21 20 16.9706 20 12" stroke="black" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"/>
+                <path d="M22 2L13 11" stroke="black" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"/>
               </svg>
             </span>
           </div>
         </div>
         
-        <div className="p-4 border-b border-gray-800">
+        <div className="p-4 border-b-2 border-primary/30">
           <div className="flex flex-col items-center">
-            <div className="h-20 w-20 rounded-full bg-gray-800 flex items-center justify-center overflow-hidden border-2 border-orange-500">
+            <div className="h-20 w-20 pixel-avatar flex items-center justify-center overflow-hidden">
               {user?.avatar ? (
                 <img src={user.avatar} alt={user.name} className="h-full w-full object-cover" />
               ) : (
-                <span className="text-white text-2xl font-bold">{user?.name?.charAt(0)}</span>
+                <span className="text-white text-2xl font-bold pixel-text">{user?.name?.charAt(0)}</span>
               )}
             </div>
-            <h2 className="mt-4 text-lg font-bold text-white">{user?.name}</h2>
-            <p className="text-sm text-gray-400">مشرف النظام</p>
+            <h2 className="mt-4 text-lg font-bold text-white pixel-text">{user?.name}</h2>
+            <p className="text-sm text-primary pixel-text">مشرف النظام</p>
           </div>
         </div>
         
@@ -84,18 +84,18 @@ const AdminLayout = () => {
             
             <Link 
               to="/admin/courses/upload"
-              className="flex items-center gap-3 mt-4 py-3 px-4 rounded-lg bg-orange-500 text-white hover:bg-orange-600 transition-all"
+              className="flex items-center gap-3 mt-4 py-3 px-4 border-2 border-primary bg-primary/20 text-primary hover:bg-primary/30 transition-all pixel-text"
             >
-              <Upload className="h-5 w-5" />
+              <Upload className="h-5 w-5 animate-float-pixel" />
               <span>رفع كورس جديد</span>
             </Link>
           </nav>
         </div>
         
-        <div className="p-4 mt-auto border-t border-gray-800">
+        <div className="p-4 mt-auto border-t-2 border-primary/30">
           <button 
             onClick={logout}
-            className="flex items-center gap-3 w-full text-gray-400 hover:text-gray-300 transition-all"
+            className="flex items-center gap-3 w-full text-gray-400 hover:text-gray-300 transition-all pixel-text"
           >
             <LogOut className="h-5 w-5" />
             <span>تسجيل خروج</span>
@@ -106,7 +106,7 @@ const AdminLayout = () => {
       {/* Main content area */}
       <div className="flex-1 flex flex-col">
         {/* Header */}
-        <header className="bg-black py-3 px-4 border-b border-gray-800 flex justify-between items-center">
+        <header className="bg-card py-3 px-4 border-b-2 border-primary/30 flex justify-between items-center">
           <div className="flex items-center">
             <button
               onClick={() => setIsMobileMenuOpen(!isMobileMenuOpen)}
@@ -117,23 +117,24 @@ const AdminLayout = () => {
             
             <div className="relative mx-2 hidden md:block">
               <div className="absolute inset-y-0 right-0 flex items-center pr-3 pointer-events-none">
-                <Search className="h-4 w-4 text-gray-500" />
+                <Search className="h-4 w-4 text-primary" />
               </div>
               <input
                 type="search"
-                className="bg-gray-900 border border-gray-700 text-white text-sm rounded-full block w-80 pr-10 p-2.5 placeholder-gray-500"
+                className="bg-muted border-2 border-primary/30 text-white text-sm block w-80 pr-10 p-2.5 placeholder-gray-500 pixel-text"
                 placeholder="ابحث..."
               />
             </div>
           </div>
           
           <div className="flex items-center gap-4">
-            <button className="text-gray-400">
+            <button className="text-primary relative">
               <Bell className="h-5 w-5" />
+              <span className="absolute -top-1 -right-1 h-2 w-2 bg-accent rounded-full animate-pulse-pixel"></span>
             </button>
             
-            <h1 className="text-lg font-medium text-white">
-              <span className="text-orange-500">درسني</span> - لوحة المشرف
+            <h1 className="text-lg font-medium text-white pixel-text">
+              <span className="text-primary">درسني</span> - لوحة المشرف
             </h1>
           </div>
         </header>
