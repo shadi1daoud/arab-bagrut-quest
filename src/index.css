@@ -1,5 +1,5 @@
 
-@import url('https://fonts.googleapis.com/css2?family=Cairo:wght@300;400;500;600;700&family=Tajawal:wght@300;400;500;700&family=Press+Start+2P&family=VT323&display=swap');
+@import url('https://fonts.googleapis.com/css2?family=Noto+Sans+Arabic:wght@400;500;600;700;800&display=swap');
 
 @tailwind base;
 @tailwind components;
@@ -7,85 +7,35 @@
 
 @layer base {
   :root {
-    --background: 222 47% 11%;
-    --foreground: 210 40% 98%;
+    --background: 0 0% 0%;
+    --foreground: 0 0% 98%;
 
-    --card: 222 47% 11%;
-    --card-foreground: 210 40% 98%;
+    --card: 0 0% 7%;
+    --card-foreground: 0 0% 98%;
 
-    --popover: 222 47% 11%;
-    --popover-foreground: 210 40% 98%;
-
-    --primary: 16 100% 50%;
-    --primary-foreground: 210 40% 98%;
-
-    --secondary: 217 33% 17%;
-    --secondary-foreground: 210 40% 98%;
-
-    --muted: 217 33% 17%;
-    --muted-foreground: 215 20% 65%;
-
-    --accent: 16 100% 50%;
-    --accent-foreground: 210 40% 98%;
-
-    --destructive: 0 62% 30%;
-    --destructive-foreground: 210 40% 98%;
-
-    --border: 217 33% 17%;
-    --input: 217 33% 17%;
-    --ring: 16 100% 50%;
-
-    --radius: 0;
-
-    /* Sidebar colors */
-    --sidebar-background: 224 71% 4%;
-    --sidebar-foreground: 213 31% 91%;
-    --sidebar-primary: 16 100% 50%;
-    --sidebar-primary-foreground: 0 0% 100%;
-    --sidebar-accent: 217 33% 17%;
-    --sidebar-accent-foreground: 210 40% 98%;
-    --sidebar-border: 215 27% 19%;
-    --sidebar-ring: 216 34% 17%;
-  }
-
-  .light {
-    --background: 0 0% 100%;
-    --foreground: 222 47% 11%;
-
-    --card: 0 0% 100%;
-    --card-foreground: 222 47% 11%;
-
-    --popover: 0 0% 100%;
-    --popover-foreground: 222 47% 11%;
+    --popover: 0 0% 7%;
+    --popover-foreground: 0 0% 98%;
 
     --primary: 16 100% 50%;
-    --primary-foreground: 210 40% 98%;
+    --primary-foreground: 0 0% 98%;
 
-    --secondary: 210 40% 96.1%;
-    --secondary-foreground: 222 47% 11%;
+    --secondary: 16 90% 65%;
+    --secondary-foreground: 0 0% 7%;
 
-    --muted: 210 40% 96.1%;
-    --muted-foreground: 215 16% 47%;
+    --muted: 0 0% 15%;
+    --muted-foreground: 0 0% 70%;
 
     --accent: 16 100% 50%;
-    --accent-foreground: 210 40% 98%;
+    --accent-foreground: 0 0% 7%;
 
-    --destructive: 0 84.2% 60.2%;
-    --destructive-foreground: 210 40% 98%;
+    --destructive: 0 100% 50%;
+    --destructive-foreground: 0 0% 98%;
 
-    --border: 214.3 31.8% 91.4%;
-    --input: 214.3 31.8% 91.4%;
+    --border: 0 0% 20%;
+    --input: 0 0% 20%;
     --ring: 16 100% 50%;
 
-    /* Sidebar colors */
-    --sidebar-background: 0 0% 98%;
-    --sidebar-foreground: 222 47% 11%;
-    --sidebar-primary: 16 100% 50%;
-    --sidebar-primary-foreground: 0 0% 100%;
-    --sidebar-accent: 210 40% 96.1%;
-    --sidebar-accent-foreground: 222 47% 11%;
-    --sidebar-border: 214.3 31.8% 91.4%;
-    --sidebar-ring: 16 100% 50%;
+    --radius: 0.5rem;
   }
 
   * {
@@ -94,154 +44,75 @@
 
   html {
     direction: rtl;
-    font-family: 'Tajawal', 'Cairo', sans-serif;
+    font-family: 'Noto Sans Arabic', sans-serif;
   }
 
   body {
-    @apply bg-background text-foreground antialiased min-h-screen;
-    background-image: url('data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAABQAAAAUCAYAAACNiR0NAAAAGXRFWHRTb2Z0d2FyZQBBZG9iZSBJbWFnZVJlYWR5ccllPAAAAyhpVFh0WE1MOmNvbS5hZG9iZS54bXAAAAAAADw/eHBhY2tldCBiZWdpbj0i77u/IiBpZD0iVzVNME1wQ2VoaUh6cmVTek5UY3prYzlkIj8+IDx4OnhtcG1ldGEgeG1sbnM6eD0iYWRvYmU6bnM6bWV0YS8iIHg6eG1wdGs9IkFkb2JlIFhNUCBDb3JlIDUuNi1jMTM4IDc5LjE1OTgyNCwgMjAxNi8wOS8xNC0wMTowOTowMSAgICAgICAgIj4gPHJkZjpSREYgeG1sbnM6cmRmPSJodHRwOi8vd3d3LnczLm9yZy8xOTk5LzAyLzIyLXJkZi1zeW50YXgtbnMjIj4gPHJkZjpEZXNjcmlwdGlvbiByZGY6YWJvdXQ9IiIgeG1sbnM6eG1wPSJodHRwOi8vbnMuYWRvYmUuY29tL3hhcC8xLjAvIiB4bWxuczp4bXBNTT0iaHR0cDovL25zLmFkb2JlLmNvbS94YXAvMS4wL21tLyIgeG1sbnM6c3RSZWY9Imh0dHA6Ly9ucy5hZG9iZS5jb20veGFwLzEuMC9zVHlwZS9SZXNvdXJjZVJlZiMiIHhtcDpDcmVhdG9yVG9vbD0iQWRvYmUgUGhvdG9zaG9wIENDIDIwMTcgKE1hY2ludG9zaCkiIHhtcE1NOkluc3RhbmNlSUQ9InhtcC5paWQ6RTU4MjBDRURERjVCMTFFNzkzRDk4RDg2NjU1ODJBQUEiIHhtcE1NOkRvY3VtZW50SUQ9InhtcC5kaWQ6RTU4MjBDRUVERjVCMTFFNzkzRDk4RDg2NjU1ODJBQUEiPiA8eG1wTU06RGVyaXZlZEZyb20gc3RSZWY6aW5zdGFuY2VJRD0ieG1wLmlpZDo0RjI0M0ZEQURGNTBCMUU3OTNEOThEODY2NTU4MkFBQSIgc3RSZWY6ZG9jdW1lbnRJRD0ieG1wLmRpZDpFNTgyMENFQ0RGNUIxMUU3OTNEOThEODY2NTU4MkFBQSIvPiA8L3JkZjpEZXNjcmlwdGlvbj4gPC9yZGY6UkRGPiA8L3g6eG1wbWV0YT4gPD94cGFja2V0IGVuZD0iciI/PuFgpJQAAADRSURBVHjaYvq/qI4JFHQD8VsgfgHEL4H4DRC3A7E5EHMCMQsQAw3ixaG5C4hZGUgA2DQPxLDx8WkehmHuJsVgIJuD8Bt8cQE6vBiLmg9APJcYg4ECK5EQjXQ2E0wjIxqfkYBmGN8FxlkmAaEgQMAgZkIsFSJgEFwzC57wDCTCsA9A/B6In+ELTB4owU+MQSAD0/AlM5DthPgXlzqQZp88BnGgCgA/+YFmwNNSIhNSHBC/gtJY00c6EBdC8VsgtiFGMxOUj83VzKMlAxBgAF7YHACgJb0VAAAAAElFTkSuQmCC');
-    image-rendering: pixelated;
+    @apply bg-black text-white;
   }
 }
 
 @layer components {
-  /* Minecraft blocks */
-  .block {
-    @apply border-2 border-gray-900 relative;
-    image-rendering: pixelated;
+  .game-card {
+    @apply bg-black border border-gray-800 rounded-lg p-4 shadow-lg relative overflow-hidden;
   }
   
-  .dirt-block {
-    @apply bg-amber-800;
-  }
-  
-  .stone-block {
-    @apply bg-gray-600;
-  }
-  
-  .grass-block {
-    @apply bg-green-600 relative;
-  }
-  
-  .grass-block::before {
+  .game-card::before {
     content: '';
-    @apply absolute top-0 left-0 right-0 h-1/4 bg-green-400;
+    @apply absolute inset-0 border border-orange-500 opacity-0 rounded-lg transition-opacity duration-300;
   }
   
-  /* Minecraft UI Components */
-  .minecraft-card {
-    @apply bg-gray-800/90 border-2 border-gray-900 p-4 shadow-md relative;
-    box-shadow:
-      inset -3px -3px 0 0 rgba(0, 0, 0, 0.3),
-      inset 3px 3px 0 0 rgba(255, 255, 255, 0.1);
+  .game-card:hover::before {
+    @apply opacity-50;
   }
   
-  .minecraft-header {
-    @apply font-minecraft text-xl uppercase text-orange-400 mb-4;
-    text-shadow: 2px 2px 0 #000;
+  .game-btn {
+    @apply bg-orange-500 text-white py-2 px-4 rounded-md font-semibold relative overflow-hidden transition-all hover:brightness-110 active:brightness-90 focus:outline-none focus:ring-2 focus:ring-orange-400 focus:ring-opacity-50;
+  }
+
+  .game-btn::after {
+    content: '';
+    @apply absolute inset-0 bg-white opacity-0 transition-opacity duration-300;
   }
   
-  .minecraft-text {
-    @apply font-minecraft text-sm;
+  .game-btn:hover::after {
+    @apply opacity-10;
   }
   
-  .pixel-art {
-    image-rendering: pixelated;
-    image-rendering: -moz-crisp-edges;
-    image-rendering: crisp-edges;
+  .game-btn:active::after {
+    @apply opacity-20;
   }
   
-  .minecraft-input {
-    @apply bg-gray-700 border-2 border-gray-900 text-white px-3 py-2;
-    box-shadow:
-      inset -2px -2px 0 0 rgba(0, 0, 0, 0.3),
-      inset 2px 2px 0 0 rgba(255, 255, 255, 0.1);
+  .game-title {
+    @apply font-bold text-2xl text-orange-500 mb-4;
+    text-shadow: 0 0 10px rgba(255, 85, 0, 0.5);
   }
   
-  .minecraft-select {
-    @apply bg-gray-700 border-2 border-gray-900 text-white px-3 py-2 appearance-none pr-8;
-    box-shadow:
-      inset -2px -2px 0 0 rgba(0, 0, 0, 0.3),
-      inset 2px 2px 0 0 rgba(255, 255, 255, 0.1);
-    background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='8' height='8' viewBox='0 0 8 8'%3E%3Cpath fill='%23ffffff' d='M0 0h8v2h-2v2h-2v2h-2v2h-2v-8z'/%3E%3C/svg%3E");
-    background-repeat: no-repeat;
-    background-position: right 10px center;
-    background-size: 8px;
+  .game-subtitle {
+    @apply font-semibold text-xl text-white mb-3;
   }
   
-  /* Futuristic Panel Styling Modified for Minecraft */
+  .game-progress-bar {
+    @apply h-2 bg-gray-800 rounded-full overflow-hidden relative;
+  }
+
+  .game-progress-fill {
+    @apply h-full bg-orange-500 rounded-full animate-xp-fill;
+  }
+  
+  .arcade-meter {
+    @apply relative w-full h-6 bg-gray-800 rounded-full overflow-hidden border border-gray-700;
+  }
+
+  .glow-text {
+    text-shadow: 0 0 5px currentColor;
+  }
+
+  .glow-border {
+    box-shadow: 0 0 5px var(--glow-color, rgba(255, 85, 0, 0.7));
+  }
+
   .game-panel {
-    @apply bg-gray-800/90 backdrop-blur-sm border-2 border-gray-900 p-4 shadow-md relative;
-    box-shadow:
-      inset -3px -3px 0 0 rgba(0, 0, 0, 0.3),
-      inset 3px 3px 0 0 rgba(255, 255, 255, 0.1);
+    @apply bg-black border border-gray-800 rounded-lg p-5 shadow-lg;
   }
-  
-  /* Modern UI Components Pixelated */
-  .pixel-card {
-    @apply bg-gray-800/90 backdrop-blur-sm border-2 border-gray-900 p-4 relative;
-    box-shadow:
-      inset -3px -3px 0 0 rgba(0, 0, 0, 0.3),
-      inset 3px 3px 0 0 rgba(255, 255, 255, 0.1);
-  }
-  
-  /* Progress Bar */
-  .xp-bar {
-    @apply h-4 bg-gray-800 border-2 border-gray-900 relative overflow-hidden;
-  }
-  
-  .xp-fill {
-    @apply h-full bg-green-500 transition-all duration-500;
-  }
-}
-
-/* Scrollbar styling */
-::-webkit-scrollbar {
-  width: 10px;
-  height: 10px;
-}
-
-::-webkit-scrollbar-track {
-  @apply bg-gray-800;
-  image-rendering: pixelated;
-  background-image: url('data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAAIAAAACCAYAAABytg0kAAAAEklEQVQImWNgYGD4z8DAwMAAAAYEAQCs+27xAAAAAElFTkSuQmCC');
-}
-
-::-webkit-scrollbar-thumb {
-  @apply bg-orange-500 border-2 border-orange-700;
-}
-
-::-webkit-scrollbar-thumb:hover {
-  @apply bg-orange-400;
-}
-
-/* Tooltip styles */
-.minecraft-tooltip {
-  @apply absolute invisible opacity-0 bg-gray-800/90 border-2 border-gray-900 py-1 px-2 text-xs font-minecraft text-white transition-all duration-300 z-50;
-  box-shadow:
-    inset -2px -2px 0 0 rgba(0, 0, 0, 0.3),
-    inset 2px 2px 0 0 rgba(255, 255, 255, 0.1);
-  transform: translateY(10px);
-}
-
-.tooltip-trigger:hover .minecraft-tooltip {
-  @apply visible opacity-100;
-  transform: translateY(0);
-}
-
-/* Loading animation */
-.loading-dots {
-  @apply inline-flex space-x-1;
-}
-
-.loading-dots div {
-  @apply w-2 h-2 bg-orange-500 border border-orange-700 animate-pulse;
-}
-
-.loading-dots div:nth-child(2) {
-  animation-delay: 0.2s;
-}
-
-.loading-dots div:nth-child(3) {
-  animation-delay: 0.4s;
 }
