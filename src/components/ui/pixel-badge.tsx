@@ -18,6 +18,7 @@ const pixelBadgeVariants = cva(
         info: "bg-blue-500 border-blue-700 text-white",
         brown: "bg-amber-700 border-amber-900 text-white",
         gradient: "bg-gradient-to-r from-orange-400 via-orange-500 to-orange-600 border-orange-700 text-white",
+        minecraft: "bg-opacity-80 bg-orange-500 border-orange-700 text-white bg-[url('data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAAIAAAACCAYAAABytg0kAAAAEklEQVQImWNgYGD4z8DAwMAAAAYEAQCs+27xAAAAAElFTkSuQmCC')]",
       },
     },
     defaultVariants: {

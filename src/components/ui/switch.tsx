@@ -11,6 +11,8 @@ const Switch = React.forwardRef<
   <SwitchPrimitives.Root
     className={cn(
       "peer inline-flex h-6 w-11 shrink-0 cursor-pointer items-center rounded-none border-2 border-gray-800 transition-colors focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2 focus-visible:ring-offset-background disabled:cursor-not-allowed disabled:opacity-50 data-[state=checked]:bg-primary data-[state=unchecked]:bg-secondary",
+      "after:content-[''] after:absolute after:left-0 after:right-0 after:top-0 after:bottom-0 after:bg-[url('data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAAIAAAACCAYAAABytg0kAAAAEklEQVQImWNgYGD4z8DAwMAAAAYEAQCs+27xAAAAAElFTkSuQmCC')] after:opacity-20 after:bg-repeat after:pointer-events-none",
+      "hover:scale-105 transition-transform active:scale-95",
       className
     )}
     {...props}
@@ -18,7 +20,9 @@ const Switch = React.forwardRef<
   >
     <SwitchPrimitives.Thumb
       className={cn(
-        "pointer-events-none block h-5 w-5 rounded-none border-2 border-gray-800 bg-white shadow-none ring-0 transition-transform data-[state=checked]:translate-x-5 data-[state=unchecked]:translate-x-0"
+        "pointer-events-none block h-5 w-5 rounded-none border-2 border-gray-800 bg-white shadow-none ring-0 transition-transform data-[state=checked]:translate-x-5 data-[state=unchecked]:translate-x-0",
+        "data-[state=checked]:bg-orange-400 data-[state=unchecked]:bg-gray-300",
+        "shadow-inner"
       )}
     />
   </SwitchPrimitives.Root>

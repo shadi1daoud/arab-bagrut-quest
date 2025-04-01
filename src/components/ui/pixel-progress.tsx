@@ -41,6 +41,12 @@ const PixelProgress = React.forwardRef<HTMLDivElement, PixelProgressProps>(
       blue: "bg-blue-500",
       brown: "bg-amber-700",
     }
+
+    const gradientClass = {
+      default: "",
+      minecraft: "bg-opacity-80 bg-[url('data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAAIAAAACCAYAAABytg0kAAAAEklEQVQImWNgYGD4z8DAwMAAAAYEAQCs+27xAAAAAElFTkSuQmCC')]",
+      gradient: "bg-gradient-to-r from-orange-400 via-orange-500 to-orange-600",
+    }
     
     return (
       <div
@@ -56,8 +62,7 @@ const PixelProgress = React.forwardRef<HTMLDivElement, PixelProgressProps>(
           className={cn(
             "h-full transition-all",
             colorClass[color],
-            variant === "minecraft" && "bg-opacity-80 bg-[url('data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAAIAAAACCAYAAABytg0kAAAAEklEQVQImWNgYGD4z8DAwMAAAAYEAQCs+27xAAAAAElFTkSuQmCC')]",
-            variant === "gradient" && "bg-gradient-to-r from-orange-400 via-orange-500 to-orange-600"
+            gradientClass[variant]
           )}
           style={{ 
             width: `${percentage}%`,
