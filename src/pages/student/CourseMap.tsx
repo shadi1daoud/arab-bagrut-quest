@@ -1,7 +1,6 @@
-
 import React, { useState } from 'react';
 import { Link } from 'react-router-dom';
-import { ArrowLeft, Trophy, Star, Book, CheckCircle, Clock, LucideIcon } from 'lucide-react';
+import { ArrowLeft, Trophy, Star, Book, CheckCircle, Clock } from 'lucide-react';
 import { PixelButton } from '@/components/ui/pixel-button';
 import { PixelBadge } from '@/components/ui/pixel-badge';
 import { PixelProgress } from '@/components/ui/pixel-progress';
@@ -25,7 +24,7 @@ const courseData = {
       description: 'تعرف على أساسيات الرياضيات وأهميتها',
       unlocked: true,
       completed: true,
-      type: 'lesson',
+      type: 'lesson' as const,
       xp: 50
     },
     {
@@ -34,7 +33,7 @@ const courseData = {
       description: 'تعلم العمليات الأساسية من جمع وطرح وضرب وقسمة',
       unlocked: true,
       completed: true,
-      type: 'lesson',
+      type: 'lesson' as const,
       xp: 100
     },
     {
@@ -43,7 +42,7 @@ const courseData = {
       description: 'اختبر فهمك للعمليات الأساسية',
       unlocked: true,
       completed: true,
-      type: 'quiz',
+      type: 'quiz' as const,
       xp: 75
     },
     {
@@ -52,7 +51,7 @@ const courseData = {
       description: 'تعلم الكسور الاعتيادية والعشرية',
       unlocked: true,
       completed: false,
-      type: 'lesson',
+      type: 'lesson' as const,
       xp: 150
     },
     {
@@ -61,7 +60,7 @@ const courseData = {
       description: 'أساسيات الأشكال الهندسية وقياساتها',
       unlocked: false,
       completed: false,
-      type: 'lesson',
+      type: 'lesson' as const,
       xp: 200
     },
     {
@@ -70,7 +69,7 @@ const courseData = {
       description: 'تطبيق المفاهيم السابقة في مشروع عملي',
       unlocked: false,
       completed: false,
-      type: 'project',
+      type: 'project' as const,
       xp: 300
     },
     {
@@ -79,7 +78,7 @@ const courseData = {
       description: 'مقدمة في الجبر والمعادلات',
       unlocked: false,
       completed: false,
-      type: 'lesson',
+      type: 'lesson' as const,
       xp: 250
     },
     {
@@ -88,7 +87,7 @@ const courseData = {
       description: 'اختبار شامل لجميع المفاهيم في الكورس',
       unlocked: false,
       completed: false,
-      type: 'challenge',
+      type: 'challenge' as const,
       xp: 500
     },
   ],
