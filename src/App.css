@@ -6,6 +6,13 @@
   text-align: center;
 }
 
+/* Pixelated rendering for images */
+.pixel-image {
+  image-rendering: pixelated;
+  image-rendering: -moz-crisp-edges;
+  image-rendering: crisp-edges;
+}
+
 .logo {
   height: 6em;
   padding: 1.5em;
@@ -45,6 +52,119 @@
   color: #888;
 }
 
+/* Minecraft style font effects */
+.text-shadow-pixel {
+  text-shadow: 
+    2px 2px 0 #000,
+    -2px -2px 0 #000,
+    2px -2px 0 #000,
+    -2px 2px 0 #000;
+}
+
+.font-minecraft {
+  font-family: 'Press Start 2P', 'VT323', monospace;
+  letter-spacing: 1px;
+  line-height: 1.4;
+}
+
+/* Minecraft-style box borders */
+.minecraft-border {
+  position: relative;
+  border: 3px solid #000000;
+  box-shadow:
+    inset -3px -3px 0 0 rgba(0, 0, 0, 0.3),
+    inset 3px 3px 0 0 rgba(255, 255, 255, 0.2);
+}
+
+/* Game block styles */
+.game-block {
+  width: 32px;
+  height: 32px;
+  image-rendering: pixelated;
+  background-size: contain;
+}
+
+.block-dirt {
+  background-image: url('data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAACAAAAAgCAMAAABEpIrGAAAAbFBMVEUAAABHMCc/KiE9KSBBLCJDLiNFLiRINCpQOjBHMyhaSTtbSTxkVEZtXU5yYVJ0Y1R3ZlZ7aVmOeWeQfGqUgG2dinem/6qp/62x/7O0/7a3/7m7/7zA/77F/8PK/8jP/83T/9HY/9bd/9tkMCDJAAAAAnRSTlMAgJsrThgAAADJSURBVHjazdHLDoIwEIXhUsrFC1AQUG5l3v8lNWmZxsZuTFz4JxjP0LQzsSj57y8AIEzKT2fhZqLi7oYQKJEjugGICKt8e+FmrE4DzD01Ece6AChgm69vHsSzXoGh2sdC4glrKYCJOCtVjbbAcj9LQFX6tQZKhZwXwHQrwTMh0PohDJdK4jXTQOHVMrCdh0rO2gHljbQCgAZeCgAa6CsAaOBYAUADYwUADbQVALSCpwKABsYKABoYFACi1Gll4vZeAD5+vx/9ZJ+FnlnPDQAAAABJRU5ErkJggg==');
+}
+
+.block-stone {
+  background-image: url('data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAACAAAAAgCAMAAABEpIrGAAAAXVBMVEUAAABGRkZISEhJSUlKSkpLS0tNTU1OTk5PT09RUVFSUlJTU1NUVFRVVVVWVlZXV1dYWFhZWVlaWlpcXFxdXV1eXl5gYGBiYmJmZmZqampra2twcHB1dXV3d3d4eHiRJiGNAAAACnRSTlMAGxwdHh8gISIjJ9OMZwAAALlJREFUOMvF0MsOgjAQheFSym0AQS7l1vd/SwNJJ13UHTFmvlUzJ5NOOkn1r4PzrA41vjcCBr7cCsXB0WTcAEFGtMGZMPJjA1ApLSeQSGDXALaA+waQJbIBtMFtC9DQXAEsxXEFQFECvAQWKcBLoCsFvAT2KcBLYJ8CvATOKeBIYNmhxnEWwQSGbwnMfwlwHWq0rz0HIeFVQJ5g9jNAdZhiOozBGcO+AdpnqOywFRsAEz6lAOVfH+0FfJoSQZYGpjkAAAAASUVORK5CYII=');
+}
+
+.block-grass {
+  background-image: url('data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAACAAAAAgCAMAAABEpIrGAAAA5FBMVEUAAAApZRswbB4ydSA3fiM8hyg/jSpClixHnzBLpzNQrTZVtThau7dewLpiv71mxb9qysJuzMRy0MZ10sh51cl92st/3c2C4M6F4tCI5dKL59ON6dWQ69eT7dmV79uY8d2b8t+c9OCe9uKg+OSj+uak++il/Oqm/euo/uup/+yq/+2r/+2s/+6t/+6u/++v//Cw//Gx//Gy//Kz//O0//S1//W2//a4//e5//i6//m7//q8//u9//u+//2///7AwMDDw8PHx8fLy8vPz8/T09PX19fb29vf39/j4+Pn5+cJh5TQAAAAGnRSTlMAICEiIyQlJicoKSorLC0uLzAxMjM0NTY3OGkxlUAAAAC/SURBVHjazdFFFsJQEATRCgQCwQnuFnfX4O5y/xMRZoFmeWj+2733VtJ/Sg4BNHvkuJ/DACz4y58gDugkDACrx49t99MSBxSQMKCTrQ+wb19rZRwQIJXZuQGwupSzP7vBOEBAi5EGAGA6WLHXJ6LlANBiPgMA+VbLPo+IZXngF4wxHgOAPtrFzlpF1FfePx27CKB34H4uZltE89B9iJgNDXDOd+S2iGanZH/1kAPOXYfmJbZD9AvdXg0CwE7/P/r53wlpMTZQztOcMwAAAABJRU5ErkJggg==');
+}
+
+/* Minecraft-inspired button */
+.minecraft-btn {
+  background-color: #9b9b9b;
+  border: 3px solid #000;
+  color: #fff;
+  font-family: 'Press Start 2P', monospace;
+  text-shadow: 2px 2px #000;
+  image-rendering: pixelated;
+  padding: 8px 16px;
+  position: relative;
+  box-shadow:
+    inset -4px -4px 0 0 rgba(0, 0, 0, 0.3),
+    inset 4px 4px 0 0 rgba(255, 255, 255, 0.3);
+  transition: all 0.1s;
+  font-size: 14px;
+  line-height: 1;
+  text-transform: uppercase;
+}
+
+.minecraft-btn:hover {
+  background-color: #acacac;
+}
+
+.minecraft-btn:active {
+  transform: translateY(2px);
+  box-shadow:
+    inset -2px -2px 0 0 rgba(0, 0, 0, 0.3),
+    inset 2px 2px 0 0 rgba(255, 255, 255, 0.3);
+}
+
+/* Minecraft-style panel */
+.game-panel {
+  background-color: rgba(32, 32, 42, 0.85);
+  border: 3px solid #000;
+  box-shadow:
+    inset -3px -3px 0 0 rgba(0, 0, 0, 0.3),
+    inset 3px 3px 0 0 rgba(255, 255, 255, 0.2);
+  padding: 16px;
+  margin: 8px 0;
+  position: relative;
+}
+
+/* Pixel corners for elements */
+.pixel-corners {
+  position: relative;
+}
+
+.pixel-corners::before {
+  content: "";
+  position: absolute;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  pointer-events: none;
+  background-image: 
+    linear-gradient(45deg, transparent 6px, #000 6px, #000 8px, transparent 8px),
+    linear-gradient(135deg, transparent 6px, #000 6px, #000 8px, transparent 8px),
+    linear-gradient(225deg, transparent 6px, #000 6px, #000 8px, transparent 8px),
+    linear-gradient(315deg, transparent 6px, #000 6px, #000 8px, transparent 8px);
+  background-position: 
+    top left,
+    top right,
+    bottom right,
+    bottom left;
+  background-size: 12px 12px;
+  background-repeat: no-repeat;
+}
+
 /* Minecraft style scanlines effect */
 .scanline {
   position: fixed;
@@ -75,87 +195,7 @@
   }
 }
 
-/* Pixelated box shadows */
-.pixel-shadow {
-  box-shadow: 
-    5px 0 0 0 rgba(0, 0, 0, 0.5),
-    0 5px 0 0 rgba(0, 0, 0, 0.5),
-    5px 5px 0 0 rgba(0, 0, 0, 0.5);
-}
-
-.pixel-shadow-inner {
-  box-shadow: inset 
-    2px 0 0 0 rgba(255, 255, 255, 0.1),
-    0 2px 0 0 rgba(255, 255, 255, 0.1),
-    inset -2px 0 0 0 rgba(0, 0, 0, 0.3),
-    inset 0 -2px 0 0 rgba(0, 0, 0, 0.3);
-}
-
-/* Minecraft style button */
-.minecraft-btn {
-  position: relative;
-  display: inline-block;
-  min-width: 130px;
-  height: 40px;
-  padding: 0 20px;
-  background-color: #FF5500;
-  border: none;
-  cursor: pointer;
-  text-align: center;
-  font-family: 'VT323', monospace;
-  font-size: 16px;
-  color: white;
-  outline: none;
-  image-rendering: pixelated;
-}
-
-.minecraft-btn:before {
-  content: "";
-  position: absolute;
-  top: 0;
-  left: 0;
-  width: 100%;
-  height: 100%;
-  background-color: rgba(0, 0, 0, 0.3);
-  clip-path: polygon(
-    0 0,
-    100% 0,
-    100% 3px,
-    3px 3px,
-    3px 100%,
-    0 100%
-  );
-}
-
-.minecraft-btn:after {
-  content: "";
-  position: absolute;
-  top: 0;
-  left: 0;
-  width: 100%;
-  height: 100%;
-  background-color: rgba(255, 255, 255, 0.2);
-  clip-path: polygon(
-    0 0,
-    3px 0,
-    3px 3px,
-    calc(100% - 3px) 3px,
-    calc(100% - 3px) calc(100% - 3px),
-    3px calc(100% - 3px),
-    3px 100%,
-    0 100%
-  );
-}
-
-.minecraft-btn:hover {
-  background-color: #FF7733;
-}
-
-.minecraft-btn:active {
-  background-color: #CC4400;
-}
-
-/* Darsni logo */
+/* Darsni logo Minecraft style */
 .darsni-logo {
   font-family: 'Press Start 2P', 'Noto Sans Arabic', sans-serif;
   text-transform: uppercase;
@@ -167,5 +207,89 @@
     -2px -2px 0 #000,
     2px -2px 0 #000,
     -2px 2px 0 #000;
+  image-rendering: pixelated;
+}
+
+/* Game-style button */
+.game-btn {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  background-color: #FF5500;
+  border: 2px solid #000;
+  box-shadow: 
+    inset -2px -2px 0 0 rgba(0, 0, 0, 0.3),
+    inset 2px 2px 0 0 rgba(255, 255, 255, 0.3);
+  padding: 6px 12px;
+  font-family: 'Press Start 2P', monospace;
+  font-size: 12px;
+  color: white;
+  text-shadow: 1px 1px 0 #000;
+  transition: all 0.1s;
+  text-transform: uppercase;
+}
+
+.game-btn:hover {
+  background-color: #FF7733;
+  transform: translateY(-2px);
+}
+
+.game-btn:active {
+  background-color: #CC4400;
+  transform: translateY(1px);
+  box-shadow: 
+    inset -1px -1px 0 0 rgba(0, 0, 0, 0.3),
+    inset 1px 1px 0 0 rgba(255, 255, 255, 0.3);
+}
+
+/* Minecraft-style experience bar */
+.xp-bar {
+  background-color: #333333;
+  border: 2px solid #000000;
+  height: 12px;
+  position: relative;
+  overflow: hidden;
+}
+
+.xp-bar-fill {
+  background-color: #55FF55;
+  height: 100%;
+  position: absolute;
+  top: 0;
+  left: 0;
+  transition: width 0.5s ease-in-out;
+}
+
+/* Floating animation for blocks */
+.floating-block {
+  animation: float 3s ease-in-out infinite;
+}
+
+@keyframes float {
+  0% {
+    transform: translateY(0px);
+  }
+  50% {
+    transform: translateY(-10px);
+  }
+  100% {
+    transform: translateY(0px);
+  }
+}
+
+/* Pixelated animation */
+@keyframes pixel-pulse {
+  0% {
+    opacity: 1;
+  }
+  50% {
+    opacity: 0.7;
+  }
+  100% {
+    opacity: 1;
+  }
+}
+
+.pixel-pulse {
   animation: pixel-pulse 2s infinite steps(3);
 }

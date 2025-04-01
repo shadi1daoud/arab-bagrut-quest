@@ -19,6 +19,10 @@ export default {
 			}
 		},
 		extend: {
+			fontFamily: {
+				minecraft: ['"Press Start 2P"', 'monospace'],
+				vt323: ['VT323', 'monospace'],
+			},
 			colors: {
 				border: 'hsl(var(--border))',
 				input: 'hsl(var(--input))',
@@ -63,8 +67,8 @@ export default {
 					border: 'hsl(var(--sidebar-border))',
 					ring: 'hsl(var(--sidebar-ring))'
 				},
-				// Game theme colors - updated for modern futuristic style
-				game: {
+				// Minecraft theme colors
+				minecraft: {
 					primary: '#FF5500',
 					secondary: '#FF7733',
 					accent: '#FFCC00',
@@ -76,6 +80,17 @@ export default {
 					danger: '#FF3366',
 					info: '#33AAFF',
 					warning: '#FFAA33',
+					// Block colors
+					dirt: '#8B5A2B',
+					stone: '#7D7D7D',
+					grass: '#5DA130',
+					'grass-top': '#91BD59',
+					wood: '#9F703A',
+					leaves: '#3A5E25',
+					water: '#2F5DC6',
+					lava: '#D75908',
+					obsidian: '#1F1347',
+					bedrock: '#252525',
 				}
 			},
 			borderRadius: {
@@ -130,26 +145,17 @@ export default {
 					'0%': { backgroundPosition: '-1000px 0' },
 					'100%': { backgroundPosition: '1000px 0' }
 				},
-				'gradient-shift': {
-					'0%': { backgroundPosition: '0% 50%' },
-					'50%': { backgroundPosition: '100% 50%' },
-					'100%': { backgroundPosition: '0% 50%' }
+				'pixelated-pulse': {
+					'0%, 100%': { transform: 'scale(1)' },
+					'50%': { transform: 'scale(1.05)' }
 				},
-				'blur-in': {
-					'0%': { filter: 'blur(12px)', opacity: '0' },
-					'100%': { filter: 'blur(0px)', opacity: '1' }
+				'pixel-bounce': {
+					'0%, 100%': { transform: 'translateY(0)' },
+					'50%': { transform: 'translateY(-4px)' }
 				},
-				'slide-up': {
-					'0%': { transform: 'translateY(20px)', opacity: '0' },
+				'block-place': {
+					'0%': { transform: 'translateY(-10px)', opacity: '0' },
 					'100%': { transform: 'translateY(0)', opacity: '1' }
-				},
-				'slide-down': {
-					'0%': { transform: 'translateY(-20px)', opacity: '0' },
-					'100%': { transform: 'translateY(0)', opacity: '1' }
-				},
-				'glow': {
-					'0%, 100%': { textShadow: '0 0 5px rgba(255, 85, 0, 0.5)' },
-					'50%': { textShadow: '0 0 20px rgba(255, 85, 0, 0.8)' }
 				}
 			},
 			animation: {
@@ -161,17 +167,22 @@ export default {
 				'scale-in': 'scale-in 0.3s ease-out',
 				'float': 'float 3s infinite ease-in-out',
 				'shimmer': 'shimmer 3s infinite linear',
-				'gradient-shift': 'gradient-shift 5s ease infinite',
-				'blur-in': 'blur-in 0.5s ease-out',
-				'slide-up': 'slide-up 0.5s ease-out',
-				'slide-down': 'slide-down 0.5s ease-out',
-				'glow': 'glow 2s infinite ease-in-out'
+				'pixelated-pulse': 'pixelated-pulse 1s steps(2) infinite',
+				'pixel-bounce': 'pixel-bounce 0.5s infinite steps(2)',
+				'block-place': 'block-place 0.3s ease-out'
 			},
 			backgroundImage: {
+				'dirt-pattern': "url('data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAABAAAAAQCAYAAAAf8/9hAAAApElEQVQ4T2NkoBAwUqifAbcB/2EA3SJsMsR4AqcX0A1Al2CNXOyaQQDDAOxhgB42hAJKQnEo9wTpYcDwAqE0QGxCImQoxRpABmAzBJch2NIAzgBENwRbIGKLA9wGYDOEUCDi9AK6AbgSESyQCcUFOAMR3RBceQGbIdgCE6sBuAxBNgRXYGIMRFyG4AtsrLGAHIjYEhKuxITTC+gGUJwbiXYB1QwAAACb0iJEDLO7VAAAAABJRU5ErkJggg==')",
+				'stone-pattern': "url('data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAABAAAAAQCAYAAAAf8/9hAAAASElEQVQ4T2NkoBAwUqifgWQDQJpramqIci5y/MM1EW0AofAgZAhFBqAHFnJ6QY9ndEOIjgVCsYCc+ISCk2QvIBtCUUJCNgAA1K4cEVm0kYMAAAAASUVORK5CYII=')",
+				'grass-pattern': "url('data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAABAAAAAQCAYAAAAf8/9hAAAAnklEQVQ4T52TyxHAIAhEOdMCKcpeSPH0Zia6wbAPTfYkCo8FY8zbWutzpZRzGGNOvQYopdxCiE+CC8BWwBhzZubNOXcUCdj3vRPw2FqfGKAHoHU0Ywt472slVKUUeQSt5KGALaUQQYvGVgr9nVIC6O/AxEIIrfN7J4jIwt5ZAVJrZ/VCKPsGw30DM+FIV28xT2BgJnAA1sq/AVB5FeYvghdtCywRHqbUvAAAAABJRU5ErkJggg==')",
+				'obsidian-pattern': "url('data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAABAAAAAQCAYAAAAf8/9hAAAAYklEQVQ4T2NkoBAwUqifAacB////J9pSRkZG7AagG0KMAQQNQDaEWANwGoDNEFIMwGsAsiGkGkDQAJAhpBhA0ACQIaQaQNQgImbooxtA1DCglicoTsrEpgV0A6ieF6hqAAD35S8RixLmwwAAAABJRU5ErkJggg==')",
+				'wood-pattern': "url('data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAABAAAAAQCAYAAAAf8/9hAAAAnElEQVQ4T2NkgID/DAwMjFBaAYgdgPgFEIPYD4GYGYgZkAG6ZpBGYjQRZQBM8////zOANCJrRjcM3RCsBhBjCFYD8BkCMgCXZpwG4DIEqwGEDEE2AKdhWA0gZAjMAKyGYTOAGEOQDcBqGLoBxBoCMgCrYegGkGIIsgG4DYAZQKohyAbgNARkQA2yIaQagmwATkOQNQIAI/IvEbWlLB4AAAAASUVORK5CYII=')",
 				'hero-pattern': "url('/lovable-uploads/94fe6055-e6c6-45e4-9417-a528e701d1f6.png')",
-				'gradient-radial': 'radial-gradient(var(--tw-gradient-stops))',
-				'dots': "url(\"data:image/svg+xml,%3Csvg width='24' height='24' viewBox='0 0 24 24' xmlns='http://www.w3.org/2000/svg'%3E%3Ccircle fill='%23ffffff' fill-opacity='0.05' cx='2' cy='2' r='1'/%3E%3C/svg%3E\")",
-				'grid': "url(\"data:image/svg+xml,%3Csvg width='40' height='40' viewBox='0 0 40 40' xmlns='http://www.w3.org/2000/svg'%3E%3Cg fill='%23ffffff' fill-opacity='0.03' fill-rule='evenodd'%3E%3Cpath d='M0 38.59l2.83-2.83 1.41 1.41L1.41 40H0v-1.41zM0 1.4l2.83 2.83 1.41-1.41L1.41 0H0v1.41zM38.59 40l-2.83-2.83 1.41-1.41L40 38.59V40h-1.41zM40 1.41l-2.83 2.83-1.41-1.41L38.59 0H40v1.41zM20 18.6l2.83-2.83 1.41 1.41L21.41 20l2.83 2.83-1.41 1.41L20 21.41l-2.83 2.83-1.41-1.41L18.59 20l-2.83-2.83 1.41-1.41L20 18.59z'/%3E%3C/g%3E%3C/svg%3E\")"
+				'minecraft-dirt': "url('/lovable-uploads/45021bdb-020e-4bbb-994c-a3ee3a2247bd.png')",
+				'minecraft-stone': "url('/lovable-uploads/a1720fdf-6a93-4286-beb9-490341339f14.png')",
+				'minecraft-grass': "url('/lovable-uploads/4d57e7ee-a6ad-43e6-a5f2-31128650a71b.png')",
+				'minecraft-pattern': "url('/lovable-uploads/d98cc1f4-a7d5-475a-b052-0f55de4f75c7.png')",
+				'minecraft-character': "url('/lovable-uploads/4a94efb7-b0d5-465d-8a6d-555d8d853904.png')",
 			}
 		}
 	},

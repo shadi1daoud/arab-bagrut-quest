@@ -6,10 +6,10 @@ import { cn } from "@/lib/utils"
 interface PixelProgressProps extends React.HTMLAttributes<HTMLDivElement> {
   value?: number
   max?: number
-  color?: "default" | "success" | "warning" | "danger" | "info"
+  color?: "default" | "success" | "warning" | "danger" | "info" | "green" | "blue" | "brown"
   showValue?: boolean
   height?: "sm" | "md" | "lg"
-  variant?: "default" | "gradient"
+  variant?: "default" | "minecraft"
 }
 
 const PixelProgress = React.forwardRef<HTMLDivElement, PixelProgressProps>(
@@ -26,24 +26,27 @@ const PixelProgress = React.forwardRef<HTMLDivElement, PixelProgressProps>(
     const percentage = Math.min(100, Math.max(0, (value / max) * 100))
     
     const heightClass = {
-      sm: "h-1.5",
-      md: "h-2.5",
-      lg: "h-4",
+      sm: "h-2",
+      md: "h-4",
+      lg: "h-6",
     }
     
     const colorClass = {
-      default: variant === "gradient" ? "bg-gradient-to-r from-orange-500 to-orange-600" : "bg-orange-500",
-      success: variant === "gradient" ? "bg-gradient-to-r from-green-500 to-green-600" : "bg-green-500",
-      warning: variant === "gradient" ? "bg-gradient-to-r from-yellow-500 to-yellow-600" : "bg-yellow-500",
-      danger: variant === "gradient" ? "bg-gradient-to-r from-red-500 to-red-600" : "bg-red-500",
-      info: variant === "gradient" ? "bg-gradient-to-r from-blue-500 to-blue-600" : "bg-blue-500",
+      default: "bg-orange-500",
+      success: "bg-green-500",
+      warning: "bg-yellow-500",
+      danger: "bg-red-500",
+      info: "bg-blue-500",
+      green: "bg-green-500",
+      blue: "bg-blue-500",
+      brown: "bg-amber-700",
     }
     
     return (
       <div
         ref={ref}
         className={cn(
-          "relative w-full overflow-hidden rounded-full bg-gray-800/50 backdrop-blur-sm",
+          "relative w-full overflow-hidden rounded-none bg-gray-800 border-2 border-gray-900",
           heightClass[height],
           className
         )}
@@ -53,16 +56,20 @@ const PixelProgress = React.forwardRef<HTMLDivElement, PixelProgressProps>(
           className={cn(
             "h-full transition-all",
             colorClass[color],
+            variant === "minecraft" && "bg-opacity-80 bg-[url('data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAAIAAAACCAYAAABytg0kAAAAEklEQVQImWNgYGD4z8DAwMAAAAYEAQCs+27xAAAAAElFTkSuQmCC')]"
           )}
           style={{ 
             width: `${percentage}%`,
+            imageRendering: "pixelated"
           }}
         >
-          <div className="absolute inset-0 bg-white/10 opacity-50 animate-pulse" />
+          {variant === "minecraft" && (
+            <div className="absolute inset-0 bg-white/10 opacity-50" />
+          )}
         </div>
         
         {showValue && (
-          <div className="absolute inset-0 flex items-center justify-center text-white text-xs font-medium">
+          <div className="absolute inset-0 flex items-center justify-center text-white text-xs font-minecraft">
             {value}/{max}
           </div>
         )}

@@ -5,17 +5,28 @@ import { cn } from "@/lib/utils"
 
 const PixelCard = React.forwardRef<
   HTMLDivElement,
-  React.HTMLAttributes<HTMLDivElement>
->(({ className, ...props }, ref) => (
-  <div
-    ref={ref}
-    className={cn(
-      "rounded-none border-2 border-gray-700 bg-black/80 text-white shadow-md pixel-corners",
-      className
-    )}
-    {...props}
-  />
-))
+  React.HTMLAttributes<HTMLDivElement> & { variant?: 'dirt' | 'stone' | 'wood' | 'obsidian' | 'default' }
+>(({ className, variant = 'default', ...props }, ref) => {
+  const variantClasses = {
+    dirt: "bg-amber-800 border-amber-900",
+    stone: "bg-gray-600 border-gray-800",
+    wood: "bg-amber-600 border-amber-800",
+    obsidian: "bg-purple-900 border-purple-950",
+    default: "bg-gray-800/90 border-gray-900"
+  }
+
+  return (
+    <div
+      ref={ref}
+      className={cn(
+        "rounded-none border-2 text-white shadow-md",
+        variantClasses[variant],
+        className
+      )}
+      {...props}
+    />
+  )
+})
 PixelCard.displayName = "PixelCard"
 
 const PixelCardHeader = React.forwardRef<
@@ -37,7 +48,7 @@ const PixelCardTitle = React.forwardRef<
   <h3
     ref={ref}
     className={cn(
-      "text-xl font-bold leading-none tracking-wider text-orange-400 pixel-text text-shadow-pixel",
+      "text-xl font-minecraft leading-none tracking-wider text-orange-400 uppercase",
       className
     )}
     {...props}
@@ -51,7 +62,7 @@ const PixelCardDescription = React.forwardRef<
 >(({ className, ...props }, ref) => (
   <p
     ref={ref}
-    className={cn("text-sm text-gray-400 pixel-text", className)}
+    className={cn("text-sm text-gray-400 font-minecraft", className)}
     {...props}
   />
 ))

@@ -15,7 +15,14 @@ export const ThemeProvider = ({ children }: { children: React.ReactNode }) => {
   const [theme, setTheme] = useState<Theme>(() => {
     // Check if theme is stored in localStorage
     const savedTheme = localStorage.getItem('darsni-theme') as Theme | null;
-    return savedTheme || 'dark';
+    
+    // If no theme is stored or if there's an OS preference, use it
+    if (!savedTheme) {
+      const prefersDark = window.matchMedia('(prefers-color-scheme: dark)').matches;
+      return prefersDark ? 'dark' : 'light';
+    }
+    
+    return savedTheme;
   });
 
   useEffect(() => {
@@ -24,10 +31,15 @@ export const ThemeProvider = ({ children }: { children: React.ReactNode }) => {
     
     // Apply theme class to document
     if (theme === 'dark') {
+      document.documentElement.classList.add('dark');
       document.documentElement.classList.remove('light');
     } else {
       document.documentElement.classList.add('light');
+      document.documentElement.classList.remove('dark');
     }
+    
+    // Add pixel art rendering to specific elements
+    document.documentElement.classList.add('minecraft-theme');
   }, [theme]);
 
   const toggleTheme = () => {
