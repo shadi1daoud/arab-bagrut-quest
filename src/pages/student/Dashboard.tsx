@@ -2,7 +2,7 @@
 import { useState } from 'react';
 import { Link } from 'react-router-dom';
 import { useAuth } from '@/contexts/AuthContext';
-import { ChevronLeft, Trophy, Star, CheckCircle, Clock, Fire, Activity, Award } from 'lucide-react';
+import { ChevronLeft, Trophy, Star, CheckCircle, Clock, Flame, Activity, Award } from 'lucide-react';
 
 // Dummy activity data for the chart
 const weeklyActivity = [
@@ -70,7 +70,7 @@ const Dashboard = () => {
             </div>
             
             <div className="h-12 w-12 rounded-full flex items-center justify-center">
-              <Fire className="h-10 w-10 text-orange-500 animate-pulse" />
+              <Flame className="h-10 w-10 text-orange-500 animate-pulse" />
             </div>
           </div>
           
@@ -123,7 +123,7 @@ const Dashboard = () => {
         <div className="lg:col-span-3 quest-card flex flex-col">
           <div className="flex justify-between items-center mb-4">
             <h3 className="text-xl font-bold text-white">Today's Quest</h3>
-            <Fire className="h-6 w-6 text-orange-500 animate-pulse" />
+            <Flame className="h-6 w-6 text-orange-500 animate-pulse" />
           </div>
           
           <p className="text-white mb-6 text-center">أكمل تحصيلي</p>
