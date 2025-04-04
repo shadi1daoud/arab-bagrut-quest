@@ -2,33 +2,24 @@
 import { useState } from 'react';
 import { Link } from 'react-router-dom';
 import { useAuth } from '@/contexts/AuthContext';
-import { ChevronLeft, Trophy, Star, CheckCircle, Clock, Edit } from 'lucide-react';
+import { ChevronLeft, Trophy, Star, CheckCircle, Clock, Fire, Activity, Award } from 'lucide-react';
 
 // Dummy activity data for the chart
 const weeklyActivity = [
-  { day: 'الأحد', hours: 1.5 },
-  { day: 'الإثنين', hours: 2.2 },
-  { day: 'الثلاثاء', hours: 0.8 },
-  { day: 'الأربعاء', hours: 3.0 },
-  { day: 'الخميس', hours: 0.5 },
-  { day: 'الجمعة', hours: 1.5 },
-  { day: 'السبت', hours: 0.8 },
+  { day: 'St', hours: 1.2, color: '#3B82F6' },
+  { day: 'Su', hours: 2.5, color: '#3B82F6' },
+  { day: 'Mo', hours: 1.0, color: '#D946EF' },
+  { day: 'Tu', hours: 2.8, color: '#00E5FF' },
+  { day: 'We', hours: 0.6, color: '#3B82F6' },
+  { day: 'Th', hours: 1.8, color: '#D946EF' },
+  { day: 'Fr', hours: 3.0, color: '#00E5FF' },
 ];
 
-// Sample announcements
-const announcements = [
-  {
-    id: 1,
-    title: 'تحديث جديد للمنصة',
-    content: 'تم إضافة مواد جديدة في قسم الرياضيات للصف الثاني عشر',
-    date: 'منذ 3 أيام'
-  },
-  {
-    id: 2,
-    title: 'ورشة عمل قادمة',
-    content: 'سيتم تنظيم ورشة عمل افتراضية حول حل مسائل الفيزياء يوم الأحد القادم',
-    date: 'منذ يوم واحد'
-  }
+const leaderboardData = [
+  { id: 1, name: 'أحمد', level: 4, levelNum: 18, xp: 14520 },
+  { id: 2, name: 'سارة', level: 13, levelNum: 16, xp: 14550 },
+  { id: 3, name: 'محمد', level: 15, levelNum: 15, xp: 14650 },
+  { id: 4, name: 'ليلى', level: 14, levelNum: 14, xp: 14530 },
 ];
 
 const Dashboard = () => {
@@ -38,214 +29,160 @@ const Dashboard = () => {
   
   return (
     <div className="space-y-6">
-      <div className="grid grid-cols-1 lg:grid-cols-3 gap-6">
-        {/* User Profile Panel */}
-        <div className="bg-black border border-gray-800 rounded-lg p-5">
-          <div className="flex justify-between items-start mb-2">
-            <h3 className="text-lg font-medium text-white">الملف الشخصي</h3>
-            <button className="text-gray-400 hover:text-white">
-              <Edit className="h-5 w-5" />
-            </button>
-          </div>
-          
+      <div className="grid grid-cols-1 lg:grid-cols-12 gap-6">
+        {/* User Profile Card - 3 cols */}
+        <div className="lg:col-span-3 space-card">
           <div className="flex flex-col items-center">
             <div className="relative mb-3">
-              <div className="h-24 w-24 rounded-full overflow-hidden border-2 border-orange-500">
+              <div className="h-24 w-24 rounded-full overflow-hidden border-2 border-accent/50 shadow-lg shadow-accent/20">
                 {user?.avatar ? (
                   <img src={user.avatar} alt={user.name} className="h-full w-full object-cover" />
                 ) : (
-                  <span className="text-white text-2xl font-bold flex items-center justify-center h-full bg-gray-700">
-                    {user?.name?.charAt(0)}
-                  </span>
+                  <div className="h-full w-full bg-gradient-to-br from-blue-900 to-cyan-700 flex items-center justify-center">
+                    <span className="text-white text-2xl font-bold">{user?.name?.charAt(0) || 'S'}</span>
+                  </div>
                 )}
               </div>
-              <div className="absolute bottom-0 right-0 bg-green-500 h-4 w-4 rounded-full border-2 border-black"></div>
             </div>
             
-            <h2 className="text-white font-medium">{user?.name}</h2>
-            <p className="text-gray-400 text-sm mb-4">{user?.grade} - {user?.city}</p>
+            <h2 className="text-white font-bold text-xl">{user?.name || 'Shadi Daoud'}</h2>
+            <p className="text-game-text-secondary text-sm mb-4">{user?.grade || 'المحطة'}</p>
             
-            <div className="w-full space-y-3">
-              <div className="flex justify-between items-center text-sm">
-                <span className="text-orange-500">مبتدئ</span>
-                <span className="text-sm text-gray-400">10</span>
+            <div className="w-full mt-2">
+              <div className="flex justify-between items-center text-sm mb-1">
+                <span className="text-game-highlight font-medium">Lv 5</span>
               </div>
               
-              <div className="w-full h-1.5 bg-gray-800 rounded-full overflow-hidden">
-                <div className="h-full bg-orange-500 rounded-full" style={{ width: "30%" }}></div>
+              <div className="level-bar">
+                <div className="level-bar-fill" style={{ width: "60%" }}></div>
               </div>
-              
-              <p className="text-xs text-gray-500 text-center">
-                تبقى لك 7 من أصل 10 مستويات لتنتقل إلى مرحلة متوسط
-              </p>
             </div>
           </div>
         </div>
-        
-        {/* Center Stats Grid */}
-        <div className="space-y-6">
+
+        {/* Middle Content - 5 cols */}
+        <div className="lg:col-span-5 grid grid-cols-1 gap-4">
           {/* Streak Counter */}
-          <div className="bg-black border border-gray-800 rounded-lg p-5 flex items-center justify-between">
-            <div className="text-center">
-              <h3 className="text-gray-400 text-sm mb-1">دخول متواصل</h3>
-              <div className="flex items-center justify-center">
-                <span className="text-2xl font-bold text-white">20</span>
-                <span className="text-orange-500 text-2xl ml-1">🔥</span>
-              </div>
+          <div className="streak-card flex justify-between items-center">
+            <div className="flex flex-col items-center">
+              <h3 className="text-xl font-bold text-white">الجهد</h3>
+              <div className="text-5xl font-bold text-white mt-2">12</div>
             </div>
             
-            <div className="h-10 w-10 bg-black border border-orange-500 rounded-full flex items-center justify-center">
-              <svg width="20" height="20" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
-                <path d="M12 2C6.48 2 2 6.48 2 12C2 17.52 6.48 22 12 22C17.52 22 22 17.52 22 12C22 6.48 17.52 2 12 2ZM16 13H13V16C13 16.55 12.55 17 12 17C11.45 17 11 16.55 11 16V13H8C7.45 13 7 12.55 7 12C7 11.45 7.45 11 8 11H11V8C11 7.45 11.45 7 12 7C12.55 7 13 7.45 13 8V11H16C16.55 11 17 11.45 17 12C17 12.55 16.55 13 16 13Z" fill="#FF5500"/>
-              </svg>
+            <div className="h-12 w-12 rounded-full flex items-center justify-center">
+              <Fire className="h-10 w-10 text-orange-500 animate-pulse" />
             </div>
           </div>
           
-          {/* Tasks Count */}
-          <div className="bg-black border border-gray-800 rounded-lg p-5 flex items-center justify-between">
-            <div className="text-center">
-              <h3 className="text-gray-400 text-sm mb-1">مهمة</h3>
-              <div className="text-2xl font-bold text-white">150</div>
+          {/* XP Counter */}
+          <div className="space-card flex justify-between items-center">
+            <div className="flex flex-col items-center">
+              <h3 className="text-xl font-bold text-white">النقاط</h3>
+              <div className="text-5xl font-bold text-white mt-2">8,965</div>
             </div>
             
-            <div className="h-10 w-10 bg-black border border-orange-500 rounded-full flex items-center justify-center">
-              <svg width="20" height="20" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
-                <path d="M12 2C6.48 2 2 6.48 2 12C2 17.52 6.48 22 12 22C17.52 22 22 17.52 22 12C22 6.48 17.52 2 12 2ZM10 17L5 12L6.41 10.59L10 14.17L17.59 6.58L19 8L10 17Z" fill="#FF5500"/>
-              </svg>
-            </div>
-          </div>
-          
-          {/* Ranking */}
-          <div className="bg-black border border-gray-800 rounded-lg p-5 flex items-center justify-between">
-            <div className="text-center">
-              <h3 className="text-gray-400 text-sm mb-1">بين أصدقائي</h3>
-              <div className="text-2xl font-bold text-white">#3</div>
-            </div>
-            
-            <div className="h-10 w-10 bg-black border border-orange-500 rounded-full flex items-center justify-center">
-              <svg width="20" height="20" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
-                <path d="M17 2H7C5.9 2 5 2.9 5 4V20C5 21.1 5.9 22 7 22H17C18.1 22 19 21.1 19 20V4C19 2.9 18.1 2 17 2ZM12 19C10.9 19 10 18.1 10 17C10 15.9 10.9 15 12 15C13.1 15 14 15.9 14 17C14 18.1 13.1 19 12 19ZM16 10H8V8H16V10ZM16 6H8V4H16V6Z" fill="#FF5500"/>
-              </svg>
+            <div className="h-12 w-12 rounded-full flex items-center justify-center">
+              <Award className="h-10 w-10 text-fuchsia-500 animate-pulse" />
             </div>
           </div>
         </div>
         
-        {/* Performance Panel */}
-        <div className="bg-black border border-gray-800 rounded-lg p-5">
-          <div className="flex justify-between items-center mb-4">
-            <h3 className="text-lg font-medium text-white">الاداء</h3>
-            <select className="bg-black border border-gray-700 text-gray-400 text-sm rounded-lg p-1">
-              <option>شهري</option>
-              <option>أسبوعي</option>
-              <option>يومي</option>
-            </select>
+        {/* Intelligence Panel - 4 cols */}
+        <div className="lg:col-span-4 space-card flex flex-col items-center justify-center py-4">
+          <h3 className="text-2xl font-bold text-white mb-4">الذكاء</h3>
+          
+          <div className="progress-circle w-40 h-40">
+            <svg width="160" height="160" viewBox="0 0 160 160">
+              <defs>
+                <linearGradient id="progressGradient" x1="0%" y1="0%" x2="100%" y2="0%">
+                  <stop offset="0%" stopColor="#5AFF15" />
+                  <stop offset="100%" stopColor="#A2FF00" />
+                </linearGradient>
+              </defs>
+              <circle className="progress-circle-bg" cx="80" cy="80" r="70" />
+              <circle 
+                className="progress-circle-fill" 
+                cx="80" 
+                cy="80" 
+                r="70" 
+                strokeDasharray="439.8" 
+                strokeDashoffset="110" 
+              />
+              <text x="80" y="75" textAnchor="middle" fontSize="36" fontWeight="bold" fill="white">8,96</text>
+              <text x="80" y="100" textAnchor="middle" fontSize="16" fill="#B8B8FF">تعلم</text>
+            </svg>
           </div>
           
-          <div className="flex flex-col items-center justify-center">
-            <div className="relative h-32 w-32 mb-3">
-              {/* Circular gauge background */}
-              <svg className="absolute" width="128" height="128" viewBox="0 0 128 128">
-                <circle 
-                  cx="64" 
-                  cy="64" 
-                  r="60" 
-                  fill="none" 
-                  stroke="#2A2A2A" 
-                  strokeWidth="8" 
-                />
-                {/* Colored progress arc - in this case 75% around the circle */}
-                <circle 
-                  cx="64" 
-                  cy="64" 
-                  r="60" 
-                  fill="none" 
-                  stroke="#FF5500" 
-                  strokeWidth="8" 
-                  strokeDasharray="377"
-                  strokeDashoffset="94"
-                  transform="rotate(-90 64 64)"
-                />
-              </svg>
-              
-              {/* Needle pointing to current value */}
-              <div 
-                className="absolute top-1/2 left-1/2 h-32 w-1 bg-orange-500 origin-bottom" 
-                style={{ transform: "translate(-50%, -100%) rotate(60deg)" }}
-              >
-                <div className="h-2 w-2 rounded-full bg-orange-500 absolute -left-0.5 top-0"></div>
-              </div>
-              
-              {/* Center point */}
-              <div className="absolute top-1/2 left-1/2 h-4 w-4 bg-black border-2 border-gray-600 rounded-full transform -translate-x-1/2 -translate-y-1/2"></div>
-            </div>
-            
-            <div className="text-center">
-              <h3 className="text-white">نقاطك: <span className="text-orange-500 text-2xl font-bold">8,966</span></h3>
-              <p className="text-orange-500 text-sm flex items-center justify-center mt-1">
-                <span>🔥</span> مرتبة 3 بين 3 أصدقائك
-              </p>
-            </div>
-          </div>
+          <p className="text-game-accent text-sm mt-2">استمر! +٩٦:٨ نقطة</p>
         </div>
       </div>
       
-      {/* Activity Chart and Announcements */}
-      <div className="grid grid-cols-1 lg:grid-cols-3 gap-6">
-        {/* Activity Chart */}
-        <div className="bg-black border border-gray-800 rounded-lg p-5 lg:col-span-2">
-          <h3 className="text-lg font-medium text-white mb-6">ساعات نشاطي</h3>
+      {/* Bottom Row */}
+      <div className="grid grid-cols-1 lg:grid-cols-12 gap-6">
+        {/* Today's Quest - 3 cols */}
+        <div className="lg:col-span-3 quest-card flex flex-col">
+          <div className="flex justify-between items-center mb-4">
+            <h3 className="text-xl font-bold text-white">Today's Quest</h3>
+            <Fire className="h-6 w-6 text-orange-500 animate-pulse" />
+          </div>
           
-          <div className="relative h-56">
-            {/* Y-axis labels */}
-            <div className="absolute inset-y-0 right-0 flex flex-col justify-between text-xs text-gray-500 pr-2">
-              <span>12</span>
-              <span>8</span>
-              <span>4</span>
-              <span>0</span>
+          <p className="text-white mb-6 text-center">أكمل تحصيلي</p>
+          
+          <button className="game-btn w-full py-3 mt-auto">Start Quest</button>
+          
+          <div className="grid grid-cols-2 gap-2 mt-6">
+            <div className="text-center py-2 px-3 bg-muted/20 rounded-lg">
+              <p className="text-sm text-white">أتعلم</p>
             </div>
-            
-            {/* Chart content */}
-            <div className="absolute inset-0 right-8 flex items-end">
-              <div className="flex-1 flex items-end justify-between h-full">
-                {weeklyActivity.map((day, index) => (
-                  <div key={day.day} className="flex flex-col items-center group relative">
-                    {/* Tooltip showing hours */}
-                    {day.hours === maxActivityHours && (
-                      <div className="absolute bottom-full mb-1 bg-orange-500 text-white text-xs rounded px-2 py-0.5 z-10">
-                        {day.hours} ساعات
-                      </div>
-                    )}
-                    
-                    {/* Bar */}
-                    <div 
-                      className={`w-8 ${day.hours === maxActivityHours ? 'bg-orange-500' : 'bg-gray-700'} rounded-sm relative group`}
-                      style={{ height: `${(day.hours / 12) * 100}%` }}
-                    >
-                      {/* Hidden tooltip that shows on hover */}
-                      <div className="opacity-0 group-hover:opacity-100 absolute bottom-full mb-1 left-1/2 transform -translate-x-1/2 bg-gray-800 text-white text-xs rounded px-2 py-0.5 z-10 transition-opacity">
-                        {day.hours} ساعات
-                      </div>
-                    </div>
-                    
-                    {/* Day label */}
-                    <span className="text-gray-500 text-xs mt-2">{day.day}</span>
-                  </div>
-                ))}
-              </div>
+            <div className="text-center py-2 px-3 bg-muted/20 rounded-lg">
+              <p className="text-sm text-white">أبحث</p>
             </div>
           </div>
         </div>
         
-        {/* Announcements */}
-        <div className="bg-black border border-gray-800 rounded-lg p-5">
-          <h3 className="text-lg font-medium text-white mb-4">إعلانات</h3>
+        {/* Activity Chart - 5 cols */}
+        <div className="lg:col-span-5 activity-card">
+          <div className="flex justify-between items-center mb-4">
+            <h3 className="text-xl font-bold text-white">إنجاز</h3>
+            <Activity className="h-5 w-5 text-blue-400" />
+          </div>
           
-          <div className="space-y-4">
-            {announcements.map((announcement) => (
-              <div key={announcement.id} className="border-b border-gray-800 pb-3 last:border-0 last:pb-0">
-                <h4 className="font-medium text-white text-sm">{announcement.title}</h4>
-                <p className="text-gray-400 text-xs mt-1">{announcement.content}</p>
-                <div className="text-gray-500 text-xs mt-2">{announcement.date}</div>
+          <div className="relative h-56 mt-4">
+            <div className="absolute inset-0 flex items-end justify-between">
+              {weeklyActivity.map((day, index) => (
+                <div key={day.day} className="flex flex-col items-center group w-1/7">
+                  <div 
+                    className="w-12 rounded-md transition-all duration-300"
+                    style={{ 
+                      height: `${(day.hours / 3) * 100}%`, 
+                      backgroundColor: day.color 
+                    }}
+                  ></div>
+                  <span className="text-gray-400 text-xs mt-2">{day.day}</span>
+                </div>
+              ))}
+            </div>
+          </div>
+        </div>
+        
+        {/* Leaderboard - 4 cols */}
+        <div className="lg:col-span-4 leaderboard-card">
+          <div className="flex justify-between items-center mb-4">
+            <h3 className="text-xl font-bold text-white">Lederboard</h3>
+            <Trophy className="h-5 w-5 text-yellow-400" />
+          </div>
+          
+          <div className="space-y-3 mt-4">
+            {leaderboardData.map((user) => (
+              <div key={user.id} className="flex items-center gap-3 bg-card/40 p-2 rounded-lg">
+                <div className="h-10 w-10 rounded-full bg-blue-900/50 flex items-center justify-center border border-blue-400/30">
+                  <span className="text-white text-xs">Lv {user.level}</span>
+                </div>
+                
+                <div className="flex-1 flex justify-between items-center">
+                  <span className="text-white font-medium">Level {user.levelNum}</span>
+                  <span className="text-xs text-game-accent">{user.xp} نقطة</span>
+                </div>
               </div>
             ))}
           </div>

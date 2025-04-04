@@ -7,35 +7,35 @@
 
 @layer base {
   :root {
-    --background: 0 0% 0%;
+    --background: 240 70% 10%;
     --foreground: 0 0% 98%;
 
-    --card: 0 0% 7%;
+    --card: 240 60% 5%;
     --card-foreground: 0 0% 98%;
 
-    --popover: 0 0% 7%;
+    --popover: 240 60% 5%;
     --popover-foreground: 0 0% 98%;
 
-    --primary: 16 100% 50%;
+    --primary: 330 100% 50%;
     --primary-foreground: 0 0% 98%;
 
-    --secondary: 16 90% 65%;
-    --secondary-foreground: 0 0% 7%;
+    --secondary: 270 100% 60%;
+    --secondary-foreground: 0 0% 98%;
 
-    --muted: 0 0% 15%;
-    --muted-foreground: 0 0% 70%;
+    --muted: 240 30% 15%;
+    --muted-foreground: 240 5% 70%;
 
-    --accent: 16 100% 50%;
-    --accent-foreground: 0 0% 7%;
+    --accent: 180 100% 60%;
+    --accent-foreground: 0 0% 98%;
 
     --destructive: 0 100% 50%;
     --destructive-foreground: 0 0% 98%;
 
-    --border: 0 0% 20%;
-    --input: 0 0% 20%;
-    --ring: 16 100% 50%;
+    --border: 240 30% 20%;
+    --input: 240 30% 20%;
+    --ring: 330 100% 50%;
 
-    --radius: 0.5rem;
+    --radius: 0.75rem;
   }
 
   * {
@@ -48,44 +48,44 @@
   }
 
   body {
-    @apply bg-black text-white;
+    @apply bg-background text-white;
+    background-image: 
+      radial-gradient(at 100% 0%, rgba(120, 0, 255, 0.3) 0px, transparent 50%),
+      radial-gradient(at 0% 100%, rgba(0, 230, 255, 0.3) 0px, transparent 50%),
+      linear-gradient(to bottom, #000080 0%, #180048 100%);
+    background-attachment: fixed;
   }
 }
 
 @layer components {
   .game-card {
-    @apply bg-black border border-gray-800 rounded-lg p-4 shadow-lg relative overflow-hidden;
+    @apply bg-card/80 backdrop-blur-sm border border-border/50 rounded-xl p-4 shadow-lg relative overflow-hidden transition-all duration-300;
+    box-shadow: 0 0 15px rgba(110, 0, 255, 0.2);
   }
   
-  .game-card::before {
-    content: '';
-    @apply absolute inset-0 border border-orange-500 opacity-0 rounded-lg transition-opacity duration-300;
-  }
-  
-  .game-card:hover::before {
-    @apply opacity-50;
+  .game-card:hover {
+    box-shadow: 0 0 20px rgba(165, 0, 255, 0.3);
+    @apply border-secondary/40;
   }
   
   .game-btn {
-    @apply bg-orange-500 text-white py-2 px-4 rounded-md font-semibold relative overflow-hidden transition-all hover:brightness-110 active:brightness-90 focus:outline-none focus:ring-2 focus:ring-orange-400 focus:ring-opacity-50;
+    @apply py-2 px-4 rounded-lg font-semibold relative overflow-hidden transition-all;
+    background: linear-gradient(to right, #ff3c6f, #ff3c9f);
+    box-shadow: 0 4px 10px rgba(255, 60, 111, 0.3);
   }
 
-  .game-btn::after {
-    content: '';
-    @apply absolute inset-0 bg-white opacity-0 transition-opacity duration-300;
+  .game-btn:hover {
+    transform: translateY(-2px);
+    box-shadow: 0 6px 15px rgba(255, 60, 111, 0.4);
   }
   
-  .game-btn:hover::after {
-    @apply opacity-10;
-  }
-  
-  .game-btn:active::after {
-    @apply opacity-20;
+  .game-btn:active {
+    transform: translateY(0);
   }
   
   .game-title {
-    @apply font-bold text-2xl text-orange-500 mb-4;
-    text-shadow: 0 0 10px rgba(255, 85, 0, 0.5);
+    @apply font-bold text-2xl text-white mb-4;
+    text-shadow: 0 0 10px rgba(255, 85, 255, 0.5);
   }
   
   .game-subtitle {
@@ -93,26 +93,80 @@
   }
   
   .game-progress-bar {
-    @apply h-2 bg-gray-800 rounded-full overflow-hidden relative;
+    @apply h-2 bg-muted rounded-full overflow-hidden relative;
   }
 
   .game-progress-fill {
-    @apply h-full bg-orange-500 rounded-full animate-xp-fill;
+    @apply h-full rounded-full;
+    background: linear-gradient(to right, #5aff15, #00ffe1);
   }
   
-  .arcade-meter {
-    @apply relative w-full h-6 bg-gray-800 rounded-full overflow-hidden border border-gray-700;
-  }
-
-  .glow-text {
+  .neon-text {
     text-shadow: 0 0 5px currentColor;
   }
 
-  .glow-border {
-    box-shadow: 0 0 5px var(--glow-color, rgba(255, 85, 0, 0.7));
+  .space-card {
+    @apply bg-card/80 backdrop-blur-sm border border-indigo-900/50 rounded-xl p-4 shadow-lg relative overflow-hidden;
+    box-shadow: 0 0 15px rgba(90, 0, 255, 0.2);
   }
 
-  .game-panel {
-    @apply bg-black border border-gray-800 rounded-lg p-5 shadow-lg;
+  .quest-card {
+    @apply bg-gradient-to-br from-purple-900/90 to-pink-900/90 backdrop-blur-sm border border-pink-800/50 rounded-xl p-4 shadow-lg relative overflow-hidden;
+    box-shadow: 0 0 15px rgba(255, 0, 170, 0.2);
+  }
+
+  .streak-card {
+    @apply bg-gradient-to-br from-purple-900/90 to-indigo-900/90 backdrop-blur-sm border border-indigo-800/50 rounded-xl p-4 shadow-lg relative overflow-hidden;
+  }
+
+  .leaderboard-card {
+    @apply bg-card/80 backdrop-blur-sm border border-blue-900/50 rounded-xl p-4 shadow-lg relative overflow-hidden;
+  }
+
+  .activity-card {
+    @apply bg-card/80 backdrop-blur-sm border border-blue-900/50 rounded-xl p-4 shadow-lg relative overflow-hidden;
+  }
+
+  .progress-circle {
+    @apply relative;
+  }
+
+  .progress-circle-bg {
+    fill: none;
+    stroke: rgba(120, 120, 255, 0.2);
+    stroke-width: 10;
+  }
+
+  .progress-circle-fill {
+    fill: none;
+    stroke: url(#progressGradient);
+    stroke-width: 10;
+    stroke-linecap: round;
+    transform: rotate(-90deg);
+    transform-origin: 50% 50%;
+    transition: stroke-dashoffset 0.5s ease;
+  }
+
+  .level-bar {
+    @apply h-3 rounded-full overflow-hidden relative bg-indigo-900/40;
+  }
+
+  .level-bar-fill {
+    height: 100%;
+    background: linear-gradient(to right, #ffce00, #5aff15);
+    border-radius: inherit;
+  }
+
+  .sidebar-item {
+    @apply flex items-center gap-3 py-3 px-4 rounded-lg transition-all;
+  }
+
+  .sidebar-item.active {
+    @apply bg-secondary/20 text-white;
+    box-shadow: 0 0 10px rgba(120, 0, 255, 0.2);
+  }
+
+  .sidebar-item:hover:not(.active) {
+    @apply bg-muted/50 text-white;
   }
 }
