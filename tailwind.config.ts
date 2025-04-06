@@ -68,20 +68,21 @@ export default {
 					border: 'hsl(var(--sidebar-border))',
 					ring: 'hsl(var(--sidebar-ring))'
 				},
-				// Game theme colors - modern space theme
+				// Game theme colors - more balanced and impactful
 				game: {
-					primary: '#FF3C6F',
-					secondary: '#A020F0',
-					accent: '#00E5FF',
-					highlight: '#5AFF15',
-					background: '#0F0F1A',
-					'card-bg': '#0A0A20',
-					'text-primary': '#FFFFFF',
-					'text-secondary': '#B8B8FF',
-					success: '#5AFF15',
-					danger: '#FF3C6F',
-					info: '#00E5FF',
-					warning: '#FFD700',
+					primary: '#FF3C6F',         // Main action (bright pink)
+					secondary: '#7122E3',       // Secondary actions (deep purple)
+					accent: '#00E5FF',          // Highlights and special elements (cyan)
+					highlight: '#5AFF15',       // Success and positive elements (lime green)
+					background: '#0A0A14',      // Darker background 
+					'card-bg': '#12121E',       // Card background (slightly lighter)
+					'card-bg-alt': '#181830',   // Alternative card background
+					'text-primary': '#FFFFFF',  // Main text
+					'text-secondary': '#B8B8FF', // Secondary text
+					success: '#5AFF15',         // Success indicators
+					danger: '#FF3C6F',          // Danger/error indicators
+					info: '#00E5FF',            // Information indicators
+					warning: '#FFD700',         // Warning indicators
 				}
 			},
 			borderRadius: {
@@ -91,20 +92,12 @@ export default {
 			},
 			keyframes: {
 				'accordion-down': {
-					from: {
-						height: '0'
-					},
-					to: {
-						height: 'var(--radix-accordion-content-height)'
-					}
+					from: { height: '0' },
+					to: { height: 'var(--radix-accordion-content-height)' }
 				},
 				'accordion-up': {
-					from: {
-						height: 'var(--radix-accordion-content-height)'
-					},
-					to: {
-						height: '0'
-					}
+					from: { height: 'var(--radix-accordion-content-height)' },
+					to: { height: '0' }
 				},
 				'pulse-glow': {
 					'0%, 100%': { 
@@ -132,22 +125,35 @@ export default {
 					'0%, 100%': { transform: 'translateY(0)' },
 					'50%': { transform: 'translateY(-5px)' }
 				},
-                'glow': {
-                    '0%, 100%': { filter: 'drop-shadow(0 0 5px currentColor)' },
-                    '50%': { filter: 'drop-shadow(0 0 10px currentColor)' }
-                },
-                'shine': {
-                    '0%': { left: '-100%' },
-                    '100%': { left: '100%' }
-                },
-                'border-rotate': {
-                    '0%': { backgroundPosition: '0% 0%' },
-                    '100%': { backgroundPosition: '100% 0%' }
-                },
-                'grid-move': {
-                    '0%': { backgroundPosition: '0 0' },
-                    '100%': { backgroundPosition: '20px 20px' }
-                }
+				'glow': {
+					'0%, 100%': { filter: 'drop-shadow(0 0 5px currentColor)' },
+					'50%': { filter: 'drop-shadow(0 0 10px currentColor)' }
+				},
+				'shine': {
+					'0%': { left: '-100%' },
+					'100%': { left: '100%' }
+				},
+				'border-rotate': {
+					'0%': { backgroundPosition: '0% 0%' },
+					'100%': { backgroundPosition: '100% 0%' }
+				},
+				'grid-move': {
+					'0%': { backgroundPosition: '0 0' },
+					'100%': { backgroundPosition: '20px 20px' }
+				},
+				'orbit': {
+					'0%': { transform: 'rotate(0deg) translateX(6px) rotate(0deg)' },
+					'100%': { transform: 'rotate(360deg) translateX(6px) rotate(-360deg)' }
+				},
+				'counter': {
+					'0%': { opacity: '0', transform: 'translateY(10px)' },
+					'100%': { opacity: '1', transform: 'translateY(0)' }
+				},
+				'particles-float': {
+					'0%, 100%': { transform: 'translateY(0) translateX(0) rotate(0)' },
+					'33%': { transform: 'translateY(-10px) translateX(5px) rotate(2deg)' },
+					'66%': { transform: 'translateY(5px) translateX(-5px) rotate(-2deg)' },
+				}
 			},
 			animation: {
 				'accordion-down': 'accordion-down 0.2s ease-out',
@@ -157,10 +163,13 @@ export default {
 				'xp-fill': 'xp-fill 1s ease-out forwards',
 				'scale-in': 'scale-in 0.3s ease-out',
 				'float': 'float 3s infinite ease-in-out',
-                'glow': 'glow 2s infinite ease-in-out',
-                'shine': 'shine 3s infinite linear',
-                'border-rotate': 'border-rotate 4s linear infinite',
-                'grid-move': 'grid-move 20s linear infinite'
+				'glow': 'glow 2s infinite ease-in-out',
+				'shine': 'shine 3s infinite linear',
+				'border-rotate': 'border-rotate 4s linear infinite',
+				'grid-move': 'grid-move 20s linear infinite',
+				'orbit': 'orbit 4s infinite linear',
+				'counter': 'counter 0.5s forwards ease-out',
+				'particles-float': 'particles-float 15s infinite ease-in-out'
 			}
 		}
 	},
