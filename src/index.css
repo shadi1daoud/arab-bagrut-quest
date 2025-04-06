@@ -2,6 +2,7 @@
 @import url('https://fonts.googleapis.com/css2?family=Noto+Sans+Arabic:wght@400;500;600;700;800&display=swap');
 @import url('https://fonts.googleapis.com/css2?family=Outfit:wght@400;500;600;700&family=Share+Tech+Mono&display=swap');
 @import url('https://fonts.googleapis.com/css2?family=Changa:wght@700;800&display=swap');
+@import url('https://fonts.googleapis.com/css2?family=Lexend+Deca:wght@400;500;600;700&display=swap');
 
 @tailwind base;
 @tailwind components;
@@ -9,23 +10,23 @@
 
 @layer base {
   :root {
-    --background: 240 70% 10%;
+    --background: 255 18% 3%;
     --foreground: 0 0% 98%;
 
-    --card: 240 60% 5%;
+    --card: 255 18% 6%;
     --card-foreground: 0 0% 98%;
 
-    --popover: 240 60% 5%;
+    --popover: 255 18% 6%;
     --popover-foreground: 0 0% 98%;
 
-    --primary: 330 100% 50%;
+    --primary: 330 100% 60%;
     --primary-foreground: 0 0% 98%;
 
     --secondary: 270 100% 60%;
     --secondary-foreground: 0 0% 98%;
 
-    --muted: 240 30% 15%;
-    --muted-foreground: 240 5% 70%;
+    --muted: 255 30% 15%;
+    --muted-foreground: 255 5% 70%;
 
     --accent: 180 100% 60%;
     --accent-foreground: 0 0% 98%;
@@ -33,9 +34,9 @@
     --destructive: 0 100% 50%;
     --destructive-foreground: 0 0% 98%;
 
-    --border: 240 30% 20%;
-    --input: 240 30% 20%;
-    --ring: 330 100% 50%;
+    --border: 255 30% 20%;
+    --input: 255 30% 20%;
+    --ring: 330 100% 60%;
 
     --radius: 0.75rem;
   }
@@ -51,85 +52,108 @@
 
   body {
     @apply bg-background text-white;
+    background: #0F0C1D;
     background-image: 
-      radial-gradient(at 100% 0%, rgba(120, 0, 255, 0.2) 0px, transparent 50%),
-      radial-gradient(at 0% 100%, rgba(0, 230, 255, 0.2) 0px, transparent 50%),
-      linear-gradient(to bottom, #0A0A14 0%, #111122 100%);
+      radial-gradient(at 100% 0%, rgba(120, 0, 255, 0.25) 0px, transparent 50%),
+      radial-gradient(at 0% 100%, rgba(0, 230, 255, 0.25) 0px, transparent 50%),
+      linear-gradient(to bottom, #0F0C1D 0%, #141230 100%);
     background-attachment: fixed;
   }
 }
 
 @layer components {
-  /* New Game-style HUD elements */
-  .game-container {
-    @apply relative z-10 rounded-xl overflow-hidden;
-  }
-
-  /* Redesigned cards */
-  .game-card {
-    @apply bg-game-card-bg/80 backdrop-blur-sm border border-white/5 rounded-xl p-4 shadow-lg relative overflow-hidden transition-all duration-300;
-    box-shadow: 0 5px 15px rgba(0, 0, 0, 0.3), inset 0 1px 1px rgba(255, 255, 255, 0.07);
-    position: relative;
-    z-index: 1;
-  }
-  
-  .game-card::before {
-    content: '';
-    position: absolute;
+  /* Galaxy particles and grid background */
+  .galaxy-particles {
+    position: fixed;
     inset: 0;
-    background: linear-gradient(130deg, rgba(255, 255, 255, 0.05) 0%, rgba(0, 0, 0, 0) 40%);
     z-index: -1;
-    border-radius: inherit;
+    overflow: hidden;
+    pointer-events: none;
   }
   
-  /* Key card with distinctive styles */
-  .xp-card {
-    @apply rounded-xl p-4 relative overflow-hidden;
-    background: linear-gradient(145deg, rgba(10, 10, 20, 0.8) 0%, rgba(20, 20, 40, 0.9) 100%);
-    box-shadow: 0 4px 15px rgba(0, 0, 0, 0.4), 0 0 30px rgba(0, 229, 255, 0.15);
-    border: 1px solid rgba(0, 229, 255, 0.1);
+  .particle {
+    position: absolute;
+    border-radius: 50%;
+    background: white;
+    opacity: 0.3;
+    animation: particles-float 15s infinite ease-in-out;
+    pointer-events: none;
   }
   
-  .stats-card {
-    @apply rounded-xl p-4 relative overflow-hidden;
-    background: linear-gradient(145deg, rgba(18, 18, 30, 0.85) 0%, rgba(24, 24, 48, 0.9) 100%);
-    box-shadow: 0 4px 15px rgba(0, 0, 0, 0.3);
+  .cyber-grid {
+    position: fixed;
+    inset: 0;
+    background-image: 
+      linear-gradient(to right, rgba(99, 102, 241, 0.03) 1px, transparent 1px),
+      linear-gradient(to bottom, rgba(99, 102, 241, 0.03) 1px, transparent 1px);
+    background-size: 25px 25px;
+    animation: grid-move 30s linear infinite;
+    z-index: -1;
+    opacity: 0.25;
+  }
+
+  /* Game Cards with distinct styles */
+  .game-panel {
+    @apply rounded-xl p-6 relative overflow-hidden transition-all duration-300;
+    background: rgba(23, 21, 50, 0.6);
+    box-shadow: 0 4px 15px rgba(0, 0, 0, 0.3), inset 0 1px rgba(255, 255, 255, 0.06);
     border: 1px solid rgba(255, 255, 255, 0.05);
+    backdrop-filter: blur(10px);
+  }
+
+  /* XP Card - Special design for XP tracking */
+  .xp-card {
+    @apply rounded-xl p-6 relative overflow-hidden transition-all duration-300;
+    background: linear-gradient(145deg, rgba(15, 12, 29, 0.8) 0%, rgba(25, 22, 56, 0.95) 100%);
+    box-shadow: 0 8px 32px rgba(0, 0, 0, 0.5), inset 0 1px rgba(255, 255, 255, 0.08);
+    border: 1px solid rgba(0, 229, 255, 0.12);
   }
   
+  /* Stats Card - For various stats, XP, level */
+  .stats-card {
+    @apply rounded-xl p-6 relative overflow-hidden transition-all duration-300;
+    background: linear-gradient(165deg, rgba(23, 21, 50, 0.85) 0%, rgba(30, 27, 62, 0.95) 100%);
+    box-shadow: 0 4px 20px rgba(0, 0, 0, 0.4), inset 0 1px rgba(255, 255, 255, 0.06);
+    border: 1px solid rgba(255, 255, 255, 0.06);
+  }
+  
+  /* Quest Card - For daily quests */
   .quest-card {
-    @apply relative overflow-hidden rounded-xl p-4;
-    background: linear-gradient(145deg, rgba(113, 34, 227, 0.1) 0%, rgba(255, 60, 111, 0.1) 100%);
-    box-shadow: 0 4px 15px rgba(0, 0, 0, 0.3), 0 0 30px rgba(255, 60, 111, 0.1);
-    border: 1px solid rgba(255, 60, 111, 0.15);
+    @apply relative overflow-hidden rounded-xl p-6 transition-all duration-300;
+    background: linear-gradient(165deg, rgba(66, 7, 86, 0.2) 0%, rgba(255, 66, 147, 0.15) 100%);
+    box-shadow: 0 4px 20px rgba(0, 0, 0, 0.3), 0 0 30px rgba(255, 66, 147, 0.12);
+    border: 1px solid rgba(255, 66, 147, 0.2);
   }
 
-  .leaderboard-card {
-    @apply rounded-xl p-4 relative overflow-hidden;
-    background: linear-gradient(145deg, rgba(25, 25, 40, 0.9) 0%, rgba(20, 20, 35, 0.85) 100%);
-    box-shadow: 0 4px 15px rgba(0, 0, 0, 0.3), 0 0 25px rgba(255, 215, 0, 0.05);
-    border: 1px solid rgba(255, 215, 0, 0.1);
-  }
-
+  /* Activity Card - For tracking progress */
   .activity-card {
-    @apply rounded-xl p-4 relative overflow-hidden;
-    background: linear-gradient(145deg, rgba(18, 18, 35, 0.85) 0%, rgba(25, 25, 45, 0.9) 100%);
-    box-shadow: 0 4px 15px rgba(0, 0, 0, 0.3), 0 0 25px rgba(0, 229, 255, 0.05);
+    @apply rounded-xl p-6 relative overflow-hidden transition-all duration-300;
+    background: linear-gradient(165deg, rgba(18, 18, 35, 0.85) 0%, rgba(25, 25, 45, 0.9) 100%);
+    box-shadow: 0 4px 20px rgba(0, 0, 0, 0.4), inset 0 1px rgba(255, 255, 255, 0.08);
     border: 1px solid rgba(0, 229, 255, 0.1);
   }
 
-  /* Redesigned buttons */
+  /* Leaderboard Card - For rankings */
+  .leaderboard-card {
+    @apply rounded-xl p-6 relative overflow-hidden transition-all duration-300;
+    background: linear-gradient(165deg, rgba(25, 25, 40, 0.9) 0%, rgba(30, 30, 55, 0.95) 100%);
+    box-shadow: 0 4px 20px rgba(0, 0, 0, 0.4), 0 0 25px rgba(255, 215, 0, 0.08);
+    border: 1px solid rgba(255, 215, 0, 0.15);
+  }
+
+  /* Game Buttons - Primary action */
   .game-btn {
     @apply py-2 px-4 rounded-lg font-semibold relative overflow-hidden transition-all;
-    background: linear-gradient(to right, #ff3c6f, #ff3c9f);
-    box-shadow: 0 0 15px rgba(255, 60, 111, 0.4), inset 0 1px 1px rgba(255, 255, 255, 0.2);
+    background: linear-gradient(to right, #FF4293, #FA64B5);
+    box-shadow: 0 0 15px rgba(255, 66, 147, 0.3), inset 0 1px rgba(255, 255, 255, 0.15);
     text-shadow: 0 1px 2px rgba(0, 0, 0, 0.5);
-    border: 1px solid rgba(255, 60, 111, 0.3);
+    border: 1px solid rgba(255, 66, 147, 0.3);
+    transition: all 0.3s ease;
   }
 
   .game-btn:hover {
     transform: translateY(-2px);
-    box-shadow: 0 0 20px rgba(255, 60, 111, 0.6), inset 0 1px 1px rgba(255, 255, 255, 0.3);
+    box-shadow: 0 0 20px rgba(255, 66, 147, 0.5), inset 0 1px rgba(255, 255, 255, 0.2);
   }
   
   .game-btn:active {
@@ -152,49 +176,19 @@
   
   /* Secondary button - outline style */
   .game-btn-outline {
-    @apply py-2 px-4 rounded-lg font-semibold relative overflow-hidden transition-all text-game-accent border border-game-accent/30;
+    @apply py-2 px-4 rounded-lg font-semibold relative overflow-hidden transition-all text-cyan-400 border border-cyan-400/30;
     background: rgba(0, 229, 255, 0.05);
     box-shadow: 0 2px 10px rgba(0, 229, 255, 0.1);
+    transition: all 0.3s ease;
   }
 
   .game-btn-outline:hover {
-    @apply border-game-accent/60;
+    @apply border-cyan-400/60;
     background: rgba(0, 229, 255, 0.1);
     box-shadow: 0 2px 15px rgba(0, 229, 255, 0.2);
     transform: translateY(-1px);
   }
 
-  /* Text styles */
-  .game-title {
-    @apply font-bold text-2xl text-white mb-4 font-changa relative;
-    text-shadow: 0 2px 4px rgba(0, 0, 0, 0.5);
-  }
-  
-  .game-subtitle {
-    @apply font-semibold text-xl text-white mb-3 font-changa;
-    text-shadow: 0 2px 3px rgba(0, 0, 0, 0.4);
-  }
-  
-  /* Progress bars */
-  .game-progress-bar {
-    @apply h-2 bg-muted/30 rounded-full overflow-hidden relative;
-    box-shadow: inset 0 1px 3px rgba(0, 0, 0, 0.5);
-  }
-
-  .game-progress-fill {
-    @apply h-full rounded-full relative overflow-hidden;
-    background: linear-gradient(to right, #5aff15, #00ffe1);
-    box-shadow: 0 0 10px rgba(90, 255, 21, 0.4);
-  }
-  
-  .game-progress-fill::after {
-    content: '';
-    position: absolute;
-    inset: 0;
-    background: linear-gradient(90deg, transparent, rgba(255, 255, 255, 0.3), transparent);
-    animation: shine 2s infinite linear;
-  }
-  
   /* Enhanced level bar */
   .level-bar {
     @apply h-3 rounded-full overflow-hidden relative;
@@ -204,7 +198,7 @@
 
   .level-bar-fill {
     height: 100%;
-    background: linear-gradient(to right, #ffce00, #5aff15);
+    background: linear-gradient(to right, #00FFE1, #32FF88);
     border-radius: inherit;
     position: relative;
     overflow: hidden;
@@ -261,56 +255,26 @@
     @apply bg-muted/30 text-white;
   }
   
-  /* Background grid pattern */
-  .cyber-grid {
-    position: absolute;
-    inset: 0;
-    background-image: 
-      linear-gradient(to right, rgba(255, 255, 255, 0.02) 1px, transparent 1px),
-      linear-gradient(to bottom, rgba(255, 255, 255, 0.02) 1px, transparent 1px);
-    background-size: 20px 20px;
-    animation: grid-move 30s linear infinite;
-    z-index: -1;
-    opacity: 0.4;
-  }
-
-  .galaxy-particles {
-    position: absolute;
-    inset: 0;
-    z-index: -1;
-    overflow: hidden;
-  }
-  
-  .particle {
-    position: absolute;
-    width: 2px;
-    height: 2px;
-    border-radius: 50%;
-    background: white;
-    opacity: 0.3;
-    animation: particles-float 15s infinite ease-in-out;
-  }
-  
   /* Stats display */
   .stat-value {
     @apply text-4xl font-bold font-share-tech text-white tracking-wide;
-    text-shadow: 0 2px 10px rgba(255, 255, 255, 0.2);
+    text-shadow: 0 2px 5px rgba(0, 0, 0, 0.5);
     position: relative;
   }
   
   .stat-value.highlight {
-    @apply text-game-highlight;
-    text-shadow: 0 0 10px rgba(90, 255, 21, 0.7);
+    color: #32FF88;
+    text-shadow: 0 0 10px rgba(50, 255, 136, 0.4);
   }
   
   .stat-value.accent {
-    @apply text-game-accent;
-    text-shadow: 0 0 10px rgba(0, 229, 255, 0.7);
+    color: #00FFE1;
+    text-shadow: 0 0 10px rgba(0, 255, 225, 0.4);
   }
   
   .stat-value.primary {
-    @apply text-game-primary;
-    text-shadow: 0 0 10px rgba(255, 60, 111, 0.7);
+    color: #FF4293;
+    text-shadow: 0 0 10px rgba(255, 66, 147, 0.4);
   }
   
   .stat-label {
@@ -331,23 +295,36 @@
     transform-origin: 50% 50%;
   }
 
-  /* Custom borders */  
-  .cyber-border {
+  /* Orbit elements for profile */
+  .orbit-container {
     position: relative;
+    z-index: 1;
   }
   
-  .cyber-border::after {
-    content: '';
+  .orbit-particle {
     position: absolute;
-    inset: -2px;
-    background: linear-gradient(90deg, #ff3c6f, #7122E3, #00e5ff, #ff3c6f);
-    background-size: 300% 100%;
-    border-radius: inherit;
-    z-index: -1;
-    animation: border-rotate 4s linear infinite;
+    width: 4px;
+    height: 4px;
+    background: #00FFE1;
+    border-radius: 50%;
+    animation: orbit 4s infinite linear;
+    box-shadow: 0 0 5px #00FFE1;
+    pointer-events: none;
   }
 
-  /* Subtle hover animations */
+  .orbit-particle:nth-child(2) {
+    background: #FF4293;
+    box-shadow: 0 0 5px #FF4293;
+    animation-delay: -1s;
+  }
+
+  .orbit-particle:nth-child(3) {
+    background: #32FF88;
+    box-shadow: 0 0 5px #32FF88;
+    animation-delay: -2s;
+  }
+  
+  /* Hover effects */
   .hover-scale {
     transition: transform 0.3s ease, box-shadow 0.3s ease;
   }
@@ -356,40 +333,67 @@
     transform: translateY(-3px) scale(1.01);
     box-shadow: 0 10px 20px rgba(0, 0, 0, 0.2);
   }
+
+  /* Course card styles */
+  .course-card {
+    @apply rounded-xl p-5 relative overflow-hidden transition-all duration-300;
+    background: rgba(23, 21, 50, 0.8);
+    box-shadow: 0 4px 15px rgba(0, 0, 0, 0.3);
+    border: 1px solid rgba(255, 255, 255, 0.08);
+  }
   
-  .hover-glow:hover {
-    box-shadow: 0 0 20px currentColor;
-  }
-
-  /* Orbiting particles */
-  .orbit-container {
-    position: relative;
+  .course-card:hover {
+    transform: translateY(-2px);
+    box-shadow: 0 8px 20px rgba(0, 0, 0, 0.4);
+    border: 1px solid rgba(255, 66, 147, 0.2);
   }
   
-  .orbit-particle {
-    position: absolute;
-    width: 4px;
-    height: 4px;
-    background: #00e5ff;
-    border-radius: 50%;
-    animation: orbit 4s infinite linear;
-    box-shadow: 0 0 5px #00e5ff;
+  /* Shop item card */
+  .shop-item {
+    @apply rounded-xl p-5 relative overflow-hidden transition-all duration-300;
+    background: linear-gradient(145deg, rgba(23, 21, 50, 0.8) 0%, rgba(30, 27, 62, 0.9) 100%);
+    box-shadow: 0 4px 15px rgba(0, 0, 0, 0.4);
+    border: 1px solid rgba(255, 255, 255, 0.08);
+  }
+  
+  .shop-item:hover {
+    transform: translateY(-2px);
+    box-shadow: 0 8px 20px rgba(0, 0, 0, 0.4), 0 0 15px rgba(0, 229, 255, 0.2);
+    border: 1px solid rgba(0, 229, 255, 0.2);
+  }
+  
+  .shop-item.premium {
+    border: 1px solid rgba(255, 215, 0, 0.2);
+  }
+  
+  .shop-item.premium:hover {
+    box-shadow: 0 8px 20px rgba(0, 0, 0, 0.4), 0 0 15px rgba(255, 215, 0, 0.2);
+    border: 1px solid rgba(255, 215, 0, 0.3);
   }
 
-  .orbit-particle:nth-child(2) {
-    background: #ff3c6f;
-    box-shadow: 0 0 5px #ff3c6f;
-    animation-delay: -1s;
+  /* Settings page styles */
+  .settings-card {
+    @apply rounded-xl p-5 relative overflow-hidden transition-all duration-300;
+    background: rgba(23, 21, 50, 0.8);
+    box-shadow: 0 4px 15px rgba(0, 0, 0, 0.3);
+    border: 1px solid rgba(255, 255, 255, 0.08);
   }
-
-  .orbit-particle:nth-child(3) {
-    background: #5aff15;
-    box-shadow: 0 0 5px #5aff15;
-    animation-delay: -2s;
+  
+  /* Toggle switch styling */
+  .toggle-switch {
+    @apply relative inline-flex h-6 w-11 items-center rounded-full transition-colors focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2 focus-visible:ring-offset-background disabled:cursor-not-allowed disabled:opacity-50 data-[state=checked]:bg-primary data-[state=unchecked]:bg-muted;
+  }
+  
+  .toggle-switch[data-state="checked"] {
+    background: linear-gradient(to right, #FF4293, #FA64B5);
+  }
+  
+  .toggle-switch-thumb {
+    @apply pointer-events-none block h-5 w-5 rounded-full bg-white shadow-lg ring-0 transition-transform data-[state=checked]:translate-x-5 data-[state=unchecked]:translate-x-0;
   }
 }
 
-/* Keep existing animations */
+/* Animations */
 @keyframes pulse-glow {
   0%, 100% { 
     box-shadow: 0 0 5px 0px currentColor;
@@ -446,6 +450,11 @@
   100% { transform: rotate(360deg) translateX(30px) rotate(-360deg); }
 }
 
+@keyframes counter {
+  0% { transform: translateY(10px); opacity: 0; }
+  100% { transform: translateY(0); opacity: 1; }
+}
+
 @keyframes particles-float {
   0%, 100% { transform: translateY(0) translateX(0); }
   25% { transform: translateY(-10px) translateX(10px); }
@@ -453,7 +462,7 @@
   75% { transform: translateY(15px) translateX(5px); }
 }
 
-/* Keep font classes */
+/* Font family classes */
 .font-share-tech {
   font-family: 'Share Tech Mono', monospace;
 }
@@ -464,4 +473,8 @@
 
 .font-changa {
   font-family: 'Changa', sans-serif;
+}
+
+.font-lexend {
+  font-family: 'Lexend Deca', sans-serif;
 }

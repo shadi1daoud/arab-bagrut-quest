@@ -23,6 +23,7 @@ export default {
 				'changa': ['Changa', 'sans-serif'],
 				'outfit': ['Outfit', 'sans-serif'],
 				'share-tech': ['"Share Tech Mono"', 'monospace'],
+				'lexend': ['Lexend Deca', 'sans-serif'],
 			},
 			colors: {
 				border: 'hsl(var(--border))',
@@ -68,21 +69,21 @@ export default {
 					border: 'hsl(var(--sidebar-border))',
 					ring: 'hsl(var(--sidebar-ring))'
 				},
-				// Game theme colors - more balanced and impactful
+				// Game theme colors - refined for Neo-Arena style
 				game: {
-					primary: '#FF3C6F',         // Main action (bright pink)
-					secondary: '#7122E3',       // Secondary actions (deep purple)
-					accent: '#00E5FF',          // Highlights and special elements (cyan)
-					highlight: '#5AFF15',       // Success and positive elements (lime green)
-					background: '#0A0A14',      // Darker background 
-					'card-bg': '#12121E',       // Card background (slightly lighter)
-					'card-bg-alt': '#181830',   // Alternative card background
+					primary: '#FF4293',       // Main action (hot pink)
+					secondary: '#7122E3',     // Secondary actions (deep purple)
+					accent: '#00FFE1',        // Highlights (electric cyan)
+					highlight: '#32FF88',     // Success elements (lime green)
+					background: '#0F0C1D',    // Dark base background
+					'card-bg': '#171532',     // Card background
+					'card-bg-alt': '#1E1B3E', // Alternative card background
 					'text-primary': '#FFFFFF',  // Main text
 					'text-secondary': '#B8B8FF', // Secondary text
-					success: '#5AFF15',         // Success indicators
-					danger: '#FF3C6F',          // Danger/error indicators
-					info: '#00E5FF',            // Information indicators
-					warning: '#FFD700',         // Warning indicators
+					success: '#32FF88',       // Success indicators
+					danger: '#FF4293',        // Danger/error indicators
+					info: '#00FFE1',          // Information indicators
+					warning: '#FFD700',       // Warning indicators
 				}
 			},
 			borderRadius: {
@@ -101,11 +102,11 @@ export default {
 				},
 				'pulse-glow': {
 					'0%, 100%': { 
-						boxShadow: '0 0 5px 0px #FF3C6F',
+						boxShadow: '0 0 5px 0px #FF4293',
 						opacity: '0.8'
 					},
 					'50%': { 
-						boxShadow: '0 0 15px 5px #FF3C6F',
+						boxShadow: '0 0 15px 5px #FF4293',
 						opacity: '1'
 					}
 				},

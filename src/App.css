@@ -13,10 +13,10 @@
   transition: filter 300ms;
 }
 .logo:hover {
-  filter: drop-shadow(0 0 2em rgba(255, 60, 111, 0.7));
+  filter: drop-shadow(0 0 2em rgba(255, 66, 147, 0.7));
 }
 .logo.react:hover {
-  filter: drop-shadow(0 0 2em rgba(0, 229, 255, 0.7));
+  filter: drop-shadow(0 0 2em rgba(0, 255, 225, 0.7));
 }
 
 @keyframes logo-spin {
@@ -44,92 +44,38 @@
 
 /* Game UI - Neo Arena Theme */
 
-/* Cyberpunk-style button */
-.cyber-button {
-  position: relative;
-  background: rgba(10, 10, 20, 0.3);
-  border: 1px solid rgba(0, 229, 255, 0.3);
-  color: #00e5ff;
-  padding: 0.75em 2em;
-  text-transform: uppercase;
-  letter-spacing: 1px;
-  font-weight: bold;
-  border-radius: 4px;
-  box-shadow: 0 0 10px rgba(0, 229, 255, 0.2);
+/* Level bar styling */
+.level-bar {
+  height: 6px;
+  background-color: rgba(15, 12, 29, 0.6);
+  border-radius: 3px;
   overflow: hidden;
-  transition: all 0.3s ease;
+  position: relative;
+  box-shadow: inset 0 1px 2px rgba(0, 0, 0, 0.5);
 }
 
-.cyber-button:hover {
-  background: rgba(0, 229, 255, 0.1);
-  box-shadow: 0 0 15px rgba(0, 229, 255, 0.3);
+.level-bar-fill {
+  height: 100%;
+  background: linear-gradient(to right, #00FFE1, #32FF88);
+  border-radius: inherit;
+  position: relative;
 }
 
-.cyber-button::before {
+.level-bar-fill::after {
   content: '';
   position: absolute;
   top: 0;
   left: -100%;
   width: 100%;
   height: 100%;
-  background: linear-gradient(
-    90deg,
-    transparent,
-    rgba(0, 229, 255, 0.2),
-    transparent
-  );
-  transition: all 0.6s ease;
-}
-
-.cyber-button:hover::before {
-  left: 100%;
-}
-
-/* Neon text effects - used sparingly */
-.neon-text-blue {
-  color: #fff;
-  text-shadow: 
-    0 0 2px #00e5ff,
-    0 0 5px #00e5ff;
-}
-
-.neon-text-purple {
-  color: #fff;
-  text-shadow: 
-    0 0 2px #7122E3,
-    0 0 5px #7122E3;
-}
-
-.neon-text-pink {
-  color: #fff;
-  text-shadow: 
-    0 0 2px #ff3c6f,
-    0 0 5px #ff3c6f;
-}
-
-/* Progress bar animation for XP */
-.xp-progress {
-  position: relative;
-  height: 6px;
-  background-color: rgba(0, 0, 0, 0.3);
-  border-radius: 3px;
-  overflow: hidden;
-  margin: 8px 0;
-}
-
-.xp-fill {
-  position: absolute;
-  top: 0;
-  left: 0;
-  height: 100%;
-  background: linear-gradient(to right, #a020f0, #ff3c6f);
-  border-radius: inherit;
+  background: linear-gradient(90deg, transparent, rgba(255, 255, 255, 0.3), transparent);
+  animation: shine 2s infinite linear;
 }
 
 /* XP gain animation */
 .xp-gain {
   position: absolute;
-  color: #5aff15;
+  color: #32FF88;
   font-weight: bold;
   animation: xp-popup 1.5s ease-out forwards;
   pointer-events: none;
@@ -166,35 +112,166 @@
   animation: digital-counter 0.5s ease-out forwards;
 }
 
-/* Game status cards and indicators */
-.status-indicator {
-  position: relative;
-  width: 10px;
-  height: 10px;
+/* Background elements */
+.galaxy-particles .particle {
+  position: absolute;
   border-radius: 50%;
+  background: white;
+  opacity: 0.4;
+  animation: particles-float 15s infinite ease-in-out;
 }
 
-.status-indicator.online {
-  background-color: #5aff15;
-  box-shadow: 0 0 10px #5aff15;
+.cyber-grid {
+  background-image: 
+    linear-gradient(to right, rgba(99, 102, 241, 0.03) 1px, transparent 1px),
+    linear-gradient(to bottom, rgba(99, 102, 241, 0.03) 1px, transparent 1px);
+  background-size: 25px 25px;
+  animation: grid-move 30s linear infinite;
 }
 
-.status-indicator.away {
-  background-color: #ffd700;
-  box-shadow: 0 0 10px #ffd700;
+/* Orbit effects */
+.orbit-container {
+  position: relative;
 }
 
-.status-indicator.offline {
+.orbit-particle {
+  position: absolute;
+  width: 4px;
+  height: 4px;
+  border-radius: 50%;
+  animation: orbit 4s infinite linear;
+}
+
+.orbit-particle:nth-child(1) {
+  background: #00FFE1;
+  box-shadow: 0 0 5px #00FFE1;
+}
+
+.orbit-particle:nth-child(2) {
+  background: #FF4293;
+  box-shadow: 0 0 5px #FF4293;
+  animation-delay: -1s;
+}
+
+.orbit-particle:nth-child(3) {
+  background: #32FF88;
+  box-shadow: 0 0 5px #32FF88;
+  animation-delay: -2s;
+}
+
+/* Animation keyframes */
+@keyframes shine {
+  0% { left: -100%; }
+  100% { left: 100%; }
+}
+
+@keyframes particles-float {
+  0%, 100% { transform: translateY(0) translateX(0); }
+  25% { transform: translateY(-10px) translateX(10px); }
+  50% { transform: translateY(-5px) translateX(-15px); }
+  75% { transform: translateY(15px) translateX(5px); }
+}
+
+@keyframes grid-move {
+  0% { background-position: 0 0; }
+  100% { background-position: 25px 25px; }
+}
+
+@keyframes orbit {
+  0% { transform: rotate(0deg) translateX(30px) rotate(0deg); }
+  100% { transform: rotate(360deg) translateX(30px) rotate(-360deg); }
+}
+
+/* Neo-arena styled components */
+
+/* Toggle switch for settings */
+.toggle-switch {
+  position: relative;
+  width: 44px;
+  height: 24px;
+  background-color: rgba(30, 27, 60, 0.5);
+  border-radius: 12px;
+  transition: background-color 0.3s;
+  border: 1px solid rgba(255, 255, 255, 0.1);
+  display: flex;
+  align-items: center;
+  padding: 2px;
+}
+
+.toggle-switch[data-state="checked"] {
+  background: linear-gradient(to right, #FF4293, #FA64B5);
+}
+
+.toggle-switch-thumb {
+  width: 18px;
+  height: 18px;
+  background-color: #ffffff;
+  border-radius: 50%;
+  transition: transform 0.3s, box-shadow 0.3s;
+  box-shadow: 0 1px 3px rgba(0, 0, 0, 0.4);
+}
+
+.toggle-switch[data-state="checked"] .toggle-switch-thumb {
+  transform: translateX(20px);
+  box-shadow: 0 1px 5px rgba(255, 66, 147, 0.5);
+}
+
+/* Cyberpunk-style hover effects */
+.hover-scale {
+  transition: transform 0.3s ease, box-shadow 0.3s ease;
+}
+
+.hover-scale:hover {
+  transform: translateY(-3px) scale(1.01);
+  box-shadow: 0 10px 20px rgba(0, 0, 0, 0.2);
+}
+
+/* Form elements styling */
+input, select {
+  background-color: rgba(23, 21, 50, 0.8);
+  border: 1px solid rgba(255, 255, 255, 0.1);
+  color: white;
+  padding: 0.75rem 1rem;
+  border-radius: 0.5rem;
+  transition: all 0.3s ease;
+}
+
+input:focus, select:focus {
+  outline: none;
+  border-color: rgba(255, 66, 147, 0.5);
+  box-shadow: 0 0 0 2px rgba(255, 66, 147, 0.2);
+}
+
+/* Status indicators */
+.status-online {
+  position: absolute;
+  bottom: 0;
+  left: 0;
+  width: 12px;
+  height: 12px;
+  background-color: #32FF88;
+  border-radius: 50%;
+  border: 2px solid rgba(15, 12, 29, 0.8);
+  box-shadow: 0 0 5px rgba(50, 255, 136, 0.5);
+}
+
+.status-offline {
+  position: absolute;
+  bottom: 0;
+  left: 0;
+  width: 12px;
+  height: 12px;
   background-color: #888;
-  box-shadow: 0 0 5px #888;
+  border-radius: 50%;
+  border: 2px solid rgba(15, 12, 29, 0.8);
 }
 
-/* Valorant-style notification badge */
+/* Notification badge */
 .notification-badge {
   position: absolute;
   top: -5px;
   right: -5px;
-  background: linear-gradient(to bottom right, #ff3c6f, #ff3c9f);
+  background: linear-gradient(to right, #FF4293, #FA64B5);
   color: white;
   border-radius: 50%;
   width: 18px;
@@ -203,31 +280,59 @@
   display: flex;
   align-items: center;
   justify-content: center;
-  box-shadow: 0 0 10px rgba(255, 60, 111, 0.6);
+  box-shadow: 0 0 10px rgba(255, 66, 147, 0.4);
 }
 
-/* Fortnite-style level badge */
+/* Level badge */
 .level-badge {
   position: absolute;
   bottom: -8px;
   right: -8px;
-  background: linear-gradient(to bottom right, #00e5ff, #0091ff);
-  color: white;
+  background: linear-gradient(to right, #00FFE1, #32FF88);
+  color: #0F0C1D;
+  font-weight: bold;
   border-radius: 20%;
   padding: 2px 6px;
   font-size: 12px;
-  box-shadow: 0 0 10px rgba(0, 229, 255, 0.6);
+  box-shadow: 0 0 10px rgba(0, 255, 225, 0.4);
   font-family: 'Share Tech Mono', monospace;
 }
 
-/* Neo-arena rank flag */
-.rank-flag {
-  position: relative;
-  display: inline-block;
-  background: linear-gradient(135deg, #7122E3, #111122);
-  color: white;
-  padding: 3px 8px;
-  font-size: 12px;
-  font-weight: bold;
-  clip-path: polygon(0 0, 100% 0, 100% 70%, 85% 100%, 0 100%);
+/* Page transitions */
+.page-transition-enter {
+  opacity: 0;
+  transform: scale(0.95);
+}
+
+.page-transition-enter-active {
+  opacity: 1;
+  transform: scale(1);
+  transition: opacity 300ms, transform 300ms;
+}
+
+.page-transition-exit {
+  opacity: 1;
+  transform: scale(1);
+}
+
+.page-transition-exit-active {
+  opacity: 0;
+  transform: scale(0.95);
+  transition: opacity 300ms, transform 300ms;
+}
+
+/* Settings page specific styles */
+.settings-card {
+  background: rgba(23, 21, 50, 0.7);
+  box-shadow: 0 4px 15px rgba(0, 0, 0, 0.3);
+  border: 1px solid rgba(255, 255, 255, 0.05);
+  border-radius: 0.75rem;
+  padding: 1.5rem;
+  backdrop-filter: blur(8px);
+  transition: all 0.3s ease;
+}
+
+.settings-card:hover {
+  box-shadow: 0 8px 25px rgba(0, 0, 0, 0.4);
+  border: 1px solid rgba(255, 255, 255, 0.08);
 }
