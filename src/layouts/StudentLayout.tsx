@@ -1,3 +1,4 @@
+
 import { useState, useEffect } from 'react';
 import { Outlet, NavLink, useLocation } from 'react-router-dom';
 import { Home, BookOpen, ShoppingCart, Users, Settings, LogOut, Menu, X, Bell, Search, Flame } from 'lucide-react';
@@ -33,18 +34,23 @@ const StudentLayout = () => {
         )}
       >
         <div className={cn(
-          "flex items-center justify-center w-8 h-8 rounded-lg",
-          isActive ? "bg-secondary/40 text-white" : "bg-muted/30 text-gray-400"
+          "flex items-center justify-center w-8 h-8 rounded-lg transition-all",
+          isActive 
+            ? "bg-secondary/40 text-white animate-pulse-glow" 
+            : "bg-muted/30 text-gray-400"
         )}>
           <Icon className="h-5 w-5" />
         </div>
-        <span>{label}</span>
+        <span className={isActive ? "font-medium" : ""}>{label}</span>
       </NavLink>
     );
   };
 
   return (
     <div className="min-h-screen bg-transparent flex">
+      {/* Cyber grid background */}
+      <div className="cyber-grid"></div>
+      
       {/* Sidebar - fixed on desktop, sliding on mobile */}
       <aside 
         className={cn(
@@ -53,21 +59,21 @@ const StudentLayout = () => {
         )}
       >
         <div className="p-4 mb-2 flex justify-center">
-          <div className="flex items-center gap-2">
-            <div className="bg-primary rounded-lg p-1.5">
+          <div className="flex items-center gap-2 hover-scale">
+            <div className="bg-primary rounded-lg p-1.5 animate-glow">
               <svg width="16" height="16" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
                 <path d="M21 10C21 10 18.995 7.26822 17.3662 5.63824C15.7373 4.00827 13.4864 3 11 3C6.02944 3 2 7.02944 2 12C2 16.9706 6.02944 21 11 21C15.9706 21 20 16.9706 20 12" stroke="white" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"/>
                 <path d="M22 2L13 11" stroke="white" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"/>
               </svg>
             </div>
-            <span className="text-white text-2xl font-bold">درسني</span>
+            <span className="text-white text-2xl font-bold font-changa">درسني</span>
           </div>
         </div>
         
         {user && (
-          <div className="px-4 py-3 flex flex-col items-center">
+          <div className="px-4 py-3 flex flex-col items-center relative">
             <div className="relative mb-3">
-              <div className="h-20 w-20 rounded-full overflow-hidden border-2 border-accent/50 shadow-lg shadow-accent/20">
+              <div className="h-20 w-20 rounded-full overflow-hidden border-2 border-accent/50 shadow-lg shadow-accent/20 cyber-border">
                 {user?.avatar ? (
                   <img src={user.avatar} alt={user.name} className="h-full w-full object-cover" />
                 ) : (
@@ -76,14 +82,16 @@ const StudentLayout = () => {
                   </div>
                 )}
               </div>
+              <div className="absolute -top-1 -right-1 h-6 w-6 bg-game-primary rounded-full flex items-center justify-center animate-pulse-glow text-white text-xs font-bold shadow-lg shadow-game-primary/50">5</div>
             </div>
             
-            <h2 className="text-white font-bold text-lg">{user?.name || 'Shadi Daoud'}</h2>
+            <h2 className="text-white font-bold text-lg font-changa">{user?.name || 'Shadi Daoud'}</h2>
             <p className="text-game-text-secondary text-sm">{user?.grade || 'المحطة'}</p>
             
-            <div className="w-full mt-3">
+            <div className="w-full mt-3 relative">
               <div className="flex justify-between items-center text-sm mb-1">
-                <span className="text-game-highlight font-medium">Lv 5</span>
+                <span className="text-game-highlight font-medium font-share-tech animate-glow">Lv 5</span>
+                <span className="text-xs text-blue-300 font-share-tech">2450 / 3000</span>
               </div>
               
               <div className="level-bar">
@@ -104,9 +112,9 @@ const StudentLayout = () => {
         <div className="p-4 mt-auto">
           <button 
             onClick={logout}
-            className="flex items-center gap-3 w-full text-gray-400 hover:text-white transition-all p-3 rounded-lg hover:bg-muted/30"
+            className="flex items-center gap-3 w-full text-gray-400 hover:text-white transition-all p-3 rounded-lg hover:bg-muted/30 group"
           >
-            <LogOut className="h-5 w-5" />
+            <LogOut className="h-5 w-5 group-hover:animate-pulse" />
             <span>تسجيل الخروج</span>
           </button>
         </div>
@@ -115,7 +123,7 @@ const StudentLayout = () => {
       {/* Main content area */}
       <div className="flex-1 flex flex-col">
         {/* Header */}
-        <header className="bg-card/50 backdrop-blur-md py-3 px-4 flex justify-between items-center">
+        <header className="bg-card/50 backdrop-blur-md py-3 px-4 flex justify-between items-center border-b border-indigo-900/30">
           <div className="flex items-center">
             <button
               onClick={() => setIsMobileMenuOpen(!isMobileMenuOpen)}
@@ -130,25 +138,34 @@ const StudentLayout = () => {
               </div>
               <input
                 type="search"
-                className="bg-muted/30 border border-muted text-white text-sm rounded-full block w-80 pr-10 p-2.5 placeholder-gray-500"
+                className="bg-muted/30 border border-muted text-white text-sm rounded-full block w-80 pr-10 p-2.5 placeholder-gray-500 focus:ring-1 focus:ring-accent/50 focus:border-accent/50 transition-all"
                 placeholder="ابحث..."
               />
             </div>
           </div>
           
-          <div className="flex items-center gap-4">
+          <div className="flex items-center gap-6">
             {user && (
               <>
-                <button className="relative text-gray-400 hover:text-white">
-                  <Bell className="h-5 w-5" />
-                  <span className="absolute -top-1 -right-1 bg-primary w-4 h-4 rounded-full text-xs flex items-center justify-center">
-                    3
-                  </span>
-                </button>
+                <div className="flex items-center gap-4">
+                  <div className="flex items-center gap-2 bg-muted/30 py-1 px-3 rounded-full">
+                    <Flame className="h-4 w-4 text-orange-400 animate-pulse" />
+                    <span className="text-white font-share-tech text-sm">12</span>
+                  </div>
+                  
+                  <div className="hidden md:block h-5 w-px bg-muted/50"></div>
+                  
+                  <button className="relative text-gray-400 hover:text-white group">
+                    <Bell className="h-5 w-5 group-hover:animate-pulse" />
+                    <span className="absolute -top-1 -right-1 bg-primary w-4 h-4 rounded-full text-xs flex items-center justify-center animate-pulse-glow">
+                      3
+                    </span>
+                  </button>
+                </div>
                 
                 <div className="text-white">
-                  <span className="text-game-accent animate-pulse">👋 أهلاً بعودتك،</span>
-                  <span className="mr-1">{user?.name?.split(' ')[0] || 'شادي'}</span>
+                  <span className="text-game-accent animate-pulse mr-1 font-changa">👋 أهلاً بعودتك،</span>
+                  <span className="mr-1 font-changa">{user?.name?.split(' ')[0] || 'شادي'}</span>
                 </div>
               </>
             )}

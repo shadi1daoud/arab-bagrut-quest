@@ -42,7 +42,7 @@
   color: #888;
 }
 
-/* Space theme specific animations */
+/* Cyber theme specific animations */
 @keyframes glow {
   0%, 100% {
     filter: drop-shadow(0 0 5px currentColor);
@@ -56,20 +56,229 @@
   animation: glow 2s ease-in-out infinite;
 }
 
-/* Pixel grid animation for background (subtle) */
-.pixel-grid {
-  background-size: 20px 20px;
+/* Hex grid background */
+.hex-grid {
+  background-color: #0F0F1A;
   background-image: 
-    linear-gradient(to right, rgba(255, 255, 255, 0.03) 1px, transparent 1px),
-    linear-gradient(to bottom, rgba(255, 255, 255, 0.03) 1px, transparent 1px);
-  animation: grid-move 20s linear infinite;
+    repeating-linear-gradient(120deg, rgba(255,255,255,.1), rgba(255,255,255,.1) 1px, transparent 1px, transparent 60px),
+    repeating-linear-gradient(60deg, rgba(255,255,255,.1), rgba(255,255,255,.1) 1px, transparent 1px, transparent 60px),
+    linear-gradient(60deg, rgba(0,0,0,.1) 25%, transparent 25%, transparent 75%, rgba(0,0,0,.1) 75%, rgba(0,0,0,.1)),
+    linear-gradient(120deg, rgba(0,0,0,.1) 25%, transparent 25%, transparent 75%, rgba(0,0,0,.1) 75%, rgba(0,0,0,.1));
+  background-size: 70px 120px;
+  animation: hex-move 60s linear infinite;
 }
 
-@keyframes grid-move {
+@keyframes hex-move {
   0% {
-    background-position: 0 0;
+    background-position: 0 0, 0 0, 0 0, 0 0;
   }
   100% {
-    background-position: 20px 20px;
+    background-position: 70px 0, 70px 0, 35px 61px, 35px 61px;
+  }
+}
+
+/* Floating elements animation */
+.floating {
+  animation: floating 5s ease-in-out infinite;
+}
+
+@keyframes floating {
+  0%, 100% {
+    transform: translateY(0) translateX(0);
+  }
+  25% {
+    transform: translateY(-5px) translateX(3px);
+  }
+  50% {
+    transform: translateY(0) translateX(0);
+  }
+  75% {
+    transform: translateY(5px) translateX(-3px);
+  }
+}
+
+/* Game UI elements */
+.health-bar {
+  height: 8px;
+  width: 100%;
+  background-color: rgba(0, 0, 0, 0.3);
+  border-radius: 4px;
+  overflow: hidden;
+  position: relative;
+  box-shadow: inset 0 0 5px rgba(0, 0, 0, 0.5);
+}
+
+.health-bar-fill {
+  height: 100%;
+  background: linear-gradient(to right, #ff3c6f, #ff3c9f);
+  border-radius: inherit;
+  transition: width 0.5s ease;
+}
+
+.mana-bar {
+  height: 8px;
+  width: 100%;
+  background-color: rgba(0, 0, 0, 0.3);
+  border-radius: 4px;
+  overflow: hidden;
+  position: relative;
+  box-shadow: inset 0 0 5px rgba(0, 0, 0, 0.5);
+}
+
+.mana-bar-fill {
+  height: 100%;
+  background: linear-gradient(to right, #00aaff, #00e5ff);
+  border-radius: inherit;
+  transition: width 0.5s ease;
+}
+
+/* Cyberpunk-style button */
+.cyber-button {
+  position: relative;
+  background: rgba(0, 0, 0, 0.2);
+  border: 1px solid rgba(0, 229, 255, 0.5);
+  color: #00e5ff;
+  padding: 0.75em 2em;
+  text-transform: uppercase;
+  letter-spacing: 1px;
+  font-weight: bold;
+  border-radius: 4px;
+  box-shadow: 0 0 10px rgba(0, 229, 255, 0.3);
+  overflow: hidden;
+  transition: all 0.3s ease;
+}
+
+.cyber-button:hover {
+  background: rgba(0, 229, 255, 0.1);
+  box-shadow: 0 0 20px rgba(0, 229, 255, 0.5);
+}
+
+.cyber-button::before {
+  content: '';
+  position: absolute;
+  top: 0;
+  left: -100%;
+  width: 100%;
+  height: 100%;
+  background: linear-gradient(
+    90deg,
+    transparent,
+    rgba(0, 229, 255, 0.2),
+    transparent
+  );
+  transition: all 0.6s ease;
+}
+
+.cyber-button:hover::before {
+  left: 100%;
+}
+
+/* Neon text */
+.neon-text-blue {
+  color: #fff;
+  text-shadow: 
+    0 0 5px #00e5ff,
+    0 0 10px #00e5ff,
+    0 0 15px #00e5ff;
+}
+
+.neon-text-purple {
+  color: #fff;
+  text-shadow: 
+    0 0 5px #a020f0,
+    0 0 10px #a020f0,
+    0 0 15px #a020f0;
+}
+
+.neon-text-pink {
+  color: #fff;
+  text-shadow: 
+    0 0 5px #ff3c6f,
+    0 0 10px #ff3c6f,
+    0 0 15px #ff3c6f;
+}
+
+/* Animated frame borders */
+.cyber-frame {
+  position: relative;
+  z-index: 1;
+}
+
+.cyber-frame::before {
+  content: '';
+  position: absolute;
+  top: -2px;
+  right: -2px;
+  bottom: -2px;
+  left: -2px;
+  background: linear-gradient(45deg, #ff3c6f, #a020f0, #00e5ff, #ff3c6f);
+  background-size: 400% 400%;
+  z-index: -1;
+  border-radius: inherit;
+  animation: gradient-border 3s ease infinite;
+}
+
+@keyframes gradient-border {
+  0% {
+    background-position: 0% 50%;
+  }
+  50% {
+    background-position: 100% 50%;
+  }
+  100% {
+    background-position: 0% 50%;
+  }
+}
+
+/* Circuit board pattern */
+.circuit-pattern {
+  background-color: rgba(10, 10, 20, 0.8);
+  background-image: 
+    linear-gradient(rgba(0, 229, 255, 0.1) 1px, transparent 1px),
+    linear-gradient(90deg, rgba(0, 229, 255, 0.1) 1px, transparent 1px);
+  background-size: 20px 20px;
+  background-position: -1px -1px;
+}
+
+/* Progress Bars */
+.xp-progress {
+  position: relative;
+  height: 6px;
+  background-color: rgba(0, 0, 0, 0.3);
+  border-radius: 3px;
+  overflow: hidden;
+  margin: 8px 0;
+}
+
+.xp-fill {
+  position: absolute;
+  top: 0;
+  left: 0;
+  height: 100%;
+  background: linear-gradient(to right, #a020f0, #ff3c6f);
+  border-radius: inherit;
+}
+
+/* XP gain animation */
+.xp-gain {
+  position: absolute;
+  color: #5aff15;
+  font-weight: bold;
+  animation: xp-popup 1.5s ease-out forwards;
+  pointer-events: none;
+  font-family: 'Share Tech Mono', monospace;
+}
+
+@keyframes xp-popup {
+  0% {
+    opacity: 0;
+    transform: translateY(0);
+  }
+  20% {
+    opacity: 1;
+  }
+  100% {
+    opacity: 0;
+    transform: translateY(-30px);
   }
 }
