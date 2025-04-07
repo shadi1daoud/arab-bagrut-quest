@@ -1,6 +1,6 @@
 
 import { useState } from 'react';
-import { Search, Trophy, MessageCircle, Flame, ArrowUpRight, Users, Shield } from 'lucide-react';
+import { Search, Trophy, MessageCircle, Flame, ArrowUpRight, Users, Shield, Clock, Activity } from 'lucide-react';
 import { motion } from 'framer-motion';
 import { Tab } from '@headlessui/react';
 
