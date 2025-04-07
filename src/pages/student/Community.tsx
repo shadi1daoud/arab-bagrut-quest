@@ -1,481 +1,433 @@
+
 import { useState } from 'react';
-import { useAuth } from '@/contexts/AuthContext';
-import { Search, Trophy, Star, Users, UserPlus, Crown, Award, MessageCircle, BookOpen, Activity } from 'lucide-react';
-import { useToast } from '@/hooks/use-toast';
+import { Search, Trophy, MessageCircle, Flame, ArrowUpRight, Users, Shield } from 'lucide-react';
 import { motion } from 'framer-motion';
-import { Avatar, AvatarImage, AvatarFallback } from '@/components/ui/avatar';
-import { HoverCard, HoverCardTrigger, HoverCardContent } from '@/components/ui/hover-card';
+import { Tab } from '@headlessui/react';
 
-// Friends data
-interface Friend {
-  id: string;
-  name: string;
-  avatar?: string;
-  level: number;
-  xp: number;
-  streak: number;
-  isOnline: boolean;
-  status?: 'top' | 'active' | 'studying';
-}
-
-// Leaderboard entry interface
-interface LeaderboardEntry {
-  id: string;
-  name: string;
-  avatar?: string;
-  xp: number;
-  rank: number;
-  badge?: 'gold' | 'silver' | 'bronze';
-  growth?: 'up' | 'down' | 'same';
-}
-
-const FRIENDS_DATA: Friend[] = [
-  {
-    id: 'f1',
-    name: 'أحمد محمود',
-    avatar: '👦',
-    level: 5,
-    xp: 12500,
-    streak: 15,
-    isOnline: true,
-    status: 'top',
-  },
-  {
-    id: 'f2',
-    name: 'سارة حسن',
-    avatar: '👧',
-    level: 6,
-    xp: 14200,
-    streak: 30,
-    isOnline: false,
-    status: 'studying',
-  },
-  {
-    id: 'f3',
-    name: 'محمد علي',
-    avatar: '👨',
-    level: 4,
-    xp: 7800,
-    streak: 5,
-    isOnline: true,
-  },
-  {
-    id: 'f4',
-    name: 'ليلى عمر',
-    avatar: '👩',
-    level: 7,
-    xp: 16300,
-    streak: 25,
-    isOnline: false,
-    status: 'active',
-  },
+// Sample data
+const FRIENDS_DATA = [
+  { id: 1, name: 'أحمد محمود', avatar: '👦', level: 8, online: true, streak: 12, status: 'يدرس الرياضيات الآن', lastActive: 'الآن' },
+  { id: 2, name: 'سارة حسن', avatar: '👧', level: 10, online: true, streak: 5, status: 'متاحة للتحدي', lastActive: 'الآن' },
+  { id: 3, name: 'محمد علي', avatar: '👨', level: 7, online: false, streak: 3, status: null, lastActive: 'قبل 20 دقيقة' },
+  { id: 4, name: 'ليلى عمر', avatar: '👩', level: 12, online: false, streak: 0, status: null, lastActive: 'قبل 3 ساعات' },
+  { id: 5, name: 'يوسف أحمد', avatar: '👨‍🎓', level: 15, online: false, streak: 8, status: null, lastActive: 'قبل يوم' },
 ];
 
-const LEADERBOARD_DATA: LeaderboardEntry[] = [
-  {
-    id: 'l1',
-    name: 'سارة حسن',
-    avatar: '👧',
-    xp: 14200,
-    rank: 1,
-    badge: 'gold',
-    growth: 'same',
-  },
-  {
-    id: 'l2',
-    name: 'ليلى عمر',
-    avatar: '👩',
-    xp: 16300,
-    rank: 2,
-    badge: 'silver',
-    growth: 'up',
-  },
-  {
-    id: 'f1',
-    name: 'شادي داود',
-    avatar: '👨‍🎓',
-    xp: 8966,
-    rank: 3,
-    badge: 'bronze',
-    growth: 'down',
-  },
-  {
-    id: 'l3',
-    name: 'أحمد محمود',
-    avatar: '👦',
-    xp: 12500,
-    rank: 4,
-    growth: 'up',
-  },
-  {
-    id: 'l4',
-    name: 'محمد علي',
-    avatar: '👨',
-    xp: 7800,
-    rank: 5,
-    growth: 'down',
-  },
+const LEADERBOARD_DATA = [
+  { id: 1, name: 'رامي سعيد', avatar: '👨‍🎓', level: 21, xp: 28950, subjects: ['رياضيات', 'فيزياء'], badge: 'legendary', rank: 1 },
+  { id: 2, name: 'ليان خالد', avatar: '👩‍🎓', level: 19, xp: 25600, subjects: ['أحياء', 'كيمياء'], badge: 'expert', rank: 2 },
+  { id: 3, name: 'أحمد محمود', avatar: '👦', level: 18, xp: 24100, subjects: ['رياضيات', 'لغة إنجليزية'], badge: 'master', rank: 3 },
+  { id: 4, name: 'سارة حسن', avatar: '👧', level: 16, xp: 19500, subjects: ['فيزياء'], badge: 'rising', rank: 4 },
+  { id: 5, name: 'محمد علي', avatar: '👨', level: 15, xp: 18200, subjects: ['أحياء', 'كيمياء'], badge: 'consistent', rank: 5 },
+  { id: 6, name: 'شادي داود', avatar: '👨‍💻', level: 14, xp: 16800, subjects: ['رياضيات'], badge: 'creative', rank: 6 },
+  { id: 7, name: 'لينا كريم', avatar: '👩', level: 13, xp: 15350, subjects: ['لغة عربية'], badge: null, rank: 7 },
+  { id: 8, name: 'يوسف أحمد', avatar: '👨‍🎓', level: 12, xp: 12900, subjects: ['تاريخ'], badge: null, rank: 8 },
+  { id: 9, name: 'نور ماجد', avatar: '👧', level: 10, xp: 11500, subjects: ['جغرافيا'], badge: null, rank: 9 },
+  { id: 10, name: 'عمر سامي', avatar: '👦', level: 9, xp: 10200, subjects: ['علوم'], badge: null, rank: 10 },
 ];
+
+const COMMUNITY_CHALLENGES = [
+  { id: 1, title: 'تحدي الرياضيات الأسبوعي', participants: 24, difficulty: 'medium', reward: 250, timeLeft: '1 يوم', icon: '🧮' },
+  { id: 2, title: 'سباق حل المعادلات', participants: 18, difficulty: 'hard', reward: 350, timeLeft: '5 ساعات', icon: '⚡' },
+  { id: 3, title: 'اختبار المفردات الإنجليزية', participants: 32, difficulty: 'easy', reward: 150, timeLeft: '3 أيام', icon: '🔤' },
+];
+
+const getBadgeStyle = (badge: string | null) => {
+  switch(badge) {
+    case 'legendary':
+      return { icon: '👑', color: 'text-yellow-400', bg: 'bg-yellow-500/20' };
+    case 'expert':
+      return { icon: '🏆', color: 'text-purple-400', bg: 'bg-purple-500/20' };  
+    case 'master':
+      return { icon: '⭐', color: 'text-blue-400', bg: 'bg-blue-500/20' };
+    case 'rising':
+      return { icon: '📈', color: 'text-green-400', bg: 'bg-green-500/20' };
+    case 'consistent':
+      return { icon: '🔄', color: 'text-cyan-400', bg: 'bg-cyan-500/20' };
+    case 'creative':
+      return { icon: '💡', color: 'text-pink-400', bg: 'bg-pink-500/20' };
+    default:
+      return null;
+  }
+};
+
+const getDifficultyStyle = (difficulty: string) => {
+  switch(difficulty) {
+    case 'easy':
+      return { color: 'text-green-400', bg: 'bg-green-500/20' };
+    case 'medium':
+      return { color: 'text-blue-400', bg: 'bg-blue-500/20' };
+    case 'hard':
+      return { color: 'text-red-400', bg: 'bg-red-500/20' };
+    default:
+      return { color: 'text-gray-400', bg: 'bg-gray-500/20' };
+  }
+};
 
 const Community = () => {
-  const { user } = useAuth();
   const [searchTerm, setSearchTerm] = useState('');
-  const [activeTab, setActiveTab] = useState<'friends' | 'leaderboard'>('friends');
-  const [filterBy, setFilterBy] = useState<'all' | 'online'>('all');
-  const { toast } = useToast();
+  const [selectedTimeRange, setSelectedTimeRange] = useState('week');
   
-  // Filter friends based on search and online status
-  const filteredFriends = FRIENDS_DATA.filter(friend => {
-    if (filterBy === 'online' && !friend.isOnline) return false;
-    return friend.name.includes(searchTerm);
-  });
-  
-  const handleSendInvite = () => {
-    toast({
-      title: "تم إرسال الدعوة",
-      description: "تم إرسال دعوة الصداقة بنجاح",
-    });
+  // Animation variants
+  const containerVariants = {
+    hidden: { opacity: 0 },
+    show: {
+      opacity: 1,
+      transition: {
+        staggerChildren: 0.05
+      }
+    }
   };
   
-  const handleSendMessage = (friendName: string) => {
-    toast({
-      title: "رسالة جديدة",
-      description: `تم إرسال رسالة إلى ${friendName}`,
-    });
+  const itemVariants = {
+    hidden: { opacity: 0, y: 5 },
+    show: { opacity: 1, y: 0 }
   };
   
-  const handleAddFriend = (id: string) => {
-    toast({
-      title: "تمت الإضافة",
-      description: "تمت إضافة الصديق بنجاح",
-    });
-  };
+  // Filter friends
+  const filteredFriends = FRIENDS_DATA.filter(friend => 
+    friend.name.includes(searchTerm)
+  );
 
   return (
-    <div className="h-full overflow-hidden animate-fade-in">
-      <div className="flex flex-col h-full max-h-[calc(100vh-120px)]">
-        <div className="flex flex-col md:flex-row justify-between gap-4 mb-4">
-          <div>
-            <h1 className="text-2xl font-bold text-white font-changa bg-gradient-to-r from-game-primary to-game-accent bg-clip-text text-transparent">المجتمع</h1>
-            <p className="text-gray-400 mt-1">تواصل وتنافس مع الأصدقاء</p>
+    <div className="h-full flex flex-col">
+      <div className="flex justify-between items-center gap-2 mb-2">
+        <div>
+          <h1 className="text-xl font-bold text-white font-changa bg-gradient-to-r from-game-primary to-game-accent bg-clip-text text-transparent">المجتمع</h1>
+          <p className="text-gray-400 text-xs">تواصل وتنافس مع الآخرين</p>
+        </div>
+        
+        <div className="flex gap-2">
+          <div className="relative">
+            <div className="absolute inset-y-0 right-0 flex items-center pr-3 pointer-events-none">
+              <Search className="h-3 w-3 text-gray-400" />
+            </div>
+            <input
+              type="text"
+              className="py-1.5 px-3 pr-8 bg-game-card-bg border border-gray-700/30 rounded-md text-white w-36 text-sm focus:outline-none focus:ring-1 focus:ring-game-primary transition-all"
+              placeholder="ابحث..."
+              value={searchTerm}
+              onChange={(e) => setSearchTerm(e.target.value)}
+            />
           </div>
-          
-          <div className="flex gap-2">
-            <div className="relative">
-              <div className="absolute inset-y-0 right-0 flex items-center pr-3 pointer-events-none">
-                <Search className="h-4 w-4 text-gray-400" />
-              </div>
-              <input
-                type="text"
-                className="py-2.5 px-4 pr-10 bg-game-card-bg border border-gray-700/30 rounded-md text-white w-full focus:outline-none focus:ring-1 focus:ring-game-primary transition-all"
-                placeholder="ابحث عن صديق..."
-                value={searchTerm}
-                onChange={(e) => setSearchTerm(e.target.value)}
-              />
+        </div>
+      </div>
+      
+      <div className="grid grid-cols-12 gap-2 h-full">
+        {/* Friends Column - 4 cols */}
+        <div className="col-span-4 flex flex-col h-full">
+          <div className="game-panel p-3 h-full">
+            <div className="flex justify-between items-center mb-2">
+              <h2 className="font-bold text-white flex items-center gap-1.5">
+                <Users className="h-4 w-4 text-game-primary" />
+                الأصدقاء
+              </h2>
+              <button className="text-xs text-game-primary py-0.5 px-2 rounded-md bg-game-primary/10 hover:bg-game-primary/20 transition-colors">
+                إضافة صديق
+              </button>
             </div>
             
-            <button 
-              onClick={handleSendInvite}
-              className="py-2.5 px-4 bg-gradient-to-r from-game-primary to-game-primary/70 text-white rounded-md flex items-center gap-2 hover:shadow-md hover:shadow-game-primary/20 transition-all"
-            >
-              <UserPlus className="h-4 w-4" />
-              <span className="hidden sm:inline">إضافة صديق</span>
-            </button>
+            <Tab.Group>
+              <Tab.List className="flex mb-2 bg-game-card-bg/50 rounded-md p-0.5 text-xs">
+                <Tab 
+                  className={({ selected }) =>
+                    `flex-1 py-1 px-2 rounded-md transition-all ${
+                      selected ? 'bg-game-card-bg text-game-primary' : 'text-gray-400 hover:text-white'
+                    }`
+                  }
+                >
+                  الكل
+                </Tab>
+                <Tab
+                  className={({ selected }) =>
+                    `flex-1 py-1 px-2 rounded-md transition-all ${
+                      selected ? 'bg-game-card-bg text-game-primary' : 'text-gray-400 hover:text-white'
+                    }`
+                  }
+                >
+                  المتصلين
+                </Tab>
+              </Tab.List>
+              
+              <Tab.Panels className="flex-1 overflow-hidden">
+                {/* All Friends Tab */}
+                <Tab.Panel className="h-full overflow-y-auto">
+                  <motion.div 
+                    className="space-y-1.5"
+                    variants={containerVariants}
+                    initial="hidden"
+                    animate="show"
+                  >
+                    {filteredFriends.map((friend) => (
+                      <motion.div 
+                        key={friend.id} 
+                        className="flex items-center gap-2 p-2 rounded-md hover:bg-game-card-bg-alt transition-all border border-transparent hover:border-white/10"
+                        variants={itemVariants}
+                      >
+                        <div className="relative">
+                          <div className="h-9 w-9 rounded-full bg-game-card-bg-alt flex items-center justify-center text-xl relative">
+                            {friend.avatar}
+                            {friend.streak > 0 && (
+                              <div className="absolute -bottom-1 -right-1 h-4 w-4 rounded-full bg-orange-500 flex items-center justify-center text-white text-xs">
+                                <Flame className="h-2.5 w-2.5" />
+                              </div>
+                            )}
+                          </div>
+                          <div className={`absolute bottom-0 right-0 h-2.5 w-2.5 rounded-full border-2 border-gray-800 ${friend.online ? 'bg-green-500' : 'bg-gray-500'}`}></div>
+                        </div>
+                        
+                        <div className="flex-1">
+                          <div className="flex justify-between">
+                            <h3 className="font-medium text-white text-sm">{friend.name}</h3>
+                            <span className="text-xs text-gray-400 font-share-tech">Lv {friend.level}</span>
+                          </div>
+                          
+                          <div className="text-xs text-gray-400 line-clamp-1">
+                            {friend.online
+                              ? (friend.status || 'متصل الآن')
+                              : `آخر ظهور: ${friend.lastActive}`
+                            }
+                          </div>
+                        </div>
+                        
+                        <button className="p-1.5 rounded-full hover:bg-game-primary/10 text-gray-400 hover:text-game-primary transition-all">
+                          <MessageCircle className="h-4 w-4" />
+                        </button>
+                      </motion.div>
+                    ))}
+                  </motion.div>
+                </Tab.Panel>
+                
+                {/* Online Friends Tab */}
+                <Tab.Panel className="h-full overflow-y-auto">
+                  <motion.div 
+                    className="space-y-1.5"
+                    variants={containerVariants}
+                    initial="hidden"
+                    animate="show"
+                  >
+                    {filteredFriends.filter(friend => friend.online).map((friend) => (
+                      <motion.div 
+                        key={friend.id} 
+                        className="flex items-center gap-2 p-2 rounded-md hover:bg-game-card-bg-alt transition-all border border-transparent hover:border-white/10"
+                        variants={itemVariants}
+                      >
+                        <div className="relative">
+                          <div className="h-9 w-9 rounded-full bg-game-card-bg-alt flex items-center justify-center text-xl">
+                            {friend.avatar}
+                            {friend.streak > 0 && (
+                              <div className="absolute -bottom-1 -right-1 h-4 w-4 rounded-full bg-orange-500 flex items-center justify-center text-white text-xs">
+                                <Flame className="h-2.5 w-2.5" />
+                              </div>
+                            )}
+                          </div>
+                          <div className="absolute bottom-0 right-0 h-2.5 w-2.5 rounded-full border-2 border-gray-800 bg-green-500"></div>
+                        </div>
+                        
+                        <div className="flex-1">
+                          <div className="flex justify-between">
+                            <h3 className="font-medium text-white text-sm">{friend.name}</h3>
+                            <span className="text-xs text-gray-400 font-share-tech">Lv {friend.level}</span>
+                          </div>
+                          
+                          <div className="text-xs text-gray-400">
+                            {friend.status || 'متصل الآن'}
+                          </div>
+                        </div>
+                        
+                        <button className="p-1.5 rounded-full hover:bg-game-primary/10 text-gray-400 hover:text-game-primary transition-all">
+                          <MessageCircle className="h-4 w-4" />
+                        </button>
+                      </motion.div>
+                    ))}
+                  </motion.div>
+                </Tab.Panel>
+              </Tab.Panels>
+            </Tab.Group>
           </div>
         </div>
         
-        {/* Tabs Navigation */}
-        <div className="flex mb-4 border-b border-white/10">
-          <button
-            className={`px-4 py-2 flex items-center gap-2 ${
-              activeTab === 'friends' 
-                ? 'text-game-primary border-b-2 border-game-primary' 
-                : 'text-gray-400'
-            }`}
-            onClick={() => setActiveTab('friends')}
-          >
-            <Users className="h-4 w-4" />
-            أصدقاء
-          </button>
-          <button
-            className={`px-4 py-2 flex items-center gap-2 ${
-              activeTab === 'leaderboard' 
-                ? 'text-game-accent border-b-2 border-game-accent' 
-                : 'text-gray-400'
-            }`}
-            onClick={() => setActiveTab('leaderboard')}
-          >
-            <Trophy className="h-4 w-4" />
-            المتصدرون
-          </button>
-        </div>
-        
-        {/* Main Content Area - Adjusts based on active tab */}
-        <div className="flex-1 overflow-hidden">
-          {activeTab === 'friends' && (
-            <motion.div 
-              initial={{ opacity: 0 }}
-              animate={{ opacity: 1 }}
-              className="grid grid-cols-1 lg:grid-cols-2 gap-4 h-full"
-            >
-              <div className="game-panel h-full overflow-hidden flex flex-col">
-                <div className="flex justify-between items-center mb-4">
-                  <h3 className="text-lg font-semibold text-white font-lexend">الأصدقاء</h3>
-                  <div>
-                    <select
-                      value={filterBy}
-                      onChange={(e) => setFilterBy(e.target.value as 'all' | 'online')}
-                      className="bg-game-card-bg-alt text-sm py-1 px-3 border border-white/10 rounded text-gray-300"
+        {/* Center Column - Leaderboard - 5 cols */}
+        <div className="col-span-5 flex flex-col h-full">
+          <div className="game-panel p-3 h-full">
+            <div className="flex justify-between items-center mb-2">
+              <h2 className="font-bold text-white flex items-center gap-1.5">
+                <Trophy className="h-4 w-4 text-yellow-400" />
+                المتصدرون
+              </h2>
+              
+              <select
+                value={selectedTimeRange}
+                onChange={(e) => setSelectedTimeRange(e.target.value)}
+                className="py-1 px-2 bg-game-card-bg border border-gray-700/30 rounded-md text-white text-xs focus:outline-none focus:ring-1 focus:ring-game-accent"
+              >
+                <option value="week">هذا الأسبوع</option>
+                <option value="month">هذا الشهر</option>
+                <option value="all">الإجمالي</option>
+              </select>
+            </div>
+            
+            <div className="overflow-y-auto h-full">
+              <motion.div 
+                className="space-y-1"
+                variants={containerVariants}
+                initial="hidden"
+                animate="show"
+              >
+                {LEADERBOARD_DATA.slice(0, 8).map((user) => {
+                  const badgeStyle = getBadgeStyle(user.badge);
+                  return (
+                    <motion.div 
+                      key={user.id} 
+                      className={`flex items-center gap-2 p-2 rounded-md border transition-all ${
+                        user.rank === 1 ? 'border-yellow-500/30 bg-yellow-500/5' : 
+                        user.rank === 2 ? 'border-gray-300/30 bg-gray-300/5' : 
+                        user.rank === 3 ? 'border-orange-500/30 bg-orange-500/5' : 
+                        'border-transparent hover:border-white/10 hover:bg-game-card-bg-alt'
+                      }`}
+                      variants={itemVariants}
                     >
-                      <option value="all">جميع الأصدقاء</option>
-                      <option value="online">المتصلون</option>
-                    </select>
-                  </div>
-                </div>
-                
-                <div className="space-y-3 overflow-auto max-h-full p-1">
-                  {filteredFriends.length > 0 ? (
-                    filteredFriends.map((friend) => (
-                      <div 
-                        key={friend.id}
-                        className="p-3 bg-game-card-bg-alt rounded-lg border border-white/5 hover:border-game-primary/30 transition-all"
-                      >
+                      <div className={`h-6 w-6 rounded-full flex items-center justify-center border ${
+                        user.rank === 1 ? 'border-yellow-500/30 text-yellow-400' : 
+                        user.rank === 2 ? 'border-gray-300/30 text-gray-300' : 
+                        user.rank === 3 ? 'border-orange-500/30 text-orange-400' : 
+                        'border-white/10 text-white/70'
+                      }`}>
+                        <span className="text-xs font-share-tech">{user.rank}</span>
+                      </div>
+                      
+                      <div className="h-8 w-8 rounded-full bg-game-card-bg-alt flex items-center justify-center text-lg">
+                        {user.avatar}
+                      </div>
+                      
+                      <div className="flex-1">
                         <div className="flex justify-between items-center">
-                          <div className="flex items-center gap-3">
-                            <div className="relative">
-                              <div className="h-10 w-10 rounded-full bg-gradient-to-br from-game-card-bg to-game-card-bg-alt flex items-center justify-center text-xl">
-                                {friend.avatar}
-                              </div>
-                              <div className={`absolute -bottom-1 -right-1 h-3 w-3 rounded-full border-2 border-game-card-bg ${
-                                friend.isOnline ? 'bg-green-500' : 'bg-gray-500'
-                              }`}></div>
-                            </div>
-                            
-                            <div>
-                              <HoverCard>
-                                <HoverCardTrigger asChild>
-                                  <h4 className="font-medium text-white cursor-pointer">{friend.name}</h4>
-                                </HoverCardTrigger>
-                                <HoverCardContent className="w-64 bg-game-card-bg border border-white/10">
-                                  <div className="flex justify-center mb-2">
-                                    <div className="h-16 w-16 rounded-full bg-gradient-to-br from-game-card-bg to-game-card-bg-alt flex items-center justify-center text-4xl">
-                                      {friend.avatar}
-                                    </div>
-                                  </div>
-                                  <h4 className="text-center text-white mb-2">{friend.name}</h4>
-                                  <div className="grid grid-cols-3 gap-2 text-center text-sm">
-                                    <div className="bg-game-card-bg-alt p-2 rounded">
-                                      <div className="text-game-accent font-share-tech">{friend.level}</div>
-                                      <div className="text-gray-400">مستوى</div>
-                                    </div>
-                                    <div className="bg-game-card-bg-alt p-2 rounded">
-                                      <div className="text-game-primary font-share-tech">{friend.xp.toLocaleString()}</div>
-                                      <div className="text-gray-400">XP</div>
-                                    </div>
-                                    <div className="bg-game-card-bg-alt p-2 rounded">
-                                      <div className="text-orange-400 font-share-tech">{friend.streak}</div>
-                                      <div className="text-gray-400">تتابع</div>
-                                    </div>
-                                  </div>
-                                </HoverCardContent>
-                              </HoverCard>
-                              
-                              <div className="flex items-center gap-2 text-xs">
-                                <span className="text-gray-400">مستوى {friend.level}</span>
-                                {friend.status === 'top' && (
-                                  <span className="text-yellow-400 flex items-center">
-                                    <Crown className="h-3 w-3 mr-1" />
-                                    متصدر
-                                  </span>
-                                )}
-                                {friend.status === 'studying' && (
-                                  <span className="text-blue-400 flex items-center">
-                                    <BookOpen className="h-3 w-3 mr-1" />
-                                    يدرس
-                                  </span>
-                                )}
-                                {friend.status === 'active' && (
-                                  <span className="text-green-400 flex items-center">
-                                    <Activity className="h-3 w-3 mr-1" />
-                                    نشط
-                                  </span>
-                                )}
-                              </div>
-                            </div>
+                          <h3 className="font-medium text-white text-sm">{user.name}</h3>
+                          <span className="text-xs text-game-accent font-share-tech">{user.xp.toLocaleString()} XP</span>
+                        </div>
+                        
+                        <div className="flex items-center justify-between">
+                          <div className="flex text-xs">
+                            {user.subjects.map((subject, idx) => (
+                              <span key={idx} className="text-gray-400 mr-1">{idx > 0 && '• '}{subject}</span>
+                            ))}
                           </div>
                           
-                          <div className="flex items-center gap-2">
-                            <button 
-                              onClick={() => handleSendMessage(friend.name)}
-                              className="p-2 text-gray-400 hover:text-white bg-transparent hover:bg-game-primary/10 rounded-full transition-colors"
-                            >
-                              <MessageCircle className="h-4 w-4" />
-                            </button>
-                            {friend.isOnline && (
-                              <button className="py-1.5 px-3 text-xs bg-game-primary/20 text-game-primary rounded hover:bg-game-primary/30 transition-colors">
-                                تحدي
-                              </button>
-                            )}
-                          </div>
+                          <span className="text-xs bg-game-card-bg px-1.5 py-0.5 rounded font-share-tech text-white">Lv {user.level}</span>
                         </div>
                       </div>
-                    ))
-                  ) : (
-                    <div className="text-center py-8">
-                      <p className="text-gray-400">لم يتم العثور على أصدقاء</p>
+                      
+                      {badgeStyle && (
+                        <div className={`px-2 py-1 rounded flex items-center gap-1 ${badgeStyle.bg}`}>
+                          <span>{badgeStyle.icon}</span>
+                          <span className={`text-xs ${badgeStyle.color}`}>{user.badge}</span>
+                        </div>
+                      )}
+                    </motion.div>
+                  );
+                })}
+              </motion.div>
+            </div>
+          </div>
+        </div>
+        
+        {/* Right Column - Challenges - 3 cols */}
+        <div className="col-span-3 flex flex-col h-full gap-2">
+          {/* Challenges */}
+          <div className="game-panel p-3 flex-1">
+            <div className="flex justify-between items-center mb-2">
+              <h2 className="font-bold text-white flex items-center gap-1.5">
+                <Shield className="h-4 w-4 text-game-accent" />
+                التحديات
+              </h2>
+            </div>
+            
+            <div className="space-y-2">
+              {COMMUNITY_CHALLENGES.map(challenge => {
+                const difficultyStyle = getDifficultyStyle(challenge.difficulty);
+                return (
+                  <div key={challenge.id} className="p-2 border border-white/5 rounded-md hover:border-game-accent/30 transition-all bg-game-card-bg-alt">
+                    <div className="flex items-center gap-2">
+                      <div className="h-10 w-10 rounded-lg bg-game-accent/10 flex items-center justify-center text-2xl">
+                        {challenge.icon}
+                      </div>
+                      
+                      <div className="flex-1">
+                        <h3 className="text-white font-medium text-sm">{challenge.title}</h3>
+                        
+                        <div className="flex justify-between text-xs">
+                          <span className={`${difficultyStyle.color} px-1.5 rounded-sm ${difficultyStyle.bg}`}>
+                            {challenge.difficulty}
+                          </span>
+                          
+                          <span className="text-gray-400 flex items-center gap-1">
+                            <Users className="h-3 w-3" />
+                            {challenge.participants}
+                          </span>
+                        </div>
+                      </div>
                     </div>
-                  )}
+                    
+                    <div className="flex justify-between items-center mt-2 pt-2 border-t border-white/5">
+                      <div className="flex items-center gap-1 text-xs text-game-accent bg-game-accent/10 px-1.5 py-0.5 rounded">
+                        <Trophy className="h-3 w-3" />
+                        <span className="font-share-tech">+{challenge.reward} XP</span>
+                      </div>
+                      
+                      <button className="text-xs bg-game-primary/10 text-game-primary px-2 py-1 rounded-md hover:bg-game-primary/20 transition-colors flex items-center gap-1">
+                        انضم
+                        <ArrowUpRight className="h-3 w-3" />
+                      </button>
+                    </div>
+                    
+                    <div className="text-xs text-gray-400 mt-1.5 flex items-center">
+                      <Clock className="h-3 w-3 mr-1" />
+                      متبقي: {challenge.timeLeft}
+                    </div>
+                  </div>
+                );
+              })}
+            </div>
+            
+            <button className="w-full text-center text-xs text-blue-400 hover:underline mt-3 py-1">
+              عرض جميع التحديات
+            </button>
+          </div>
+          
+          {/* Your Stats */}
+          <div className="game-panel p-3">
+            <h2 className="font-bold text-white flex items-center gap-1.5 mb-2">
+              <Activity className="h-4 w-4 text-blue-400" />
+              إحصائياتك
+            </h2>
+            
+            <div className="grid grid-cols-2 gap-2 text-center">
+              <div className="p-2 bg-game-card-bg-alt rounded-md">
+                <div className="text-xs text-gray-400">المركز</div>
+                <div className="text-white font-bold font-share-tech text-lg">#6</div>
+              </div>
+              
+              <div className="p-2 bg-game-card-bg-alt rounded-md">
+                <div className="text-xs text-gray-400">مجموع XP</div>
+                <div className="text-white font-bold font-share-tech text-lg">16.8K</div>
+              </div>
+              
+              <div className="p-2 bg-game-card-bg-alt rounded-md">
+                <div className="text-xs text-gray-400">التقدم</div>
+                <div className="flex justify-center items-center text-white font-bold font-share-tech text-lg">
+                  <div className="h-2 w-full bg-gray-700 rounded-full mx-2">
+                    <div className="h-full bg-blue-500 rounded-full" style={{ width: '65%' }}></div>
+                  </div>
+                  65%
                 </div>
               </div>
               
-              <div className="game-panel h-full overflow-hidden flex flex-col">
-                <div className="flex justify-between items-center mb-4">
-                  <h3 className="text-lg font-semibold text-white font-lexend">اقتراحات</h3>
-                </div>
-                
-                <div className="grid grid-cols-1 sm:grid-cols-2 gap-3 overflow-auto max-h-full p-1">
-                  {LEADERBOARD_DATA.map((entry) => (
-                    <div 
-                      key={entry.id}
-                      className="p-3 bg-game-card-bg-alt rounded-lg border border-white/5 hover:border-game-accent/30 transition-all"
-                    >
-                      <div className="flex justify-between items-center">
-                        <div className="flex items-center gap-3">
-                          <div className="h-10 w-10 rounded-full bg-gradient-to-br from-game-card-bg to-game-card-bg-alt flex items-center justify-center text-xl">
-                            {entry.avatar}
-                          </div>
-                          
-                          <div>
-                            <h4 className="font-medium text-white">{entry.name}</h4>
-                            <div className="flex items-center gap-2 text-xs">
-                              <span className="text-gray-400">Rank {entry.rank}</span>
-                              <span className="text-game-accent flex items-center">
-                                <Star className="h-3 w-3 mr-1" />
-                                {entry.xp.toLocaleString()} XP
-                              </span>
-                            </div>
-                          </div>
-                        </div>
-                        
-                        <button 
-                          onClick={() => handleAddFriend(entry.id)}
-                          className="py-1.5 px-3 text-xs bg-game-accent/20 text-game-accent rounded hover:bg-game-accent/30 transition-colors"
-                        >
-                          إضافة
-                        </button>
-                      </div>
-                    </div>
-                  ))}
-                </div>
+              <div className="p-2 bg-game-card-bg-alt rounded-md">
+                <div className="text-xs text-gray-400">التحديات</div>
+                <div className="text-white font-bold font-share-tech text-lg">24</div>
               </div>
-            </motion.div>
-          )}
-          
-          {activeTab === 'leaderboard' && (
-            <motion.div 
-              initial={{ opacity: 0 }}
-              animate={{ opacity: 1 }}
-              className="h-full"
-            >
-              <div className="game-panel h-full overflow-hidden flex flex-col">
-                <div className="flex justify-between items-center mb-4">
-                  <h3 className="text-lg font-semibold text-white font-lexend">
-                    <Trophy className="inline-block h-5 w-5 mr-2 text-yellow-400" />
-                    المتصدرون الأسبوع
-                  </h3>
-                </div>
-                
-                <div className="space-y-3 overflow-auto max-h-full p-1">
-                  {LEADERBOARD_DATA.map((entry) => (
-                    <div 
-                      key={entry.id}
-                      className={`p-3 rounded-lg border transition-all ${
-                        entry.badge === 'gold'
-                          ? 'bg-gradient-to-r from-yellow-900/30 to-yellow-700/10 border-yellow-500/30 shadow-sm shadow-yellow-500/20'
-                          : entry.badge === 'silver'
-                            ? 'bg-gradient-to-r from-gray-700/30 to-gray-500/10 border-gray-400/30'
-                            : entry.badge === 'bronze'
-                              ? 'bg-gradient-to-r from-amber-900/30 to-amber-700/10 border-amber-500/30'
-                              : 'bg-game-card-bg-alt border-white/5'
-                      }`}
-                    >
-                      <div className="flex items-center">
-                        <div className="flex items-center justify-center h-8 w-8 rounded-full bg-game-card-bg mr-4 font-share-tech text-lg">
-                          {entry.rank}
-                        </div>
-                        
-                        <div className="flex items-center gap-3 flex-1">
-                          <div className="relative">
-                            <div className="h-12 w-12 rounded-full bg-gradient-to-br from-game-card-bg to-game-card-bg-alt flex items-center justify-center text-2xl">
-                              {entry.avatar}
-                            </div>
-                            {entry.badge && (
-                              <div className="absolute -bottom-1 -right-1 h-6 w-6 rounded-full bg-game-card-bg flex items-center justify-center border-2 border-game-card-bg">
-                                {entry.badge === 'gold' && <Award className="h-4 w-4 text-yellow-400" />}
-                                {entry.badge === 'silver' && <Award className="h-4 w-4 text-gray-400" />}
-                                {entry.badge === 'bronze' && <Award className="h-4 w-4 text-amber-400" />}
-                              </div>
-                            )}
-                          </div>
-                          
-                          <div className="flex-1">
-                            <div className="flex justify-between">
-                              <h4 className="font-medium text-white">{entry.name}</h4>
-                              <div className="flex items-center text-lg font-share-tech font-bold text-game-accent">
-                                <span>{entry.xp.toLocaleString()}</span>
-                                <span className="text-xs ml-1">XP</span>
-                              </div>
-                            </div>
-                            
-                            <div className="w-full bg-game-background h-2 rounded-full overflow-hidden mt-2">
-                              <div 
-                                className={`h-full rounded-full relative ${
-                                  entry.badge === 'gold'
-                                    ? 'bg-gradient-to-r from-yellow-500 to-yellow-300'
-                                    : entry.badge === 'silver'
-                                      ? 'bg-gradient-to-r from-gray-400 to-gray-300'
-                                      : entry.badge === 'bronze'
-                                        ? 'bg-gradient-to-r from-amber-500 to-amber-300'
-                                        : 'bg-gradient-to-r from-blue-600 to-blue-400'
-                                }`} 
-                                style={{ width: `${Math.min(100, entry.xp / 200)}%` }}
-                              >
-                                <div className="absolute inset-0 bg-white opacity-20 animate-pulse"></div>
-                              </div>
-                            </div>
-                          </div>
-                          
-                          <div className="flex items-center">
-                            {entry.growth === 'up' && (
-                              <span className="flex items-center text-green-400">
-                                <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
-                                  <path d="m18 15-6-6-6 6"/>
-                                </svg>
-                              </span>
-                            )}
-                            {entry.growth === 'down' && (
-                              <span className="flex items-center text-red-400">
-                                <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
-                                  <path d="m6 9 6 6 6-6"/>
-                                </svg>
-                              </span>
-                            )}
-                            {entry.growth === 'same' && (
-                              <span className="flex items-center text-gray-400">
-                                <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
-                                  <path d="M8 12h8"/>
-                                </svg>
-                              </span>
-                            )}
-                          </div>
-                        </div>
-                      </div>
-                    </div>
-                  ))}
-                </div>
-              </div>
-            </motion.div>
-          )}
+            </div>
+          </div>
         </div>
       </div>
     </div>

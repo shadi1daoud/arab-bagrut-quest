@@ -82,11 +82,11 @@ const StudentLayout = () => {
       {/* Cyber grid background */}
       <div className="cyber-grid fixed inset-0 z-0"></div>
       
-      {/* Sidebar - fixed on desktop, sliding on mobile */}
+      {/* Sidebar - compact and collapsible */}
       <aside 
         className={cn(
-          "bg-game-card-bg/80 backdrop-blur-md w-64 fixed inset-y-0 right-0 z-30 transform transition-transform duration-300 lg:translate-x-0 lg:static flex flex-col overflow-hidden",
-          isMobileMenuOpen ? "translate-x-0" : "translate-x-full"
+          "bg-game-card-bg/80 backdrop-blur-md w-16 hover:w-64 fixed inset-y-0 right-0 z-30 transform transition-all duration-300 lg:translate-x-0 lg:static flex flex-col overflow-hidden",
+          isMobileMenuOpen ? "translate-x-0 w-64" : "translate-x-full lg:translate-x-0"
         )}
       >
         <div className="p-4 mb-2 flex justify-center">
@@ -97,32 +97,32 @@ const StudentLayout = () => {
                 <path d="M22 2L13 11" stroke="white" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"/>
               </svg>
             </div>
-            <span className="text-white text-2xl font-bold font-changa">درسني</span>
+            <span className="text-white text-2xl font-bold font-changa whitespace-nowrap overflow-hidden opacity-0 lg:group-hover:opacity-100 transition-opacity duration-300">درسني</span>
           </div>
         </div>
         
         {user && (
-          <div className="px-4 py-3 flex flex-col items-center relative">
-            <div className="orbit-container relative mb-3">
-              <div className="h-20 w-20 rounded-full overflow-hidden border-2 border-game-primary/20 shadow-lg">
+          <div className="px-4 py-2 flex flex-col items-center relative overflow-hidden">
+            <div className="orbit-container relative mb-3 flex-shrink-0">
+              <div className="h-12 w-12 rounded-full overflow-hidden border-2 border-game-primary/20 shadow-lg">
                 {user?.avatar ? (
                   <img src={user.avatar} alt={user.name} className="h-full w-full object-cover" />
                 ) : (
                   <div className="h-full w-full bg-gradient-to-br from-game-secondary/40 to-game-secondary/20 flex items-center justify-center">
-                    <span className="text-white text-2xl font-bold">{user?.name?.charAt(0)}</span>
+                    <span className="text-white text-xl font-bold">{user?.name?.charAt(0)}</span>
                   </div>
                 )}
               </div>
-              <div className="absolute -top-1 -right-1 h-6 w-6 bg-game-primary rounded-full flex items-center justify-center text-white text-xs font-bold shadow-lg shadow-game-primary/20 font-share-tech">5</div>
+              <div className="absolute -top-1 -right-1 h-5 w-5 bg-game-primary rounded-full flex items-center justify-center text-white text-xs font-bold shadow-lg shadow-game-primary/20 font-share-tech">5</div>
             </div>
             
-            <h2 className="text-white font-bold text-lg font-changa">{user?.name || 'شادي داود'}</h2>
-            <p className="text-game-text-secondary text-sm mb-2 font-lexend">{user?.grade || 'الثاني عشر'}</p>
-            
-            <div className="w-full mt-1 relative">
+            <div className="w-full mt-1 relative transition-opacity duration-300 opacity-0 lg:group-hover:opacity-100">
+              <h2 className="text-white font-bold text-base text-center font-changa whitespace-nowrap overflow-hidden">{user?.name || 'شادي داود'}</h2>
+              <p className="text-game-text-secondary text-xs mb-1 text-center font-lexend whitespace-nowrap overflow-hidden">{user?.grade || 'الثاني عشر'}</p>
+              
               <div className="flex justify-between items-center text-sm mb-1">
                 <span className="text-game-highlight font-medium font-share-tech">Lv 5</span>
-                <span className="text-xs text-blue-300 font-share-tech">2450 / 3000</span>
+                <span className="text-xs text-blue-300 font-share-tech">2450/3000</span>
               </div>
               
               <div className="level-bar">
@@ -132,7 +132,7 @@ const StudentLayout = () => {
           </div>
         )}
         
-        <div className="overflow-y-auto flex-1 p-4">
+        <div className="overflow-y-auto flex-1 py-4 px-2">
           <nav className="space-y-1">
             {navItems.map((item) => (
               <NavItem key={item.path} {...item} />
@@ -140,21 +140,21 @@ const StudentLayout = () => {
           </nav>
         </div>
         
-        <div className="p-4 mt-auto">
+        <div className="p-3 mt-auto">
           <button 
             onClick={logout}
-            className="flex items-center gap-3 w-full text-gray-400 hover:text-white transition-all p-3 rounded-lg hover:bg-muted/30 group"
+            className="flex items-center gap-3 w-full text-gray-400 hover:text-white transition-all p-2 rounded-lg hover:bg-muted/30 group"
           >
             <LogOut className="h-5 w-5" />
-            <span>تسجيل الخروج</span>
+            <span className="opacity-0 lg:group-hover:opacity-100 transition-opacity duration-300">تسجيل الخروج</span>
           </button>
         </div>
       </aside>
       
       {/* Main content area */}
       <div className="flex-1 flex flex-col">
-        {/* Header */}
-        <header className="bg-game-card-bg/80 backdrop-blur-md py-3 px-4 flex justify-between items-center border-b border-white/5 z-10">
+        {/* Header - more compact */}
+        <header className="bg-game-card-bg/80 backdrop-blur-md py-2 px-4 flex justify-between items-center border-b border-white/5 z-10">
           <div className="flex items-center">
             <button
               onClick={() => setIsMobileMenuOpen(!isMobileMenuOpen)}
@@ -169,26 +169,26 @@ const StudentLayout = () => {
               </div>
               <input
                 type="search"
-                className="bg-muted/10 border border-white/5 text-white text-sm rounded-full block w-80 pr-10 p-2.5 placeholder-gray-500 focus:ring-1 focus:ring-game-accent/30 focus:border-game-accent/30 transition-all"
+                className="bg-muted/10 border border-white/5 text-white text-sm rounded-full block w-56 pr-10 p-1.5 placeholder-gray-500 focus:ring-1 focus:ring-game-accent/30 focus:border-game-accent/30 transition-all"
                 placeholder="ابحث..."
               />
             </div>
           </div>
           
-          <div className="flex items-center gap-6">
+          <div className="flex items-center gap-4">
             {user && (
               <>
-                <div className="flex items-center gap-4">
-                  <div className="flex items-center gap-2 bg-muted/10 py-1 px-3 rounded-full border border-white/5">
-                    <Flame className="h-4 w-4 text-orange-400" />
+                <div className="flex items-center gap-3">
+                  <div className="flex items-center gap-2 bg-muted/10 py-1 px-2 rounded-full border border-white/5">
+                    <Flame className="h-3.5 w-3.5 text-orange-400" />
                     <span className="text-white font-share-tech text-sm">12</span>
                   </div>
                   
-                  <div className="hidden md:block h-5 w-px bg-white/10"></div>
+                  <div className="hidden md:block h-4 w-px bg-white/10"></div>
                   
                   <div className="flex items-center gap-2">
-                    <div className="bg-muted/10 py-1 px-3 rounded-full border border-white/5 hidden md:flex items-center gap-2">
-                      <Award className="h-4 w-4 text-game-accent" />
+                    <div className="bg-muted/10 py-1 px-2 rounded-full border border-white/5 hidden md:flex items-center gap-1.5">
+                      <Award className="h-3.5 w-3.5 text-game-accent" />
                       <span className="text-white font-share-tech text-sm">8965</span>
                     </div>
                     
@@ -202,16 +202,16 @@ const StudentLayout = () => {
                 </div>
                 
                 <div className="text-white">
-                  <span className="text-game-accent mr-1 font-changa">👋 أهلاً بعودتك،</span>
-                  <span className="mr-1 font-changa">{user?.name?.split(' ')[0] || 'شادي'}</span>
+                  <span className="text-game-accent mr-1 text-sm font-changa">👋 أهلاً،</span>
+                  <span className="mr-1 text-sm font-changa">{user?.name?.split(' ')[0] || 'شادي'}</span>
                 </div>
               </>
             )}
           </div>
         </header>
         
-        {/* Main content */}
-        <main className="flex-1 p-4 lg:p-6 overflow-hidden relative z-10 h-[calc(100vh-64px)]">
+        {/* Main content with fixed height */}
+        <main className="flex-1 p-2 lg:p-3 overflow-hidden relative z-10 h-[calc(100vh-48px)]">
           <Outlet />
         </main>
       </div>

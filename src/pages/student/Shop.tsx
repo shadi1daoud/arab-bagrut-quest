@@ -142,17 +142,22 @@ const Shop = () => {
   const filteredItems = selectedCategory === 'all' 
     ? SHOP_ITEMS 
     : SHOP_ITEMS.filter(item => item.category === selectedCategory);
+
+  // Animation variants
+  const containerVariants = {
+    hidden: { opacity: 0 },
+    show: {
+      opacity: 1,
+      transition: {
+        staggerChildren: 0.05
+      }
+    }
+  };
   
-  // Pagination for items
-  const itemsPerPage = 6;
-  const pages = Math.ceil(filteredItems.length / itemsPerPage);
-  
-  // Create item pages for tabbed view
-  const itemPages = Array.from({ length: pages }).map((_, index) => {
-    const start = index * itemsPerPage;
-    const end = start + itemsPerPage;
-    return filteredItems.slice(start, end);
-  });
+  const itemVariants = {
+    hidden: { opacity: 0, y: 5 },
+    show: { opacity: 1, y: 0 }
+  };
     
   // Handle purchase
   const handlePurchase = (item: ShopItem) => {
@@ -193,53 +198,37 @@ const Shop = () => {
     setIsConfirmingPurchase(false);
     setSelectedItem(null);
   };
-  
-  // Animation variants
-  const containerVariants = {
-    hidden: { opacity: 0 },
-    show: {
-      opacity: 1,
-      transition: {
-        staggerChildren: 0.1
-      }
-    }
-  };
-  
-  const itemVariants = {
-    hidden: { opacity: 0, y: 10 },
-    show: { opacity: 1, y: 0 }
-  };
 
   return (
-    <div className="h-full overflow-hidden flex flex-col">
-      <div className="flex flex-col md:flex-row justify-between items-start md:items-center gap-4 mb-4">
+    <div className="h-full flex flex-col">
+      <div className="flex justify-between items-center gap-2 mb-2">
         <div>
-          <h1 className="text-2xl font-bold text-white font-changa bg-gradient-to-r from-game-primary to-game-accent bg-clip-text text-transparent">المتجر</h1>
-          <p className="text-gray-400 mt-1">اشتر عناصر مميزة باستخدام العملات</p>
+          <h1 className="text-xl font-bold text-white font-changa bg-gradient-to-r from-game-primary to-game-accent bg-clip-text text-transparent">المتجر</h1>
+          <p className="text-gray-400 text-xs">اشتر عناصر مميزة باستخدام العملات</p>
         </div>
         
-        <div className="bg-gradient-to-br from-game-card-bg-alt to-game-card-bg px-5 py-3 rounded-xl flex items-center gap-2 border border-yellow-500/20 shadow-lg shadow-yellow-500/5">
-          <Coins className="h-5 w-5 text-yellow-400 animate-pulse" />
-          <span className="text-white font-bold font-share-tech text-xl">{user?.coins || 0}</span>
-          <span className="text-gray-400">عملة</span>
+        <div className="bg-gradient-to-br from-game-card-bg-alt to-game-card-bg px-4 py-1.5 rounded-xl flex items-center gap-1.5 border border-yellow-500/20 shadow-lg shadow-yellow-500/5">
+          <Coins className="h-4 w-4 text-yellow-400 animate-pulse" />
+          <span className="text-white font-bold font-share-tech">{user?.coins || 0}</span>
+          <span className="text-gray-400 text-sm">عملة</span>
         </div>
       </div>
       
       {/* Category Tabs */}
-      <div className="flex mb-4 bg-game-card-bg/50 rounded-lg p-1">
+      <div className="flex mb-2 bg-game-card-bg/50 rounded-lg p-1">
         <button
-          className={`flex-1 px-4 py-2.5 rounded-lg flex items-center justify-center gap-2 transition-all ${
+          className={`flex-1 px-3 py-1.5 rounded-lg flex items-center justify-center gap-1.5 transition-all text-sm ${
             selectedCategory === 'all' 
               ? 'bg-game-card-bg text-game-primary shadow-inner' 
               : 'text-gray-400 hover:text-white'
           }`}
           onClick={() => setSelectedCategory('all')}
         >
-          <ShoppingCart className="h-4 w-4" />
+          <ShoppingCart className="h-3.5 w-3.5" />
           الكل
         </button>
         <button
-          className={`flex-1 px-4 py-2.5 rounded-lg flex items-center justify-center gap-2 transition-all ${
+          className={`flex-1 px-3 py-1.5 rounded-lg flex items-center justify-center gap-1.5 transition-all text-sm ${
             selectedCategory === 'avatars' 
               ? 'bg-game-card-bg text-game-primary shadow-inner' 
               : 'text-gray-400 hover:text-white'
@@ -249,7 +238,7 @@ const Shop = () => {
           👤 الأفاتارات
         </button>
         <button
-          className={`flex-1 px-4 py-2.5 rounded-lg flex items-center justify-center gap-2 transition-all ${
+          className={`flex-1 px-3 py-1.5 rounded-lg flex items-center justify-center gap-1.5 transition-all text-sm ${
             selectedCategory === 'backgrounds' 
               ? 'bg-game-card-bg text-game-primary shadow-inner' 
               : 'text-gray-400 hover:text-white'
@@ -259,7 +248,7 @@ const Shop = () => {
           🖼️ الخلفيات
         </button>
         <button
-          className={`flex-1 px-4 py-2.5 rounded-lg flex items-center justify-center gap-2 transition-all ${
+          className={`flex-1 px-3 py-1.5 rounded-lg flex items-center justify-center gap-1.5 transition-all text-sm ${
             selectedCategory === 'boosters' 
               ? 'bg-game-card-bg text-game-primary shadow-inner' 
               : 'text-gray-400 hover:text-white'
@@ -269,7 +258,7 @@ const Shop = () => {
           ⚡ المعززات
         </button>
         <button
-          className={`flex-1 px-4 py-2.5 rounded-lg flex items-center justify-center gap-2 transition-all ${
+          className={`flex-1 px-3 py-1.5 rounded-lg flex items-center justify-center gap-1.5 transition-all text-sm ${
             selectedCategory === 'mystery' 
               ? 'bg-game-card-bg text-game-primary shadow-inner' 
               : 'text-gray-400 hover:text-white'
@@ -280,117 +269,80 @@ const Shop = () => {
         </button>
       </div>
       
-      {/* Shop Items Grid with Pagination */}
+      {/* Shop Items Grid */}
       <div className="flex-1 overflow-hidden">
         {filteredItems.length > 0 ? (
-          <Tab.Group>
-            <div className="flex flex-col h-full">
-              <div className="flex-1">
-                <Tab.Panels className="h-full">
-                  {itemPages.map((items, idx) => (
-                    <Tab.Panel key={idx} className="h-full outline-none">
-                      <motion.div 
-                        className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4 h-full"
-                        variants={containerVariants}
-                        initial="hidden"
-                        animate="show"
+          <motion.div 
+            className="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-2 h-full"
+            variants={containerVariants}
+            initial="hidden"
+            animate="show"
+          >
+            {filteredItems.map((item) => {
+              const rarityStyle = getRarityStyle(item.rarity);
+              return (
+                <motion.div 
+                  key={item.id} 
+                  variants={itemVariants}
+                  className={`game-panel p-2 hover:border-game-primary transition-all duration-300 hover:shadow-lg ${rarityStyle.glow}`}
+                >
+                  <div className="text-center relative">
+                    {/* Rarity corner label */}
+                    {item.rarity && item.rarity !== 'common' && (
+                      <div className={`absolute top-0 right-0 px-1.5 py-0.5 ${rarityStyle.bg} ${rarityStyle.text} text-xs rounded-bl-lg border-b border-l ${rarityStyle.border} font-share-tech`}>
+                        {item.rarity === 'legendary' && <Sparkles className="h-2.5 w-2.5 inline mr-0.5" />}
+                        {item.rarity}
+                      </div>
+                    )}
+                    
+                    <div className="flex justify-center items-center mb-2 mt-1">
+                      <div className={`h-12 w-12 ${rarityStyle.bg} rounded-lg flex items-center justify-center text-3xl border ${rarityStyle.border}`}>
+                        {item.image}
+                        {item.rarity === 'legendary' && (
+                          <div className="absolute inset-0 bg-gradient-to-t from-yellow-400/20 to-transparent rounded-lg opacity-30 animate-pulse"></div>
+                        )}
+                      </div>
+                    </div>
+                    
+                    <h3 className="font-semibold text-white text-sm mb-1 font-lexend">{item.name}</h3>
+                    <p className="text-gray-400 text-xs mb-2 line-clamp-1">{item.description}</p>
+                    
+                    {item.effect && (
+                      <div className={`text-xs ${rarityStyle.text} mb-2 py-0.5 px-1.5 rounded-md ${rarityStyle.bg} inline-block`}>
+                        {item.effect}
+                      </div>
+                    )}
+                    
+                    <div className="flex justify-between items-center mt-2 pt-2 border-t border-white/5">
+                      <div className="flex items-center gap-1 py-0.5 px-2 bg-yellow-500/10 rounded">
+                        <Coins className="h-3 w-3 text-yellow-400" />
+                        <span className="font-bold font-share-tech text-white text-xs">{item.price}</span>
+                      </div>
+                      
+                      <button
+                        onClick={() => handlePurchase(item)}
+                        className={`px-2 py-1 rounded flex items-center gap-1 transition-all text-xs ${
+                          (user?.coins || 0) < item.price 
+                            ? 'bg-gray-700/50 text-gray-400 cursor-not-allowed' 
+                            : 'bg-gradient-to-r from-game-primary to-game-primary/70 text-white hover:shadow-md hover:shadow-game-primary/20'
+                        }`}
+                        disabled={(user?.coins || 0) < item.price}
                       >
-                        {items.map((item) => {
-                          const rarityStyle = getRarityStyle(item.rarity);
-                          return (
-                            <motion.div 
-                              key={item.id} 
-                              variants={itemVariants}
-                              className={`game-panel hover:border-game-primary transition-all duration-300 hover:shadow-lg ${rarityStyle.glow} overflow-hidden`}
-                            >
-                              <div className="text-center relative">
-                                {/* Rarity corner label */}
-                                {item.rarity && item.rarity !== 'common' && (
-                                  <div className={`absolute top-0 right-0 px-3 py-1 ${rarityStyle.bg} ${rarityStyle.text} text-xs rounded-bl-lg border-b border-l ${rarityStyle.border} font-share-tech`}>
-                                    {item.rarity === 'legendary' && <Sparkles className="h-3 w-3 inline mr-1" />}
-                                    {item.rarity}
-                                  </div>
-                                )}
-                                
-                                <div className="flex justify-center items-center mb-4 mt-2">
-                                  <div className={`h-20 w-20 ${rarityStyle.bg} rounded-xl flex items-center justify-center text-5xl border ${rarityStyle.border} shadow-lg`}>
-                                    {item.image}
-                                    {item.rarity === 'legendary' && (
-                                      <div className="absolute inset-0 bg-gradient-to-t from-yellow-400/20 to-transparent rounded-xl opacity-30 animate-pulse"></div>
-                                    )}
-                                  </div>
-                                </div>
-                                
-                                <h3 className="font-semibold text-white mb-2 font-lexend">{item.name}</h3>
-                                <p className="text-gray-400 text-sm mb-4">{item.description}</p>
-                                
-                                {item.effect && (
-                                  <div className={`text-xs ${rarityStyle.text} mb-4 py-1 px-2 rounded-md ${rarityStyle.bg} inline-block`}>
-                                    {item.effect}
-                                  </div>
-                                )}
-                                
-                                <div className="flex justify-between items-center mt-4 pt-4 border-t border-white/5">
-                                  <div className="flex items-center gap-1.5 py-1 px-3 bg-yellow-500/10 rounded-lg">
-                                    <Coins className="h-4 w-4 text-yellow-400" />
-                                    <span className="font-bold font-share-tech text-white">{item.price}</span>
-                                  </div>
-                                  
-                                  <button
-                                    onClick={() => handlePurchase(item)}
-                                    className={`px-4 py-2 rounded-lg flex items-center gap-1.5 transition-all ${
-                                      (user?.coins || 0) < item.price 
-                                        ? 'bg-gray-700/50 text-gray-400 cursor-not-allowed' 
-                                        : 'bg-gradient-to-r from-game-primary to-game-primary/70 text-white hover:shadow-md hover:shadow-game-primary/20'
-                                    }`}
-                                    disabled={(user?.coins || 0) < item.price}
-                                  >
-                                    <ShoppingCart className="h-4 w-4" />
-                                    شراء
-                                  </button>
-                                </div>
-                                
-                                {(user?.coins || 0) < item.price && (
-                                  <p className="text-red-400 text-xs mt-2">لا تملك عملات كافية</p>
-                                )}
-                              </div>
-                            </motion.div>
-                          );
-                        })}
-                      </motion.div>
-                    </Tab.Panel>
-                  ))}
-                </Tab.Panels>
-              </div>
-              
-              {itemPages.length > 1 && (
-                <div className="flex justify-center space-x-1 py-4">
-                  <Tab.List className="flex space-x-2">
-                    {Array.from({ length: pages }).map((_, idx) => (
-                      <Tab
-                        key={idx}
-                        className={({ selected }) =>
-                          `rounded-md px-3 py-1.5 text-sm font-medium transition-all ${
-                            selected
-                              ? 'bg-game-primary text-white shadow-md shadow-game-primary/20'
-                              : 'bg-game-card-bg-alt text-gray-400 hover:bg-gray-700 hover:text-white'
-                          }`
-                        }
-                      >
-                        {idx + 1}
-                      </Tab>
-                    ))}
-                  </Tab.List>
-                </div>
-              )}
-            </div>
-          </Tab.Group>
+                        <ShoppingCart className="h-3 w-3" />
+                        شراء
+                      </button>
+                    </div>
+                  </div>
+                </motion.div>
+              );
+            })}
+          </motion.div>
         ) : (
           <div className="flex items-center justify-center h-full">
             <div className="text-center">
-              <div className="text-7xl mb-4 opacity-30">🛒</div>
-              <p className="text-gray-400">لا توجد عناصر متاحة في هذه الفئة حالياً</p>
-              <p className="text-gray-500 text-sm mt-2">تحقق من الفئات الأخرى أو عد لاحقاً</p>
+              <div className="text-5xl mb-3 opacity-30">🛒</div>
+              <p className="text-gray-400 text-sm">لا توجد عناصر متاحة في هذه الفئة حالياً</p>
+              <p className="text-gray-500 text-xs mt-1">تحقق من الفئات الأخرى أو عد لاحقاً</p>
             </div>
           </div>
         )}
@@ -399,34 +351,34 @@ const Shop = () => {
       {/* Purchase Confirmation Modal */}
       {isConfirmingPurchase && selectedItem && (
         <div className="fixed inset-0 bg-black/70 backdrop-blur-sm flex items-center justify-center z-50 p-4">
-          <div className="game-panel max-w-md w-full animate-scale-in border-gradient">
-            <div className="text-center">
-              <div className="flex justify-center items-center mb-4">
-                <div className="h-24 w-24 bg-gradient-to-br from-game-card-bg-alt to-game-background rounded-xl flex items-center justify-center text-4xl border border-white/10 relative overflow-hidden">
+          <div className="game-panel max-w-xs w-full animate-scale-in border-gradient">
+            <div className="text-center p-4">
+              <div className="flex justify-center items-center mb-3">
+                <div className="h-16 w-16 bg-gradient-to-br from-game-card-bg-alt to-game-background rounded-lg flex items-center justify-center text-3xl border border-white/10 relative overflow-hidden">
                   {selectedItem.image}
                   <div className="absolute inset-0 bg-gradient-to-t from-game-primary/10 to-transparent"></div>
                 </div>
               </div>
               
-              <h3 className="font-semibold text-white text-xl mb-2 font-changa">تأكيد الشراء</h3>
-              <p className="text-gray-400 text-sm mb-4 max-w-sm mx-auto">
+              <h3 className="font-semibold text-white text-lg mb-2 font-changa">تأكيد الشراء</h3>
+              <p className="text-gray-400 text-sm mb-3">
                 هل أنت متأكد من رغبتك في شراء {selectedItem.name} مقابل <span className="text-yellow-400 font-share-tech">{selectedItem.price}</span> عملة؟
               </p>
               
-              <div className="flex justify-between items-center mt-8">
+              <div className="flex justify-between items-center mt-4">
                 <button
                   onClick={cancelPurchase}
-                  className="px-5 py-2.5 bg-gray-800 text-white rounded-lg hover:bg-gray-700 transition-colors border border-white/5"
+                  className="px-4 py-2 bg-gray-800 text-white rounded-lg hover:bg-gray-700 transition-colors border border-white/5 text-sm"
                 >
                   إلغاء
                 </button>
                 
                 <button
                   onClick={confirmPurchase}
-                  className="px-5 py-2.5 bg-gradient-to-r from-game-primary to-game-primary/70 text-white rounded-lg hover:shadow-lg hover:shadow-game-primary/20 transition-all flex items-center gap-2"
+                  className="px-4 py-2 bg-gradient-to-r from-game-primary to-game-primary/70 text-white rounded-lg hover:shadow-lg hover:shadow-game-primary/20 transition-all flex items-center gap-2 text-sm"
                 >
-                  <ShoppingCart className="h-4 w-4" />
-                  تأكيد الشراء
+                  <ShoppingCart className="h-3.5 w-3.5" />
+                  تأكيد
                 </button>
               </div>
             </div>
