@@ -4,6 +4,8 @@ import { useParams, Link } from 'react-router-dom';
 import { ArrowRight, Play, CheckCircle, BookOpen, Award, AlertTriangle, Clock, Star, Users } from 'lucide-react';
 import { useAuth } from '@/contexts/AuthContext';
 import { useToast } from '@/hooks/use-toast';
+import { motion } from 'framer-motion';
+import { Tab } from '@headlessui/react';
 
 // Sample course data
 const COURSE_DATA = {
@@ -128,7 +130,6 @@ const CourseDetail = () => {
   const { user } = useAuth();
   const [activeLesson, setActiveLesson] = useState<string | null>(null);
   const [videoModalOpen, setVideoModalOpen] = useState(false);
-  const [expandedSection, setExpandedSection] = useState<string | null>('s1'); // Default to first section
   const { toast } = useToast();
   
   // For this MVP, we'll use the sample course data
@@ -154,15 +155,11 @@ const CourseDetail = () => {
     
     closeVideoModal();
   };
-  
-  const toggleSection = (sectionId: string) => {
-    setExpandedSection(expandedSection === sectionId ? null : sectionId);
-  };
 
   return (
-    <div className="space-y-6 animate-fade-in">
+    <div className="h-full overflow-hidden flex flex-col">
       {/* Course Header */}
-      <div className="flex flex-col md:flex-row justify-between gap-4 relative">
+      <div className="flex items-center justify-between gap-4 mb-4">
         <div className="flex items-center gap-3">
           <Link to="/courses" className="text-gray-400 hover:text-white bg-game-card-bg-alt hover:bg-game-card-bg p-2.5 rounded-full transition-colors">
             <ArrowRight className="h-5 w-5" />
@@ -192,122 +189,153 @@ const CourseDetail = () => {
         </div>
       </div>
       
-      {/* Progress Overview */}
-      <div className="game-panel relative overflow-hidden hover:shadow-lg hover:shadow-blue-600/10 transition-all">
-        <div className="absolute top-0 right-0 w-full h-1 bg-gradient-to-r from-transparent via-blue-500/30 to-transparent"></div>
-        
-        <div className="flex flex-col md:flex-row justify-between gap-6">
-          <div className="md:w-2/3">
-            <h2 className="text-lg font-semibold text-white mb-1 font-lexend">نظرة عامة</h2>
-            <p className="text-gray-400 text-sm">{course.description}</p>
-            
-            <div className="mt-4 flex flex-wrap gap-3">
-              <div className="bg-game-card-bg-alt px-3 py-1.5 rounded-lg text-sm flex items-center gap-2 border border-white/5">
-                <BookOpen className="h-4 w-4 text-gray-400" />
-                <span className="text-gray-300">المدرّس: {course.instructor}</span>
+      {/* Main Content */}
+      <div className="flex-1 grid grid-cols-3 gap-4">
+        {/* Left Column: Course Overview */}
+        <div className="col-span-1">
+          <div className="game-panel h-full flex flex-col">
+            <div className="relative">
+              <div className="absolute top-0 right-0 w-full h-1 bg-gradient-to-r from-transparent via-blue-500/30 to-transparent"></div>
+              
+              <h2 className="text-lg font-semibold text-white mb-3 font-lexend">نظرة عامة</h2>
+              <p className="text-gray-400 text-sm">{course.description}</p>
+              
+              <div className="mt-4 flex flex-wrap gap-2">
+                <div className="bg-game-card-bg-alt px-3 py-1.5 rounded-lg text-sm flex items-center gap-2 border border-white/5">
+                  <BookOpen className="h-4 w-4 text-gray-400" />
+                  <span className="text-gray-300">{course.instructor}</span>
+                </div>
+                
+                <div className="bg-game-card-bg-alt px-3 py-1.5 rounded-lg text-sm flex items-center gap-2 border border-white/5">
+                  <AlertTriangle className="h-4 w-4 text-yellow-400" />
+                  <span className="text-gray-300">{course.difficulty}</span>
+                </div>
               </div>
               
-              <div className="bg-game-card-bg-alt px-3 py-1.5 rounded-lg text-sm flex items-center gap-2 border border-white/5">
-                <AlertTriangle className="h-4 w-4 text-yellow-400" />
-                <span className="text-gray-300">الصعوبة: {course.difficulty}</span>
+              <div className="mt-4 bg-game-card-bg-alt p-4 rounded-xl border border-white/5">
+                <div className="flex items-center gap-2 text-sm mb-2">
+                  <CheckCircle className="h-4 w-4 text-green-500" />
+                  <span className="text-white font-share-tech">{completedLessons} / {totalLessons}</span>
+                  <span className="text-gray-400">درس مكتمل</span>
+                </div>
+                
+                <div className="w-full bg-game-background h-3 rounded-full overflow-hidden">
+                  <div 
+                    className={`bg-gradient-to-r ${course.color} h-full rounded-full relative`} 
+                    style={{ width: `${progressPercentage}%` }}
+                  >
+                    <div className="absolute inset-0 bg-white opacity-10 animate-pulse"></div>
+                  </div>
+                </div>
+                
+                <div className="mt-2 text-xs text-gray-400">
+                  <span className="text-blue-400 font-share-tech">{progressPercentage}%</span> مكتمل
+                </div>
               </div>
-            </div>
-          </div>
-          
-          <div className="md:w-1/3 flex flex-col items-center justify-center bg-game-card-bg-alt p-4 rounded-xl border border-white/5">
-            <div className="flex items-center gap-2 text-sm mb-2">
-              <CheckCircle className="h-4 w-4 text-green-500" />
-              <span className="text-white font-share-tech">{completedLessons} / {totalLessons}</span>
-              <span className="text-gray-400">درس مكتمل</span>
-            </div>
-            
-            <div className="w-full bg-game-background h-3 rounded-full overflow-hidden">
-              <div 
-                className={`bg-gradient-to-r ${course.color} h-full rounded-full relative`} 
-                style={{ width: `${progressPercentage}%` }}
-              >
-                <div className="absolute inset-0 bg-white opacity-10 animate-pulse"></div>
+              
+              <div className="mt-4">
+                <h3 className="text-white font-medium mb-2">المهارات المكتسبة</h3>
+                <div className="flex flex-wrap gap-1">
+                  <span className="text-xs px-2 py-1 bg-blue-500/10 text-blue-400 rounded-md">معادلات</span>
+                  <span className="text-xs px-2 py-1 bg-purple-500/10 text-purple-400 rounded-md">جبر</span>
+                  <span className="text-xs px-2 py-1 bg-green-500/10 text-green-400 rounded-md">إحصاء</span>
+                  <span className="text-xs px-2 py-1 bg-yellow-500/10 text-yellow-400 rounded-md">هندسة</span>
+                </div>
               </div>
-            </div>
-            
-            <div className="mt-2 text-xs text-gray-400">
-              <span className="text-blue-400 font-share-tech">{progressPercentage}%</span> مكتمل
+              
+              <div className="mt-6">
+                <button className="w-full py-2.5 bg-gradient-to-r from-game-primary to-game-primary/70 text-white rounded-lg flex items-center justify-center gap-2 hover:shadow-lg hover:shadow-game-primary/20 transition-all">
+                  <Award className="h-5 w-5" />
+                  تحدي المستوى النهائي
+                </button>
+              </div>
             </div>
           </div>
         </div>
-      </div>
-      
-      {/* Course Content */}
-      <div className="space-y-4">
-        {course.sections.map((section) => (
-          <div key={section.id} className="game-panel hover:border-blue-500/30 transition-all">
-            {/* Section Header */}
-            <div 
-              className={`flex justify-between items-center cursor-pointer ${expandedSection === section.id ? 'mb-4' : ''}`}
-              onClick={() => toggleSection(section.id)}
-            >
-              <h3 className="text-lg font-semibold text-white font-lexend">{section.title}</h3>
-              <div className={`h-8 w-8 rounded-full bg-game-card-bg-alt flex items-center justify-center transition-transform ${expandedSection === section.id ? 'rotate-180' : ''}`}>
-                <svg width="14" height="8" viewBox="0 0 14 8" fill="none" xmlns="http://www.w3.org/2000/svg">
-                  <path d="M1 1L7 7L13 1" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"/>
-                </svg>
-              </div>
-            </div>
-            
-            {/* Section Content - Conditionally rendered based on expanded state */}
-            {expandedSection === section.id && (
-              <div className="space-y-2 animate-accordion-down">
-                {section.lessons.map((lesson) => (
-                  <div 
-                    key={lesson.id}
-                    className={`p-3 rounded-lg flex items-center gap-3 cursor-pointer transition-all ${
-                      lesson.isCompleted 
-                        ? 'bg-green-500/10 border border-green-500/20' 
-                        : 'bg-game-card-bg-alt hover:bg-gray-700/50'
-                    }`}
-                    onClick={() => openVideoModal(lesson.id)}
+        
+        {/* Right Column: Course Content with Tabs */}
+        <div className="col-span-2">
+          <Tab.Group>
+            <div className="flex flex-col h-full">
+              <Tab.List className="flex mb-4">
+                {course.sections.map((section) => (
+                  <Tab
+                    key={section.id}
+                    className={({ selected }) =>
+                      `px-4 py-2 text-sm font-medium transition-all border-b-2 ${
+                        selected
+                          ? 'text-white border-game-primary'
+                          : 'text-gray-400 border-transparent hover:text-white hover:border-gray-700'
+                      }`
+                    }
                   >
-                    <div className={`h-10 w-10 rounded-full flex items-center justify-center ${
-                      lesson.isCompleted ? 'bg-green-500/20 text-green-500' : 'bg-game-card-bg text-white'
-                    }`}>
-                      {lesson.isCompleted ? (
-                        <CheckCircle className="h-5 w-5" />
-                      ) : (
-                        <Play className="h-5 w-5" />
-                      )}
-                    </div>
-                    
-                    <div className="flex-1">
-                      <div className="flex justify-between">
-                        <h4 className="font-medium text-white">{lesson.title}</h4>
-                        <div className="flex items-center gap-2">
-                          {lesson.hasQuiz && (
-                            <span className="px-2 py-0.5 bg-blue-500/20 text-blue-400 rounded-md text-xs border border-blue-500/20">
-                              اختبار
-                            </span>
-                          )}
-                          <span className="text-gray-400 text-xs flex items-center">
-                            <Clock className="h-3 w-3 mr-1" />
-                            {lesson.duration}
-                          </span>
-                        </div>
-                      </div>
-                      
-                      <div className="flex justify-between items-center mt-1">
-                        <div className="text-xs text-gray-400">
-                          {lesson.isCompleted ? 'تم الإكمال' : 'غير مكتمل'}
-                        </div>
-                        <div className="text-xs text-game-accent bg-game-accent/10 px-2 py-0.5 rounded-md">
-                          <span className="font-share-tech">+{lesson.xpReward} XP</span>
-                        </div>
-                      </div>
-                    </div>
-                  </div>
+                    {section.title}
+                  </Tab>
                 ))}
-              </div>
-            )}
-          </div>
-        ))}
+              </Tab.List>
+              
+              <Tab.Panels className="flex-1 overflow-hidden">
+                {course.sections.map((section) => (
+                  <Tab.Panel key={section.id} className="h-full outline-none">
+                    <div className="game-panel h-full overflow-y-auto scrollbar-none">
+                      <div className="space-y-2">
+                        {section.lessons.map((lesson) => (
+                          <motion.div 
+                            key={lesson.id}
+                            className={`p-3 rounded-lg flex items-center gap-3 cursor-pointer transition-all ${
+                              lesson.isCompleted 
+                                ? 'bg-green-500/10 border border-green-500/20' 
+                                : 'bg-game-card-bg-alt hover:bg-gray-700/50'
+                            }`}
+                            onClick={() => openVideoModal(lesson.id)}
+                            whileHover={{ scale: 1.01 }}
+                            transition={{ duration: 0.2 }}
+                          >
+                            <div className={`h-10 w-10 rounded-full flex items-center justify-center ${
+                              lesson.isCompleted ? 'bg-green-500/20 text-green-500' : 'bg-game-card-bg text-white'
+                            }`}>
+                              {lesson.isCompleted ? (
+                                <CheckCircle className="h-5 w-5" />
+                              ) : (
+                                <Play className="h-5 w-5" />
+                              )}
+                            </div>
+                            
+                            <div className="flex-1">
+                              <div className="flex justify-between">
+                                <h4 className="font-medium text-white">{lesson.title}</h4>
+                                <div className="flex items-center gap-2">
+                                  {lesson.hasQuiz && (
+                                    <span className="px-2 py-0.5 bg-blue-500/20 text-blue-400 rounded-md text-xs border border-blue-500/20">
+                                      اختبار
+                                    </span>
+                                  )}
+                                  <span className="text-gray-400 text-xs flex items-center">
+                                    <Clock className="h-3 w-3 mr-1" />
+                                    {lesson.duration}
+                                  </span>
+                                </div>
+                              </div>
+                              
+                              <div className="flex justify-between items-center mt-1">
+                                <div className="text-xs text-gray-400">
+                                  {lesson.isCompleted ? 'تم الإكمال' : 'غير مكتمل'}
+                                </div>
+                                <div className="text-xs text-game-accent bg-game-accent/10 px-2 py-0.5 rounded-md">
+                                  <span className="font-share-tech">+{lesson.xpReward} XP</span>
+                                </div>
+                              </div>
+                            </div>
+                          </motion.div>
+                        ))}
+                      </div>
+                    </div>
+                  </Tab.Panel>
+                ))}
+              </Tab.Panels>
+            </div>
+          </Tab.Group>
+        </div>
       </div>
       
       {/* Video Modal */}

@@ -3,6 +3,8 @@ import { useState } from 'react';
 import { useAuth } from '@/contexts/AuthContext';
 import { Coins, ShoppingCart, Star, Shield, ChevronsUp, Gift, Sparkles } from 'lucide-react';
 import { useToast } from '@/hooks/use-toast';
+import { motion } from 'framer-motion';
+import { Tab } from '@headlessui/react';
 
 // Shop item types
 type ItemCategory = 'avatars' | 'backgrounds' | 'boosters' | 'mystery';
@@ -140,6 +142,17 @@ const Shop = () => {
   const filteredItems = selectedCategory === 'all' 
     ? SHOP_ITEMS 
     : SHOP_ITEMS.filter(item => item.category === selectedCategory);
+  
+  // Pagination for items
+  const itemsPerPage = 6;
+  const pages = Math.ceil(filteredItems.length / itemsPerPage);
+  
+  // Create item pages for tabbed view
+  const itemPages = Array.from({ length: pages }).map((_, index) => {
+    const start = index * itemsPerPage;
+    const end = start + itemsPerPage;
+    return filteredItems.slice(start, end);
+  });
     
   // Handle purchase
   const handlePurchase = (item: ShopItem) => {
@@ -181,20 +194,25 @@ const Shop = () => {
     setSelectedItem(null);
   };
   
-  // Get icon for category tab
-  const getCategoryIcon = (category: ItemCategory | 'all') => {
-    switch(category) {
-      case 'avatars': return '👤';
-      case 'backgrounds': return '🖼️';
-      case 'boosters': return '⚡';
-      case 'mystery': return '🎁';
-      default: return '🛒';
+  // Animation variants
+  const containerVariants = {
+    hidden: { opacity: 0 },
+    show: {
+      opacity: 1,
+      transition: {
+        staggerChildren: 0.1
+      }
     }
+  };
+  
+  const itemVariants = {
+    hidden: { opacity: 0, y: 10 },
+    show: { opacity: 1, y: 0 }
   };
 
   return (
-    <div className="space-y-6 animate-fade-in">
-      <div className="flex flex-col md:flex-row justify-between items-start md:items-center gap-4">
+    <div className="h-full overflow-hidden flex flex-col">
+      <div className="flex flex-col md:flex-row justify-between items-start md:items-center gap-4 mb-4">
         <div>
           <h1 className="text-2xl font-bold text-white font-changa bg-gradient-to-r from-game-primary to-game-accent bg-clip-text text-transparent">المتجر</h1>
           <p className="text-gray-400 mt-1">اشتر عناصر مميزة باستخدام العملات</p>
@@ -208,136 +226,175 @@ const Shop = () => {
       </div>
       
       {/* Category Tabs */}
-      <div className="flex overflow-x-auto scrollbar-none pb-2 border-b border-gray-800">
+      <div className="flex mb-4 bg-game-card-bg/50 rounded-lg p-1">
         <button
-          className={`px-4 py-3 flex items-center gap-2 whitespace-nowrap ${
+          className={`flex-1 px-4 py-2.5 rounded-lg flex items-center justify-center gap-2 transition-all ${
             selectedCategory === 'all' 
-              ? 'text-game-primary border-b-2 border-game-primary' 
-              : 'text-gray-400 hover:text-gray-300'
+              ? 'bg-game-card-bg text-game-primary shadow-inner' 
+              : 'text-gray-400 hover:text-white'
           }`}
           onClick={() => setSelectedCategory('all')}
         >
-          <span className="text-lg">{getCategoryIcon('all')}</span>
+          <ShoppingCart className="h-4 w-4" />
           الكل
         </button>
         <button
-          className={`px-4 py-3 flex items-center gap-2 whitespace-nowrap ${
+          className={`flex-1 px-4 py-2.5 rounded-lg flex items-center justify-center gap-2 transition-all ${
             selectedCategory === 'avatars' 
-              ? 'text-game-primary border-b-2 border-game-primary' 
-              : 'text-gray-400 hover:text-gray-300'
+              ? 'bg-game-card-bg text-game-primary shadow-inner' 
+              : 'text-gray-400 hover:text-white'
           }`}
           onClick={() => setSelectedCategory('avatars')}
         >
-          <span className="text-lg">{getCategoryIcon('avatars')}</span>
-          الأفاتارات
+          👤 الأفاتارات
         </button>
         <button
-          className={`px-4 py-3 flex items-center gap-2 whitespace-nowrap ${
+          className={`flex-1 px-4 py-2.5 rounded-lg flex items-center justify-center gap-2 transition-all ${
             selectedCategory === 'backgrounds' 
-              ? 'text-game-primary border-b-2 border-game-primary' 
-              : 'text-gray-400 hover:text-gray-300'
+              ? 'bg-game-card-bg text-game-primary shadow-inner' 
+              : 'text-gray-400 hover:text-white'
           }`}
           onClick={() => setSelectedCategory('backgrounds')}
         >
-          <span className="text-lg">{getCategoryIcon('backgrounds')}</span>
-          الخلفيات
+          🖼️ الخلفيات
         </button>
         <button
-          className={`px-4 py-3 flex items-center gap-2 whitespace-nowrap ${
+          className={`flex-1 px-4 py-2.5 rounded-lg flex items-center justify-center gap-2 transition-all ${
             selectedCategory === 'boosters' 
-              ? 'text-game-primary border-b-2 border-game-primary' 
-              : 'text-gray-400 hover:text-gray-300'
+              ? 'bg-game-card-bg text-game-primary shadow-inner' 
+              : 'text-gray-400 hover:text-white'
           }`}
           onClick={() => setSelectedCategory('boosters')}
         >
-          <span className="text-lg">{getCategoryIcon('boosters')}</span>
-          المعززات
+          ⚡ المعززات
         </button>
         <button
-          className={`px-4 py-3 flex items-center gap-2 whitespace-nowrap ${
+          className={`flex-1 px-4 py-2.5 rounded-lg flex items-center justify-center gap-2 transition-all ${
             selectedCategory === 'mystery' 
-              ? 'text-game-primary border-b-2 border-game-primary' 
-              : 'text-gray-400 hover:text-gray-300'
+              ? 'bg-game-card-bg text-game-primary shadow-inner' 
+              : 'text-gray-400 hover:text-white'
           }`}
           onClick={() => setSelectedCategory('mystery')}
         >
-          <span className="text-lg">{getCategoryIcon('mystery')}</span>
-          صناديق غامضة
+          🎁 صناديق
         </button>
       </div>
       
-      {/* Shop Items Grid */}
-      <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6">
-        {filteredItems.map((item) => {
-          const rarityStyle = getRarityStyle(item.rarity);
-          return (
-            <div 
-              key={item.id} 
-              className={`game-panel hover:border-game-primary transition-all duration-300 hover:shadow-lg ${rarityStyle.glow} overflow-hidden`}
-            >
-              <div className="text-center relative">
-                {/* Rarity corner label */}
-                {item.rarity && item.rarity !== 'common' && (
-                  <div className={`absolute top-0 right-0 px-3 py-1 ${rarityStyle.bg} ${rarityStyle.text} text-xs rounded-bl-lg border-b border-l ${rarityStyle.border} font-share-tech`}>
-                    {item.rarity === 'legendary' && <Sparkles className="h-3 w-3 inline mr-1" />}
-                    {item.rarity}
-                  </div>
-                )}
-                
-                <div className="flex justify-center items-center mb-4 mt-2">
-                  <div className={`h-24 w-24 ${rarityStyle.bg} rounded-xl flex items-center justify-center text-5xl border ${rarityStyle.border} shadow-lg`}>
-                    {item.image}
-                    {item.rarity === 'legendary' && (
-                      <div className="absolute inset-0 bg-gradient-to-t from-yellow-400/20 to-transparent rounded-xl opacity-30 animate-pulse"></div>
-                    )}
-                  </div>
-                </div>
-                
-                <h3 className="font-semibold text-white mb-2 font-lexend">{item.name}</h3>
-                <p className="text-gray-400 text-sm mb-4">{item.description}</p>
-                
-                {item.effect && (
-                  <div className={`text-xs ${rarityStyle.text} mb-4 py-1 px-2 rounded-md ${rarityStyle.bg} inline-block`}>
-                    {item.effect}
-                  </div>
-                )}
-                
-                <div className="flex justify-between items-center mt-4 pt-4 border-t border-white/5">
-                  <div className="flex items-center gap-1.5 py-1 px-3 bg-yellow-500/10 rounded-lg">
-                    <Coins className="h-4 w-4 text-yellow-400" />
-                    <span className="font-bold font-share-tech text-white">{item.price}</span>
-                  </div>
-                  
-                  <button
-                    onClick={() => handlePurchase(item)}
-                    className={`px-4 py-2 rounded-lg flex items-center gap-1.5 transition-all ${
-                      (user?.coins || 0) < item.price 
-                        ? 'bg-gray-700/50 text-gray-400 cursor-not-allowed' 
-                        : 'bg-gradient-to-r from-game-primary to-game-primary/70 text-white hover:shadow-md hover:shadow-game-primary/20'
-                    }`}
-                    disabled={(user?.coins || 0) < item.price}
-                  >
-                    <ShoppingCart className="h-4 w-4" />
-                    شراء
-                  </button>
-                </div>
-                
-                {(user?.coins || 0) < item.price && (
-                  <p className="text-red-400 text-xs mt-2">لا تملك عملات كافية</p>
-                )}
+      {/* Shop Items Grid with Pagination */}
+      <div className="flex-1 overflow-hidden">
+        {filteredItems.length > 0 ? (
+          <Tab.Group>
+            <div className="flex flex-col h-full">
+              <div className="flex-1">
+                <Tab.Panels className="h-full">
+                  {itemPages.map((items, idx) => (
+                    <Tab.Panel key={idx} className="h-full outline-none">
+                      <motion.div 
+                        className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4 h-full"
+                        variants={containerVariants}
+                        initial="hidden"
+                        animate="show"
+                      >
+                        {items.map((item) => {
+                          const rarityStyle = getRarityStyle(item.rarity);
+                          return (
+                            <motion.div 
+                              key={item.id} 
+                              variants={itemVariants}
+                              className={`game-panel hover:border-game-primary transition-all duration-300 hover:shadow-lg ${rarityStyle.glow} overflow-hidden`}
+                            >
+                              <div className="text-center relative">
+                                {/* Rarity corner label */}
+                                {item.rarity && item.rarity !== 'common' && (
+                                  <div className={`absolute top-0 right-0 px-3 py-1 ${rarityStyle.bg} ${rarityStyle.text} text-xs rounded-bl-lg border-b border-l ${rarityStyle.border} font-share-tech`}>
+                                    {item.rarity === 'legendary' && <Sparkles className="h-3 w-3 inline mr-1" />}
+                                    {item.rarity}
+                                  </div>
+                                )}
+                                
+                                <div className="flex justify-center items-center mb-4 mt-2">
+                                  <div className={`h-20 w-20 ${rarityStyle.bg} rounded-xl flex items-center justify-center text-5xl border ${rarityStyle.border} shadow-lg`}>
+                                    {item.image}
+                                    {item.rarity === 'legendary' && (
+                                      <div className="absolute inset-0 bg-gradient-to-t from-yellow-400/20 to-transparent rounded-xl opacity-30 animate-pulse"></div>
+                                    )}
+                                  </div>
+                                </div>
+                                
+                                <h3 className="font-semibold text-white mb-2 font-lexend">{item.name}</h3>
+                                <p className="text-gray-400 text-sm mb-4">{item.description}</p>
+                                
+                                {item.effect && (
+                                  <div className={`text-xs ${rarityStyle.text} mb-4 py-1 px-2 rounded-md ${rarityStyle.bg} inline-block`}>
+                                    {item.effect}
+                                  </div>
+                                )}
+                                
+                                <div className="flex justify-between items-center mt-4 pt-4 border-t border-white/5">
+                                  <div className="flex items-center gap-1.5 py-1 px-3 bg-yellow-500/10 rounded-lg">
+                                    <Coins className="h-4 w-4 text-yellow-400" />
+                                    <span className="font-bold font-share-tech text-white">{item.price}</span>
+                                  </div>
+                                  
+                                  <button
+                                    onClick={() => handlePurchase(item)}
+                                    className={`px-4 py-2 rounded-lg flex items-center gap-1.5 transition-all ${
+                                      (user?.coins || 0) < item.price 
+                                        ? 'bg-gray-700/50 text-gray-400 cursor-not-allowed' 
+                                        : 'bg-gradient-to-r from-game-primary to-game-primary/70 text-white hover:shadow-md hover:shadow-game-primary/20'
+                                    }`}
+                                    disabled={(user?.coins || 0) < item.price}
+                                  >
+                                    <ShoppingCart className="h-4 w-4" />
+                                    شراء
+                                  </button>
+                                </div>
+                                
+                                {(user?.coins || 0) < item.price && (
+                                  <p className="text-red-400 text-xs mt-2">لا تملك عملات كافية</p>
+                                )}
+                              </div>
+                            </motion.div>
+                          );
+                        })}
+                      </motion.div>
+                    </Tab.Panel>
+                  ))}
+                </Tab.Panels>
               </div>
+              
+              {itemPages.length > 1 && (
+                <div className="flex justify-center space-x-1 py-4">
+                  <Tab.List className="flex space-x-2">
+                    {Array.from({ length: pages }).map((_, idx) => (
+                      <Tab
+                        key={idx}
+                        className={({ selected }) =>
+                          `rounded-md px-3 py-1.5 text-sm font-medium transition-all ${
+                            selected
+                              ? 'bg-game-primary text-white shadow-md shadow-game-primary/20'
+                              : 'bg-game-card-bg-alt text-gray-400 hover:bg-gray-700 hover:text-white'
+                          }`
+                        }
+                      >
+                        {idx + 1}
+                      </Tab>
+                    ))}
+                  </Tab.List>
+                </div>
+              )}
             </div>
-          );
-        })}
+          </Tab.Group>
+        ) : (
+          <div className="flex items-center justify-center h-full">
+            <div className="text-center">
+              <div className="text-7xl mb-4 opacity-30">🛒</div>
+              <p className="text-gray-400">لا توجد عناصر متاحة في هذه الفئة حالياً</p>
+              <p className="text-gray-500 text-sm mt-2">تحقق من الفئات الأخرى أو عد لاحقاً</p>
+            </div>
+          </div>
+        )}
       </div>
-      
-      {filteredItems.length === 0 && (
-        <div className="text-center py-16">
-          <div className="text-7xl mb-4 opacity-30">🛒</div>
-          <p className="text-gray-400">لا توجد عناصر متاحة في هذه الفئة حالياً</p>
-          <p className="text-gray-500 text-sm mt-2">تحقق من الفئات الأخرى أو عد لاحقاً</p>
-        </div>
-      )}
       
       {/* Purchase Confirmation Modal */}
       {isConfirmingPurchase && selectedItem && (

@@ -73,14 +73,14 @@ const StudentLayout = () => {
   };
 
   return (
-    <div className="min-h-screen bg-transparent flex">
+    <div className="h-screen w-full flex overflow-hidden bg-transparent">
       {/* Galaxy particles background */}
-      <div className="galaxy-particles">
+      <div className="galaxy-particles fixed inset-0 z-0">
         {createParticles()}
       </div>
       
       {/* Cyber grid background */}
-      <div className="cyber-grid"></div>
+      <div className="cyber-grid fixed inset-0 z-0"></div>
       
       {/* Sidebar - fixed on desktop, sliding on mobile */}
       <aside 
@@ -211,7 +211,7 @@ const StudentLayout = () => {
         </header>
         
         {/* Main content */}
-        <main className="flex-1 p-4 lg:p-6 overflow-auto relative z-10">
+        <main className="flex-1 p-4 lg:p-6 overflow-hidden relative z-10 h-[calc(100vh-64px)]">
           <Outlet />
         </main>
       </div>

@@ -1,8 +1,8 @@
-
 import { useState } from 'react';
 import { useAuth } from '@/contexts/AuthContext';
-import { Search, Trophy, Star, Users, UserPlus, Crown, Award } from 'lucide-react';
+import { Search, Trophy, Star, Users, UserPlus, Crown, Award, MessageCircle, BookOpen, Activity } from 'lucide-react';
 import { useToast } from '@/hooks/use-toast';
+import { motion } from 'framer-motion';
 import { Avatar, AvatarImage, AvatarFallback } from '@/components/ui/avatar';
 import { HoverCard, HoverCardTrigger, HoverCardContent } from '@/components/ui/hover-card';
 
@@ -16,6 +16,17 @@ interface Friend {
   streak: number;
   isOnline: boolean;
   status?: 'top' | 'active' | 'studying';
+}
+
+// Leaderboard entry interface
+interface LeaderboardEntry {
+  id: string;
+  name: string;
+  avatar?: string;
+  xp: number;
+  rank: number;
+  badge?: 'gold' | 'silver' | 'bronze';
+  growth?: 'up' | 'down' | 'same';
 }
 
 const FRIENDS_DATA: Friend[] = [
@@ -59,17 +70,6 @@ const FRIENDS_DATA: Friend[] = [
     status: 'active',
   },
 ];
-
-// Leaderboard data
-interface LeaderboardEntry {
-  id: string;
-  name: string;
-  avatar?: string;
-  xp: number;
-  rank: number;
-  badge?: 'gold' | 'silver' | 'bronze';
-  growth?: 'up' | 'down' | 'same';
-}
 
 const LEADERBOARD_DATA: LeaderboardEntry[] = [
   {
@@ -121,265 +121,363 @@ const Community = () => {
   const { user } = useAuth();
   const [searchTerm, setSearchTerm] = useState('');
   const [activeTab, setActiveTab] = useState<'friends' | 'leaderboard'>('friends');
+  const [filterBy, setFilterBy] = useState<'all' | 'online'>('all');
   const { toast } = useToast();
   
-  const filteredFriends = FRIENDS_DATA.filter(friend => 
-    friend.name.includes(searchTerm)
-  );
+  // Filter friends based on search and online status
+  const filteredFriends = FRIENDS_DATA.filter(friend => {
+    if (filterBy === 'online' && !friend.isOnline) return false;
+    return friend.name.includes(searchTerm);
+  });
   
-  const handleAddFriend = () => {
+  const handleSendInvite = () => {
     toast({
-      title: "تمت إضافة صديق",
-      description: "تمت إضافة صديق جديد إلى قائمة أصدقائك",
+      title: "تم إرسال الدعوة",
+      description: "تم إرسال دعوة الصداقة بنجاح",
     });
   };
   
-  // Helper function to render status icons
-  const renderStatusIcon = (friend: Friend) => {
-    if (friend.status === 'top') {
-      return <span className="ml-2 text-yellow-400 text-xs">👑 المتصدر</span>;
-    }
-    if (friend.status === 'studying') {
-      return <span className="ml-2 text-game-accent text-xs">📚 يدرس الآن</span>;
-    }
-    if (friend.status === 'active') {
-      return <span className="ml-2 text-green-400 text-xs">💬 جاهز للدراسة</span>;
-    }
-    return null;
+  const handleSendMessage = (friendName: string) => {
+    toast({
+      title: "رسالة جديدة",
+      description: `تم إرسال رسالة إلى ${friendName}`,
+    });
+  };
+  
+  const handleAddFriend = (id: string) => {
+    toast({
+      title: "تمت الإضافة",
+      description: "تمت إضافة الصديق بنجاح",
+    });
   };
 
   return (
-    <div className="space-y-6 animate-fade-in">
-      <div className="flex flex-col md:flex-row justify-between items-center gap-4 mb-6">
-        <div>
-          <h1 className="text-2xl font-bold text-white font-changa bg-gradient-to-r from-game-primary to-game-accent bg-clip-text text-transparent">المجتمع</h1>
-          <p className="text-gray-400 mt-1">تفاعل مع أصدقائك وتنافس معهم</p>
-        </div>
-        
-        <div className="flex gap-3">
-          <div className="bg-game-card-bg-alt px-4 py-2 rounded-lg border border-white/5 flex items-center gap-2 shadow-lg shadow-game-primary/5">
-            <Trophy className="h-5 w-5 text-yellow-400 animate-pulse-glow" />
-            <span className="text-white font-semibold font-share-tech">{user?.rank || '#4'}</span>
-            <span className="text-gray-400">الترتيب</span>
+    <div className="h-full overflow-hidden animate-fade-in">
+      <div className="flex flex-col h-full max-h-[calc(100vh-120px)]">
+        <div className="flex flex-col md:flex-row justify-between gap-4 mb-4">
+          <div>
+            <h1 className="text-2xl font-bold text-white font-changa bg-gradient-to-r from-game-primary to-game-accent bg-clip-text text-transparent">المجتمع</h1>
+            <p className="text-gray-400 mt-1">تواصل وتنافس مع الأصدقاء</p>
           </div>
           
-          <div className="bg-game-card-bg-alt px-4 py-2 rounded-lg border border-white/5 flex items-center gap-2 shadow-lg shadow-game-accent/5">
-            <Award className="h-5 w-5 text-game-accent" />
-            <span className="text-white font-semibold font-share-tech">{user?.xp || '8,966'}</span>
-            <span className="text-gray-400">نقطة</span>
-          </div>
-        </div>
-      </div>
-      
-      {/* Tabs with animated border */}
-      <div className="flex border-b border-gray-800 relative mb-6">
-        <button
-          className={`px-6 py-3 flex items-center gap-2 relative ${activeTab === 'friends' ? 'text-game-primary font-medium' : 'text-gray-400'}`}
-          onClick={() => setActiveTab('friends')}
-        >
-          <Users className={`h-5 w-5 ${activeTab === 'friends' ? 'animate-pulse-glow' : ''}`} />
-          الأصدقاء
-          {activeTab === 'friends' && (
-            <span className="absolute bottom-0 left-0 w-full h-0.5 bg-gradient-to-r from-game-primary to-game-accent animate-pulse-glow"></span>
-          )}
-        </button>
-        <button
-          className={`px-6 py-3 flex items-center gap-2 relative ${activeTab === 'leaderboard' ? 'text-game-primary font-medium' : 'text-gray-400'}`}
-          onClick={() => setActiveTab('leaderboard')}
-        >
-          <Trophy className={`h-5 w-5 ${activeTab === 'leaderboard' ? 'animate-pulse-glow' : ''}`} />
-          المتصدرون
-          {activeTab === 'leaderboard' && (
-            <span className="absolute bottom-0 left-0 w-full h-0.5 bg-gradient-to-r from-game-primary to-game-accent animate-pulse-glow"></span>
-          )}
-        </button>
-      </div>
-      
-      {/* Friends Tab */}
-      {activeTab === 'friends' && (
-        <div className="space-y-6 animate-scale-in">
-          <div className="flex flex-col sm:flex-row justify-between gap-3">
-            <div className="relative max-w-md w-full">
+          <div className="flex gap-2">
+            <div className="relative">
               <div className="absolute inset-y-0 right-0 flex items-center pr-3 pointer-events-none">
                 <Search className="h-4 w-4 text-gray-400" />
               </div>
               <input
                 type="text"
-                className="py-3 px-4 pr-10 bg-game-card-bg border border-white/10 rounded-lg text-white w-full focus:outline-none focus:ring-1 focus:ring-game-primary transition-colors"
+                className="py-2.5 px-4 pr-10 bg-game-card-bg border border-gray-700/30 rounded-md text-white w-full focus:outline-none focus:ring-1 focus:ring-game-primary transition-all"
                 placeholder="ابحث عن صديق..."
                 value={searchTerm}
                 onChange={(e) => setSearchTerm(e.target.value)}
               />
             </div>
             
-            <button
-              onClick={handleAddFriend}
-              className="game-btn flex items-center gap-2 bg-gradient-to-r from-game-primary to-game-primary/70 hover:shadow-lg hover:shadow-game-primary/20 transition-all px-6"
+            <button 
+              onClick={handleSendInvite}
+              className="py-2.5 px-4 bg-gradient-to-r from-game-primary to-game-primary/70 text-white rounded-md flex items-center gap-2 hover:shadow-md hover:shadow-game-primary/20 transition-all"
             >
               <UserPlus className="h-4 w-4" />
-              إضافة صديق
+              <span className="hidden sm:inline">إضافة صديق</span>
             </button>
           </div>
-          
-          {/* Friends List */}
-          <div className="space-y-4">
-            {filteredFriends.map((friend) => (
-              <div 
-                key={friend.id} 
-                className="game-panel hover:border-game-primary transition-all hover:shadow-lg hover:shadow-game-primary/10 hover:-translate-y-0.5"
-              >
-                <div className="flex items-center gap-4">
-                  <div className="relative">
-                    <HoverCard>
-                      <HoverCardTrigger asChild>
-                        <div className="h-16 w-16 rounded-full flex items-center justify-center text-2xl border-2 relative bg-gradient-to-b from-game-card-bg-alt to-game-card-bg border-white/10 shadow-inner overflow-hidden hover:border-game-primary transition-all cursor-pointer">
-                          {friend.avatar}
-                          {friend.isOnline && (
-                            <div className="absolute bottom-1 right-1 h-3 w-3 bg-green-500 rounded-full border border-game-card-bg animate-pulse"></div>
-                          )}
-                          {friend.streak >= 20 && (
-                            <div className="absolute -top-1 -right-1 text-xs">🔥</div>
-                          )}
-                        </div>
-                      </HoverCardTrigger>
-                      <HoverCardContent className="bg-game-card-bg-alt border border-white/10 p-4 shadow-xl rounded-lg w-60">
-                        <div className="flex flex-col items-center gap-2">
-                          <div className="text-3xl">{friend.avatar}</div>
-                          <p className="text-white font-medium">{friend.name}</p>
-                          <div className="flex items-center gap-2 text-sm text-game-accent">
-                            <Trophy className="h-4 w-4" />
-                            <span>المستوى {friend.level}</span>
-                          </div>
-                          <div className="w-full h-1.5 bg-game-background rounded-full overflow-hidden mt-2">
-                            <div className="h-full bg-gradient-to-r from-game-accent to-game-highlight" style={{ width: '65%' }}></div>
-                          </div>
-                          <div className="text-sm text-gray-400 mt-1">{friend.xp.toLocaleString()} XP</div>
-                        </div>
-                      </HoverCardContent>
-                    </HoverCard>
-                  </div>
-                  
-                  <div className="flex-1">
-                    <div className="flex justify-between items-center">
-                      <h3 className="font-semibold text-white flex items-center">
-                        {friend.name}
-                        {renderStatusIcon(friend)}
-                      </h3>
-                      
-                      <div className="flex items-center gap-2">
-                        <div className="flex items-center text-game-accent bg-game-accent/10 px-2 py-0.5 rounded-lg">
-                          <Star className="h-4 w-4 mr-1" />
-                          <span className="font-share-tech">{friend.level}</span>
-                        </div>
-                      </div>
-                    </div>
-                    
-                    <div className="flex justify-between text-sm mt-2">
-                      <div className="text-gray-400">
-                        <span className="font-share-tech">{friend.xp.toLocaleString()} XP</span>
-                      </div>
-                      <div className="flex items-center text-orange-400 bg-orange-500/10 px-2 py-0.5 rounded-lg">
-                        <span className="font-share-tech">🔥 {friend.streak} يوم</span>
-                      </div>
-                    </div>
-                    
-                    <div className="flex justify-end mt-3">
-                      <button className="text-xs px-3 py-1.5 bg-game-card-bg-alt hover:bg-game-secondary/20 text-white rounded-md transition-colors">
-                        تحدي
-                      </button>
-                    </div>
+        </div>
+        
+        {/* Tabs Navigation */}
+        <div className="flex mb-4 border-b border-white/10">
+          <button
+            className={`px-4 py-2 flex items-center gap-2 ${
+              activeTab === 'friends' 
+                ? 'text-game-primary border-b-2 border-game-primary' 
+                : 'text-gray-400'
+            }`}
+            onClick={() => setActiveTab('friends')}
+          >
+            <Users className="h-4 w-4" />
+            أصدقاء
+          </button>
+          <button
+            className={`px-4 py-2 flex items-center gap-2 ${
+              activeTab === 'leaderboard' 
+                ? 'text-game-accent border-b-2 border-game-accent' 
+                : 'text-gray-400'
+            }`}
+            onClick={() => setActiveTab('leaderboard')}
+          >
+            <Trophy className="h-4 w-4" />
+            المتصدرون
+          </button>
+        </div>
+        
+        {/* Main Content Area - Adjusts based on active tab */}
+        <div className="flex-1 overflow-hidden">
+          {activeTab === 'friends' && (
+            <motion.div 
+              initial={{ opacity: 0 }}
+              animate={{ opacity: 1 }}
+              className="grid grid-cols-1 lg:grid-cols-2 gap-4 h-full"
+            >
+              <div className="game-panel h-full overflow-hidden flex flex-col">
+                <div className="flex justify-between items-center mb-4">
+                  <h3 className="text-lg font-semibold text-white font-lexend">الأصدقاء</h3>
+                  <div>
+                    <select
+                      value={filterBy}
+                      onChange={(e) => setFilterBy(e.target.value as 'all' | 'online')}
+                      className="bg-game-card-bg-alt text-sm py-1 px-3 border border-white/10 rounded text-gray-300"
+                    >
+                      <option value="all">جميع الأصدقاء</option>
+                      <option value="online">المتصلون</option>
+                    </select>
                   </div>
                 </div>
-              </div>
-            ))}
-            
-            {filteredFriends.length === 0 && (
-              <div className="text-center py-12">
-                <div className="text-5xl mb-4 opacity-30">👥</div>
-                <p className="text-gray-400">لم يتم العثور على أصدقاء</p>
-                <p className="text-gray-500 text-sm mt-2">جرب البحث بكلمات مختلفة</p>
-              </div>
-            )}
-          </div>
-        </div>
-      )}
-      
-      {/* Leaderboard Tab */}
-      {activeTab === 'leaderboard' && (
-        <div className="animate-scale-in">
-          <div className="game-panel border-gradient shadow-2xl shadow-game-primary/10">
-            <h3 className="text-xl font-bold text-white mb-6 font-changa flex items-center">
-              <Crown className="h-5 w-5 text-yellow-400 mr-2" />
-              المتصدرون (أعلى 5)
-            </h3>
-            
-            <div className="space-y-4">
-              {LEADERBOARD_DATA.map((entry, index) => {
-                // Define badge and styling based on rank
-                let badgeStyle = "";
-                let rankDisplay = "";
                 
-                if (entry.badge === 'gold') {
-                  badgeStyle = "bg-yellow-500/20 border-yellow-500/30 text-yellow-400";
-                  rankDisplay = "🥇";
-                } else if (entry.badge === 'silver') {
-                  badgeStyle = "bg-gray-300/20 border-gray-300/30 text-gray-300";
-                  rankDisplay = "🥈";
-                } else if (entry.badge === 'bronze') {
-                  badgeStyle = "bg-orange-500/20 border-orange-500/30 text-orange-400";
-                  rankDisplay = "🥉";
-                } else {
-                  badgeStyle = "bg-gray-700/50 border-gray-700";
-                  rankDisplay = `#${entry.rank}`;
-                }
-                
-                // Is this the current user?
-                const isCurrentUser = entry.id === 'f1';
-                const rowStyle = isCurrentUser 
-                  ? "bg-game-card-bg-alt border-l-4 border-l-game-primary" 
-                  : "bg-game-card-bg hover:bg-game-card-bg-alt";
-                
-                return (
-                  <div 
-                    key={entry.id}
-                    className={`flex items-center p-4 rounded-lg transition-all ${rowStyle} hover:shadow-md`}
-                  >
-                    <div className={`min-w-10 h-10 rounded-full flex items-center justify-center font-bold text-lg border ${badgeStyle}`}>
-                      {rankDisplay}
+                <div className="space-y-3 overflow-auto max-h-full p-1">
+                  {filteredFriends.length > 0 ? (
+                    filteredFriends.map((friend) => (
+                      <div 
+                        key={friend.id}
+                        className="p-3 bg-game-card-bg-alt rounded-lg border border-white/5 hover:border-game-primary/30 transition-all"
+                      >
+                        <div className="flex justify-between items-center">
+                          <div className="flex items-center gap-3">
+                            <div className="relative">
+                              <div className="h-10 w-10 rounded-full bg-gradient-to-br from-game-card-bg to-game-card-bg-alt flex items-center justify-center text-xl">
+                                {friend.avatar}
+                              </div>
+                              <div className={`absolute -bottom-1 -right-1 h-3 w-3 rounded-full border-2 border-game-card-bg ${
+                                friend.isOnline ? 'bg-green-500' : 'bg-gray-500'
+                              }`}></div>
+                            </div>
+                            
+                            <div>
+                              <HoverCard>
+                                <HoverCardTrigger asChild>
+                                  <h4 className="font-medium text-white cursor-pointer">{friend.name}</h4>
+                                </HoverCardTrigger>
+                                <HoverCardContent className="w-64 bg-game-card-bg border border-white/10">
+                                  <div className="flex justify-center mb-2">
+                                    <div className="h-16 w-16 rounded-full bg-gradient-to-br from-game-card-bg to-game-card-bg-alt flex items-center justify-center text-4xl">
+                                      {friend.avatar}
+                                    </div>
+                                  </div>
+                                  <h4 className="text-center text-white mb-2">{friend.name}</h4>
+                                  <div className="grid grid-cols-3 gap-2 text-center text-sm">
+                                    <div className="bg-game-card-bg-alt p-2 rounded">
+                                      <div className="text-game-accent font-share-tech">{friend.level}</div>
+                                      <div className="text-gray-400">مستوى</div>
+                                    </div>
+                                    <div className="bg-game-card-bg-alt p-2 rounded">
+                                      <div className="text-game-primary font-share-tech">{friend.xp.toLocaleString()}</div>
+                                      <div className="text-gray-400">XP</div>
+                                    </div>
+                                    <div className="bg-game-card-bg-alt p-2 rounded">
+                                      <div className="text-orange-400 font-share-tech">{friend.streak}</div>
+                                      <div className="text-gray-400">تتابع</div>
+                                    </div>
+                                  </div>
+                                </HoverCardContent>
+                              </HoverCard>
+                              
+                              <div className="flex items-center gap-2 text-xs">
+                                <span className="text-gray-400">مستوى {friend.level}</span>
+                                {friend.status === 'top' && (
+                                  <span className="text-yellow-400 flex items-center">
+                                    <Crown className="h-3 w-3 mr-1" />
+                                    متصدر
+                                  </span>
+                                )}
+                                {friend.status === 'studying' && (
+                                  <span className="text-blue-400 flex items-center">
+                                    <BookOpen className="h-3 w-3 mr-1" />
+                                    يدرس
+                                  </span>
+                                )}
+                                {friend.status === 'active' && (
+                                  <span className="text-green-400 flex items-center">
+                                    <Activity className="h-3 w-3 mr-1" />
+                                    نشط
+                                  </span>
+                                )}
+                              </div>
+                            </div>
+                          </div>
+                          
+                          <div className="flex items-center gap-2">
+                            <button 
+                              onClick={() => handleSendMessage(friend.name)}
+                              className="p-2 text-gray-400 hover:text-white bg-transparent hover:bg-game-primary/10 rounded-full transition-colors"
+                            >
+                              <MessageCircle className="h-4 w-4" />
+                            </button>
+                            {friend.isOnline && (
+                              <button className="py-1.5 px-3 text-xs bg-game-primary/20 text-game-primary rounded hover:bg-game-primary/30 transition-colors">
+                                تحدي
+                              </button>
+                            )}
+                          </div>
+                        </div>
+                      </div>
+                    ))
+                  ) : (
+                    <div className="text-center py-8">
+                      <p className="text-gray-400">لم يتم العثور على أصدقاء</p>
                     </div>
-                    
-                    <div className="h-12 w-12 bg-game-card-bg-alt rounded-full flex items-center justify-center text-xl mx-4 border border-white/5 overflow-hidden">
-                      {entry.avatar}
-                    </div>
-                    
-                    <div className="flex-1">
+                  )}
+                </div>
+              </div>
+              
+              <div className="game-panel h-full overflow-hidden flex flex-col">
+                <div className="flex justify-between items-center mb-4">
+                  <h3 className="text-lg font-semibold text-white font-lexend">اقتراحات</h3>
+                </div>
+                
+                <div className="grid grid-cols-1 sm:grid-cols-2 gap-3 overflow-auto max-h-full p-1">
+                  {LEADERBOARD_DATA.map((entry) => (
+                    <div 
+                      key={entry.id}
+                      className="p-3 bg-game-card-bg-alt rounded-lg border border-white/5 hover:border-game-accent/30 transition-all"
+                    >
                       <div className="flex justify-between items-center">
-                        <h4 className={`font-medium ${isCurrentUser ? 'text-game-primary' : 'text-white'}`}>
-                          {entry.name}
-                          {isCurrentUser && <span className="text-xs text-game-primary ml-2">(أنت)</span>}
-                        </h4>
-                        <div className="flex items-center">
-                          {entry.growth === 'up' && <span className="text-green-400 text-xs mr-2">▲ 1</span>}
-                          {entry.growth === 'down' && <span className="text-red-400 text-xs mr-2">▼ 1</span>}
-                          <div className="text-game-primary font-bold font-share-tech bg-game-primary/10 px-3 py-1 rounded-full">
-                            {entry.xp.toLocaleString()} XP
+                        <div className="flex items-center gap-3">
+                          <div className="h-10 w-10 rounded-full bg-gradient-to-br from-game-card-bg to-game-card-bg-alt flex items-center justify-center text-xl">
+                            {entry.avatar}
+                          </div>
+                          
+                          <div>
+                            <h4 className="font-medium text-white">{entry.name}</h4>
+                            <div className="flex items-center gap-2 text-xs">
+                              <span className="text-gray-400">Rank {entry.rank}</span>
+                              <span className="text-game-accent flex items-center">
+                                <Star className="h-3 w-3 mr-1" />
+                                {entry.xp.toLocaleString()} XP
+                              </span>
+                            </div>
+                          </div>
+                        </div>
+                        
+                        <button 
+                          onClick={() => handleAddFriend(entry.id)}
+                          className="py-1.5 px-3 text-xs bg-game-accent/20 text-game-accent rounded hover:bg-game-accent/30 transition-colors"
+                        >
+                          إضافة
+                        </button>
+                      </div>
+                    </div>
+                  ))}
+                </div>
+              </div>
+            </motion.div>
+          )}
+          
+          {activeTab === 'leaderboard' && (
+            <motion.div 
+              initial={{ opacity: 0 }}
+              animate={{ opacity: 1 }}
+              className="h-full"
+            >
+              <div className="game-panel h-full overflow-hidden flex flex-col">
+                <div className="flex justify-between items-center mb-4">
+                  <h3 className="text-lg font-semibold text-white font-lexend">
+                    <Trophy className="inline-block h-5 w-5 mr-2 text-yellow-400" />
+                    المتصدرون الأسبوع
+                  </h3>
+                </div>
+                
+                <div className="space-y-3 overflow-auto max-h-full p-1">
+                  {LEADERBOARD_DATA.map((entry) => (
+                    <div 
+                      key={entry.id}
+                      className={`p-3 rounded-lg border transition-all ${
+                        entry.badge === 'gold'
+                          ? 'bg-gradient-to-r from-yellow-900/30 to-yellow-700/10 border-yellow-500/30 shadow-sm shadow-yellow-500/20'
+                          : entry.badge === 'silver'
+                            ? 'bg-gradient-to-r from-gray-700/30 to-gray-500/10 border-gray-400/30'
+                            : entry.badge === 'bronze'
+                              ? 'bg-gradient-to-r from-amber-900/30 to-amber-700/10 border-amber-500/30'
+                              : 'bg-game-card-bg-alt border-white/5'
+                      }`}
+                    >
+                      <div className="flex items-center">
+                        <div className="flex items-center justify-center h-8 w-8 rounded-full bg-game-card-bg mr-4 font-share-tech text-lg">
+                          {entry.rank}
+                        </div>
+                        
+                        <div className="flex items-center gap-3 flex-1">
+                          <div className="relative">
+                            <div className="h-12 w-12 rounded-full bg-gradient-to-br from-game-card-bg to-game-card-bg-alt flex items-center justify-center text-2xl">
+                              {entry.avatar}
+                            </div>
+                            {entry.badge && (
+                              <div className="absolute -bottom-1 -right-1 h-6 w-6 rounded-full bg-game-card-bg flex items-center justify-center border-2 border-game-card-bg">
+                                {entry.badge === 'gold' && <Award className="h-4 w-4 text-yellow-400" />}
+                                {entry.badge === 'silver' && <Award className="h-4 w-4 text-gray-400" />}
+                                {entry.badge === 'bronze' && <Award className="h-4 w-4 text-amber-400" />}
+                              </div>
+                            )}
+                          </div>
+                          
+                          <div className="flex-1">
+                            <div className="flex justify-between">
+                              <h4 className="font-medium text-white">{entry.name}</h4>
+                              <div className="flex items-center text-lg font-share-tech font-bold text-game-accent">
+                                <span>{entry.xp.toLocaleString()}</span>
+                                <span className="text-xs ml-1">XP</span>
+                              </div>
+                            </div>
+                            
+                            <div className="w-full bg-game-background h-2 rounded-full overflow-hidden mt-2">
+                              <div 
+                                className={`h-full rounded-full relative ${
+                                  entry.badge === 'gold'
+                                    ? 'bg-gradient-to-r from-yellow-500 to-yellow-300'
+                                    : entry.badge === 'silver'
+                                      ? 'bg-gradient-to-r from-gray-400 to-gray-300'
+                                      : entry.badge === 'bronze'
+                                        ? 'bg-gradient-to-r from-amber-500 to-amber-300'
+                                        : 'bg-gradient-to-r from-blue-600 to-blue-400'
+                                }`} 
+                                style={{ width: `${Math.min(100, entry.xp / 200)}%` }}
+                              >
+                                <div className="absolute inset-0 bg-white opacity-20 animate-pulse"></div>
+                              </div>
+                            </div>
+                          </div>
+                          
+                          <div className="flex items-center">
+                            {entry.growth === 'up' && (
+                              <span className="flex items-center text-green-400">
+                                <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
+                                  <path d="m18 15-6-6-6 6"/>
+                                </svg>
+                              </span>
+                            )}
+                            {entry.growth === 'down' && (
+                              <span className="flex items-center text-red-400">
+                                <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
+                                  <path d="m6 9 6 6 6-6"/>
+                                </svg>
+                              </span>
+                            )}
+                            {entry.growth === 'same' && (
+                              <span className="flex items-center text-gray-400">
+                                <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
+                                  <path d="M8 12h8"/>
+                                </svg>
+                              </span>
+                            )}
                           </div>
                         </div>
                       </div>
                     </div>
-                  </div>
-                );
-              })}
-            </div>
-            
-            <div className="text-center mt-8">
-              <button className="px-6 py-3 bg-game-card-bg text-white rounded-lg hover:bg-game-card-bg-alt transition-colors text-sm border border-white/5">
-                عرض القائمة الكاملة
-              </button>
-            </div>
-          </div>
+                  ))}
+                </div>
+              </div>
+            </motion.div>
+          )}
         </div>
-      )}
+      </div>
     </div>
   );
 };
