@@ -1,6 +1,7 @@
+
 import * as React from "react"
 import { Drawer as DrawerPrimitive } from "vaul"
-
+import { motion } from "framer-motion"
 import { cn } from "@/lib/utils"
 
 const Drawer = ({
@@ -26,7 +27,7 @@ const DrawerOverlay = React.forwardRef<
 >(({ className, ...props }, ref) => (
   <DrawerPrimitive.Overlay
     ref={ref}
-    className={cn("fixed inset-0 z-50 bg-black/80", className)}
+    className={cn("fixed inset-0 z-50 bg-black/80 backdrop-blur-sm", className)}
     {...props}
   />
 ))
@@ -41,12 +42,23 @@ const DrawerContent = React.forwardRef<
     <DrawerPrimitive.Content
       ref={ref}
       className={cn(
-        "fixed inset-x-0 bottom-0 z-50 mt-24 flex h-auto flex-col rounded-t-[10px] border bg-background",
+        "fixed inset-x-0 bottom-0 z-50 mt-24 flex h-auto flex-col rounded-t-[20px] border bg-background",
+        "bg-game-card-bg/95 backdrop-blur-lg border-white/5",
         className
       )}
       {...props}
     >
-      <div className="mx-auto mt-4 h-2 w-[100px] rounded-full bg-muted" />
+      <motion.div
+        initial={{ width: "30%", opacity: 0.5 }}
+        animate={{ width: "50%", opacity: 0.7 }}
+        transition={{ 
+          repeat: Infinity, 
+          repeatType: "reverse", 
+          duration: 1.5,
+          ease: "easeInOut"
+        }}
+        className="mx-auto mt-4 h-1.5 rounded-full bg-white/20"
+      />
       {children}
     </DrawerPrimitive.Content>
   </DrawerPortal>
@@ -58,7 +70,7 @@ const DrawerHeader = ({
   ...props
 }: React.HTMLAttributes<HTMLDivElement>) => (
   <div
-    className={cn("grid gap-1.5 p-4 text-center sm:text-left", className)}
+    className={cn("grid gap-1.5 p-4 text-center sm:text-left border-b border-white/5", className)}
     {...props}
   />
 )
@@ -69,7 +81,7 @@ const DrawerFooter = ({
   ...props
 }: React.HTMLAttributes<HTMLDivElement>) => (
   <div
-    className={cn("mt-auto flex flex-col gap-2 p-4", className)}
+    className={cn("mt-auto flex flex-col gap-2 p-4 border-t border-white/5", className)}
     {...props}
   />
 )
@@ -82,7 +94,7 @@ const DrawerTitle = React.forwardRef<
   <DrawerPrimitive.Title
     ref={ref}
     className={cn(
-      "text-lg font-semibold leading-none tracking-tight",
+      "text-lg font-semibold leading-none tracking-tight text-white",
       className
     )}
     {...props}

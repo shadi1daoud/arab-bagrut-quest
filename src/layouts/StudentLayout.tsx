@@ -1,13 +1,15 @@
 
 import { useState, useEffect } from 'react';
 import { Outlet, NavLink, useLocation } from 'react-router-dom';
-import { Home, BookOpen, ShoppingCart, Users, Settings, LogOut, Menu, X, Bell, Search, Flame, Shield, Award } from 'lucide-react';
+import { Home, BookOpen, ShoppingCart, Users, Settings, LogOut, Menu, X, Bell, Search, Flame, Shield, Award, ChevronRight } from 'lucide-react';
 import { useAuth } from '@/contexts/AuthContext';
 import { cn } from '@/lib/utils';
+import { motion, AnimatePresence } from 'framer-motion';
 
 const StudentLayout = () => {
   const { user, logout } = useAuth();
   const [isMobileMenuOpen, setIsMobileMenuOpen] = useState(false);
+  const [isMenuCollapsed, setIsMenuCollapsed] = useState(false);
   const location = useLocation();
 
   useEffect(() => {
@@ -22,6 +24,10 @@ const StudentLayout = () => {
     { path: '/settings', label: 'الإعدادات', icon: Settings },
   ];
 
+  const toggleMenu = () => {
+    setIsMenuCollapsed(!isMenuCollapsed);
+  };
+
   const NavItem = ({ path, label, icon: Icon }: { path: string; label: string; icon: any }) => {
     const isActive = location.pathname === path;
     
@@ -29,12 +35,12 @@ const StudentLayout = () => {
       <NavLink 
         to={path}
         className={({ isActive }) => cn(
-          "sidebar-item transition-all duration-300",
+          "sidebar-item transition-all duration-300 flex items-center",
           isActive ? "active" : ""
         )}
       >
         <div className={cn(
-          "flex items-center justify-center w-8 h-8 rounded-lg transition-all",
+          "flex items-center justify-center w-10 h-10 rounded-lg transition-all",
           isActive 
             ? "bg-game-primary/20 text-white" 
             : "bg-muted/30 text-gray-400"
@@ -44,12 +50,23 @@ const StudentLayout = () => {
             isActive ? "animate-pulse" : ""
           )} />
         </div>
-        <span className={cn(
-          isActive ? "font-medium" : "", 
-          "transition-all duration-300"
-        )}>
-          {label}
-        </span>
+        
+        <AnimatePresence initial={false}>
+          {!isMenuCollapsed && (
+            <motion.span 
+              initial={{ opacity: 0, width: 0 }}
+              animate={{ opacity: 1, width: "auto" }}
+              exit={{ opacity: 0, width: 0 }}
+              transition={{ duration: 0.2 }}
+              className={cn(
+                "ml-3 whitespace-nowrap overflow-hidden",
+                isActive ? "font-medium" : ""
+              )}
+            >
+              {label}
+            </motion.span>
+          )}
+        </AnimatePresence>
       </NavLink>
     );
   };
@@ -82,28 +99,56 @@ const StudentLayout = () => {
       {/* Cyber grid background */}
       <div className="cyber-grid fixed inset-0 z-0"></div>
       
-      {/* Sidebar - compact and collapsible */}
-      <aside 
+      {/* Sidebar - controllable expand/collapse */}
+      <motion.aside 
+        initial={false}
+        animate={{ width: isMenuCollapsed ? "72px" : "240px" }}
+        transition={{ duration: 0.3, ease: "easeInOut" }}
         className={cn(
-          "bg-game-card-bg/80 backdrop-blur-md w-16 hover:w-64 fixed inset-y-0 right-0 z-30 transform transition-all duration-300 lg:translate-x-0 lg:static flex flex-col overflow-hidden",
-          isMobileMenuOpen ? "translate-x-0 w-64" : "translate-x-full lg:translate-x-0"
+          "bg-game-card-bg/80 backdrop-blur-md fixed inset-y-0 right-0 z-30 transform lg:translate-x-0 lg:static flex flex-col overflow-hidden",
+          isMobileMenuOpen ? "translate-x-0" : "translate-x-full lg:translate-x-0"
         )}
       >
-        <div className="p-4 mb-2 flex justify-center">
-          <div className="flex items-center gap-2 hover-scale">
-            <div className="bg-game-primary rounded-lg p-1.5">
+        <div className="p-4 flex items-center justify-between">
+          <div className={cn("flex items-center gap-2", isMenuCollapsed ? "justify-center w-full" : "")}>
+            <div className="bg-game-primary rounded-lg p-1.5 flex-shrink-0">
               <svg width="16" height="16" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
                 <path d="M21 10C21 10 18.995 7.26822 17.3662 5.63824C15.7373 4.00827 13.4864 3 11 3C6.02944 3 2 7.02944 2 12C2 16.9706 6.02944 21 11 21C15.9706 21 20 16.9706 20 12" stroke="white" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"/>
                 <path d="M22 2L13 11" stroke="white" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"/>
               </svg>
             </div>
-            <span className="text-white text-2xl font-bold font-changa whitespace-nowrap overflow-hidden opacity-0 lg:group-hover:opacity-100 transition-opacity duration-300">درسني</span>
+            
+            <AnimatePresence initial={false}>
+              {!isMenuCollapsed && (
+                <motion.span
+                  initial={{ opacity: 0, width: 0 }}
+                  animate={{ opacity: 1, width: "auto" }}
+                  exit={{ opacity: 0, width: 0 }}
+                  className="text-white text-2xl font-bold font-changa whitespace-nowrap overflow-hidden"
+                >
+                  درسني
+                </motion.span>
+              )}
+            </AnimatePresence>
           </div>
+          
+          <button 
+            onClick={toggleMenu} 
+            className={cn(
+              "p-2 rounded-lg hover:bg-muted/30 text-gray-400 hover:text-white transition-colors",
+              isMenuCollapsed ? "rotate-180" : ""
+            )}
+          >
+            <ChevronRight className="h-5 w-5" />
+          </button>
         </div>
         
         {user && (
-          <div className="px-4 py-2 flex flex-col items-center relative overflow-hidden">
-            <div className="orbit-container relative mb-3 flex-shrink-0">
+          <div className={cn(
+            "px-4 py-2 flex items-center gap-3 relative overflow-hidden border-b border-white/5",
+            isMenuCollapsed ? "justify-center" : ""
+          )}>
+            <div className="orbit-container relative flex-shrink-0">
               <div className="h-12 w-12 rounded-full overflow-hidden border-2 border-game-primary/20 shadow-lg">
                 {user?.avatar ? (
                   <img src={user.avatar} alt={user.name} className="h-full w-full object-cover" />
@@ -116,40 +161,69 @@ const StudentLayout = () => {
               <div className="absolute -top-1 -right-1 h-5 w-5 bg-game-primary rounded-full flex items-center justify-center text-white text-xs font-bold shadow-lg shadow-game-primary/20 font-share-tech">5</div>
             </div>
             
-            <div className="w-full mt-1 relative transition-opacity duration-300 opacity-0 lg:group-hover:opacity-100">
-              <h2 className="text-white font-bold text-base text-center font-changa whitespace-nowrap overflow-hidden">{user?.name || 'شادي داود'}</h2>
-              <p className="text-game-text-secondary text-xs mb-1 text-center font-lexend whitespace-nowrap overflow-hidden">{user?.grade || 'الثاني عشر'}</p>
-              
-              <div className="flex justify-between items-center text-sm mb-1">
-                <span className="text-game-highlight font-medium font-share-tech">Lv 5</span>
-                <span className="text-xs text-blue-300 font-share-tech">2450/3000</span>
-              </div>
-              
-              <div className="level-bar">
-                <div className="level-bar-fill" style={{ width: "60%" }}></div>
-              </div>
-            </div>
+            <AnimatePresence initial={false}>
+              {!isMenuCollapsed && (
+                <motion.div
+                  initial={{ opacity: 0, width: 0 }}
+                  animate={{ opacity: 1, width: "auto" }}
+                  exit={{ opacity: 0, width: 0 }}
+                  className="flex-1 min-w-0"
+                >
+                  <h2 className="text-white font-bold text-base font-changa truncate">{user?.name || 'شادي داود'}</h2>
+                  <p className="text-game-text-secondary text-xs mb-1 font-lexend truncate">{user?.grade || 'الثاني عشر'}</p>
+                  
+                  <div className="flex justify-between items-center text-sm mb-1">
+                    <span className="text-game-highlight font-medium font-share-tech">Lv 5</span>
+                    <span className="text-xs text-blue-300 font-share-tech">2450/3000</span>
+                  </div>
+                  
+                  <div className="level-bar">
+                    <div className="level-bar-fill" style={{ width: "60%" }}></div>
+                  </div>
+                </motion.div>
+              )}
+            </AnimatePresence>
           </div>
         )}
         
-        <div className="overflow-y-auto flex-1 py-4 px-2">
-          <nav className="space-y-1">
+        <div className={cn(
+          "overflow-y-auto flex-1 py-4 px-2",
+          isMenuCollapsed ? "flex flex-col items-center" : ""
+        )}>
+          <nav className="space-y-2">
             {navItems.map((item) => (
               <NavItem key={item.path} {...item} />
             ))}
           </nav>
         </div>
         
-        <div className="p-3 mt-auto">
+        <div className={cn(
+          "p-3 mt-auto border-t border-white/5",
+          isMenuCollapsed ? "flex justify-center" : ""
+        )}>
           <button 
             onClick={logout}
-            className="flex items-center gap-3 w-full text-gray-400 hover:text-white transition-all p-2 rounded-lg hover:bg-muted/30 group"
+            className={cn(
+              "flex items-center gap-3 text-gray-400 hover:text-white transition-all p-2 rounded-lg hover:bg-muted/30",
+              isMenuCollapsed ? "justify-center w-10 h-10" : "w-full"
+            )}
           >
             <LogOut className="h-5 w-5" />
-            <span className="opacity-0 lg:group-hover:opacity-100 transition-opacity duration-300">تسجيل الخروج</span>
+            <AnimatePresence initial={false}>
+              {!isMenuCollapsed && (
+                <motion.span
+                  initial={{ opacity: 0, width: 0 }}
+                  animate={{ opacity: 1, width: "auto" }}
+                  exit={{ opacity: 0, width: 0 }}
+                  transition={{ duration: 0.2 }}
+                >
+                  تسجيل الخروج
+                </motion.span>
+              )}
+            </AnimatePresence>
           </button>
         </div>
-      </aside>
+      </motion.aside>
       
       {/* Main content area */}
       <div className="flex-1 flex flex-col">
