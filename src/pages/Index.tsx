@@ -76,7 +76,7 @@ const Index = () => {
           </div>
         </div>
         
-        {/* Main content grid - Restructured for better space usage */}
+        {/* Main content grid - Redesigned for better space usage */}
         <div className="grid grid-cols-12 gap-2 flex-1">
           {/* Left Column - Main features - 8 cols */}
           <div className="col-span-8 grid grid-rows-[auto_1fr_auto] gap-2">
