@@ -285,7 +285,7 @@ const StudentLayout = () => {
         </header>
         
         {/* Main content with fixed height */}
-        <main className="flex-1 p-2 lg:p-3 overflow-hidden relative z-10 h-[calc(100vh-48px)]">
+        <main className="flex-1 p-3 overflow-hidden relative z-10 h-[calc(100vh-48px)]">
           <Outlet />
         </main>
       </div>

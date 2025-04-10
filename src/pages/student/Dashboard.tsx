@@ -1,13 +1,14 @@
 
-import { useState, useEffect } from 'react';
-import { Link } from 'react-router-dom';
+import { useState } from 'react';
 import { useAuth } from '@/contexts/AuthContext';
-import { ChevronLeft, Trophy, Star, CheckCircle, Clock, Flame, Activity, Award, Brain, Target, Calendar, ChevronDown, ExternalLink, BookOpen } from 'lucide-react';
-import { Tab } from '@headlessui/react';
+import { ChevronLeft, Trophy, Star, CheckCircle, Clock, Flame, Activity, Award, Brain, Target, Calendar, ChevronDown, ExternalLink, BookOpen, Lock } from 'lucide-react';
 import { ResponsiveContainer, BarChart, Bar, XAxis, YAxis, Tooltip } from 'recharts';
 import { ChartContainer, ChartTooltip, ChartTooltipContent } from '@/components/ui/chart';
 import { Input } from '@/components/ui/input';
+import { Avatar, AvatarImage, AvatarFallback } from '@/components/ui/avatar';
+import { Card, CardContent } from '@/components/ui/card';
 
+// Sample data
 const weeklyActivity = [
   { day: 'الأحد', hours: 1.2, xp: 120 },
   { day: 'الإثنين', hours: 0.8, xp: 80 },
@@ -19,9 +20,16 @@ const weeklyActivity = [
 ];
 
 const leaderboardData = [
-  { id: 1, name: 'أحمد', avatar: '👦', level: 4, levelNum: 18, xp: 14520 },
-  { id: 2, name: 'سارة', avatar: '👧', level: 13, levelNum: 16, xp: 14550 },
-  { id: 3, name: 'محمد', avatar: '👨', level: 15, levelNum: 15, xp: 14650 },
+  { id: 1, name: 'أحمد', avatar: '👦', level: 18, xp: 14520 },
+  { id: 2, name: 'سارة', avatar: '👧', level: 16, xp: 14250 },
+  { id: 3, name: 'محمد', avatar: '👨', level: 15, xp: 13950 },
+];
+
+const courseProgress = [
+  { id: 1, name: 'رياضيات', progress: 75, icon: '🧮', color: 'blue' },
+  { id: 2, name: 'إنجليزي', progress: 45, icon: '🔤', color: 'green' },
+  { id: 3, name: 'فيزياء', progress: 60, icon: '⚛️', color: 'purple' },
+  { id: 4, name: 'كيمياء', progress: 30, icon: '🧪', color: 'yellow' },
 ];
 
 const upcomingExams = [
@@ -31,384 +39,461 @@ const upcomingExams = [
 
 const Dashboard = () => {
   const { user } = useAuth();
-  const [countDone, setCountDone] = useState(false);
   const [adCode, setAdCode] = useState('');
+  const [leaderboardFilter, setLeaderboardFilter] = useState('week');
   
-  useEffect(() => {
-    setCountDone(true);
-  }, []);
+  // Calculate total hours
+  const totalWeeklyHours = weeklyActivity.reduce((acc, day) => acc + day.hours, 0).toFixed(1);
   
   const handleAdCodeChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     setAdCode(e.target.value);
   };
   
   return (
-    <div className="h-full grid grid-cols-12 gap-2 animate-fade-in">
-      {/* LEFT COLUMN - 3 cols */}
-      <div className="col-span-3 flex flex-col gap-2 h-full">
-        {/* Leaderboard - Compact */}
-        <div className="game-panel p-2 h-auto">
-          <div className="flex justify-between items-center mb-1">
-            <h3 className="text-sm font-bold text-white font-changa flex items-center gap-1">
-              <Trophy className="h-3.5 w-3.5 text-yellow-400" />
-              المتصدرون
-            </h3>
-            <Link to="/community" className="text-xs text-blue-400 hover:underline">
-              عرض الكل
-            </Link>
-          </div>
-          
-          <div className="space-y-1">
-            {leaderboardData.map((user, index) => (
-              <div 
-                key={user.id} 
-                className={`flex items-center gap-1.5 p-0.5 rounded-lg transition-all border ${
-                  index === 0 ? 'border-yellow-500/20 bg-yellow-500/5' : 
-                  index === 1 ? 'border-gray-300/20 bg-gray-300/5' : 
-                  'border-orange-500/20 bg-orange-500/5'
-                }`}
-              >
-                <div className={`h-4 w-4 rounded-full flex items-center justify-center border ${
-                  index === 0 ? 'border-yellow-500/30 text-yellow-400' : 
-                  index === 1 ? 'border-gray-300/30 text-gray-300' : 
-                  'border-orange-500/30 text-orange-400'
-                }`}>
-                  <span className="text-xs font-share-tech">{index + 1}</span>
-                </div>
-                
-                <div className="h-5 w-5 rounded-full flex items-center justify-center bg-game-card-bg-alt text-sm border border-white/10">
-                  {user.avatar}
-                </div>
-                
-                <div className="flex-1 flex justify-between items-center">
-                  <span className="text-white font-medium text-xs">{user.name}</span>
-                  <span className="text-xs text-game-accent font-share-tech">{user.xp.toLocaleString()} XP</span>
-                </div>
+    <div className="h-full grid grid-cols-3 gap-4">
+      {/* LEFT COLUMN - 1/3 Width */}
+      <div className="flex flex-col gap-4">
+        {/* Leaderboard */}
+        <Card className="game-panel overflow-hidden">
+          <CardContent className="p-4">
+            <div className="flex justify-between items-center mb-3">
+              <h3 className="text-base font-bold text-white font-changa flex items-center gap-2">
+                <Trophy className="h-4 w-4 text-yellow-400" />
+                المتصدرون
+              </h3>
+              
+              <div className="flex items-center gap-1 text-xs p-1 bg-game-card-bg-alt rounded-lg">
+                <button 
+                  onClick={() => setLeaderboardFilter('week')}
+                  className={`px-2 py-0.5 rounded ${leaderboardFilter === 'week' 
+                    ? 'bg-game-primary text-white' 
+                    : 'text-gray-400'}`}
+                >
+                  أسبوعي
+                </button>
+                <button 
+                  onClick={() => setLeaderboardFilter('month')}
+                  className={`px-2 py-0.5 rounded ${leaderboardFilter === 'month' 
+                    ? 'bg-game-primary text-white' 
+                    : 'text-gray-400'}`}
+                >
+                  شهري
+                </button>
+                <button 
+                  onClick={() => setLeaderboardFilter('all')}
+                  className={`px-2 py-0.5 rounded ${leaderboardFilter === 'all' 
+                    ? 'bg-game-primary text-white' 
+                    : 'text-gray-400'}`}
+                >
+                  الكل
+                </button>
               </div>
-            ))}
-            <div className="border-t border-white/5 pt-1 mt-1">
-              <button className="w-full text-xs text-blue-400 hover:text-blue-300 flex items-center justify-center gap-1">
-                عرض الكل
-                <ChevronDown className="h-3 w-3" />
-              </button>
             </div>
-          </div>
-        </div>
+            
+            <div className="space-y-3">
+              {leaderboardData.map((user, index) => (
+                <div 
+                  key={user.id} 
+                  className={`flex items-center gap-3 p-2.5 rounded-2xl transition-all ${
+                    index === 0 ? 'bg-yellow-500/10 border border-yellow-500/20' : 
+                    index === 1 ? 'bg-gray-300/10 border border-gray-300/20' : 
+                    'bg-orange-500/10 border border-orange-500/20'
+                  } hover:brightness-110 cursor-pointer group`}
+                >
+                  <div className={`h-7 w-7 rounded-full flex items-center justify-center ${
+                    index === 0 ? 'bg-gradient-to-br from-yellow-500/80 to-yellow-600/80 text-white' : 
+                    index === 1 ? 'bg-gradient-to-br from-gray-300/80 to-gray-400/80 text-gray-800' : 
+                    'bg-gradient-to-br from-orange-500/80 to-orange-600/80 text-white'
+                  } font-bold text-sm`}>
+                    {index + 1}
+                  </div>
+                  
+                  <div className="h-9 w-9 rounded-full flex items-center justify-center bg-game-card-bg-alt border border-white/10 text-lg">
+                    {user.avatar}
+                  </div>
+                  
+                  <div className="flex-1">
+                    <div className="text-white text-sm font-medium">{user.name}</div>
+                    <div className="text-xs text-gray-400">Level {user.level}</div>
+                  </div>
+                  
+                  <div className="text-base font-bold font-share-tech text-game-accent group-hover:scale-110 transition-transform">
+                    {user.xp.toLocaleString()}
+                  </div>
+                </div>
+              ))}
+            </div>
+          </CardContent>
+        </Card>
         
-        {/* Course Progress - More prominent */}
-        <div className="game-panel p-2 flex-grow">
-          <div className="flex justify-between items-center mb-1">
-            <h3 className="text-sm font-bold text-white font-changa flex items-center gap-1">
-              <BookOpen className="h-3.5 w-3.5 text-blue-400" />
-              تقدم الكورسات
-            </h3>
-          </div>
-          
-          <div className="space-y-2">
-            <div>
-              <div className="flex justify-between text-xs mb-0.5">
-                <span className="text-white flex items-center gap-1">
-                  <span className="h-4 w-4 rounded-sm bg-blue-500/20 flex items-center justify-center text-[10px]">🧮</span>
-                  رياضيات
-                </span>
-                <span className="text-blue-400 font-share-tech">70%</span>
-              </div>
-              <div className="h-1.5 bg-gray-700/70 rounded-full overflow-hidden">
-                <div className="h-full bg-blue-500 rounded-full" style={{width: '70%'}}></div>
-              </div>
+        {/* Course Progress */}
+        <Card className="game-panel flex-grow overflow-hidden">
+          <CardContent className="p-4">
+            <div className="flex justify-between items-center mb-3">
+              <h3 className="text-base font-bold text-white font-changa flex items-center gap-2">
+                <BookOpen className="h-4 w-4 text-blue-400" />
+                تقدم الكورسات
+              </h3>
             </div>
             
-            <div>
-              <div className="flex justify-between text-xs mb-0.5">
-                <span className="text-white flex items-center gap-1">
-                  <span className="h-4 w-4 rounded-sm bg-green-500/20 flex items-center justify-center text-[10px]">🔤</span>
-                  إنجليزي
-                </span>
-                <span className="text-green-400 font-share-tech">45%</span>
-              </div>
-              <div className="h-1.5 bg-gray-700/70 rounded-full overflow-hidden">
-                <div className="h-full bg-green-500 rounded-full" style={{width: '45%'}}></div>
-              </div>
-            </div>
-            
-            <div>
-              <div className="flex justify-between text-xs mb-0.5">
-                <span className="text-white flex items-center gap-1">
-                  <span className="h-4 w-4 rounded-sm bg-purple-500/20 flex items-center justify-center text-[10px]">⚛️</span>
-                  فيزياء
-                </span>
-                <span className="text-purple-400 font-share-tech">30%</span>
-              </div>
-              <div className="h-1.5 bg-gray-700/70 rounded-full overflow-hidden">
-                <div className="h-full bg-purple-500 rounded-full" style={{width: '30%'}}></div>
-              </div>
-            </div>
-            
-            <div>
-              <div className="flex justify-between text-xs mb-0.5">
-                <span className="text-white flex items-center gap-1">
-                  <span className="h-4 w-4 rounded-sm bg-amber-500/20 flex items-center justify-center text-[10px]">🧪</span>
-                  كيمياء
-                </span>
-                <span className="text-amber-400 font-share-tech">55%</span>
-              </div>
-              <div className="h-1.5 bg-gray-700/70 rounded-full overflow-hidden">
-                <div className="h-full bg-amber-500 rounded-full" style={{width: '55%'}}></div>
-              </div>
-            </div>
-            
-            <div>
-              <div className="flex justify-between text-xs mb-0.5">
-                <span className="text-white flex items-center gap-1">
-                  <span className="h-4 w-4 rounded-sm bg-red-500/20 flex items-center justify-center text-[10px]">📝</span>
-                  عربي
-                </span>
-                <span className="text-red-400 font-share-tech">82%</span>
-              </div>
-              <div className="h-1.5 bg-gray-700/70 rounded-full overflow-hidden">
-                <div className="h-full bg-red-500 rounded-full" style={{width: '82%'}}></div>
-              </div>
-            </div>
-          </div>
-        </div>
-        
-        {/* Upcoming Exams - Compact */}
-        <div className="game-panel p-2">
-          <div className="flex justify-between items-center mb-1">
-            <h3 className="text-sm font-bold text-white font-changa flex items-center gap-1">
-              <Clock className="h-3.5 w-3.5 text-red-400" />
-              امتحانات قادمة
-            </h3>
-          </div>
-          
-          <div className="space-y-1">
-            {upcomingExams.map((exam) => (
-              <div 
-                key={exam.id} 
-                className="flex items-center gap-1.5 p-1 rounded-lg bg-game-card-bg-alt border border-white/5"
-              >
-                <div className={`h-5 w-5 rounded-lg flex items-center justify-center bg-gradient-to-br ${exam.color} text-white text-sm`}>
-                  {exam.icon}
+            <div className="space-y-3">
+              {courseProgress.map(course => (
+                <div key={course.id} className="group hover:scale-[1.02] transition-transform">
+                  <div className="flex justify-between items-center mb-1.5">
+                    <div className="flex items-center gap-2">
+                      <div className={`h-6 w-6 rounded-md flex items-center justify-center bg-${course.color}-500/20 text-${course.color}-400`}>
+                        <span className="text-sm">{course.icon}</span>
+                      </div>
+                      <span className="text-white text-sm">{course.name}</span>
+                    </div>
+                    <span className="text-xs text-game-accent font-share-tech">{course.progress}%</span>
+                  </div>
+                  
+                  <div className="h-2 bg-game-card-bg-alt rounded-full overflow-hidden">
+                    <div 
+                      className={`h-full rounded-full bg-${course.color}-500 group-hover:bg-${course.color}-400 transition-colors`}
+                      style={{ width: `${course.progress}%` }}
+                    >
+                      <div className="w-full h-full opacity-30 bg-[url('data:image/svg+xml;base64,PHN2ZyB3aWR0aD0iNjAiIGhlaWdodD0iNiIgeG1sbnM9Imh0dHA6Ly93d3cudzMub3JnLzIwMDAvc3ZnIj48cGF0aCBkPSJNNiAzTDEyIDNNMTggM0wyNCAxIiBzdHJva2U9IiNmZmYiIHN0cm9rZS13aWR0aD0iMiIgc3Ryb2tlLWxpbmVjYXA9InJvdW5kIi8+PC9zdmc+')]"></div>
+                    </div>
+                  </div>
                 </div>
+              ))}
+            </div>
+          </CardContent>
+        </Card>
+        
+        {/* Upcoming Exams */}
+        <Card className="game-panel overflow-hidden">
+          <CardContent className="p-4">
+            <div className="flex justify-between items-center mb-3">
+              <h3 className="text-base font-bold text-white font-changa flex items-center gap-2">
+                <Clock className="h-4 w-4 text-red-400" />
+                الامتحانات القادمة
+              </h3>
+            </div>
+            
+            <div className="space-y-3">
+              {upcomingExams.map(exam => (
+                <div 
+                  key={exam.id}
+                  className="p-3 rounded-2xl bg-game-card-bg-alt border border-white/5 group hover:border-white/10 transition-all cursor-pointer"
+                >
+                  <div className="flex items-center gap-3">
+                    <div className={`h-10 w-10 rounded-lg flex items-center justify-center bg-gradient-to-br ${exam.color}`}>
+                      <span className="text-lg">{exam.icon}</span>
+                    </div>
+                    
+                    <div className="flex-1">
+                      <h4 className="text-white font-medium">{exam.subject}</h4>
+                      <div className="flex items-center text-xs text-gray-400">
+                        <Calendar className="h-3 w-3 inline mr-1" />
+                        {exam.date}
+                      </div>
+                    </div>
+                    
+                    <button className="w-8 h-8 flex items-center justify-center rounded-full bg-red-500/20 text-red-400 hover:bg-red-500/30 transition-colors group-hover:scale-110">
+                      <Bell className="h-4 w-4" />
+                    </button>
+                  </div>
+                </div>
+              ))}
+            </div>
+          </CardContent>
+        </Card>
+      </div>
+      
+      {/* MIDDLE COLUMN - 1/3 Width */}
+      <div className="flex flex-col gap-4">
+        {/* Weekly Performance Chart */}
+        <Card className="game-panel flex-grow overflow-hidden">
+          <CardContent className="p-4">
+            <div className="flex justify-between items-center mb-3">
+              <h3 className="text-base font-bold text-white font-changa flex items-center gap-2">
+                <Activity className="h-4 w-4 text-blue-400" />
+                إنجاز أسبوعي
+              </h3>
+              
+              <div className="flex items-center gap-2 py-1 px-3 bg-blue-500/20 rounded-full">
+                <Clock className="h-3.5 w-3.5 text-blue-400" />
+                <span className="text-sm text-blue-300 font-share-tech">{totalWeeklyHours} ساعة</span>
+              </div>
+            </div>
+            
+            <div className="h-64 w-full">
+              <ChartContainer config={{
+                xp: { color: "#3B82F6", label: "XP المكتسبة" }
+              }} className="h-full text-xs">
+                <ResponsiveContainer width="100%" height="100%">
+                  <BarChart data={weeklyActivity} margin={{ top: 10, right: 10, left: 10, bottom: 10 }}>
+                    <defs>
+                      <linearGradient id="barGradient" x1="0" y1="0" x2="0" y2="1">
+                        <stop offset="0%" stopColor="#3B82F6" stopOpacity={1} />
+                        <stop offset="100%" stopColor="#1D4ED8" stopOpacity={0.8} />
+                      </linearGradient>
+                    </defs>
+                    <XAxis 
+                      dataKey="day" 
+                      axisLine={{ stroke: 'rgba(255,255,255,0.1)' }}
+                      tickLine={false}
+                      tick={{ fill: '#9ca3af', fontSize: 12 }}
+                    />
+                    <YAxis 
+                      hide={true}
+                      axisLine={false}
+                      tickLine={false}
+                    />
+                    <ChartTooltip
+                      content={<ChartTooltipContent formatter={(value) => [`${value} XP`, 'نقاط اليوم']} />}
+                    />
+                    <Bar 
+                      dataKey="xp" 
+                      fill="url(#barGradient)" 
+                      radius={[4, 4, 0, 0]}
+                      barSize={24}
+                      animationDuration={1500}
+                      className="hover:opacity-80 transition-opacity cursor-pointer"
+                    />
+                  </BarChart>
+                </ResponsiveContainer>
+              </ChartContainer>
+            </div>
+          </CardContent>
+        </Card>
+        
+        {/* Today's Quest */}
+        <Card className="game-panel overflow-hidden">
+          <CardContent className="p-4">
+            <div className="flex justify-between items-center mb-3">
+              <h3 className="text-base font-bold text-white font-changa flex items-center gap-2">
+                <Target className="h-4 w-4 text-game-primary" />
+                مهمة اليوم
+              </h3>
+            </div>
+            
+            <div className="flex items-center gap-4 p-2">
+              <div className="h-14 w-14 rounded-lg bg-gradient-to-br from-game-primary/30 to-game-primary/5 flex items-center justify-center border border-game-primary/20 relative group hover:from-game-primary/40 hover:to-game-primary/10 transition-all">
+                <span className="text-2xl transform group-hover:scale-110 transition-transform">🧮</span>
+                <div className="absolute -top-1 -right-1 h-5 w-5 rounded-full bg-red-500 text-white text-xs font-bold flex items-center justify-center border border-white/10">
+                  <Flame className="h-3 w-3" />
+                </div>
+              </div>
+              
+              <div className="flex-1">
+                <h4 className="text-white font-medium font-lexend">أكمل تحصيلي الرياضيات</h4>
+                <p className="text-xs text-gray-400 mb-1">حل 10 مسائل جديدة من كتاب التحصيلي</p>
                 
-                <div className="flex-1">
-                  <h4 className="text-white font-medium text-xs">{exam.subject}</h4>
-                  <div className="flex items-center text-[10px] text-gray-400">
-                    <Clock className="h-2 w-2 mr-0.5" />
-                    {exam.date}
+                <div className="flex justify-between items-center mt-2">
+                  <div className="flex items-center gap-1 text-sm text-game-accent">
+                    <Award className="h-4 w-4" />
+                    <span className="font-share-tech">+150 XP</span>
+                  </div>
+                  
+                  <button className="bg-gradient-to-r from-game-primary to-game-primary/90 hover:brightness-110 transition-all text-white py-1 px-4 rounded-lg text-sm font-medium flex items-center gap-1 hover:scale-105 active:scale-95">
+                    <span>ابدأ المهمة</span>
+                  </button>
+                </div>
+              </div>
+            </div>
+          </CardContent>
+        </Card>
+        
+        {/* Coming Soon */}
+        <Card className="game-panel overflow-hidden">
+          <CardContent className="p-4">
+            <div className="flex justify-between items-center mb-3">
+              <h3 className="text-base font-bold text-white font-changa flex items-center gap-2">
+                <BookOpen className="h-4 w-4 text-purple-400" />
+                كورسات قريباً
+              </h3>
+            </div>
+            
+            <div className="grid grid-cols-2 gap-4">
+              <div className="p-3 rounded-lg bg-game-card-bg-alt border border-white/5 hover:border-white/10 transition-all cursor-not-allowed opacity-60">
+                <div className="flex items-center gap-2">
+                  <div className="h-10 w-10 rounded-lg flex items-center justify-center bg-gradient-to-br from-cyan-500 to-cyan-700">
+                    <span className="text-lg">📊</span>
+                  </div>
+                  
+                  <div>
+                    <h4 className="text-gray-300 font-medium text-sm">علم البيانات</h4>
+                    <div className="flex items-center gap-1 mt-1">
+                      <div className="flex items-center text-xs text-gray-500">
+                        <Lock className="h-3 w-3 mr-1" />
+                        قريباً
+                      </div>
+                    </div>
                   </div>
                 </div>
               </div>
-            ))}
-          </div>
-        </div>
-      </div>
-      
-      {/* MIDDLE COLUMN - 6 cols */}
-      <div className="col-span-6 flex flex-col gap-2">
-        {/* Weekly Performance Chart - Optimized size */}
-        <div className="game-panel p-2 flex-grow">
-          <div className="flex justify-between items-center mb-1">
-            <h3 className="text-sm font-bold text-white font-changa flex items-center gap-1">
-              <Activity className="h-3.5 w-3.5 text-blue-400" />
-              إنجاز أسبوعي
-            </h3>
-            <div className="flex items-center text-xs bg-blue-500/20 py-0.5 px-1.5 rounded-full">
-              <span className="text-blue-300 font-share-tech">310 دقيقة</span>
-            </div>
-          </div>
-          
-          <div className="h-52">
-            <ChartContainer config={{
-              xp: { color: "#3B82F6", label: "XP المكتسبة" }
-            }} className="h-full text-xs">
-              <ResponsiveContainer width="100%" height="100%">
-                <BarChart data={weeklyActivity} margin={{ top: 5, right: 5, bottom: 5, left: 0 }}>
-                  <XAxis 
-                    dataKey="day" 
-                    axisLine={false}
-                    tickLine={false}
-                    tick={{ fill: '#9ca3af', fontSize: 10 }}
-                  />
-                  <YAxis 
-                    hide={true}
-                    axisLine={false}
-                    tickLine={false}
-                  />
-                  <ChartTooltip
-                    content={<ChartTooltipContent formatter={(value) => [`${value} XP`, 'نقاط اليوم']} />}
-                  />
-                  <Bar 
-                    dataKey="xp" 
-                    fill="#3B82F6" 
-                    radius={[3, 3, 0, 0]}
-                    barSize={14}
-                    className="fill-blue-500 hover:fill-blue-400"
-                  />
-                </BarChart>
-              </ResponsiveContainer>
-            </ChartContainer>
-          </div>
-        </div>
-        
-        {/* Daily Mission - Compact & Prominent */}
-        <div className="game-panel p-3 h-auto">
-          <div className="flex justify-between items-center mb-2">
-            <h3 className="text-sm font-bold text-white font-changa flex items-center gap-1">
-              <Target className="h-3.5 w-3.5 text-game-primary" />
-              مهمة اليوم
-            </h3>
-          </div>
-          
-          <div className="flex items-center gap-3">
-            <div className="h-12 w-12 rounded-lg bg-gradient-to-br from-game-primary/20 to-game-primary/5 flex items-center justify-center border border-game-primary/20">
-              <span className="text-2xl">🧮</span>
-            </div>
-            
-            <div className="flex-1">
-              <h4 className="text-white font-lexend text-sm">أكمل تحصيلي الرياضيات</h4>
-              <div className="flex justify-between items-center mt-2">
-                <div className="flex items-center gap-1 text-xs text-game-accent">
-                  <Award className="h-4 w-4" />
-                  <span className="font-share-tech">+150 XP</span>
+              
+              <div className="p-3 rounded-lg bg-game-card-bg-alt border border-white/5 hover:border-white/10 transition-all cursor-not-allowed opacity-60">
+                <div className="flex items-center gap-2">
+                  <div className="h-10 w-10 rounded-lg flex items-center justify-center bg-gradient-to-br from-indigo-500 to-indigo-700">
+                    <span className="text-lg">💻</span>
+                  </div>
+                  
+                  <div>
+                    <h4 className="text-gray-300 font-medium text-sm">علوم الحاسب</h4>
+                    <div className="flex items-center gap-1 mt-1">
+                      <div className="flex items-center text-xs text-gray-500">
+                        <Lock className="h-3 w-3 mr-1" />
+                        قريباً
+                      </div>
+                    </div>
+                  </div>
                 </div>
-                <button className="game-btn text-xs py-1 px-3 hover-scale">ابدأ</button>
               </div>
             </div>
-          </div>
-        </div>
+          </CardContent>
+        </Card>
       </div>
       
-      {/* RIGHT COLUMN - 3 cols */}
-      <div className="col-span-3 flex flex-col gap-2">
-        {/* User Profile - Compact */}
-        <div className="game-panel p-2">
-          <div className="flex flex-col items-center">
-            <div className="relative mb-2">
-              <div className="h-12 w-12 rounded-full overflow-hidden border-2 border-game-primary/20 bg-gradient-to-br from-game-card-bg-alt to-game-card-bg flex items-center justify-center">
-                <span className="text-white text-xl font-bold">{user?.name?.charAt(0) || 'ش'}</span>
-              </div>
-              <div className="absolute -top-1 -right-1 h-4 w-4 bg-game-primary rounded-full flex items-center justify-center text-white text-[10px] font-bold shadow-lg shadow-game-primary/20 font-share-tech">5</div>
-            </div>
-            
-            <h2 className="text-white font-bold text-sm font-changa mb-0.5">{user?.name || 'شادي'}</h2>
-            <p className="text-game-text-secondary text-xs mb-1">{user?.grade || 'الثاني عشر'}</p>
-            
-            <div className="w-full">
-              <div className="flex justify-between items-center mb-0.5">
-                <div className="text-game-highlight font-medium font-share-tech bg-game-highlight/10 px-1.5 py-0.5 rounded text-xs">Lv 5</div>
-                <span className="text-xs text-blue-300 font-share-tech">2450/3000</span>
+      {/* RIGHT COLUMN - 1/3 Width */}
+      <div className="flex flex-col gap-4">
+        {/* User Profile Summary */}
+        <Card className="game-panel overflow-hidden">
+          <CardContent className="p-4">
+            <div className="flex flex-col items-center">
+              <div className="relative mb-3">
+                <Avatar className="h-16 w-16 border-2 border-game-primary/30">
+                  {user?.avatar ? (
+                    <AvatarImage src={user.avatar} alt={user.name} />
+                  ) : (
+                    <AvatarFallback className="bg-gradient-to-br from-game-card-bg to-game-card-bg-alt text-xl font-bold">
+                      {user?.name?.charAt(0) || 'ش'}
+                    </AvatarFallback>
+                  )}
+                </Avatar>
+                <div className="absolute -top-1 -right-1 h-5 w-5 bg-game-primary rounded-full flex items-center justify-center text-white text-xs font-bold shadow-lg shadow-game-primary/20 font-share-tech">5</div>
               </div>
               
-              <div className="level-bar">
-                <div className="level-bar-fill" style={{ width: "60%" }}></div>
+              <h2 className="text-white font-bold text-lg mb-0.5 font-changa">{user?.name || 'شادي داود'}</h2>
+              <p className="text-game-text-secondary text-sm mb-3">{user?.grade || 'الثاني عشر - دار الأرقم'}</p>
+              
+              <div className="w-full">
+                <div className="flex justify-between items-center mb-1">
+                  <div className="text-game-highlight text-sm px-2 py-0.5 bg-game-highlight/10 rounded-md font-bold font-share-tech">Lv 5</div>
+                  <span className="text-sm text-blue-300 font-share-tech">2450/3000</span>
+                </div>
+                
+                <div className="h-2.5 bg-game-card-bg-alt rounded-full overflow-hidden">
+                  <div 
+                    className="h-full bg-gradient-to-r from-blue-500 to-blue-600 rounded-full relative animate-pulse"
+                    style={{ width: '70%' }}
+                  >
+                    <div className="absolute inset-0 overflow-hidden">
+                      <div className="w-full h-full opacity-30 bg-[url('data:image/svg+xml;base64,PHN2ZyB3aWR0aD0iNjAiIGhlaWdodD0iNiIgeG1sbnM9Imh0dHA6Ly93d3cudzMub3JnLzIwMDAvc3ZnIj48cGF0aCBkPSJNNiAzTDEyIDNNMTggM0wyNCAxIiBzdHJva2U9IiNmZmYiIHN0cm9rZS13aWR0aD0iMiIgc3Ryb2tlLWxpbmVjYXA9InJvdW5kIi8+PC9zdmc+')]"></div>
+                    </div>
+                  </div>
+                </div>
               </div>
             </div>
-            
-            <div className="flex justify-center gap-2 mt-1 w-full text-xs">
-              <div className="flex flex-col items-center">
-                <div className="text-game-accent mb-0.5">المستوى</div>
-                <div className="text-white font-bold font-share-tech">5</div>
-              </div>
-              
-              <div className="h-6 w-px bg-white/10 mx-1"></div>
-              
-              <div className="flex flex-col items-center">
-                <div className="text-game-accent mb-0.5">المرتبة</div>
-                <div className="text-white font-bold font-share-tech">#3</div>
-              </div>
-            </div>
-          </div>
-        </div>
+          </CardContent>
+        </Card>
         
-        {/* AI Smart Ring - Compact */}
-        <div className="game-panel p-2 h-auto flex flex-col items-center">
-          <h3 className="text-white font-medium text-xs flex items-center gap-1 mb-1">
-            <Brain className="h-3 w-3 text-game-highlight" />
-            الذكاء الاصطناعي
-          </h3>
-          
-          <div className="xp-progress-ring">
-            <svg width="60" height="60" viewBox="0 0 120 120">
-              <circle 
-                cx="60" 
-                cy="60" 
-                r="54" 
-                fill="none" 
-                stroke="rgba(255,255,255,0.1)" 
-                strokeWidth="6" 
-              />
-              <circle 
-                cx="60" 
-                cy="60" 
-                r="54" 
-                fill="none" 
-                stroke="#00FFE1" 
-                strokeWidth="6" 
-                strokeLinecap="round"
-                strokeDasharray="339.3" 
-                strokeDashoffset="85" 
-              />
-              <text x="60" y="55" textAnchor="middle" dominantBaseline="middle" fontSize="22" fill="white" className="font-share-tech">8.9</text>
-              <text x="60" y="75" textAnchor="middle" dominantBaseline="middle" fontSize="10" fill="#B8B8FF" className="font-lexend">تعلم</text>
-            </svg>
-          </div>
-          
-          <div className="flex items-center mt-1 text-xs">
-            <span className="py-0.5 px-2 bg-gradient-to-r from-game-highlight/20 to-game-highlight/10 rounded-full text-game-highlight border border-game-highlight/20 font-share-tech">
-              +0.9
-            </span>
-          </div>
-        </div>
-        
-        {/* Stats Cards - Side by side */}
-        <div className="grid grid-cols-2 gap-2">
-          <div className="game-panel p-1.5 flex flex-col items-center">
-            <div className="h-6 w-6 rounded-full bg-gradient-to-br from-orange-500/20 to-orange-500/5 flex items-center justify-center mb-0.5">
-              <Flame className="h-3.5 w-3.5 text-orange-400" />
+        {/* Stat Cards */}
+        <div className="grid grid-cols-3 gap-3">
+          <div className="game-panel p-3 flex flex-col items-center hover:scale-105 transition-transform">
+            <div className="h-8 w-8 rounded-full bg-gradient-to-br from-orange-500/20 to-orange-500/5 flex items-center justify-center mb-1">
+              <Flame className="h-4 w-4 text-orange-400" />
             </div>
             <h3 className="text-white font-medium text-xs">الجهد اليومي</h3>
-            <div className="text-lg font-bold text-white font-share-tech">12</div>
+            <div className="text-xl font-bold text-white font-share-tech">12</div>
           </div>
           
-          <div className="game-panel p-1.5 flex flex-col items-center">
-            <div className="h-6 w-6 rounded-full bg-gradient-to-br from-game-accent/20 to-game-accent/5 flex items-center justify-center mb-0.5">
-              <Award className="h-3.5 w-3.5 text-game-accent" />
+          <div className="game-panel p-3 flex flex-col items-center hover:scale-105 transition-transform">
+            <div className="h-8 w-8 rounded-full bg-gradient-to-br from-game-accent/20 to-game-accent/5 flex items-center justify-center mb-1">
+              <Award className="h-4 w-4 text-game-accent" />
             </div>
             <h3 className="text-white font-medium text-xs">النقاط</h3>
-            <div className="text-lg font-bold text-white font-share-tech">8.9K</div>
+            <div className="text-xl font-bold text-white font-share-tech">8.9K</div>
+          </div>
+          
+          <div className="game-panel p-3 flex flex-col items-center hover:scale-105 transition-transform">
+            <div className="h-8 w-8 rounded-full bg-gradient-to-br from-blue-500/20 to-blue-500/5 flex items-center justify-center mb-1">
+              <Brain className="h-4 w-4 text-blue-400" />
+            </div>
+            <h3 className="text-white font-medium text-xs">الذكاء</h3>
+            <div className="text-xl font-bold text-white font-share-tech">8.9</div>
           </div>
         </div>
         
-        {/* Google Ad Section - Smaller */}
-        <div className="game-panel p-2 flex flex-col flex-1">
-          <div className="flex justify-between items-center mb-1">
-            <h3 className="text-xs font-bold text-white font-changa flex items-center gap-1">
-              <ExternalLink className="h-3 w-3 text-green-400" />
-              إعلان
+        {/* AI Smartness Score */}
+        <Card className="game-panel overflow-hidden">
+          <CardContent className="p-4 flex flex-col items-center">
+            <h3 className="text-base font-bold text-white font-changa flex items-center gap-2 mb-3">
+              <Brain className="h-4 w-4 text-game-highlight" />
+              الذكاء الاصطناعي
             </h3>
-          </div>
-          
-          <div className="bg-gray-800/50 border border-white/5 rounded-lg p-1.5 flex-1 flex items-center justify-center overflow-hidden" style={{minHeight: '130px', maxHeight: '130px'}}>
-            {adCode ? (
-              <div dangerouslySetInnerHTML={{ __html: adCode }} className="w-full h-full" />
-            ) : (
-              <div className="text-center">
-                <Award className="h-4 w-4 text-gray-500 mx-auto mb-0.5" />
-                <p className="text-gray-400 text-xs">مساحة للإعلانات</p>
+            
+            <div className="xp-progress-ring mb-2">
+              <svg width="120" height="120" viewBox="0 0 120 120">
+                <circle 
+                  cx="60" 
+                  cy="60" 
+                  r="54" 
+                  fill="none" 
+                  stroke="rgba(255,255,255,0.1)" 
+                  strokeWidth="6" 
+                />
+                <circle 
+                  cx="60" 
+                  cy="60" 
+                  r="54" 
+                  fill="none" 
+                  stroke="#00FFE1" 
+                  strokeWidth="6" 
+                  strokeLinecap="round"
+                  strokeDasharray="339.3" 
+                  strokeDashoffset="85" 
+                  className="animate-pulse"
+                />
+                <text x="60" y="55" textAnchor="middle" dominantBaseline="middle" fontSize="28" fill="white" className="font-share-tech">8.9</text>
+                <text x="60" y="75" textAnchor="middle" dominantBaseline="middle" fontSize="12" fill="#B8B8FF" className="font-lexend">تعلم</text>
+              </svg>
+            </div>
+            
+            <div className="text-center">
+              <div className="py-1 px-3 bg-gradient-to-r from-game-highlight/20 to-game-highlight/10 rounded-full text-game-highlight border border-game-highlight/20 font-share-tech text-sm mb-2">
+                +0.9 هذا الأسبوع
               </div>
-            )}
-          </div>
-          
-          <div className="mt-1">
-            <Input 
-              value={adCode}
-              onChange={handleAdCodeChange}
-              placeholder="كود Google Ad"
-              className="text-xs h-6 bg-gray-800/50 border-gray-700"
-            />
-          </div>
-        </div>
+              <p className="text-xs text-gray-400">معدل ذكائك اعلى من 85% من الطلاب!</p>
+            </div>
+          </CardContent>
+        </Card>
+        
+        {/* Google Ad Section */}
+        <Card className="game-panel overflow-hidden flex-grow">
+          <CardContent className="p-4">
+            <div className="flex justify-between items-center mb-3">
+              <h3 className="text-sm font-bold text-white font-changa flex items-center gap-1.5">
+                <ExternalLink className="h-3.5 w-3.5 text-green-400" />
+                إعلان
+              </h3>
+            </div>
+            
+            <div className="bg-gray-800/50 border border-white/5 rounded-lg p-3 flex-1 flex items-center justify-center overflow-hidden" style={{minHeight: '120px'}}>
+              {adCode ? (
+                <div dangerouslySetInnerHTML={{ __html: adCode }} className="w-full h-full" />
+              ) : (
+                <div className="text-center">
+                  <Award className="h-5 w-5 text-gray-500 mx-auto mb-1" />
+                  <p className="text-gray-400 text-sm">مساحة للإعلانات</p>
+                </div>
+              )}
+            </div>
+            
+            <div className="mt-3">
+              <Input 
+                value={adCode}
+                onChange={handleAdCodeChange}
+                placeholder="كود Google Ad"
+                className="text-xs h-8 bg-gray-800/50 border-gray-700"
+              />
+            </div>
+          </CardContent>
+        </Card>
       </div>
     </div>
   );
