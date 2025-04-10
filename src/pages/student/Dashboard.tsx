@@ -463,32 +463,32 @@ const Dashboard = () => {
         </Card>
         
         {/* Google Ad Section */}
-        <Card className="game-panel overflow-hidden flex-grow">
-          <CardContent className="p-4">
-            <div className="flex justify-between items-center mb-3">
+        <Card className="game-panel overflow-hidden">
+          <CardContent className="p-3">
+            <div className="flex justify-between items-center mb-2">
               <h3 className="text-sm font-bold text-white font-changa flex items-center gap-1.5">
-                <ExternalLink className="h-3.5 w-3.5 text-green-400" />
+                <ExternalLink className="h-3 w-3 text-green-400" />
                 إعلان
               </h3>
             </div>
             
-            <div className="bg-gray-800/50 border border-white/5 rounded-lg p-3 flex-1 flex items-center justify-center overflow-hidden" style={{minHeight: '120px'}}>
+            <div className="bg-gray-800/50 border border-white/5 rounded-lg p-2 flex-1 flex items-center justify-center overflow-hidden" style={{minHeight: '80px'}}>
               {adCode ? (
                 <div dangerouslySetInnerHTML={{ __html: adCode }} className="w-full h-full" />
               ) : (
                 <div className="text-center">
-                  <Award className="h-5 w-5 text-gray-500 mx-auto mb-1" />
-                  <p className="text-gray-400 text-sm">مساحة للإعلانات</p>
+                  <Award className="h-4 w-4 text-gray-500 mx-auto mb-1" />
+                  <p className="text-xs text-gray-400">مساحة للإعلانات</p>
                 </div>
               )}
             </div>
             
-            <div className="mt-3">
+            <div className="mt-2">
               <Input 
                 value={adCode}
                 onChange={handleAdCodeChange}
                 placeholder="كود Google Ad"
-                className="text-xs h-8 bg-gray-800/50 border-gray-700"
+                className="text-xs h-7 bg-gray-800/50 border-gray-700"
               />
             </div>
           </CardContent>
