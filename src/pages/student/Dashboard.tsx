@@ -1,7 +1,6 @@
-
 import { useState } from 'react';
 import { useAuth } from '@/contexts/AuthContext';
-import { ChevronLeft, Trophy, Star, CheckCircle, Clock, Flame, Activity, Award, Brain, Target, Calendar, ChevronDown, ExternalLink, BookOpen, Lock } from 'lucide-react';
+import { ChevronLeft, Trophy, Star, CheckCircle, Clock, Flame, Activity, Award, Brain, Target, Calendar, ChevronDown, ExternalLink, BookOpen, Lock, Bell } from 'lucide-react';
 import { ResponsiveContainer, BarChart, Bar, XAxis, YAxis, Tooltip } from 'recharts';
 import { ChartContainer, ChartTooltip, ChartTooltipContent } from '@/components/ui/chart';
 import { Input } from '@/components/ui/input';
