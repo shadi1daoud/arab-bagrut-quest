@@ -1,9 +1,10 @@
+
 import { useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { 
   Search, LogOut, Trophy, BookOpen, Clock, Target, Brain, 
   Flame, Award, ChevronDown, ExternalLink, Calendar, Star, 
-  ArrowUpRight
+  ArrowUpRight, Bell, Activity
 } from 'lucide-react';
 import { 
   ResponsiveContainer, BarChart, Bar, XAxis, YAxis, CartesianGrid, Tooltip
@@ -442,7 +443,7 @@ const Index = () => {
                         <h4 className="text-gray-400 font-medium">{course.name}</h4>
                         <div className="flex items-center gap-1 mt-1">
                           <div className="flex items-center text-xs text-gray-500">
-                            <Lock className="h-3 w-3 mr-1" />
+                            <Clock className="h-3 w-3 mr-1" />
                             قريباً
                           </div>
                         </div>
@@ -481,4 +482,18 @@ const Index = () => {
                       style={{ width: '70%' }}
                     >
                       <div className="absolute inset-0 overflow-hidden">
-                        <div className="w-full h-full opacity-30 bg-[url('data:image/svg
+                        <div className="w-full h-full opacity-30 bg-[url('data:image/svg+xml;base64,PHN2ZyB3aWR0aD0iNjAiIGhlaWdodD0iNiIgeG1sbnM9Imh0dHA6Ly93d3cudzMub3JnLzIwMDAvc3ZnIj48cGF0aCBkPSJNNiAzTDEyIDNNMTggM0wyNCAxIiBzdHJva2U9IiNmZmYiIHN0cm9rZS13aWR0aD0iMiIgc3Ryb2tlLWxpbmVjYXA9InJvdW5kIi8+PC9zdmc+')]"></div>
+                      </div>
+                    </div>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  );
+};
+
+export default Index;
