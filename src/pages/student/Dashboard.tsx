@@ -1,4 +1,3 @@
-
 import { useState, useEffect } from 'react';
 import { Link } from 'react-router-dom';
 import { useAuth } from '@/contexts/AuthContext';
@@ -8,7 +7,6 @@ import { ResponsiveContainer, BarChart, Bar, XAxis, YAxis, Tooltip } from 'recha
 import { ChartContainer, ChartTooltip, ChartTooltipContent } from '@/components/ui/chart';
 import { Input } from '@/components/ui/input';
 
-// Dummy activity data for the chart
 const weeklyActivity = [
   { day: 'الأحد', hours: 1.2, xp: 120 },
   { day: 'الإثنين', hours: 0.8, xp: 80 },
@@ -25,7 +23,6 @@ const leaderboardData = [
   { id: 3, name: 'محمد', avatar: '👨', level: 15, levelNum: 15, xp: 14650 },
 ];
 
-// Upcoming exams
 const upcomingExams = [
   { id: 1, subject: 'رياضيات', date: 'الأحد، 12 مايو', icon: '🧮', color: 'from-blue-600 to-blue-400' },
   { id: 2, subject: 'فيزياء', date: 'الثلاثاء، 14 مايو', icon: '⚛️', color: 'from-purple-600 to-purple-400' },
@@ -37,20 +34,16 @@ const Dashboard = () => {
   const [adCode, setAdCode] = useState('');
   
   useEffect(() => {
-    // Trigger counter animation after component mounts
     setCountDone(true);
   }, []);
   
-  // Function to handle ad code change
   const handleAdCodeChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     setAdCode(e.target.value);
   };
   
   return (
     <div className="h-full grid grid-cols-12 gap-2 animate-fade-in">
-      {/* Left Column - Profile & Stats - 3 cols */}
       <div className="col-span-3 flex flex-col gap-2 h-full">
-        {/* User Profile */}
         <div className="game-panel p-2 flex-shrink-0">
           <div className="flex flex-col items-center">
             <div className="relative mb-2">
@@ -100,7 +93,6 @@ const Dashboard = () => {
           </div>
         </div>
         
-        {/* Stats Cards - Compact grid */}
         <div className="grid grid-cols-2 gap-2">
           <div className="game-panel p-2 flex flex-col items-center">
             <div className="h-6 w-6 rounded-full bg-gradient-to-br from-orange-500/20 to-orange-500/5 flex items-center justify-center mb-1">
@@ -119,7 +111,6 @@ const Dashboard = () => {
           </div>
         </div>
         
-        {/* Intelligence Panel - Made more compact */}
         <div className="game-panel p-2 flex flex-col items-center h-auto">
           <h3 className="text-white font-medium text-xs flex items-center gap-1 mb-1">
             <Brain className="h-3 w-3 text-game-highlight" />
@@ -159,7 +150,6 @@ const Dashboard = () => {
           </div>
         </div>
         
-        {/* Google Ad Section */}
         <div className="game-panel p-2 flex flex-col flex-1">
           <div className="flex justify-between items-center mb-1">
             <h3 className="text-sm font-medium text-white flex items-center gap-1">
@@ -168,14 +158,13 @@ const Dashboard = () => {
             </h3>
           </div>
           
-          <div className="bg-gray-800/50 border border-white/5 rounded-lg p-1.5 flex-1 flex items-center justify-center overflow-hidden" style={{minHeight: '120px', maxHeight: '180px'}}>
+          <div className="bg-gray-800/50 border border-white/5 rounded-lg p-1.5 flex-1 flex items-center justify-center overflow-hidden" style={{minHeight: '100px', maxHeight: '140px'}}>
             {adCode ? (
               <div dangerouslySetInnerHTML={{ __html: adCode }} className="w-full h-full" />
             ) : (
               <div className="text-center">
-                <Award className="h-5 w-5 text-gray-500 mx-auto mb-1" />
-                <p className="text-gray-400 text-xs">مساحة مخصصة للإعلانات</p>
-                <p className="text-gray-500 text-[10px]">أدخل كود الإعلان أدناه</p>
+                <Award className="h-4 w-4 text-gray-500 mx-auto mb-0.5" />
+                <p className="text-gray-400 text-xs">مساحة للإعلانات</p>
               </div>
             )}
           </div>
@@ -184,17 +173,15 @@ const Dashboard = () => {
             <Input 
               value={adCode}
               onChange={handleAdCodeChange}
-              placeholder="أدخل كود Google Ad هنا"
-              className="text-xs h-6 bg-gray-800/50 border-gray-700"
+              placeholder="كود Google Ad"
+              className="text-xs h-5 bg-gray-800/50 border-gray-700"
             />
           </div>
         </div>
       </div>
       
-      {/* Middle Column - Activity & Quests - 5 cols */}
-      <div className="col-span-5 flex flex-col gap-2 h-full">
-        {/* Activity Chart - With actual data visualization */}
-        <div className="game-panel p-2">
+      <div className="col-span-6 flex flex-col gap-2 h-full">
+        <div className="game-panel p-2 flex-grow">
           <div className="flex justify-between items-center mb-1">
             <h3 className="text-sm font-bold text-white font-changa flex items-center gap-1">
               <Activity className="h-3.5 w-3.5 text-blue-400" />
@@ -205,7 +192,7 @@ const Dashboard = () => {
             </div>
           </div>
           
-          <div className="h-32">
+          <div className="h-40">
             <ChartContainer config={{
               xp: { color: "#3B82F6", label: "XP المكتسبة" }
             }} className="h-full text-xs">
@@ -238,76 +225,90 @@ const Dashboard = () => {
           </div>
         </div>
         
-        {/* Today's Quest - More compact */}
-        <div className="game-panel p-2 flex-1">
-          <div className="flex justify-between items-center mb-1">
-            <h3 className="text-sm font-bold text-white font-changa flex items-center gap-1">
-              <Target className="h-3.5 w-3.5 text-game-primary" />
-              مهمة اليوم
-            </h3>
-            <div className="h-6 w-6 rounded-lg flex items-center justify-center bg-game-primary/10 text-game-primary">
-              <Flame className="h-3.5 w-3.5" />
+        <div className="grid grid-cols-2 gap-2 flex-grow">
+          <div className="game-panel p-2">
+            <div className="flex justify-between items-center mb-1">
+              <h3 className="text-sm font-bold text-white font-changa flex items-center gap-1">
+                <Target className="h-3.5 w-3.5 text-game-primary" />
+                مهمة اليوم
+              </h3>
+            </div>
+            
+            <div className="flex items-center gap-2">
+              <div className="h-8 w-8 rounded-lg bg-gradient-to-br from-game-primary/20 to-game-primary/5 flex items-center justify-center border border-game-primary/20">
+                <span className="text-base">🧮</span>
+              </div>
+              
+              <div className="flex-1">
+                <h4 className="text-white font-lexend text-xs">أكمل تحصيلي الرياضيات</h4>
+                <div className="flex justify-between items-center mt-1">
+                  <div className="flex items-center gap-1 text-[10px] text-game-accent">
+                    <Award className="h-3 w-3" />
+                    <span className="font-share-tech">+150 XP</span>
+                  </div>
+                  <button className="game-btn text-[10px] py-0.5 px-2">ابدأ</button>
+                </div>
+              </div>
             </div>
           </div>
           
-          <div className="flex items-center gap-2 h-full">
-            <div className="flex-shrink-0">
-              <div className="h-10 w-10 rounded-lg bg-gradient-to-br from-game-primary/20 to-game-primary/5 flex items-center justify-center border border-game-primary/20">
-                <span className="text-lg">🧮</span>
-              </div>
+          <div className="game-panel p-2">
+            <div className="flex justify-between items-center mb-1">
+              <h3 className="text-sm font-bold text-white font-changa flex items-center gap-1">
+                <Calendar className="h-3.5 w-3.5 text-red-400" />
+                امتحانات قادمة
+              </h3>
             </div>
             
-            <div className="flex-1">
-              <h4 className="text-white font-lexend text-sm">أكمل تحصيلي الرياضيات</h4>
-              <p className="text-gray-400 text-xs mb-1">اختبر معلوماتك في جميع مواضيع الرياضيات</p>
-              
-              <div className="flex justify-between items-center">
-                <div className="flex items-center gap-1 text-xs text-game-accent">
-                  <Award className="h-3 w-3" />
-                  <span className="font-share-tech">+150 XP</span>
+            <div className="space-y-1">
+              {upcomingExams.map((exam) => (
+                <div 
+                  key={exam.id} 
+                  className="flex items-center gap-1.5 p-1 rounded-lg bg-game-card-bg-alt border border-white/5"
+                >
+                  <div className={`h-5 w-5 rounded-lg flex items-center justify-center bg-gradient-to-br ${exam.color} text-white text-sm`}>
+                    {exam.icon}
+                  </div>
+                  
+                  <div className="flex-1">
+                    <h4 className="text-white font-medium text-xs">{exam.subject}</h4>
+                    <div className="flex items-center text-[10px] text-gray-400">
+                      <Clock className="h-2 w-2 mr-0.5" />
+                      {exam.date}
+                    </div>
+                  </div>
                 </div>
-                
-                <button className="game-btn text-xs py-0.5 px-2">ابدأ المهمة</button>
-              </div>
+              ))}
             </div>
           </div>
         </div>
         
-        {/* Upcoming Exams - Compact version */}
-        <div className="game-panel p-2">
+        <div className="game-panel p-2 flex-grow">
           <div className="flex justify-between items-center mb-1">
             <h3 className="text-sm font-bold text-white font-changa flex items-center gap-1">
-              <Calendar className="h-3.5 w-3.5 text-red-400" />
-              امتحانات قادمة
+              <Flame className="h-3.5 w-3.5 text-orange-400" />
+              التقدم الأسبوعي
             </h3>
           </div>
           
-          <div className="grid grid-cols-2 gap-2">
-            {upcomingExams.map((exam) => (
-              <div 
-                key={exam.id} 
-                className="flex items-center gap-2 p-1.5 rounded-lg bg-game-card-bg-alt border border-white/5"
-              >
-                <div className={`h-7 w-7 rounded-lg flex items-center justify-center bg-gradient-to-br ${exam.color} text-white text-base`}>
-                  {exam.icon}
+          <div className="grid grid-cols-7 gap-1 h-full">
+            {weeklyActivity.map((day, i) => (
+              <div key={i} className="flex flex-col items-center justify-end h-full">
+                <div className="flex-1 w-full flex items-end">
+                  <div 
+                    className="w-full bg-orange-500/20 hover:bg-orange-500/40 transition-colors rounded-t-sm" 
+                    style={{ height: `${(day.hours / 2) * 100}%` }}
+                  ></div>
                 </div>
-                
-                <div className="flex-1">
-                  <h4 className="text-white font-medium text-xs">{exam.subject}</h4>
-                  <div className="flex items-center text-xs text-gray-400">
-                    <Clock className="h-2.5 w-2.5 mr-0.5" />
-                    {exam.date}
-                  </div>
-                </div>
+                <span className="text-[10px] text-gray-400 mt-1">{day.day}</span>
+                <span className="text-[10px] text-orange-300 font-share-tech">{day.hours}h</span>
               </div>
             ))}
           </div>
         </div>
       </div>
       
-      {/* Right Column - Leaderboard - 4 cols */}
-      <div className="col-span-4 flex flex-col gap-2 h-full">
-        {/* Leaderboard - Compact version */}
+      <div className="col-span-3 flex flex-col gap-2 h-full">
         <div className="game-panel p-2">
           <div className="flex justify-between items-center mb-1">
             <h3 className="text-sm font-bold text-white font-changa flex items-center gap-1">
@@ -356,32 +357,7 @@ const Dashboard = () => {
           </div>
         </div>
         
-        {/* Weekly Performance Chart */}
-        <div className="game-panel p-2 flex-1">
-          <div className="flex justify-between items-center mb-1">
-            <h3 className="text-sm font-bold text-white font-changa flex items-center gap-1">
-              <Flame className="h-3.5 w-3.5 text-orange-400" />
-              التقدم الأسبوعي
-            </h3>
-          </div>
-          
-          <div className="grid grid-cols-7 gap-1 h-full">
-            {weeklyActivity.map((day, i) => (
-              <div key={i} className="flex flex-col items-center justify-end h-full">
-                <div className="flex-1 w-full flex items-end">
-                  <div 
-                    className="w-full bg-orange-500/20 hover:bg-orange-500/40 transition-colors rounded-t-sm" 
-                    style={{ height: `${(day.hours / 3) * 100}%` }}
-                  ></div>
-                </div>
-                <span className="text-[10px] text-gray-400 mt-1">{day.day}</span>
-              </div>
-            ))}
-          </div>
-        </div>
-        
-        {/* Current Course Progress */}
-        <div className="game-panel p-2 flex-1">
+        <div className="game-panel p-2 flex-grow">
           <div className="flex justify-between items-center mb-1">
             <h3 className="text-sm font-bold text-white font-changa flex items-center gap-1">
               <BookOpen className="h-3.5 w-3.5 text-blue-400" />
@@ -389,10 +365,13 @@ const Dashboard = () => {
             </h3>
           </div>
           
-          <div className="space-y-2">
+          <div className="space-y-3">
             <div>
               <div className="flex justify-between text-xs mb-0.5">
-                <span className="text-white">رياضيات</span>
+                <span className="text-white flex items-center gap-1">
+                  <span className="h-4 w-4 rounded-sm bg-blue-500/20 flex items-center justify-center text-[10px]">🧮</span>
+                  رياضيات
+                </span>
                 <span className="text-blue-400 font-share-tech">70%</span>
               </div>
               <div className="h-1.5 bg-gray-700/70 rounded-full overflow-hidden">
@@ -402,7 +381,10 @@ const Dashboard = () => {
             
             <div>
               <div className="flex justify-between text-xs mb-0.5">
-                <span className="text-white">إنجليزي</span>
+                <span className="text-white flex items-center gap-1">
+                  <span className="h-4 w-4 rounded-sm bg-green-500/20 flex items-center justify-center text-[10px]">🔤</span>
+                  إنجليزي
+                </span>
                 <span className="text-green-400 font-share-tech">45%</span>
               </div>
               <div className="h-1.5 bg-gray-700/70 rounded-full overflow-hidden">
@@ -412,11 +394,40 @@ const Dashboard = () => {
             
             <div>
               <div className="flex justify-between text-xs mb-0.5">
-                <span className="text-white">فيزياء</span>
+                <span className="text-white flex items-center gap-1">
+                  <span className="h-4 w-4 rounded-sm bg-purple-500/20 flex items-center justify-center text-[10px]">⚛️</span>
+                  فيزياء
+                </span>
                 <span className="text-purple-400 font-share-tech">30%</span>
               </div>
               <div className="h-1.5 bg-gray-700/70 rounded-full overflow-hidden">
                 <div className="h-full bg-purple-500 rounded-full" style={{width: '30%'}}></div>
+              </div>
+            </div>
+            
+            <div>
+              <div className="flex justify-between text-xs mb-0.5">
+                <span className="text-white flex items-center gap-1">
+                  <span className="h-4 w-4 rounded-sm bg-amber-500/20 flex items-center justify-center text-[10px]">🧪</span>
+                  كيمياء
+                </span>
+                <span className="text-amber-400 font-share-tech">55%</span>
+              </div>
+              <div className="h-1.5 bg-gray-700/70 rounded-full overflow-hidden">
+                <div className="h-full bg-amber-500 rounded-full" style={{width: '55%'}}></div>
+              </div>
+            </div>
+            
+            <div>
+              <div className="flex justify-between text-xs mb-0.5">
+                <span className="text-white flex items-center gap-1">
+                  <span className="h-4 w-4 rounded-sm bg-red-500/20 flex items-center justify-center text-[10px]">����</span>
+                  عربي
+                </span>
+                <span className="text-red-400 font-share-tech">82%</span>
+              </div>
+              <div className="h-1.5 bg-gray-700/70 rounded-full overflow-hidden">
+                <div className="h-full bg-red-500 rounded-full" style={{width: '82%'}}></div>
               </div>
             </div>
           </div>
