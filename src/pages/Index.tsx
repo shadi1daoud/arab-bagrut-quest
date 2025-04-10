@@ -1,15 +1,13 @@
-
 import { useState } from 'react';
 import { useNavigate } from 'react-router-dom';
-import { Edit, Search, LogOut } from 'lucide-react';
-import { Input } from '@/components/ui/input';
-import {
-  BarChart,
-  Bar,
-  XAxis,
-  YAxis,
-  ResponsiveContainer,
-  LabelList
+import { Edit, Search, LogOut, ArrowUpRight } from 'lucide-react';
+import { 
+  ResponsiveContainer, 
+  BarChart, 
+  Bar, 
+  XAxis, 
+  YAxis, 
+  LabelList 
 } from 'recharts';
 
 // Sample data for the activity chart
@@ -141,7 +139,7 @@ const Index = () => {
         
         {/* Dashboard Grid */}
         <div className="flex-1 p-4 grid grid-cols-12 gap-4">
-          {/* Profile Card - 4 cols */}
+          {/* Profile Card - 3 cols */}
           <div className="col-span-3 bg-gray-900 rounded-lg border border-gray-800 overflow-hidden">
             <div className="p-4">
               <div className="flex justify-between items-start">
@@ -186,7 +184,9 @@ const Index = () => {
           
           {/* Middle section - 5 cols */}
           <div className="col-span-5 grid grid-rows-3 gap-4">
+            {/* Top Row: Stats Cards */}
             <div className="row-span-1 grid grid-cols-3 gap-4">
+              {/* Consecutive Days Card */}
               <div className="col-span-1 bg-gray-900 rounded-lg border border-gray-800 p-4 flex flex-col items-center justify-center">
                 <h3 className="text-center text-gray-400 text-xs mb-1">يوم 20</h3>
                 <p className="text-center text-xs text-gray-500">دخول متواصل</p>
@@ -197,6 +197,7 @@ const Index = () => {
                 </div>
               </div>
               
+              {/* Points Card */}
               <div className="col-span-1 bg-gray-900 rounded-lg border border-gray-800 p-4 flex flex-col items-center justify-center">
                 <div className="w-10 h-10 bg-orange-500/20 rounded-full flex items-center justify-center mb-2">
                   <svg width="20" height="20" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
@@ -208,6 +209,7 @@ const Index = () => {
                 <p className="text-center text-sm text-gray-400">نقاط</p>
               </div>
               
+              {/* Progress Circular Chart Card */}
               <div className="col-span-1 bg-gray-900 rounded-lg border border-gray-800 p-4 flex flex-col items-center justify-center">
                 <select className="bg-transparent text-xs text-gray-400 mb-1 focus:outline-none">
                   <option>شهري</option>
@@ -232,6 +234,7 @@ const Index = () => {
               </div>
             </div>
             
+            {/* Rank Card */}
             <div className="row-span-1 bg-gray-900 rounded-lg border border-gray-800 p-4">
               <div className="flex justify-between items-center mb-2">
                 <h3 className="text-lg font-medium text-white">#3</h3>
@@ -244,6 +247,7 @@ const Index = () => {
               <p className="text-gray-400 text-sm">بين أصدقائك</p>
             </div>
             
+            {/* Activity Hours Chart */}
             <div className="row-span-1 bg-gray-900 rounded-lg border border-gray-800 p-4">
               <h3 className="text-lg font-medium text-white mb-4">ساعات نشاطي</h3>
               
@@ -273,7 +277,7 @@ const Index = () => {
             </div>
           </div>
           
-          {/* Right section - 3 cols */}
+          {/* Right section - 4 cols */}
           <div className="col-span-4 grid grid-rows-2 gap-4">
             {/* Ad section */}
             <div className="row-span-1 bg-gray-900 rounded-lg border border-gray-800 p-4">
