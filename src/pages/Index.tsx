@@ -1,6 +1,6 @@
 
 import { useNavigate } from 'react-router-dom';
-import { Flame, Trophy, ChevronRight, Activity, Award, BarChart3 } from 'lucide-react';
+import { Flame, Trophy, ChevronRight, Activity, Award, BarChart3, Clock } from 'lucide-react';
 import { useState } from 'react';
 import {
   ChartContainer,
@@ -51,72 +51,83 @@ const Index = () => {
       <div className="cyber-grid absolute inset-0"></div>
       
       <div className="container h-full max-w-full px-4 relative z-10 grid grid-cols-12 gap-3">
+        {/* Left Column - 8 cols */}
         <div className="col-span-12 lg:col-span-8 flex flex-col gap-3">
           {/* Header Section - More compact */}
-          <div className="game-panel p-3 flex flex-col items-center">
-            <div className="flex justify-center items-center mb-2">
-              <div className="bg-game-primary p-2 rounded-xl shadow-lg shadow-game-primary/20 mr-2">
-                <svg width="20" height="20" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
-                  <path d="M21 10C21 10 18.995 7.26822 17.3662 5.63824C15.7373 4.00827 13.4864 3 11 3C6.02944 3 2 7.02944 2 12C2 16.9706 6.02944 21 11 21C15.9706 21 20 16.9706 20 12" stroke="white" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"/>
-                  <path d="M22 2L13 11" stroke="white" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"/>
-                </svg>
+          <div className="game-panel p-3">
+            <div className="flex items-center justify-between">
+              <div className="flex items-center gap-2">
+                <div className="bg-game-primary p-2 rounded-xl shadow-lg shadow-game-primary/20">
+                  <svg width="20" height="20" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+                    <path d="M21 10C21 10 18.995 7.26822 17.3662 5.63824C15.7373 4.00827 13.4864 3 11 3C6.02944 3 2 7.02944 2 12C2 16.9706 6.02944 21 11 21C15.9706 21 20 16.9706 20 12" stroke="white" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"/>
+                    <path d="M22 2L13 11" stroke="white" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"/>
+                  </svg>
+                </div>
+                <div>
+                  <h1 className="text-2xl font-bold font-changa text-white">درسني</h1>
+                  <h2 className="text-xs font-changa text-game-text-secondary">منصة تعليمية جديدة لطلاب المراحل الثانوية</h2>
+                </div>
               </div>
-              <h1 className="text-3xl font-bold font-changa text-white">درسني</h1>
+              <button 
+                onClick={() => navigate('/login')}
+                className="game-btn px-3 py-1.5 text-sm hover-scale"
+              >
+                ابدأ رحلتك الآن
+              </button>
             </div>
-            <h2 className="text-md font-changa text-game-text-secondary">منصة تعليمية جديدة لطلاب المراحل الثانوية</h2>
-            <button 
-              onClick={() => navigate('/login')}
-              className="game-btn px-4 py-2 text-sm mt-2 hover-scale"
-            >
-              ابدأ رحلتك الآن
-            </button>
           </div>
           
           {/* Main Features Cards - 2 cards in a row */}
           <div className="grid grid-cols-2 gap-3">
-            <div className="xp-card p-3 hover-scale h-full">
-              <div className="flex items-center mb-2">
-                <div className="h-7 w-7 rounded-full bg-game-primary/20 flex items-center justify-center mr-2">
+            <div className="xp-card p-3 hover-scale h-auto">
+              <div className="flex items-start gap-2">
+                <div className="h-7 w-7 rounded-full bg-game-primary/20 flex items-center justify-center flex-shrink-0">
                   <Flame className="h-4 w-4 text-game-primary" />
                 </div>
-                <h3 className="text-md font-changa text-white">تعلم بأسلوب جديد</h3>
-              </div>
-              <p className="text-gray-300 text-xs mb-2">استمتع بالتعلم من خلال نظام تعليمي مبتكر يشبه الألعاب.</p>
-              <div className="flex items-center text-game-accent text-xs">
-                <span className="font-semibold">استكشف المزيد</span>
-                <ChevronRight className="h-3 w-3 ml-1" />
+                <div>
+                  <h3 className="text-md font-changa text-white mb-1">تعلم بأسلوب جديد</h3>
+                  <p className="text-gray-300 text-xs mb-1.5">استمتع بالتعلم من خلال نظام تعليمي مبتكر يشبه الألعاب.</p>
+                  <div className="flex items-center text-game-accent text-xs">
+                    <span className="font-semibold">استكشف المزيد</span>
+                    <ChevronRight className="h-3 w-3 ml-1" />
+                  </div>
+                </div>
               </div>
             </div>
             
-            <div className="stats-card p-3 hover-scale h-full">
-              <div className="flex items-center mb-2">
-                <div className="h-7 w-7 rounded-full bg-game-accent/20 flex items-center justify-center mr-2">
+            <div className="stats-card p-3 hover-scale h-auto">
+              <div className="flex items-start gap-2">
+                <div className="h-7 w-7 rounded-full bg-game-accent/20 flex items-center justify-center flex-shrink-0">
                   <Trophy className="h-4 w-4 text-game-accent" />
                 </div>
-                <h3 className="text-md font-changa text-white">حقق التفوق</h3>
-              </div>
-              <p className="text-gray-300 text-xs mb-2">تنافس مع زملائك واحصل على مكافآت عند إكمال المهام التعليمية.</p>
-              <div className="flex items-center text-game-accent text-xs">
-                <span className="font-semibold">تعرف على المكافآت</span>
-                <ChevronRight className="h-3 w-3 ml-1" />
+                <div>
+                  <h3 className="text-md font-changa text-white mb-1">حقق التفوق</h3>
+                  <p className="text-gray-300 text-xs mb-1.5">تنافس مع زملائك واحصل على مكافآت عند إكمال المهام التعليمية.</p>
+                  <div className="flex items-center text-game-accent text-xs">
+                    <span className="font-semibold">تعرف على المكافآت</span>
+                    <ChevronRight className="h-3 w-3 ml-1" />
+                  </div>
+                </div>
               </div>
             </div>
           </div>
           
-          {/* Weekly Performance Chart */}
+          {/* Weekly Performance Chart - Improved with better visualization */}
           <div className="game-panel p-3 hover:border-blue-500/30 hover:shadow-lg hover:shadow-blue-500/10 transition-all">
             <div className="flex justify-between items-center mb-2">
               <h3 className="text-base font-bold text-white font-changa flex items-center gap-1.5">
                 <Activity className="h-4 w-4 text-blue-400" />
                 الأداء الأسبوعي
               </h3>
-              <div className="flex items-center text-xs">
-                <span className="text-white font-share-tech">310 دقيقة</span>
+              <div className="flex items-center text-xs bg-blue-500/20 py-1 px-2 rounded-full">
+                <span className="text-blue-300 font-share-tech">310 دقيقة</span>
               </div>
             </div>
             
             <div className="h-40">
-              <ChartContainer config={{}} className="h-full text-xs">
+              <ChartContainer config={{
+                mins: { color: "#3B82F6", label: "دقائق التعلم" }
+              }} className="h-full text-xs">
                 <ResponsiveContainer width="100%" height="100%">
                   <BarChart data={performanceData} margin={{ top: 5, right: 5, bottom: 15, left: 0 }}>
                     <XAxis 
@@ -146,9 +157,43 @@ const Index = () => {
               </ChartContainer>
             </div>
           </div>
+          
+          {/* Upcoming Exams - New compact section */}
+          <div className="game-panel p-3 hover:border-red-500/30 hover:shadow-lg hover:shadow-red-500/10 transition-all">
+            <div className="flex justify-between items-center mb-2">
+              <h3 className="text-base font-bold text-white font-changa flex items-center gap-1.5">
+                <Clock className="h-4 w-4 text-red-400" />
+                امتحانات قادمة
+              </h3>
+            </div>
+            
+            <div className="grid grid-cols-2 gap-2">
+              {[
+                { id: 1, subject: 'رياضيات', date: 'الأحد، 12 مايو', icon: '🧮', color: 'from-blue-600 to-blue-400' },
+                { id: 2, subject: 'فيزياء', date: 'الثلاثاء، 14 مايو', icon: '⚛️', color: 'from-purple-600 to-purple-400' },
+              ].map((exam) => (
+                <div 
+                  key={exam.id} 
+                  className="flex items-center gap-2 p-2 rounded-lg bg-game-card-bg-alt border border-white/5 hover:border-red-500/20 transition-all"
+                >
+                  <div className={`h-8 w-8 rounded-lg flex items-center justify-center bg-gradient-to-br ${exam.color} text-white text-lg`}>
+                    {exam.icon}
+                  </div>
+                  
+                  <div className="flex-1">
+                    <h4 className="text-white font-medium text-sm">{exam.subject}</h4>
+                    <div className="flex items-center text-xs text-gray-400">
+                      <Clock className="h-3 w-3 mr-0.5" />
+                      {exam.date}
+                    </div>
+                  </div>
+                </div>
+              ))}
+            </div>
+          </div>
         </div>
         
-        {/* Right Column */}
+        {/* Right Column - 4 cols with compact sections */}
         <div className="col-span-12 lg:col-span-4 flex flex-col gap-3">
           {/* Leaderboard - More compact */}
           <div className="game-panel p-3 hover:border-yellow-500/30 hover:shadow-lg hover:shadow-yellow-500/10 transition-all">
@@ -157,6 +202,7 @@ const Index = () => {
                 <Trophy className="h-4 w-4 text-yellow-400" />
                 المتصدرون
               </h3>
+              <span className="text-xs text-blue-400 hover:underline cursor-pointer">عرض الكل</span>
             </div>
             
             <div className="space-y-1">
@@ -187,18 +233,11 @@ const Index = () => {
                   </div>
                 </div>
               ))}
-              
-              <div className="pt-1 flex justify-center">
-                <button className="text-xs text-blue-400 hover:underline flex items-center">
-                  عرض المزيد
-                  <ChevronRight className="h-3 w-3 ml-1" />
-                </button>
-              </div>
             </div>
           </div>
           
-          {/* Ad Section */}
-          <div className="game-panel p-3">
+          {/* Ad Section - Redesigned */}
+          <div className="game-panel p-3 flex-1">
             <div className="flex justify-between items-center mb-2">
               <h3 className="text-base font-bold text-white font-changa flex items-center gap-1.5">
                 <BarChart3 className="h-4 w-4 text-green-400" />
@@ -206,12 +245,12 @@ const Index = () => {
               </h3>
             </div>
             
-            <div className="bg-gray-800/50 border border-white/5 rounded-lg p-2 mb-2 min-h-[150px] flex items-center justify-center">
+            <div className="bg-gray-800/50 border border-white/5 rounded-lg p-2 mb-2 flex-1 flex items-center justify-center overflow-hidden">
               {adCode ? (
                 <div dangerouslySetInnerHTML={{ __html: adCode }} className="w-full h-full" />
               ) : (
                 <div className="text-center">
-                  <Award className="h-8 w-8 text-gray-500 mx-auto mb-2" />
+                  <Award className="h-8 w-8 text-gray-500 mx-auto mb-2 animate-pulse" />
                   <p className="text-gray-400 text-xs">مساحة مخصصة للإعلانات</p>
                   <p className="text-gray-500 text-xs">أدخل كود الإعلان أدناه</p>
                 </div>
@@ -231,13 +270,16 @@ const Index = () => {
             </div>
           </div>
           
-          {/* Latest Updates or Badges */}
+          {/* Latest Updates or Badges - Compact */}
           <div className="game-panel p-2 hover:border-purple-500/30 hover:shadow-lg hover:shadow-purple-500/10 transition-all">
-            <div className="flex items-center p-1">
-              <div className="h-6 w-6 rounded-full bg-purple-600/20 flex items-center justify-center mr-2">
-                <Award className="h-3.5 w-3.5 text-purple-400" />
+            <div className="flex items-center justify-between p-1">
+              <div className="flex items-center gap-1.5">
+                <div className="h-6 w-6 rounded-full bg-purple-600/20 flex items-center justify-center">
+                  <Award className="h-3.5 w-3.5 text-purple-400" />
+                </div>
+                <span className="text-white text-sm">شارات جديدة</span>
               </div>
-              <span className="text-white text-sm">احصل على شارات جديدة</span>
+              <span className="bg-purple-600/20 text-purple-400 text-xs py-0.5 px-1.5 rounded-full">3</span>
             </div>
           </div>
         </div>
