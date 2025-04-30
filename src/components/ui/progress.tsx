@@ -13,25 +13,25 @@ const Progress = React.forwardRef<
   const getVariantStyles = () => {
     switch (variant) {
       case 'xp':
-        return "bg-indigo-600";
+        return "bg-cyan-400";
       case 'course':
-        return "bg-indigo-600";
+        return "bg-cyan-400";
       case 'blue':
-        return "bg-indigo-600";
+        return "bg-cyan-400";
       case 'green':
-        return "bg-indigo-600";
+        return "bg-cyan-400";
       case 'purple':
-        return "bg-indigo-600";
+        return "bg-purple-500";
       case 'yellow':
-        return "bg-indigo-600";
+        return "bg-cyan-400";
       case 'red':
-        return "bg-indigo-600";
+        return "bg-cyan-400";
       case 'orange':
-        return "bg-indigo-600";
+        return "bg-cyan-400";
       case 'pink':
-        return "bg-indigo-600";
+        return "bg-cyan-400";
       default:
-        return "bg-indigo-600";
+        return "bg-cyan-400";
     }
   };
 
@@ -39,14 +39,14 @@ const Progress = React.forwardRef<
     <ProgressPrimitive.Root
       ref={ref}
       className={cn(
-        "relative h-2 w-full overflow-hidden rounded-full bg-neutral-800",
+        "relative h-1.5 w-full overflow-hidden rounded-full bg-white/5",
         className
       )}
       {...props}
     >
       <ProgressPrimitive.Indicator
         className={cn(
-          "h-full w-full flex-1 transition-all duration-300",
+          "h-full w-full flex-1 transition-all duration-700",
           getVariantStyles()
         )}
         style={{ 
