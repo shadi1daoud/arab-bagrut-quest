@@ -29,17 +29,21 @@ const AdminLayout = () => {
       <NavLink 
         to={path}
         className={({ isActive }) => cn(
-          "sidebar-item",
-          isActive ? "active" : ""
+          "sidebar-item flex items-center gap-3 py-3 px-4 rounded-xl transition-all",
+          isActive 
+            ? "bg-gradient-to-r from-purple-500/20 to-blue-500/20 text-white border border-white/10 shadow-[0_0_10px_rgba(124,58,237,0.2)]" 
+            : "text-gray-400 hover:text-white hover:bg-white/5"
         )}
       >
         <div className={cn(
-          "flex items-center justify-center w-8 h-8 rounded-lg",
-          isActive ? "bg-secondary/40 text-white" : "bg-muted/30 text-gray-400"
+          "flex items-center justify-center w-8 h-8 rounded-lg transition-all",
+          isActive 
+            ? "bg-gradient-to-r from-purple-500 to-blue-500 text-white shadow-[0_0_8px_rgba(124,58,237,0.3)]"
+            : "bg-muted/30 text-gray-400"
         )}>
           <Icon className="h-5 w-5" />
         </div>
-        <span>{label}</span>
+        <span className="text-sm font-medium">{label}</span>
       </NavLink>
     );
   };
@@ -49,13 +53,13 @@ const AdminLayout = () => {
       {/* Sidebar */}
       <aside 
         className={cn(
-          "bg-card/50 backdrop-blur-md w-64 fixed inset-y-0 right-0 z-30 transform transition-transform duration-200 lg:translate-x-0 lg:static flex flex-col",
+          "bg-card/50 backdrop-blur-md w-64 fixed inset-y-0 right-0 z-30 transform transition-transform duration-200 lg:translate-x-0 lg:static flex flex-col border-l border-white/5",
           isMobileMenuOpen ? "translate-x-0" : "translate-x-full"
         )}
       >
         <div className="p-4 mb-2 flex justify-center">
           <div className="flex items-center gap-2">
-            <div className="bg-primary rounded-lg p-1.5">
+            <div className="bg-gradient-to-r from-purple-500 to-blue-500 rounded-lg p-1.5 shadow-[0_0_10px_rgba(124,58,237,0.3)]">
               <svg width="16" height="16" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
                 <path d="M21 10C21 10 18.995 7.26822 17.3662 5.63824C15.7373 4.00827 13.4864 3 11 3C6.02944 3 2 7.02944 2 12C2 16.9706 6.02944 21 11 21C15.9706 21 20 16.9706 20 12" stroke="white" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"/>
                 <path d="M22 2L13 11" stroke="white" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"/>
@@ -65,9 +69,9 @@ const AdminLayout = () => {
           </div>
         </div>
         
-        <div className="p-4 border-b border-muted/30">
+        <div className="p-4 border-b border-white/10">
           <div className="flex flex-col items-center">
-            <div className="h-20 w-20 rounded-full overflow-hidden border-2 border-accent/50 shadow-lg shadow-accent/20">
+            <div className="h-20 w-20 rounded-full overflow-hidden border-2 border-white/10 shadow-lg shadow-purple-500/10 bg-gradient-to-b from-gray-800 to-gray-900">
               {user?.avatar ? (
                 <img src={user.avatar} alt={user.name} className="h-full w-full object-cover" />
               ) : (
@@ -82,14 +86,14 @@ const AdminLayout = () => {
         </div>
         
         <div className="overflow-y-auto flex-1 p-4">
-          <nav className="space-y-1">
+          <nav className="space-y-2">
             {navItems.map((item) => (
               <NavItem key={item.path} {...item} />
             ))}
             
             <Link 
               to="/admin/courses/upload"
-              className="mt-6 flex items-center gap-3 py-3 px-4 rounded-lg bg-gradient-to-r from-primary to-secondary text-white hover:shadow-lg hover:shadow-primary/20 transition-all"
+              className="mt-6 flex items-center gap-3 py-3 px-4 rounded-xl bg-gradient-to-r from-purple-500 to-blue-500 text-white hover:shadow-lg hover:shadow-purple-500/20 hover:brightness-110 transition-all"
             >
               <Upload className="h-5 w-5" />
               <span>رفع كورس جديد</span>
@@ -97,10 +101,10 @@ const AdminLayout = () => {
           </nav>
         </div>
         
-        <div className="p-4 mt-auto border-t border-muted/30">
+        <div className="p-4 mt-auto border-t border-white/10">
           <button 
             onClick={logout}
-            className="flex items-center gap-3 w-full text-gray-400 hover:text-white transition-all p-3 rounded-lg hover:bg-muted/30"
+            className="flex items-center gap-3 w-full text-gray-400 hover:text-white transition-all p-3 rounded-xl hover:bg-white/5"
           >
             <LogOut className="h-5 w-5" />
             <span>تسجيل خروج</span>
@@ -111,7 +115,7 @@ const AdminLayout = () => {
       {/* Main content area */}
       <div className="flex-1 flex flex-col">
         {/* Header */}
-        <header className="bg-card/50 backdrop-blur-md py-3 px-4 flex justify-between items-center">
+        <header className="bg-card/50 backdrop-blur-md py-3 px-4 flex justify-between items-center border-b border-white/10">
           <div className="flex items-center">
             <button
               onClick={() => setIsMobileMenuOpen(!isMobileMenuOpen)}
@@ -126,28 +130,28 @@ const AdminLayout = () => {
               </div>
               <input
                 type="search"
-                className="bg-muted/30 border border-muted text-white text-sm rounded-full block w-80 pr-10 p-2.5 placeholder-gray-500"
+                className="bg-white/5 border border-white/10 text-white text-sm rounded-xl block w-80 pr-10 p-2.5 placeholder-gray-500 focus:ring-1 focus:ring-purple-500 focus:border-purple-500"
                 placeholder="ابحث..."
               />
             </div>
           </div>
           
           <div className="flex items-center gap-4">
-            <button className="relative text-gray-400 hover:text-white">
+            <button className="relative text-gray-400 hover:text-white transition-all">
               <Bell className="h-5 w-5" />
-              <span className="absolute -top-1 -right-1 bg-primary w-4 h-4 rounded-full text-xs flex items-center justify-center">
+              <span className="absolute -top-1 -right-1 bg-gradient-to-r from-purple-500 to-blue-500 w-4 h-4 rounded-full text-xs flex items-center justify-center shadow-sm shadow-purple-500/20">
                 2
               </span>
             </button>
             
             <h1 className="text-lg font-medium text-white">
-              <span className="text-game-accent">درسني</span> - لوحة المشرف
+              <span className="bg-gradient-to-r from-purple-500 to-blue-500 bg-clip-text text-transparent">درسني</span> - لوحة المشرف
             </h1>
           </div>
         </header>
         
         {/* Main content */}
-        <main className="flex-1 p-4 lg:p-6 overflow-auto">
+        <main className="flex-1 p-4 lg:p-6 overflow-auto bg-gradient-to-b from-[#0E0E1C]/40 to-[#0E0E1C]/80">
           <Outlet />
         </main>
       </div>
