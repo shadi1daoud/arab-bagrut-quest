@@ -1,47 +1,59 @@
 
-@import url('https://fonts.googleapis.com/css2?family=Changa:wght@400;500;600;700&family=Noto+Sans+Arabic:wght@400;500;600;700&family=Share+Tech+Mono&display=swap');
-
 @tailwind base;
 @tailwind components;
 @tailwind utilities;
 
 @layer base {
   :root {
-    --background: 228 28% 8%;
-    --foreground: 0 0% 95%;
+    --background: 240 10% 3.9%;
+    --foreground: 0 0% 98%;
     
-    --card: 230 20% 12%;
-    --card-foreground: 0 0% 95%;
+    --card: 240 10% 3.9%;
+    --card-foreground: 0 0% 98%;
     
-    --popover: 230 20% 12%;
-    --popover-foreground: 0 0% 95%;
+    --popover: 240 10% 3.9%;
+    --popover-foreground: 0 0% 98%;
     
-    --primary: 190 100% 50%;
-    --primary-foreground: 0 0% 100%;
+    --primary: 0 0% 98%;
+    --primary-foreground: 240 5.9% 10%;
     
-    --secondary: 291 64% 42%;
-    --secondary-foreground: 0 0% 100%;
+    --secondary: 240 3.7% 15.9%;
+    --secondary-foreground: 0 0% 98%;
     
-    --muted: 230 20% 12%;
-    --muted-foreground: 240 5% 60%;
+    --muted: 240 3.7% 15.9%;
+    --muted-foreground: 240 5% 64.9%;
     
-    --accent: 190 100% 50%;
-    --accent-foreground: 0 0% 100%;
+    --accent: 240 3.7% 15.9%;
+    --accent-foreground: 0 0% 98%;
     
-    --destructive: 0 84% 60%;
+    --destructive: 0 62.8% 30.6%;
     --destructive-foreground: 0 0% 98%;
     
-    --border: 240 6% 15%;
-    --input: 240 6% 15%;
-    --ring: 240 5% 64.9%;
+    --border: 240 3.7% 15.9%;
+    --input: 240 3.7% 15.9%;
+    --ring: 240 4.9% 83.9%;
     
-    --radius: 1rem;
+    --radius: 0.75rem;
+
+    /* VisionOS-inspired UI */
+    --sidebar-background: 260 40% 6%;
+    --sidebar-foreground: 0 0% 98%;
+    --sidebar-primary: 267 100% 70%;
+    --sidebar-primary-foreground: 0 0% 100%;
+    --sidebar-accent: 186 100% 62%;
+    --sidebar-accent-foreground: 0 0% 100%;
+    --sidebar-border: 260 40% 12%;
+    --sidebar-ring: 267 100% 70%;
+
+    --game-primary-rgb: 128, 86, 255;
+    --game-accent-rgb: 49, 244, 255;
+    --game-highlight-rgb: 50, 255, 136;
   }
 }
 
 @layer base {
   * {
-    @apply border-border selection:bg-cyan-400/20 selection:text-white;
+    @apply border-border selection:bg-white/10 selection:text-white;
   }
   
   html, body, #root {
@@ -51,99 +63,122 @@
   body {
     @apply bg-background text-foreground antialiased;
     font-feature-settings: "ss01", "ss02", "cv01", "cv02", "cv03";
-    background: linear-gradient(135deg, #0C0E1A 0%, #16122e 100%);
+    background: radial-gradient(ellipse at top, rgba(23, 21, 50, 0.9) 0%, rgba(14, 14, 28, 1) 70%);
     background-attachment: fixed;
-    line-height: 1.4;
-    letter-spacing: 0.3px;
   }
 }
 
 @layer components {
-  .card {
-    @apply bg-gradient-to-b from-[#161827] to-[#111325] backdrop-blur-md border border-white/5 rounded-2xl transition-all;
+  .game-panel {
+    @apply bg-black/40 backdrop-blur-md border border-white/5 rounded-xl shadow-lg;
   }
   
   .level-bar {
-    @apply h-1.5 bg-white/5 rounded-full overflow-hidden;
+    @apply h-1.5 bg-muted/20 rounded-full overflow-hidden;
   }
   
   .level-bar-fill {
-    @apply h-full bg-cyan-400 rounded-full;
+    @apply h-full bg-game-primary rounded-full;
   }
   
   .sidebar-item {
-    @apply px-3 py-2.5 rounded-xl transition-all hover:bg-white/5 text-gray-400 hover:text-white;
+    @apply px-3 py-2 rounded-lg transition-all hover:bg-muted/30 text-gray-300 hover:text-white;
   }
   
   .sidebar-item.active {
-    @apply bg-cyan-400/10 text-cyan-400;
+    @apply bg-game-primary/20 text-white;
+  }
+  
+  .orbit-container {
+    @apply relative;
+  }
+  
+  .pulse-hover {
+    @apply transition-all duration-300;
+  }
+
+  .pulse-hover:hover {
+    @apply shadow-[0_0_10px_rgba(128,86,255,0.6)];
+    animation: pulse 1.5s ease-in-out infinite;
+  }
+  
+  .border-gradient {
+    @apply relative border border-white/10 overflow-hidden;
+  }
+  
+  .border-gradient::before {
+    content: '';
+    @apply absolute top-0 left-0 right-0 bottom-0 rounded-2xl p-[1px] pointer-events-none;
+    background: linear-gradient(to right, rgba(128, 86, 255, 0.3), rgba(49, 244, 255, 0.3));
+    mask-image: linear-gradient(black, black);
+    mask-composite: exclude;
+  }
+  
+  .shadow-glow {
+    box-shadow: 0 0 15px rgba(128, 86, 255, 0.3);
   }
 }
 
 @layer utilities {
-  .glass {
-    @apply backdrop-blur-md bg-[#161827]/80 border border-white/5 transition-all;
+  .glass-morphism {
+    @apply backdrop-blur-xl bg-white/5 border border-white/10 shadow-[0_4px_12px_-2px_rgba(0,0,0,0.3)];
+  }
+  
+  .neo-blur {
+    @apply backdrop-blur-2xl bg-black/40 border border-white/10;
   }
   
   .text-gradient {
-    @apply bg-gradient-to-br from-cyan-400 via-cyan-300 to-cyan-500 bg-clip-text text-transparent;
-  }
-
-  .card-hover {
-    @apply transition-all duration-300 hover:translate-y-[-4px] hover:shadow-lg hover:shadow-black/30;
-  }
-  
-  .stars-bg {
-    background-image: 
-      radial-gradient(circle, rgba(255,255,255,0.05) 1px, transparent 1px);
-    background-size: 30px 30px;
-  }
-  
-  .grid-bg {
-    background-image: 
-      linear-gradient(to right, rgba(255,255,255,0.03) 1px, transparent 1px),
-      linear-gradient(to bottom, rgba(255,255,255,0.03) 1px, transparent 1px);
-    background-size: 20px 20px;
+    @apply bg-gradient-to-br from-white via-white/90 to-white/70 bg-clip-text text-transparent;
   }
 }
 
-/* Scrollbar styling */
-::-webkit-scrollbar {
-  width: 6px;
-  height: 6px;
+/* Cyber Grid Background */
+.cyber-grid {
+  background-image: 
+    linear-gradient(rgba(49, 244, 255, 0.03) 1px, transparent 1px),
+    linear-gradient(90deg, rgba(49, 244, 255, 0.03) 1px, transparent 1px);
+  background-size: 20px 20px;
+  animation: grid-move 15s linear infinite;
 }
 
-::-webkit-scrollbar-track {
-  background: transparent;
+/* Galaxy Particles */
+.galaxy-particles {
+  overflow: hidden;
 }
 
-::-webkit-scrollbar-thumb {
-  background: rgba(255, 255, 255, 0.1);
-  border-radius: 10px;
+.particle {
+  position: absolute;
+  background-color: rgba(255, 255, 255, 0.5);
+  border-radius: 50%;
+  animation: particles-float 15s infinite ease-in-out;
 }
 
-::-webkit-scrollbar-thumb:hover {
-  background: rgba(255, 255, 255, 0.2);
+/* Animations */
+@keyframes pulse {
+  0%, 100% {
+    transform: scale(1);
+    opacity: 1;
+  }
+  50% {
+    transform: scale(1.05);
+    opacity: 0.9;
+  }
 }
 
-/* Animation keyframes */
-@keyframes shimmer {
-  0% { background-position: -200% 0; }
-  100% { background-position: 200% 0; }
+@keyframes grid-move {
+  0% { background-position: 0 0; }
+  100% { background-position: 20px 20px; }
 }
 
-@keyframes progress-fill {
-  0% { transform: translateX(-100%); }
-  100% { transform: translateX(var(--progress-value)); }
-}
-
-.animate-shimmer {
-  background: linear-gradient(
-    90deg,
-    rgba(255,255,255,0) 0%,
-    rgba(255,255,255,0.1) 50%,
-    rgba(255,255,255,0) 100%
-  );
-  background-size: 200% 100%;
-  animation: shimmer 2s infinite;
+@keyframes particles-float {
+  0%, 100% {
+    transform: translateY(0) translateX(0) rotate(0);
+  }
+  33% {
+    transform: translateY(-10px) translateX(5px) rotate(2deg);
+  }
+  66% {
+    transform: translateY(5px) translateX(-5px) rotate(-2deg);
+  }
 }
