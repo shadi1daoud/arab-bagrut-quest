@@ -1,6 +1,8 @@
+
 import React, { useState, useEffect } from 'react';
-import { Activity, Award, Clock } from 'lucide-react';
+import { Activity, Award, BookOpen, Calendar, Clock, Lock } from 'lucide-react';
 import { Card, CardContent } from '@/components/ui/card';
+import { Tabs, TabsList, TabsTrigger, TabsContent } from '@/components/ui/tabs';
 import StarParticles from '@/components/StarParticles';
 import StatsCard from '@/components/StatsCard';
 import IntelligenceScore from '@/components/IntelligenceScore';
@@ -34,6 +36,19 @@ const courseProgress = [
   { id: 2, name: 'إنجليزي', progress: 45 },
   { id: 3, name: 'فيزياء', progress: 60 },
   { id: 4, name: 'كيمياء', progress: 28 },
+];
+
+// Upcoming exams
+const upcomingExams = [
+  { id: 1, subject: 'رياضيات', date: '١٢ مايو', time: '١٠:٠٠ ص', xp: 200 },
+  { id: 2, subject: 'فيزياء', date: '١٤ مايو', time: '١١:٣٠ ص', xp: 250 },
+  { id: 3, subject: 'كيمياء', date: '١٧ مايو', time: '٩:٠٠ ص', xp: 300 },
+];
+
+// Coming soon courses
+const comingSoonCourses = [
+  { id: 1, name: 'علم البيانات', color: 'cyan' },
+  { id: 2, name: 'علوم الحاسب', color: 'indigo' },
 ];
 
 const Dashboard = () => {
@@ -138,11 +153,11 @@ const Dashboard = () => {
               <Tabs defaultValue="exams" className="w-full">
                 <TabsList className="grid w-full grid-cols-2 mb-4 bg-[rgba(255,255,255,0.03)]">
                   <TabsTrigger value="exams" className="text-xs font-noto">
-                    <Calendar className="h-3.5 w-3.5 mr-1 text-[#00D9FF]" />
+                    <Calendar className="h-3.5 w-3.5 mr-1 text-[#8E6DFF]" />
                     الامتحانات القادمة
                   </TabsTrigger>
                   <TabsTrigger value="courses" className="text-xs font-noto">
-                    <BookOpen className="h-3.5 w-3.5 mr-1 text-[#00D9FF]" />
+                    <BookOpen className="h-3.5 w-3.5 mr-1 text-[#8E6DFF]" />
                     كورسات قريباً
                   </TabsTrigger>
                 </TabsList>
@@ -154,7 +169,7 @@ const Dashboard = () => {
                         key={exam.id}
                         className="flex items-center gap-3 p-3 rounded-xl bg-[rgba(255,255,255,0.03)] hover:bg-[rgba(255,255,255,0.05)] transition-colors cursor-pointer"
                       >
-                        <div className="h-10 w-10 rounded-lg flex items-center justify-center bg-[#00D9FF]/10 text-[#00D9FF]">
+                        <div className="h-10 w-10 rounded-lg flex items-center justify-center bg-[#8E6DFF]/10 text-[#8E6DFF]">
                           <Calendar className="h-5 w-5" />
                         </div>
                         
@@ -162,7 +177,7 @@ const Dashboard = () => {
                           <h5 className="text-white font-medium text-sm font-changa">{exam.subject}</h5>
                           <div className="flex items-center justify-between">
                             <span className="text-[11px] text-gray-400 font-noto">{exam.date} - {exam.time}</span>
-                            <span className="text-[10px] bg-[#00D9FF]/10 px-2 py-0.5 rounded-md text-[#00D9FF] font-['Share_Tech_Mono']">
+                            <span className="text-[10px] bg-[#8E6DFF]/10 px-2 py-0.5 rounded-md text-[#8E6DFF] font-['Share_Tech_Mono']">
                               +{exam.xp} XP
                             </span>
                           </div>
@@ -180,8 +195,8 @@ const Dashboard = () => {
                         className="p-3 rounded-xl bg-[rgba(255,255,255,0.03)] border border-[rgba(255,255,255,0.05)] cursor-not-allowed hover:bg-[rgba(255,255,255,0.05)] transition-colors"
                       >
                         <div className="flex items-center gap-3">
-                          <div className="h-10 w-10 rounded-lg flex items-center justify-center bg-[#00D9FF]/10">
-                            <Lock className="h-4 w-4 text-[#00D9FF]" />
+                          <div className="h-10 w-10 rounded-lg flex items-center justify-center bg-[#8E6DFF]/10">
+                            <Lock className="h-4 w-4 text-[#8E6DFF]" />
                           </div>
                           
                           <div>
