@@ -1,7 +1,21 @@
-
 import { useState } from 'react';
 import { Link } from 'react-router-dom';
-import { Search, Filter, ChevronLeft, BookOpen, Star, Clock, CheckCircle, Activity } from 'lucide-react';
+import { 
+  Search, 
+  Filter, 
+  ChevronLeft, 
+  BookOpen, 
+  Star, 
+  Clock, 
+  CheckCircle, 
+  Activity,
+  Calculator,
+  Languages,
+  Atom,
+  FlaskConical,
+  Microscope,
+  Scroll
+} from 'lucide-react';
 import { motion } from 'framer-motion';
 import { Tab } from '@headlessui/react';
 
@@ -14,11 +28,11 @@ const COURSES = [
     grade: 'الثاني عشر',
     units: 5,
     progress: 35,
-    icon: '🧮',
+    icon: <Calculator size={20} color="#8E6DFF" strokeWidth={2} />,
     color: 'from-blue-600 to-blue-400',
     enrolled: true,
     xpReward: 1500,
-    realmImage: '🪐',
+    realmImage: <Calculator size={20} color="#8E6DFF" strokeWidth={2} />,
   },
   {
     id: 2,
@@ -27,11 +41,11 @@ const COURSES = [
     grade: 'الثاني عشر',
     units: 5,
     progress: 65,
-    icon: '🔤',
+    icon: <Languages size={20} color="#8E6DFF" strokeWidth={2} />,
     color: 'from-green-600 to-green-400',
     enrolled: true,
     xpReward: 1200,
-    realmImage: '🏝️',
+    realmImage: <Languages size={20} color="#8E6DFF" strokeWidth={2} />,
   },
   {
     id: 3,
@@ -40,11 +54,11 @@ const COURSES = [
     grade: 'الثاني عشر',
     units: 5,
     progress: 0,
-    icon: '⚛️',
+    icon: <Atom size={20} color="#8E6DFF" strokeWidth={2} />,
     color: 'from-purple-600 to-purple-400',
     enrolled: false,
     xpReward: 1800,
-    realmImage: '🔭',
+    realmImage: <Atom size={20} color="#8E6DFF" strokeWidth={2} />,
   },
   {
     id: 4,
@@ -53,11 +67,11 @@ const COURSES = [
     grade: 'الثاني عشر',
     units: 5,
     progress: 0,
-    icon: '🧪',
+    icon: <FlaskConical size={20} color="#8E6DFF" strokeWidth={2} />,
     color: 'from-red-600 to-red-400',
     enrolled: false,
     xpReward: 1650,
-    realmImage: '⚗️',
+    realmImage: <FlaskConical size={20} color="#8E6DFF" strokeWidth={2} />,
   },
   {
     id: 5,
@@ -66,11 +80,11 @@ const COURSES = [
     grade: 'الثاني عشر',
     units: 5,
     progress: 0,
-    icon: '🔬',
+    icon: <Microscope size={20} color="#8E6DFF" strokeWidth={2} />,
     color: 'from-teal-600 to-teal-400',
     enrolled: false,
     xpReward: 1400,
-    realmImage: '🦠',
+    realmImage: <Microscope size={20} color="#8E6DFF" strokeWidth={2} />,
   },
   {
     id: 6,
@@ -79,11 +93,11 @@ const COURSES = [
     grade: 'الثاني عشر',
     units: 3,
     progress: 0,
-    icon: '📜',
+    icon: <Scroll size={20} color="#8E6DFF" strokeWidth={2} />,
     color: 'from-yellow-600 to-yellow-400',
     enrolled: false,
     xpReward: 1100,
-    realmImage: '🏛️',
+    realmImage: <Scroll size={20} color="#8E6DFF" strokeWidth={2} />,
   },
 ];
 
@@ -190,14 +204,14 @@ const Courses = () => {
                     <div className="flex items-start gap-2 relative">
                       <div className={`h-10 w-10 rounded-lg bg-gradient-to-br ${course.color} flex items-center justify-center relative shadow-lg overflow-hidden flex-shrink-0`}>
                         <div className="absolute inset-0 bg-black opacity-10"></div>
-                        <span className="text-xl">{course.icon}</span>
+                        {course.icon}
                       </div>
                       
                       <div className="flex-1">
                         <div className="flex justify-between items-start">
                           <h3 className="font-semibold text-white font-lexend text-sm">{course.title}</h3>
                           <span className="text-xs px-1.5 py-0.5 bg-game-primary/20 text-game-primary rounded-full flex items-center">
-                            <CheckCircle className="h-2.5 w-2.5 mr-0.5" />
+                            <CheckCircle className="h-2.5 w-2.5 mr-0.5" color="#8E6DFF" strokeWidth={2} />
                             مسجل
                           </span>
                         </div>
@@ -205,7 +219,7 @@ const Courses = () => {
                         <div className="flex justify-between text-xs text-gray-400 mt-0.5">
                           <span>{course.subject}</span>
                           <span className="flex items-center">
-                            <BookOpen className="h-2.5 w-2.5 mr-0.5" />
+                            <BookOpen className="h-2.5 w-2.5 mr-0.5" color="#8E6DFF" strokeWidth={2} />
                             {course.units} وحدات
                           </span>
                         </div>
@@ -230,7 +244,7 @@ const Courses = () => {
                             className="px-2 py-1 text-xs rounded-lg flex items-center gap-1 bg-gradient-to-r from-game-primary to-game-primary/70 text-white"
                           >
                             تابع
-                            <ChevronLeft className="h-3 w-3" />
+                            <ChevronLeft className="h-3 w-3" color="#FFFFFF" strokeWidth={2} />
                           </Link>
                         </div>
                       </div>
@@ -241,7 +255,9 @@ const Courses = () => {
             ) : (
               <div className="flex items-center justify-center h-full animate-fade-in">
                 <div className="text-center">
-                  <div className="text-5xl mb-3 opacity-30">📚</div>
+                  <div className="flex justify-center mb-3 opacity-30">
+                    <BookOpen size={48} color="#8E6DFF" strokeWidth={2} />
+                  </div>
                   <p className="text-gray-400 text-sm">لم تسجل في أي كورس بعد</p>
                   <button className="mt-3 px-4 py-1.5 bg-game-primary rounded-md text-white text-sm">استعرض الكورسات</button>
                 </div>
@@ -280,7 +296,7 @@ const Courses = () => {
                             <div className="flex items-start gap-2 relative">
                               <div className={`h-10 w-10 rounded-lg bg-gradient-to-br ${course.color} flex items-center justify-center relative shadow-lg overflow-hidden flex-shrink-0`}>
                                 <div className="absolute inset-0 bg-black opacity-10"></div>
-                                <span className="text-xl">{course.icon}</span>
+                                {course.icon}
                                 {course.realmImage && hoverCourse === course.id && (
                                   <motion.div 
                                     className="absolute inset-0 flex items-center justify-center bg-gradient-to-b from-black/30 to-transparent"
@@ -288,7 +304,7 @@ const Courses = () => {
                                     animate={{ opacity: 1 }}
                                     transition={{ duration: 0.3 }}
                                   >
-                                    <span className="text-xl">{course.realmImage}</span>
+                                    {course.realmImage}
                                   </motion.div>
                                 )}
                               </div>
@@ -301,14 +317,14 @@ const Courses = () => {
                                 <div className="flex justify-between text-xs text-gray-400 mt-0.5">
                                   <span>{course.subject}</span>
                                   <span className="flex items-center">
-                                    <BookOpen className="h-2.5 w-2.5 mr-0.5" />
+                                    <BookOpen className="h-2.5 w-2.5 mr-0.5" color="#8E6DFF" strokeWidth={2} />
                                     {course.units} وحدات
                                   </span>
                                 </div>
                                 
                                 <div className="flex justify-between items-center mt-3 text-xs">
                                   <div className="flex items-center text-game-accent bg-game-accent/10 px-1.5 py-0.5 rounded">
-                                    <Star className="h-2.5 w-2.5 mr-0.5" />
+                                    <Star className="h-2.5 w-2.5 mr-0.5" color="#8E6DFF" strokeWidth={2} />
                                     <span className="font-share-tech">+{course.xpReward} XP</span>
                                   </div>
                                   
@@ -331,7 +347,9 @@ const Courses = () => {
             ) : (
               <div className="flex items-center justify-center h-full animate-fade-in">
                 <div className="text-center">
-                  <div className="text-5xl mb-3 opacity-30">🔍</div>
+                  <div className="flex justify-center mb-3 opacity-30">
+                    <Search size={48} color="#8E6DFF" strokeWidth={2} />
+                  </div>
                   <p className="text-gray-400 text-sm">لا توجد كورسات متاحة الآن</p>
                 </div>
               </div>
