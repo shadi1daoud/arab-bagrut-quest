@@ -14,7 +14,7 @@
     --popover: 240 10% 3.9%;
     --popover-foreground: 0 0% 98%;
     
-    --primary: 0 0% 98%;
+    --primary: 190 100% 50%;
     --primary-foreground: 240 5.9% 10%;
     
     --secondary: 240 3.7% 15.9%;
@@ -33,115 +33,16 @@
     --input: 240 3.7% 15.9%;
     --ring: 240 4.9% 83.9%;
     
-    --radius: 0.75rem;
+    --radius: 0.5rem;
   }
 }
 
 @layer base {
   * {
-    @apply border-border selection:bg-[#00D9FF]/20 selection:text-white;
+    @apply border-border;
   }
-  
-  html, body, #root {
-    @apply h-full;
-  }
-  
   body {
-    @apply bg-[#0C0E1A] text-white antialiased;
-    font-feature-settings: "ss01", "ss02", "cv01", "cv02", "cv03";
-    background-image: radial-gradient(ellipse at top, rgba(0, 217, 255, 0.05) 0%, rgba(12, 14, 26, 1) 70%);
-    background-attachment: fixed;
-  }
-}
-
-@layer components {
-  .stats-number {
-    @apply font-['Share_Tech_Mono'];
-  }
-  
-  .level-bar {
-    @apply h-1.5 bg-[rgba(255,255,255,0.07)] rounded-full overflow-hidden;
-  }
-  
-  .level-bar-fill {
-    @apply h-full bg-[#00D9FF] rounded-full;
-  }
-  
-  .sidebar-item {
-    @apply px-6 py-3 rounded-xl transition-all hover:bg-[#00D9FF]/10 text-gray-300 hover:text-white flex items-center gap-3;
-  }
-  
-  .sidebar-item.active {
-    @apply bg-[#00D9FF]/10 text-[#00D9FF];
-  }
-  
-  .sidebar-icon {
-    @apply text-[#00D9FF] w-5 h-5;
-  }
-  
-  .stat-pill {
-    @apply px-2 py-1 rounded-full bg-[#00D9FF]/10 text-[#00D9FF] text-xs inline-flex items-center gap-1 font-['Share_Tech_Mono'];
-  }
-
-  .shimmer-button {
-    background: linear-gradient(90deg, #00D9FF, #00aac8, #00D9FF);
-    background-size: 200% 100%;
-    animation: shimmer 2s infinite linear paused;
-  }
-  
-  .shimmer-button:hover {
-    animation-play-state: running;
-  }
-  
-  @keyframes shimmer {
-    0% {
-      background-position: 100% 0;
-    }
-    100% {
-      background-position: -100% 0;
-    }
-  }
-  
-  .progress-ring {
-    animation: progress-animation 1.5s ease-out forwards;
-  }
-  
-  @keyframes progress-animation {
-    0% {
-      stroke-dashoffset: 339.3;
-    }
-    100% {
-      stroke-dashoffset: 85;
-    }
-  }
-}
-
-@layer utilities {
-  .glass-card {
-    @apply bg-[#1A1D2F]/80 backdrop-blur-sm border border-[#1A1D2F];
-  }
-  
-  .text-outline {
-    text-shadow: 0 0 1px rgba(0,0,0,0.5);
-  }
-}
-
-/* Subtle star grid background */
-.star-grid {
-  background-image: 
-    linear-gradient(rgba(255, 255, 255, 0.03) 1px, transparent 1px),
-    linear-gradient(90deg, rgba(255, 255, 255, 0.03) 1px, transparent 1px);
-  background-size: 20px 20px;
-}
-
-/* Animation */
-@keyframes pulse {
-  0%, 100% {
-    transform: scale(1);
-    opacity: 1;
-  }
-  50% {
-    transform: scale(1.05);
-    opacity: 0.9;
+    @apply bg-background text-foreground;
+    font-feature-settings: "rlig" 1, "calt" 1;
   }
 }
