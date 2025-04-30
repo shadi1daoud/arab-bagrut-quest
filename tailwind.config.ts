@@ -69,20 +69,20 @@ export default {
 					border: 'hsl(var(--sidebar-border))',
 					ring: 'hsl(var(--sidebar-ring))'
 				},
-				// Game theme colors - refined for Neo-Arena style
+				// Updated theme colors with holographic and VisionOS inspiration
 				game: {
-					primary: '#FF4293',       // Main action (hot pink)
-					secondary: '#7122E3',     // Secondary actions (deep purple)
-					accent: '#00FFE1',        // Highlights (electric cyan)
+					primary: '#8056FF',       // Main action (holographic purple)
+					secondary: '#5735E1',     // Secondary actions (deep purple)
+					accent: '#31F4FF',        // Highlights (electric cyan)
 					highlight: '#32FF88',     // Success elements (lime green)
-					background: '#0F0C1D',    // Dark base background
-					'card-bg': '#171532',     // Card background
-					'card-bg-alt': '#1E1B3E', // Alternative card background
+					background: '#0E0E1C',    // Dark base background
+					'card-bg': 'rgba(23, 21, 50, 0.65)',     // Card background (semi-transparent)
+					'card-bg-alt': 'rgba(30, 27, 62, 0.7)',  // Alternative card background
 					'text-primary': '#FFFFFF',  // Main text
 					'text-secondary': '#B8B8FF', // Secondary text
 					success: '#32FF88',       // Success indicators
-					danger: '#FF4293',        // Danger/error indicators
-					info: '#00FFE1',          // Information indicators
+					danger: '#F56EFF',        // Danger/error indicators (softer pink)
+					info: '#31F4FF',          // Information indicators
 					warning: '#FFD700',       // Warning indicators
 				}
 			},
@@ -102,11 +102,11 @@ export default {
 				},
 				'pulse-glow': {
 					'0%, 100%': { 
-						boxShadow: '0 0 5px 0px #FF4293',
+						boxShadow: '0 0 5px 0px rgba(128, 86, 255, 0.5)',
 						opacity: '0.8'
 					},
 					'50%': { 
-						boxShadow: '0 0 15px 5px #FF4293',
+						boxShadow: '0 0 15px 5px rgba(128, 86, 255, 0.65)',
 						opacity: '1'
 					}
 				},
@@ -134,6 +134,16 @@ export default {
 					'0%': { left: '-100%' },
 					'100%': { left: '100%' }
 				},
+				'border-glow': {
+					'0%, 100%': { 
+						borderColor: 'rgba(80, 70, 230, 0.5)',
+						boxShadow: '0 0 5px rgba(80, 70, 230, 0.3)'
+					},
+					'50%': { 
+						borderColor: 'rgba(245, 110, 255, 0.6)',
+						boxShadow: '0 0 12px rgba(245, 110, 255, 0.5)'
+					}
+				},
 				'border-rotate': {
 					'0%': { backgroundPosition: '0% 0%' },
 					'100%': { backgroundPosition: '100% 0%' }
@@ -159,19 +169,26 @@ export default {
 			animation: {
 				'accordion-down': 'accordion-down 0.2s ease-out',
 				'accordion-up': 'accordion-up 0.2s ease-out',
-				'pulse-glow': 'pulse-glow 2s infinite ease-in-out',
+				'pulse-glow': 'pulse-glow 3s infinite ease-in-out',
 				'flash': 'flash 2s infinite ease-in-out',
 				'xp-fill': 'xp-fill 1s ease-out forwards',
 				'scale-in': 'scale-in 0.3s ease-out',
 				'float': 'float 3s infinite ease-in-out',
-				'glow': 'glow 2s infinite ease-in-out',
+				'glow': 'glow 2.5s infinite ease-in-out',
 				'shine': 'shine 3s infinite linear',
+				'border-glow': 'border-glow 4s infinite ease-in-out',
 				'border-rotate': 'border-rotate 4s linear infinite',
 				'grid-move': 'grid-move 20s linear infinite',
 				'orbit': 'orbit 4s infinite linear',
 				'counter': 'counter 0.5s forwards ease-out',
 				'particles-float': 'particles-float 15s infinite ease-in-out'
-			}
+			},
+			// Add backdrop blur utilities
+			backdropBlur: {
+				xs: '2px',
+				'2xl': '25px',
+				'3xl': '35px',
+			},
 		}
 	},
 	plugins: [require("tailwindcss-animate")],
