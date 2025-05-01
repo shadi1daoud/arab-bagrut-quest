@@ -27,3 +27,53 @@
   justify-content: center;
   padding: 12px 0;
 }
+
+/* ——— Color tokens ——— */
+:root{
+  --base-bg: #FFFFFF;           /* page & sidebar */
+  --surface: #FAFAFA;           /* cards / modules */
+  --text-main: #1A1A1A;         /* primary text */
+  --text-muted: #666666;        /* secondary text */
+  --accent: #FF4800;            /* new brand orange */
+  --accent-lite: #FF7840;       /* hover / active states */
+  --border: #E5E5E5;            /* light hairlines / dividers */
+  --radius: 12px;               /* unified border-radius */
+  --shadow: 0 4px 12px rgba(0,0,0,.07); /* soft card shadow */
+}
+
+/* Style adjustments for active elements based on accent color */
+.sidebar-item.active {
+  background-color: var(--accent);
+  color: white;
+}
+
+.sidebar-item:hover:not(.active) {
+  background-color: rgba(255, 72, 0, 0.1);
+}
+
+/* Progress bar styling using accent color */
+.progress-bar span {
+  background-color: var(--accent);
+}
+
+/* Button styling using accent color */
+.btn-primary {
+  background-color: var(--accent);
+  color: white;
+  transition: background-color 0.3s;
+}
+
+.btn-primary:hover {
+  background-color: var(--accent-lite);
+}
+
+.btn-ghost {
+  border: 1px solid var(--accent);
+  color: var(--accent);
+  background-color: transparent;
+  transition: all 0.3s;
+}
+
+.btn-ghost:hover {
+  background-color: rgba(255, 72, 0, 0.1);
+}
