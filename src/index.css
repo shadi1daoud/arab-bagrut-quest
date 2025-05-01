@@ -3,6 +3,9 @@
 @tailwind components;
 @tailwind utilities;
 
+/* Import our nebula theme */
+@import './styles/theme-nebula.css';
+
 @layer base {
   :root {
     --background: 230 30% 6%;
@@ -14,7 +17,7 @@
     --popover: 230 25% 18%;
     --popover-foreground: 0 0% 98%;
     
-    --primary: 255 100% 72%;
+    --primary: 16 100% 50%; /* Updated to match #FF4800 */
     --primary-foreground: 255 10% 10%;
     
     --secondary: 240 60% 99%;
@@ -31,7 +34,7 @@
     
     --border: 230 25% 26%;
     --input: 230 25% 26%;
-    --ring: 255 100% 72%;
+    --ring: 16 100% 50%; /* Updated to match #FF4800 */
     
     --radius: 1rem;
   }
@@ -42,77 +45,11 @@
     @apply border-border;
   }
   body {
-    @apply bg-[#050714] text-foreground;
+    @apply text-foreground;
     font-feature-settings: "rlig" 1, "calt" 1;
     overflow-x: hidden;
+    /* Base styling now handled in theme-nebula.css */
   }
 }
 
-/* Glass morphism utilities */
-@layer utilities {
-  .glass-card {
-    background: linear-gradient(to bottom right, rgba(255,255,255,0.05), rgba(255,255,255,0.02));
-    backdrop-filter: blur(12px);
-    -webkit-backdrop-filter: blur(12px);
-    border: 1px solid rgba(255,255,255,0.05);
-    box-shadow: 0 4px 6px rgba(0,0,0,0.1);
-  }
-  
-  .hover-shadow {
-    transition: box-shadow 0.3s ease, transform 0.3s ease;
-  }
-  
-  .hover-shadow:hover {
-    box-shadow: 0 4px 18px rgba(0,0,0,0.55);
-    transform: translateY(-4px);
-  }
-
-  .shimmer-button {
-    position: relative;
-    overflow: hidden;
-  }
-  
-  .shimmer-button:hover .shimmer {
-    position: absolute;
-    top: 0;
-    height: 100%;
-    width: 40px;
-    background: linear-gradient(
-      to right, 
-      rgba(255, 255, 255, 0) 0%, 
-      rgba(255, 255, 255, 0.2) 50%, 
-      rgba(255, 255, 255, 0) 100%
-    );
-    animation: shimmer 1.5s infinite;
-    transform: skewX(-20deg);
-  }
-  
-  @keyframes shimmer {
-    from {
-      left: -150px;
-    }
-    to {
-      left: 100%;
-    }
-  }
-  
-  .animate-xp-fill {
-    animation: xp-fill 1.5s ease-out forwards;
-  }
-  
-  @keyframes xp-fill {
-    0% {
-      stroke-dashoffset: 339.3;
-    }
-    100% {
-      stroke-dashoffset: attr(stroke-dashoffset); 
-    }
-  }
-  
-  .particle {
-    position: absolute;
-    background-color: rgba(255, 255, 255, 0.25);
-    border-radius: 50%;
-    animation: particles-float 15s infinite ease-in-out;
-  }
-}
+/* Glass morphism utilities now in theme-nebula.css */
