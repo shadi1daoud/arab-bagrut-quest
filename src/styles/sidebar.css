@@ -1,34 +1,25 @@
 
-/* Sidebar logo styles */
-#logo-wrapper {
-  position: relative;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-}
-
+/* Common logo style */
 .sidebar-logo {
-  max-width: 140px;
+  display: block;
+  width: 140px;         /* default for full logo */
   height: auto;
-  object-fit: contain;
+  margin: 16px 20px;
 }
 
-/* Logo visibility based on sidebar state */
-.expanded-only {
-  display: block;
-}
+/* Mini icon default hidden */
+#logo-mini   { width: 32px; }
 
-.collapsed-only {
-  display: none;
-  width: 40px;
-  height: 40px;
-}
+/* Show / hide based on sidebar state */
+[data-state="expanded"] .collapsed-only { display: none; }
+[data-state="expanded"] .expanded-only  { display: block; }
 
-/* Make sure we show the right logo based on sidebar state */
-[data-state="collapsed"] .expanded-only {
-  display: none;
-}
+[data-state="collapsed"] .expanded-only  { display: none; }
+[data-state="collapsed"] .collapsed-only  { display: block; }
 
-[data-state="collapsed"] .collapsed-only {
-  display: block;
+/* Center the mini icon in collapsed state */
+[data-state="collapsed"] #logo-wrapper {
+  display: flex;
+  justify-content: center;
+  padding: 12px 0;
 }
