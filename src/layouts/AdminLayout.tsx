@@ -59,13 +59,11 @@ const AdminLayout = () => {
       >
         <div className="p-4 mb-2 flex justify-center">
           <div className="flex items-center gap-2">
-            <div className="bg-gradient-to-r from-purple-500 to-blue-500 rounded-lg p-1.5 shadow-[0_0_10px_rgba(124,58,237,0.3)]">
-              <svg width="16" height="16" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
-                <path d="M21 10C21 10 18.995 7.26822 17.3662 5.63824C15.7373 4.00827 13.4864 3 11 3C6.02944 3 2 7.02944 2 12C2 16.9706 6.02944 21 11 21C15.9706 21 20 16.9706 20 12" stroke="white" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"/>
-                <path d="M22 2L13 11" stroke="white" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"/>
-              </svg>
-            </div>
-            <span className="text-white text-2xl font-bold">درسني</span>
+            <img 
+              src="/lovable-uploads/cf18a2e0-832e-4784-8739-89c3d0b07ac8.png" 
+              alt="Darsni Logo"
+              className="h-8"
+            />
           </div>
         </div>
         
