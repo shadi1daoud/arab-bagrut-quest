@@ -1,3 +1,4 @@
+
 import { useState, useEffect } from 'react';
 import { Outlet, NavLink, Link, useLocation } from 'react-router-dom';
 import { 
@@ -76,6 +77,7 @@ const AdminLayout = () => {
           "bg-card/50 backdrop-blur-md fixed inset-y-0 right-0 z-30 transform transition-transform duration-200 lg:translate-x-0 lg:static flex flex-col border-l border-white/5",
           isMobileMenuOpen ? "translate-x-0" : "translate-x-full lg:translate-x-0"
         )}
+        data-state={isMenuCollapsed ? "collapsed" : "expanded"}
       >
         <div className="p-4 flex items-center justify-between mb-2">
           <div className={cn("flex items-center", isMenuCollapsed ? "justify-center w-full" : "")}>
