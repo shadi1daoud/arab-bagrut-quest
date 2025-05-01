@@ -1,4 +1,3 @@
-
 import { useState, useEffect } from 'react';
 import { Outlet, NavLink, Link, useLocation } from 'react-router-dom';
 import { 
@@ -20,7 +19,7 @@ const AdminLayout = () => {
 
   const navItems = [
     { path: '/admin', label: 'لوحة التحكم', icon: LayoutDashboard },
-    { path: '/admin/courses', label: 'إدارة الكورسات', icon: FileText },
+    { path: '/admin/courses', label: 'إدارة ا��كورسات', icon: FileText },
     { path: '/admin/users', label: 'إدارة المستخدمين', icon: Users },
   ];
 
@@ -82,17 +81,8 @@ const AdminLayout = () => {
         <div className="p-4 flex items-center justify-between mb-2">
           <div className={cn("flex items-center", isMenuCollapsed ? "justify-center w-full" : "")}>
             <div id="logo-wrapper">
-              {/* Full logo for expanded sidebar */}
-              <img id="logo-full"
-                   src="/assets/darsni-full-logo.png"
-                   alt="Darsni logo"
-                   className="sidebar-logo expanded-only" />
-
-              {/* Favicon for collapsed sidebar */}
-              <img id="logo-mini"
-                   src="/assets/darsni-favicon.png"
-                   alt="Darsni icon"
-                   className="sidebar-logo collapsed-only" />
+              <img className="logo-full" src="/assets/images/darsni-full.svg" alt="Darsni" />
+              <img className="logo-mini" src="/assets/images/darsni-icon.svg" alt="" />
             </div>
           </div>
           
@@ -107,10 +97,7 @@ const AdminLayout = () => {
           </button>
         </div>
         
-        <div className={cn(
-          "p-4 border-b border-white/10",
-          isMenuCollapsed ? "flex justify-center" : ""
-        )}>
+        <div className="p-4 border-b border-white/10">
           <div className={cn(
             "flex", 
             isMenuCollapsed ? "flex-col items-center" : "flex-col items-center"

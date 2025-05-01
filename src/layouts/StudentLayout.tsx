@@ -112,17 +112,8 @@ const StudentLayout = () => {
         <div className="p-4 flex items-center justify-between">
           <div className={cn("flex items-center", isMenuCollapsed ? "justify-center w-full" : "")}>
             <div id="logo-wrapper">
-              {/* Full logo for expanded sidebar */}
-              <img id="logo-full"
-                   src="/assets/darsni-full-logo.png"
-                   alt="Darsni logo"
-                   className="sidebar-logo expanded-only" />
-
-              {/* Favicon for collapsed sidebar */}
-              <img id="logo-mini"
-                   src="/assets/darsni-favicon.png"
-                   alt="Darsni icon"
-                   className="sidebar-logo collapsed-only" />
+              <img className="logo-full" src="/assets/images/darsni-full.svg" alt="Darsni" />
+              <img className="logo-mini" src="/assets/images/darsni-icon.svg" alt="" />
             </div>
           </div>
           

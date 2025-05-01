@@ -1,21 +1,25 @@
 
 /* Common logo style */
-.sidebar-logo {
+.logo-full, .logo-mini {
   display: block;
-  width: 140px;         /* default for full logo */
   height: auto;
   margin: 16px 20px;
 }
 
-/* Mini icon default hidden */
-#logo-mini   { width: 32px; }
+.logo-full {
+  width: 140px;
+}
+
+.logo-mini {
+  width: 32px;
+}
 
 /* Show / hide based on sidebar state */
-[data-state="expanded"] .collapsed-only { display: none; }
-[data-state="expanded"] .expanded-only  { display: block; }
+[data-state="expanded"] .logo-mini { display: none; }
+[data-state="expanded"] .logo-full { display: block; }
 
-[data-state="collapsed"] .expanded-only  { display: none; }
-[data-state="collapsed"] .collapsed-only  { display: block; }
+[data-state="collapsed"] .logo-full { display: none; }
+[data-state="collapsed"] .logo-mini { display: block; }
 
 /* Center the mini icon in collapsed state */
 [data-state="collapsed"] #logo-wrapper {
