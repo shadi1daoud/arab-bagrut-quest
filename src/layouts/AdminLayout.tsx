@@ -2,14 +2,16 @@
 import { useState, useEffect } from 'react';
 import { Outlet, NavLink, Link, useLocation } from 'react-router-dom';
 import { 
-  LayoutDashboard, FileText, Users, LogOut, Upload, Menu, X, Search, Bell
+  LayoutDashboard, FileText, Users, LogOut, Upload, Menu, X, Search, Bell, ChevronRight
 } from 'lucide-react';
 import { useAuth } from '@/contexts/AuthContext';
 import { cn } from '@/lib/utils';
+import { AnimatePresence, motion } from 'framer-motion';
 
 const AdminLayout = () => {
   const { user, logout } = useAuth();
   const [isMobileMenuOpen, setIsMobileMenuOpen] = useState(false);
+  const [isMenuCollapsed, setIsMenuCollapsed] = useState(false);
   const location = useLocation();
 
   useEffect(() => {
@@ -21,6 +23,10 @@ const AdminLayout = () => {
     { path: '/admin/courses', label: 'إدارة الكورسات', icon: FileText },
     { path: '/admin/users', label: 'إدارة المستخدمين', icon: Users },
   ];
+
+  const toggleMenu = () => {
+    setIsMenuCollapsed(!isMenuCollapsed);
+  };
 
   const NavItem = ({ path, label, icon: Icon }: { path: string; label: string; icon: any }) => {
     const isActive = location.pathname === path;
@@ -43,7 +49,19 @@ const AdminLayout = () => {
         )}>
           <Icon className="h-5 w-5" />
         </div>
-        <span className="text-sm font-medium">{label}</span>
+        <AnimatePresence initial={false}>
+          {!isMenuCollapsed && (
+            <motion.span 
+              initial={{ opacity: 0, width: 0 }}
+              animate={{ opacity: 1, width: "auto" }}
+              exit={{ opacity: 0, width: 0 }}
+              transition={{ duration: 0.2 }}
+              className="text-sm font-medium"
+            >
+              {label}
+            </motion.span>
+          )}
+        </AnimatePresence>
       </NavLink>
     );
   };
@@ -51,24 +69,63 @@ const AdminLayout = () => {
   return (
     <div className="min-h-screen bg-transparent flex">
       {/* Sidebar */}
-      <aside 
+      <motion.aside 
+        initial={false}
+        animate={{ width: isMenuCollapsed ? "72px" : "240px" }}
+        transition={{ duration: 0.3, ease: "easeInOut" }}
         className={cn(
-          "bg-card/50 backdrop-blur-md w-64 fixed inset-y-0 right-0 z-30 transform transition-transform duration-200 lg:translate-x-0 lg:static flex flex-col border-l border-white/5",
-          isMobileMenuOpen ? "translate-x-0" : "translate-x-full"
+          "bg-card/50 backdrop-blur-md fixed inset-y-0 right-0 z-30 transform transition-transform duration-200 lg:translate-x-0 lg:static flex flex-col border-l border-white/5",
+          isMobileMenuOpen ? "translate-x-0" : "translate-x-full lg:translate-x-0"
         )}
       >
-        <div className="p-4 mb-2 flex justify-center">
-          <div className="flex items-center gap-2">
-            <img 
-              src="/lovable-uploads/fd288540-ffc0-448a-a6b9-3aee7a09267a.png" 
-              alt="Darsni Logo"
-              className="h-16 object-contain"
-            />
+        <div className="p-4 flex items-center justify-between mb-2">
+          <div className={cn("flex items-center", isMenuCollapsed ? "justify-center w-full" : "")}>
+            <AnimatePresence initial={false} mode="wait">
+              {isMenuCollapsed ? (
+                <motion.img 
+                  key="favicon"
+                  initial={{ opacity: 0, scale: 0.8 }}
+                  animate={{ opacity: 1, scale: 1 }}
+                  exit={{ opacity: 0, scale: 0.8 }}
+                  transition={{ duration: 0.2 }}
+                  src="/lovable-uploads/f848c528-dd58-411a-8aa1-e90bfdb6a8c6.png" 
+                  alt="Darsni Favicon" 
+                  className="h-10 w-10 object-contain"
+                />
+              ) : (
+                <motion.img 
+                  key="full-logo"
+                  initial={{ opacity: 0, scale: 0.95 }}
+                  animate={{ opacity: 1, scale: 1 }}
+                  exit={{ opacity: 0, scale: 0.95 }}
+                  transition={{ duration: 0.2 }}
+                  src="/lovable-uploads/fb2240e4-c664-43fd-896d-20f9cac3ca33.png" 
+                  alt="Darsni Logo" 
+                  className="max-w-[140px] h-auto object-contain ml-5"
+                />
+              )}
+            </AnimatePresence>
           </div>
+          
+          <button 
+            onClick={toggleMenu} 
+            className={cn(
+              "p-2 rounded-lg hover:bg-muted/30 text-gray-400 hover:text-white transition-colors",
+              isMenuCollapsed ? "rotate-180" : ""
+            )}
+          >
+            <ChevronRight className="h-5 w-5" />
+          </button>
         </div>
         
-        <div className="p-4 border-b border-white/10">
-          <div className="flex flex-col items-center">
+        <div className={cn(
+          "p-4 border-b border-white/10",
+          isMenuCollapsed ? "flex justify-center" : ""
+        )}>
+          <div className={cn(
+            "flex", 
+            isMenuCollapsed ? "flex-col items-center" : "flex-col items-center"
+          )}>
             <div className="h-20 w-20 rounded-full overflow-hidden border-2 border-white/10 shadow-lg shadow-purple-500/10 bg-gradient-to-b from-gray-800 to-gray-900">
               {user?.avatar ? (
                 <img src={user.avatar} alt={user.name} className="h-full w-full object-cover" />
@@ -78,8 +135,20 @@ const AdminLayout = () => {
                 </div>
               )}
             </div>
-            <h2 className="mt-4 text-lg font-bold text-white">{user?.name || 'Admin User'}</h2>
-            <p className="text-sm text-gray-400">مشرف النظام</p>
+            <AnimatePresence initial={false}>
+              {!isMenuCollapsed && (
+                <motion.div
+                  initial={{ opacity: 0, height: 0 }}
+                  animate={{ opacity: 1, height: "auto" }}
+                  exit={{ opacity: 0, height: 0 }}
+                  transition={{ duration: 0.2 }}
+                  className="mt-4 text-center"
+                >
+                  <h2 className="text-lg font-bold text-white">{user?.name || 'Admin User'}</h2>
+                  <p className="text-sm text-gray-400">مشرف النظام</p>
+                </motion.div>
+              )}
+            </AnimatePresence>
           </div>
         </div>
         
@@ -89,26 +158,51 @@ const AdminLayout = () => {
               <NavItem key={item.path} {...item} />
             ))}
             
-            <Link 
-              to="/admin/courses/upload"
-              className="mt-6 flex items-center gap-3 py-3 px-4 rounded-xl bg-gradient-to-r from-purple-500 to-blue-500 text-white hover:shadow-lg hover:shadow-purple-500/20 hover:brightness-110 transition-all"
-            >
-              <Upload className="h-5 w-5" />
-              <span>رفع كورس جديد</span>
-            </Link>
+            <AnimatePresence initial={false}>
+              {!isMenuCollapsed && (
+                <motion.div
+                  initial={{ opacity: 0, height: 0 }}
+                  animate={{ opacity: 1, height: "auto" }}
+                  exit={{ opacity: 0, height: 0 }}
+                  transition={{ duration: 0.2 }}
+                >
+                  <Link 
+                    to="/admin/courses/upload"
+                    className="mt-6 flex items-center gap-3 py-3 px-4 rounded-xl bg-gradient-to-r from-purple-500 to-blue-500 text-white hover:shadow-lg hover:shadow-purple-500/20 hover:brightness-110 transition-all"
+                  >
+                    <Upload className="h-5 w-5" />
+                    <span>رفع كورس جديد</span>
+                  </Link>
+                </motion.div>
+              )}
+            </AnimatePresence>
           </nav>
         </div>
         
         <div className="p-4 mt-auto border-t border-white/10">
           <button 
             onClick={logout}
-            className="flex items-center gap-3 w-full text-gray-400 hover:text-white transition-all p-3 rounded-xl hover:bg-white/5"
+            className={cn(
+              "flex items-center gap-3 text-gray-400 hover:text-white transition-all p-3 rounded-xl hover:bg-white/5",
+              isMenuCollapsed ? "justify-center w-10 h-10 mx-auto" : "w-full"
+            )}
           >
             <LogOut className="h-5 w-5" />
-            <span>تسجيل خروج</span>
+            <AnimatePresence initial={false}>
+              {!isMenuCollapsed && (
+                <motion.span
+                  initial={{ opacity: 0, width: 0 }}
+                  animate={{ opacity: 1, width: "auto" }}
+                  exit={{ opacity: 0, width: 0 }}
+                  transition={{ duration: 0.2 }}
+                >
+                  تسجيل خروج
+                </motion.span>
+              )}
+            </AnimatePresence>
           </button>
         </div>
-      </aside>
+      </motion.aside>
       
       {/* Main content area */}
       <div className="flex-1 flex flex-col">

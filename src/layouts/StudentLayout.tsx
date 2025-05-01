@@ -110,20 +110,32 @@ const StudentLayout = () => {
         )}
       >
         <div className="p-4 flex items-center justify-between">
-          <div className={cn("flex items-center gap-2", isMenuCollapsed ? "justify-center w-full" : "")}>
-            {isMenuCollapsed ? (
-              <img 
-                src="/lovable-uploads/4b850b89-0042-4c72-a297-c387e8ca3562.png" 
-                alt="Darsni Logo" 
-                className="h-8 w-8 object-contain"
-              />
-            ) : (
-              <img 
-                src="/lovable-uploads/fd288540-ffc0-448a-a6b9-3aee7a09267a.png" 
-                alt="Darsni Logo" 
-                className="h-16 object-contain"
-              />
-            )}
+          <div className={cn("flex items-center", isMenuCollapsed ? "justify-center w-full" : "")}>
+            <AnimatePresence initial={false} mode="wait">
+              {isMenuCollapsed ? (
+                <motion.img 
+                  key="favicon"
+                  initial={{ opacity: 0, scale: 0.8 }}
+                  animate={{ opacity: 1, scale: 1 }}
+                  exit={{ opacity: 0, scale: 0.8 }}
+                  transition={{ duration: 0.2 }}
+                  src="/lovable-uploads/f848c528-dd58-411a-8aa1-e90bfdb6a8c6.png" 
+                  alt="Darsni Favicon" 
+                  className="h-10 w-10 object-contain"
+                />
+              ) : (
+                <motion.img 
+                  key="full-logo"
+                  initial={{ opacity: 0, scale: 0.95 }}
+                  animate={{ opacity: 1, scale: 1 }}
+                  exit={{ opacity: 0, scale: 0.95 }}
+                  transition={{ duration: 0.2 }}
+                  src="/lovable-uploads/fb2240e4-c664-43fd-896d-20f9cac3ca33.png" 
+                  alt="Darsni Logo" 
+                  className="max-w-[140px] h-auto object-contain ml-2"
+                />
+              )}
+            </AnimatePresence>
           </div>
           
           <button 
