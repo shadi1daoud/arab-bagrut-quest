@@ -60,7 +60,7 @@ const AdminLayout = () => {
         <div className="p-4 mb-2 flex justify-center">
           <div className="flex items-center gap-2">
             <img 
-              src="/lovable-uploads/cf18a2e0-832e-4784-8739-89c3d0b07ac8.png" 
+              src="/lovable-uploads/fd288540-ffc0-448a-a6b9-3aee7a09267a.png" 
               alt="Darsni Logo"
               className="h-8"
             />

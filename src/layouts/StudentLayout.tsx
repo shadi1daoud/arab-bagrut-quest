@@ -113,13 +113,13 @@ const StudentLayout = () => {
           <div className={cn("flex items-center gap-2", isMenuCollapsed ? "justify-center w-full" : "")}>
             {isMenuCollapsed ? (
               <img 
-                src="/lovable-uploads/6763dddb-4b66-4ea0-a700-bc125d158be8.png" 
+                src="/lovable-uploads/4b850b89-0042-4c72-a297-c387e8ca3562.png" 
                 alt="Darsni Logo" 
                 className="h-8 w-8"
               />
             ) : (
               <img 
-                src="/lovable-uploads/cf18a2e0-832e-4784-8739-89c3d0b07ac8.png" 
+                src="/lovable-uploads/fd288540-ffc0-448a-a6b9-3aee7a09267a.png" 
                 alt="Darsni Logo" 
                 className="h-8"
               />
