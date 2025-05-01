@@ -1,4 +1,3 @@
-
 import { useState, useEffect } from 'react';
 import { Outlet, NavLink, Link, useLocation } from 'react-router-dom';
 import { 
@@ -80,31 +79,19 @@ const AdminLayout = () => {
       >
         <div className="p-4 flex items-center justify-between mb-2">
           <div className={cn("flex items-center", isMenuCollapsed ? "justify-center w-full" : "")}>
-            <AnimatePresence initial={false} mode="wait">
-              {isMenuCollapsed ? (
-                <motion.img 
-                  key="favicon"
-                  initial={{ opacity: 0, scale: 0.8 }}
-                  animate={{ opacity: 1, scale: 1 }}
-                  exit={{ opacity: 0, scale: 0.8 }}
-                  transition={{ duration: 0.2 }}
-                  src="/lovable-uploads/f848c528-dd58-411a-8aa1-e90bfdb6a8c6.png" 
-                  alt="Darsni Favicon" 
-                  className="h-10 w-10 object-contain"
-                />
-              ) : (
-                <motion.img 
-                  key="full-logo"
-                  initial={{ opacity: 0, scale: 0.95 }}
-                  animate={{ opacity: 1, scale: 1 }}
-                  exit={{ opacity: 0, scale: 0.95 }}
-                  transition={{ duration: 0.2 }}
-                  src="/lovable-uploads/fb2240e4-c664-43fd-896d-20f9cac3ca33.png" 
-                  alt="Darsni Logo" 
-                  className="max-w-[140px] h-auto object-contain ml-5"
-                />
-              )}
-            </AnimatePresence>
+            <div id="logo-wrapper">
+              {/* Full logo for expanded sidebar */}
+              <img id="logo-full"
+                   src="/assets/darsni-full-logo.png"
+                   alt="Darsni logo"
+                   className="sidebar-logo expanded-only" />
+
+              {/* Favicon for collapsed sidebar */}
+              <img id="logo-mini"
+                   src="/assets/darsni-favicon.png"
+                   alt="Darsni icon"
+                   className="sidebar-logo collapsed-only" />
+            </div>
           </div>
           
           <button 

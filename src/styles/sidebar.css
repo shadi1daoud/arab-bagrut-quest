@@ -1,0 +1,34 @@
+
+/* Sidebar logo styles */
+#logo-wrapper {
+  position: relative;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.sidebar-logo {
+  max-width: 140px;
+  height: auto;
+  object-fit: contain;
+}
+
+/* Logo visibility based on sidebar state */
+.expanded-only {
+  display: block;
+}
+
+.collapsed-only {
+  display: none;
+  width: 40px;
+  height: 40px;
+}
+
+/* Make sure we show the right logo based on sidebar state */
+[data-state="collapsed"] .expanded-only {
+  display: none;
+}
+
+[data-state="collapsed"] .collapsed-only {
+  display: block;
+}
