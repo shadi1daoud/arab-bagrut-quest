@@ -1,4 +1,3 @@
-
 import { useState, useEffect } from 'react';
 import { Outlet, NavLink, useLocation } from 'react-router-dom';
 import { Home, BookOpen, ShoppingCart, Users, Settings, LogOut, Menu, X, Bell, Search, Flame, Shield, Award, ChevronRight } from 'lucide-react';
@@ -115,13 +114,13 @@ const StudentLayout = () => {
               <img 
                 src="/lovable-uploads/4b850b89-0042-4c72-a297-c387e8ca3562.png" 
                 alt="Darsni Logo" 
-                className="h-8 w-8 object-contain"
+                className="h-10 w-10 object-contain"
               />
             ) : (
               <img 
                 src="/lovable-uploads/fd288540-ffc0-448a-a6b9-3aee7a09267a.png" 
                 alt="Darsni Logo" 
-                className="h-8 object-contain"
+                className="h-12 object-contain"
               />
             )}
           </div>

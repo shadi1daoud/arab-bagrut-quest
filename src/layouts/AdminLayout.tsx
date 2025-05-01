@@ -1,4 +1,3 @@
-
 import { useState, useEffect } from 'react';
 import { Outlet, NavLink, Link, useLocation } from 'react-router-dom';
 import { 
@@ -62,7 +61,7 @@ const AdminLayout = () => {
             <img 
               src="/lovable-uploads/fd288540-ffc0-448a-a6b9-3aee7a09267a.png" 
               alt="Darsni Logo"
-              className="h-8 object-contain"
+              className="h-12 object-contain"
             />
           </div>
         </div>
