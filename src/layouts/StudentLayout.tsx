@@ -115,13 +115,13 @@ const StudentLayout = () => {
               <img 
                 src="/lovable-uploads/4b850b89-0042-4c72-a297-c387e8ca3562.png" 
                 alt="Darsni Logo" 
-                className="h-8 w-8"
+                className="h-8 w-8 object-contain"
               />
             ) : (
               <img 
                 src="/lovable-uploads/fd288540-ffc0-448a-a6b9-3aee7a09267a.png" 
                 alt="Darsni Logo" 
-                className="h-8"
+                className="h-8 object-contain"
               />
             )}
           </div>

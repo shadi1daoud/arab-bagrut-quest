@@ -62,7 +62,7 @@ const AdminLayout = () => {
             <img 
               src="/lovable-uploads/fd288540-ffc0-448a-a6b9-3aee7a09267a.png" 
               alt="Darsni Logo"
-              className="h-8"
+              className="h-8 object-contain"
             />
           </div>
         </div>
