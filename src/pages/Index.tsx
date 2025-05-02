@@ -1,4 +1,3 @@
-
 import { useState } from 'react';
 import { 
   Activity, Award, Bell, BookOpen, Brain, Calendar, ChevronRight, 
@@ -40,7 +39,7 @@ const courseProgress = [
 // Upcoming exams
 const upcomingExams = [
   { id: 1, subject: 'رياضيات', date: '١٢ مايو', time: '١٠:٠٠ ص', xp: 200 },
-  { id: 2, subject: 'فيزياء', date: '١٤ مايو', time: '١١:٣٠ ص', xp: 250 },
+  { id: 2, subject: 'فيزياء', date: '١٣ مايو', time: '١١:٣٠ ص', xp: 250 },
   { id: 3, subject: 'كيمياء', date: '١٧ مايو', time: '٩:٠٠ ص', xp: 300 },
 ];
 
@@ -67,26 +66,26 @@ const Index = () => {
           <CardContent className="p-6">
             <div className="flex items-center gap-4">
               <div className="relative">
-                <Avatar className="h-14 w-14 border-2 border-[#00D9FF]/20">
+                <Avatar className="h-14 w-14 border-2 border-[#FF4800]/20">
                   <AvatarImage src="/assets/avatars/student.png" />
                   <AvatarFallback className="bg-[#1A1D2F] text-xl font-bold">
                     ش
                   </AvatarFallback>
                 </Avatar>
-                <div className="absolute -top-1 -right-1 h-5 w-5 bg-[#00D9FF] rounded-full flex items-center justify-center text-[#0C0E1A] text-xs font-bold shadow-lg shadow-[#00D9FF]/20 font-['Share_Tech_Mono']">5</div>
+                <div className="absolute -top-1 -right-1 h-5 w-5 bg-[#FF4800] rounded-full flex items-center justify-center text-[#0C0E1A] text-xs font-bold shadow-lg shadow-[#FF4800]/20 font-['Share_Tech_Mono']">5</div>
               </div>
               
               <div className="flex-1">
                 <div className="flex justify-between">
                   <h2 className="text-white font-bold text-base font-changa">شادي داود</h2>
-                  <span className="text-xs py-0.5 px-2 bg-[#00D9FF]/10 rounded-md font-bold text-[#00D9FF] font-['Share_Tech_Mono']">Lv 5</span>
+                  <span className="text-xs py-0.5 px-2 bg-[#FF4800]/10 rounded-md font-bold text-[#FF4800] font-['Share_Tech_Mono']">Lv 5</span>
                 </div>
                 
                 <p className="text-gray-400 text-xs mb-2 font-noto">الثاني عشر - دار الأرقم</p>
                 
                 <div className="w-full">
                   <div className="flex justify-between items-center mb-1">
-                    <span className="text-xs text-[#00D9FF] font-['Share_Tech_Mono']">2450/3000</span>
+                    <span className="text-xs text-[#FF4800] font-['Share_Tech_Mono']">2450/3000</span>
                   </div>
                   
                   <Progress value={70} className="h-1.5" />
@@ -97,19 +96,19 @@ const Index = () => {
             {/* Stats Row */}
             <div className="grid grid-cols-3 gap-2 mt-4">
               <div className="p-2 rounded-xl bg-[rgba(255,255,255,0.03)] flex flex-col items-center">
-                <Flame className="h-4 w-4 text-[#00D9FF] mb-1" />
+                <Flame className="h-4 w-4 text-[#FF4800] mb-1" />
                 <span className="text-white font-medium text-[10px] mb-0.5 font-noto">الجهد</span>
                 <div className="text-sm font-bold text-white font-['Share_Tech_Mono']">12</div>
               </div>
               
               <div className="p-2 rounded-xl bg-[rgba(255,255,255,0.03)] flex flex-col items-center">
-                <Award className="h-4 w-4 text-[#00D9FF] mb-1" />
+                <Award className="h-4 w-4 text-[#FF4800] mb-1" />
                 <span className="text-white font-medium text-[10px] mb-0.5 font-noto">النقاط</span>
                 <div className="text-sm font-bold text-white font-['Share_Tech_Mono']">8.9K</div>
               </div>
               
               <div className="p-2 rounded-xl bg-[rgba(255,255,255,0.03)] flex flex-col items-center">
-                <Brain className="h-4 w-4 text-[#00D9FF] mb-1" />
+                <Brain className="h-4 w-4 text-[#FF4800] mb-1" />
                 <span className="text-white font-medium text-[10px] mb-0.5 font-noto">الذكاء</span>
                 <div className="text-sm font-bold text-white font-['Share_Tech_Mono']">8.9</div>
               </div>
@@ -121,7 +120,7 @@ const Index = () => {
         <Card>
           <CardContent className="p-6 flex flex-col items-center">
             <h3 className="text-sm font-bold text-white font-changa flex items-center gap-2 mb-3">
-              <Brain className="h-4 w-4 text-[#00D9FF]" />
+              <Brain className="h-4 w-4 text-[#FF4800]" />
               الذكاء الاصطناعي
             </h3>
             
@@ -140,7 +139,7 @@ const Index = () => {
                   cy="60" 
                   r="54" 
                   fill="none" 
-                  stroke="#00D9FF" 
+                  stroke="#FF4800" 
                   strokeWidth="6" 
                   strokeLinecap="round"
                   strokeDasharray="339.3" 
@@ -153,7 +152,7 @@ const Index = () => {
             </div>
             
             <div className="text-center">
-              <div className="py-1 px-2 bg-[#00D9FF]/10 rounded-full text-[#00D9FF] border border-[#00D9FF]/20 font-['Share_Tech_Mono'] text-xs mb-2">
+              <div className="py-1 px-2 bg-[#FF4800]/10 rounded-full text-[#FF4800] border border-[#FF4800]/20 font-['Share_Tech_Mono'] text-xs mb-2">
                 +0.9 هذا الأسبوع
               </div>
               <p className="text-xs text-gray-400 font-noto">أعلى من 85% من الطلاب</p>
@@ -166,7 +165,7 @@ const Index = () => {
           <CardContent className="p-6">
             <div className="flex justify-between items-center mb-1">
               <span className="text-[10px] text-gray-400 font-changa flex items-center gap-1">
-                <ExternalLink className="h-2.5 w-2.5 text-[#00D9FF]" />
+                <ExternalLink className="h-2.5 w-2.5 text-[#FF4800]" />
                 إعلان
               </span>
             </div>
@@ -191,18 +190,18 @@ const Index = () => {
           <CardContent className="p-6">
             <div className="flex justify-between items-center mb-4">
               <h3 className="text-sm font-bold text-white font-changa flex items-center gap-2">
-                <Activity className="h-4 w-4 text-[#00D9FF]" />
+                <Activity className="h-4 w-4 text-[#FF4800]" />
                 إنجاز أسبوعي
               </h3>
               
               <div className="flex items-center gap-2">
-                <div className="py-1 px-2 bg-[#00D9FF]/10 rounded-full text-xs text-[#00D9FF] font-['Share_Tech_Mono'] flex items-center gap-1">
-                  <Clock className="h-3 w-3 text-[#00D9FF]" />
+                <div className="py-1 px-2 bg-[#FF4800]/10 rounded-full text-xs text-[#FF4800] font-['Share_Tech_Mono'] flex items-center gap-1">
+                  <Clock className="h-3 w-3 text-[#FF4800]" />
                   {totalWeeklyHours} ساعة
                 </div>
                 
-                <div className="py-1 px-2 bg-[#00D9FF]/10 rounded-full text-xs text-[#00D9FF] font-['Share_Tech_Mono'] flex items-center gap-1">
-                  <Award className="h-3 w-3 text-[#00D9FF]" />
+                <div className="py-1 px-2 bg-[#FF4800]/10 rounded-full text-xs text-[#FF4800] font-['Share_Tech_Mono'] flex items-center gap-1">
+                  <Award className="h-3 w-3 text-[#FF4800]" />
                   +{totalWeeklyXP} XP
                 </div>
               </div>
@@ -213,8 +212,8 @@ const Index = () => {
                 <BarChart data={weeklyActivity} margin={{ top: 5, right: 5, left: 5, bottom: 5 }}>
                   <defs>
                     <linearGradient id="barGradient" x1="0" y1="0" x2="0" y2="1">
-                      <stop offset="0%" stopColor="#00D9FF" stopOpacity={1} />
-                      <stop offset="100%" stopColor="#00D9FF" stopOpacity={0.6} />
+                      <stop offset="0%" stopColor="#FF4800" stopOpacity={1} />
+                      <stop offset="100%" stopColor="#FF4800" stopOpacity={0.6} />
                     </linearGradient>
                   </defs>
                   <XAxis 
@@ -231,7 +230,7 @@ const Index = () => {
                       boxShadow: '0 10px 25px rgba(0,0,0,0.5)'
                     }}
                     labelStyle={{ color: '#fff', fontWeight: 'bold', textAlign: 'center' }}
-                    itemStyle={{ color: '#00D9FF' }}
+                    itemStyle={{ color: '#FF4800' }}
                     formatter={(value) => [`${value} XP`, 'نقاط اليوم']}
                   />
                   <Bar 
@@ -253,19 +252,19 @@ const Index = () => {
           <CardContent className="p-6">
             <div className="flex justify-between items-center mb-3">
               <h3 className="text-sm font-bold text-white font-changa flex items-center gap-2">
-                <Target className="h-4 w-4 text-[#00D9FF]" />
+                <Target className="h-4 w-4 text-[#FF4800]" />
                 مهمة اليوم
               </h3>
               
               <div className="py-1 px-2 bg-[rgba(255,255,255,0.05)] rounded-full flex items-center gap-1">
-                <Flame className="h-3 w-3 text-[#00D9FF]" />
-                <span className="text-xs text-[#00D9FF] font-['Share_Tech_Mono']">يوم 7</span>
+                <Flame className="h-3 w-3 text-[#FF4800]" />
+                <span className="text-xs text-[#FF4800] font-['Share_Tech_Mono']">يوم 7</span>
               </div>
             </div>
             
             <div className="flex items-center gap-4 p-4 bg-[rgba(255,255,255,0.03)] rounded-xl">
               <div className="shrink-0">
-                <Target className="h-12 w-12 text-[#00D9FF]" />
+                <Target className="h-12 w-12 text-[#FF4800]" />
               </div>
               
               <div className="flex-1">
@@ -273,7 +272,7 @@ const Index = () => {
                 <p className="text-xs text-gray-400 mb-3 font-noto">حل 10 مسائل جديدة من كتاب التحصيلي</p>
                 
                 <div className="flex justify-between items-center">
-                  <div className="flex items-center gap-1 py-1 px-3 bg-[#00D9FF]/10 rounded-md text-xs text-[#00D9FF] font-['Share_Tech_Mono']">
+                  <div className="flex items-center gap-1 py-1 px-3 bg-[#FF4800]/10 rounded-md text-xs text-[#FF4800] font-['Share_Tech_Mono']">
                     <Award className="h-3 w-3" />
                     +150 XP
                   </div>
@@ -296,11 +295,11 @@ const Index = () => {
             <Tabs defaultValue="exams" className="w-full">
               <TabsList className="grid w-full grid-cols-2 mb-4 bg-[rgba(255,255,255,0.03)]">
                 <TabsTrigger value="exams" className="text-xs font-noto">
-                  <Calendar className="h-3.5 w-3.5 mr-1 text-[#00D9FF]" />
+                  <Calendar className="h-3.5 w-3.5 mr-1 text-[#FF4800]" />
                   الامتحانات القادمة
                 </TabsTrigger>
                 <TabsTrigger value="courses" className="text-xs font-noto">
-                  <BookOpen className="h-3.5 w-3.5 mr-1 text-[#00D9FF]" />
+                  <BookOpen className="h-3.5 w-3.5 mr-1 text-[#FF4800]" />
                   كورسات قريباً
                 </TabsTrigger>
               </TabsList>
@@ -312,7 +311,7 @@ const Index = () => {
                       key={exam.id}
                       className="flex items-center gap-3 p-3 rounded-xl bg-[rgba(255,255,255,0.03)] hover:bg-[rgba(255,255,255,0.05)] transition-colors cursor-pointer"
                     >
-                      <div className="h-10 w-10 rounded-lg flex items-center justify-center bg-[#00D9FF]/10 text-[#00D9FF]">
+                      <div className="h-10 w-10 rounded-lg flex items-center justify-center bg-[#FF4800]/10 text-[#FF4800]">
                         <Calendar className="h-5 w-5" />
                       </div>
                       
@@ -320,7 +319,7 @@ const Index = () => {
                         <h5 className="text-white font-medium text-sm font-changa">{exam.subject}</h5>
                         <div className="flex items-center justify-between">
                           <span className="text-[11px] text-gray-400 font-noto">{exam.date} - {exam.time}</span>
-                          <span className="text-[10px] bg-[#00D9FF]/10 px-2 py-0.5 rounded-md text-[#00D9FF] font-['Share_Tech_Mono']">
+                          <span className="text-[10px] bg-[#FF4800]/10 px-2 py-0.5 rounded-md text-[#FF4800] font-['Share_Tech_Mono']">
                             +{exam.xp} XP
                           </span>
                         </div>
@@ -338,8 +337,8 @@ const Index = () => {
                       className="p-3 rounded-xl bg-[rgba(255,255,255,0.03)] border border-[rgba(255,255,255,0.05)] cursor-not-allowed hover:bg-[rgba(255,255,255,0.05)] transition-colors"
                     >
                       <div className="flex items-center gap-3">
-                        <div className="h-10 w-10 rounded-lg flex items-center justify-center bg-[#00D9FF]/10">
-                          <Lock className="h-4 w-4 text-[#00D9FF]" />
+                        <div className="h-10 w-10 rounded-lg flex items-center justify-center bg-[#FF4800]/10">
+                          <Lock className="h-4 w-4 text-[#FF4800]" />
                         </div>
                         
                         <div>
@@ -366,20 +365,20 @@ const Index = () => {
           <CardContent className="p-6">
             <div className="flex justify-between items-center mb-4">
               <h3 className="text-sm font-bold text-white font-changa flex items-center gap-2">
-                <Trophy className="h-4 w-4 text-[#00D9FF]" />
+                <Trophy className="h-4 w-4 text-[#FF4800]" />
                 المتصدرون
               </h3>
               
               <div className="flex bg-[rgba(255,255,255,0.03)] rounded-lg p-0.5 text-[10px]">
                 <button 
                   onClick={() => setLeaderboardFilter('week')}
-                  className={`px-2 py-0.5 rounded-md ${leaderboardFilter === 'week' ? 'bg-[#00D9FF] text-[#0C0E1A]' : 'text-gray-400'}`}
+                  className={`px-2 py-0.5 rounded-md ${leaderboardFilter === 'week' ? 'bg-[#FF4800] text-[#0C0E1A]' : 'text-gray-400'}`}
                 >
                   أسبوعي
                 </button>
                 <button 
                   onClick={() => setLeaderboardFilter('month')}
-                  className={`px-2 py-0.5 rounded-md ${leaderboardFilter === 'month' ? 'bg-[#00D9FF] text-[#0C0E1A]' : 'text-gray-400'}`}
+                  className={`px-2 py-0.5 rounded-md ${leaderboardFilter === 'month' ? 'bg-[#FF4800] text-[#0C0E1A]' : 'text-gray-400'}`}
                 >
                   شهري
                 </button>
@@ -419,7 +418,7 @@ const Index = () => {
                     <div className="text-[10px] text-gray-400 font-noto">Lv {user.level}</div>
                   </div>
                   
-                  <div className="text-xs font-bold text-[#00D9FF] font-['Share_Tech_Mono']">
+                  <div className="text-xs font-bold text-[#FF4800] font-['Share_Tech_Mono']">
                     {user.xp.toLocaleString()}
                   </div>
                 </div>
@@ -433,7 +432,7 @@ const Index = () => {
           <CardContent className="p-6">
             <div className="flex justify-between items-center mb-4">
               <h3 className="text-sm font-bold text-white font-changa flex items-center gap-2">
-                <BookOpen className="h-4 w-4 text-[#00D9FF]" />
+                <BookOpen className="h-4 w-4 text-[#FF4800]" />
                 تقدم الكورسات
               </h3>
             </div>
@@ -443,7 +442,7 @@ const Index = () => {
                 <div key={course.id} className="group">
                   <div className="flex justify-between items-center mb-2">
                     <span className="text-white text-xs font-changa">{course.name}</span>
-                    <span className="text-xs text-[#00D9FF] font-['Share_Tech_Mono']">{course.progress}%</span>
+                    <span className="text-xs text-[#FF4800] font-['Share_Tech_Mono']">{course.progress}%</span>
                   </div>
                   
                   <Progress 

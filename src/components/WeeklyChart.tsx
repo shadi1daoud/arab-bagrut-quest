@@ -23,8 +23,8 @@ export const WeeklyChart: React.FC<WeeklyChartProps> = ({ data = weeklyData }) =
         <BarChart data={data} margin={{ top: 5, right: 5, left: 5, bottom: 5 }}>
           <defs>
             <linearGradient id="barGradient" x1="0" y1="0" x2="0" y2="1">
-              <stop offset="0%" stopColor="#8E6DFF" stopOpacity={1} />
-              <stop offset="100%" stopColor="#8E6DFF" stopOpacity={0.8} />
+              <stop offset="0%" stopColor="#FF4800" stopOpacity={1} />
+              <stop offset="100%" stopColor="#FF4800" stopOpacity={0.8} />
             </linearGradient>
           </defs>
           <XAxis 
@@ -41,7 +41,7 @@ export const WeeklyChart: React.FC<WeeklyChartProps> = ({ data = weeklyData }) =
               boxShadow: '0 10px 25px rgba(0,0,0,0.5)'
             }}
             labelStyle={{ color: '#fff', fontWeight: 'bold', textAlign: 'center' }}
-            itemStyle={{ color: '#8E6DFF' }}
+            itemStyle={{ color: '#FF4800' }}
             formatter={(value) => [`${value} ساعات`, '']}
           />
           <Bar 

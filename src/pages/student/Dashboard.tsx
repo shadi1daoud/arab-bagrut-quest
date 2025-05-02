@@ -114,18 +114,18 @@ const Dashboard = () => {
             <CardContent>
               <div className="flex justify-between items-center mb-4">
                 <h3 className="text-sm font-bold text-white font-changa flex items-center gap-2">
-                  <Activity className="h-4 w-4 text-[#8E6DFF]" strokeWidth={2} />
+                  <Activity className="h-4 w-4 text-[#FF4800]" strokeWidth={2} />
                   إنجاز أسبوعي
                 </h3>
                 
                 <div className="flex items-center gap-2">
-                  <div className="py-1 px-2 bg-[#8E6DFF]/10 rounded-full text-xs text-[#8E6DFF] font-['Share_Tech_Mono'] flex items-center gap-1">
-                    <Clock className="h-3 w-3 text-[#8E6DFF]" strokeWidth={2} />
+                  <div className="py-1 px-2 bg-[#FF4800]/10 rounded-full text-xs text-[#FF4800] font-['Share_Tech_Mono'] flex items-center gap-1">
+                    <Clock className="h-3 w-3 text-[#FF4800]" strokeWidth={2} />
                     {totalWeeklyHours} ساعة
                   </div>
                   
-                  <div className="py-1 px-2 bg-[#8E6DFF]/10 rounded-full text-xs text-[#8E6DFF] font-['Share_Tech_Mono'] flex items-center gap-1">
-                    <Award className="h-3 w-3 text-[#8E6DFF]" strokeWidth={2} />
+                  <div className="py-1 px-2 bg-[#FF4800]/10 rounded-full text-xs text-[#FF4800] font-['Share_Tech_Mono'] flex items-center gap-1">
+                    <Award className="h-3 w-3 text-[#FF4800]" strokeWidth={2} />
                     +{totalWeeklyXP} XP
                   </div>
                 </div>
@@ -153,11 +153,11 @@ const Dashboard = () => {
               <Tabs defaultValue="exams" className="w-full">
                 <TabsList className="grid w-full grid-cols-2 mb-4 bg-[rgba(255,255,255,0.03)]">
                   <TabsTrigger value="exams" className="text-xs font-noto">
-                    <Calendar className="h-3.5 w-3.5 mr-1 text-[#8E6DFF]" />
+                    <Calendar className="h-3.5 w-3.5 mr-1 text-[#FF4800]" />
                     الامتحانات القادمة
                   </TabsTrigger>
                   <TabsTrigger value="courses" className="text-xs font-noto">
-                    <BookOpen className="h-3.5 w-3.5 mr-1 text-[#8E6DFF]" />
+                    <BookOpen className="h-3.5 w-3.5 mr-1 text-[#FF4800]" />
                     كورسات قريباً
                   </TabsTrigger>
                 </TabsList>
@@ -169,7 +169,7 @@ const Dashboard = () => {
                         key={exam.id}
                         className="flex items-center gap-3 p-3 rounded-xl bg-[rgba(255,255,255,0.03)] hover:bg-[rgba(255,255,255,0.05)] transition-colors cursor-pointer"
                       >
-                        <div className="h-10 w-10 rounded-lg flex items-center justify-center bg-[#8E6DFF]/10 text-[#8E6DFF]">
+                        <div className="h-10 w-10 rounded-lg flex items-center justify-center bg-[#FF4800]/10 text-[#FF4800]">
                           <Calendar className="h-5 w-5" />
                         </div>
                         
@@ -177,7 +177,7 @@ const Dashboard = () => {
                           <h5 className="text-white font-medium text-sm font-changa">{exam.subject}</h5>
                           <div className="flex items-center justify-between">
                             <span className="text-[11px] text-gray-400 font-noto">{exam.date} - {exam.time}</span>
-                            <span className="text-[10px] bg-[#8E6DFF]/10 px-2 py-0.5 rounded-md text-[#8E6DFF] font-['Share_Tech_Mono']">
+                            <span className="text-[10px] bg-[#FF4800]/10 px-2 py-0.5 rounded-md text-[#FF4800] font-['Share_Tech_Mono']">
                               +{exam.xp} XP
                             </span>
                           </div>
@@ -195,8 +195,8 @@ const Dashboard = () => {
                         className="p-3 rounded-xl bg-[rgba(255,255,255,0.03)] border border-[rgba(255,255,255,0.05)] cursor-not-allowed hover:bg-[rgba(255,255,255,0.05)] transition-colors"
                       >
                         <div className="flex items-center gap-3">
-                          <div className="h-10 w-10 rounded-lg flex items-center justify-center bg-[#8E6DFF]/10">
-                            <Lock className="h-4 w-4 text-[#8E6DFF]" />
+                          <div className="h-10 w-10 rounded-lg flex items-center justify-center bg-[#FF4800]/10">
+                            <Lock className="h-4 w-4 text-[#FF4800]" />
                           </div>
                           
                           <div>
