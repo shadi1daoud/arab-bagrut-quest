@@ -162,7 +162,7 @@ const Dashboard = () => {
                       <img 
                         src="/lovable-uploads/b01a3696-c05d-49eb-b8f2-6b1f7dcbeaab.png" 
                         alt="Dbucks" 
-                        className="h-3.5 w-3.5 object-contain" 
+                        className="h-4.5 w-4.5 object-contain" 
                       />
                       +{totalWeeklyXP} XP
                     </div>

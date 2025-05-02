@@ -211,7 +211,7 @@ const Shop = () => {
           <img 
             src="/lovable-uploads/b01a3696-c05d-49eb-b8f2-6b1f7dcbeaab.png" 
             alt="Dbucks" 
-            className="h-5 w-5 object-contain"
+            className="h-6 w-6 object-contain"
           />
           <span className="text-white font-bold font-share-tech">{user?.coins || 0}</span>
           <span className="text-gray-400 text-sm">عملة</span>
@@ -323,7 +323,7 @@ const Shop = () => {
                           <img 
                             src="/lovable-uploads/b01a3696-c05d-49eb-b8f2-6b1f7dcbeaab.png" 
                             alt="Dbucks" 
-                            className="h-3.5 w-3.5 object-contain"
+                            className="h-5 w-5 object-contain"
                           />
                           <span className="font-bold font-share-tech text-white text-xs">{item.price}</span>
                         </div>
@@ -377,7 +377,7 @@ const Shop = () => {
                   <img 
                     src="/lovable-uploads/b01a3696-c05d-49eb-b8f2-6b1f7dcbeaab.png" 
                     alt="Dbucks" 
-                    className="h-4 w-4 object-contain mr-1" 
+                    className="h-5 w-5 object-contain mr-1" 
                   />
                   <span className="text-yellow-400 font-share-tech">{selectedItem.price}</span>
                 </span> 
