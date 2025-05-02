@@ -6,7 +6,6 @@ import { cn } from '@/lib/utils';
 import { motion, AnimatePresence } from 'framer-motion';
 import '../styles/theme-nebula.css';
 import '../styles/sidebar.css';
-
 const StudentLayout = () => {
   const {
     user,
@@ -15,39 +14,33 @@ const StudentLayout = () => {
   const [isMobileMenuOpen, setIsMobileMenuOpen] = useState(false);
   const [isMenuCollapsed, setIsMenuCollapsed] = useState(false);
   const location = useLocation();
-  
   useEffect(() => {
     setIsMobileMenuOpen(false);
   }, [location.pathname]);
-  
-  const navItems = [
-    {
-      path: '/',
-      label: 'الرئيسية',
-      icon: Home
-    }, {
-      path: '/courses',
-      label: 'كورساتي',
-      icon: BookOpen
-    }, {
-      path: '/shop',
-      label: 'المتجر',
-      icon: ShoppingCart
-    }, {
-      path: '/community',
-      label: 'المجتمع',
-      icon: Users
-    }, {
-      path: '/settings',
-      label: 'الإعدادات',
-      icon: Settings
-    }
-  ];
-  
+  const navItems = [{
+    path: '/',
+    label: 'الرئيسية',
+    icon: Home
+  }, {
+    path: '/courses',
+    label: 'كورساتي',
+    icon: BookOpen
+  }, {
+    path: '/shop',
+    label: 'المتجر',
+    icon: ShoppingCart
+  }, {
+    path: '/community',
+    label: 'المجتمع',
+    icon: Users
+  }, {
+    path: '/settings',
+    label: 'الإعدادات',
+    icon: Settings
+  }];
   const toggleMenu = () => {
     setIsMenuCollapsed(!isMenuCollapsed);
   };
-  
   const NavItem = ({
     path,
     label,
@@ -101,7 +94,6 @@ const StudentLayout = () => {
     return stars;
   };
   const stars = createStars();
-  
   return <div className="h-screen w-full flex overflow-hidden bg-transparent">
       {/* Background effects */}
       <div className="star-field">
@@ -127,7 +119,7 @@ const StudentLayout = () => {
           <div className={cn("flex items-center", isMenuCollapsed ? "justify-center w-full" : "")}>
             <div id="logo-wrapper">
               <img alt="Darsni" src="/lovable-uploads/389a6f4c-bab8-4bbc-aa92-54a785b1a946.png" className="logo-full object-scale-down" />
-              <img alt="Darsni" src="/lovable-uploads/31097bca-fc51-42f3-97d5-aa102222afa0.png" className="logo-mini object-scale-down" />
+              
               <img className="extra-icon" src="/lovable-uploads/31097bca-fc51-42f3-97d5-aa102222afa0.png" alt="Graduation Cap" />
             </div>
           </div>
@@ -263,5 +255,4 @@ const StudentLayout = () => {
       </div>
     </div>;
 };
-
 export default StudentLayout;
