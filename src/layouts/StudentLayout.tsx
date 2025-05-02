@@ -116,14 +116,22 @@ const StudentLayout = () => {
     }} className={cn("fixed inset-y-0 right-0 z-30 transform lg:translate-x-0 lg:static flex flex-col overflow-hidden", isMobileMenuOpen ? "translate-x-0" : "translate-x-full lg:translate-x-0")} data-state={isMenuCollapsed ? "collapsed" : "expanded"}>
         <div className="p-4 flex items-center justify-between">
           <div className={cn("flex items-center", isMenuCollapsed ? "justify-center w-full" : "")}>
-            <div id="logo-wrapper">
+            <div id="logo-wrapper" className="flex items-center">
               <img className="logo-full" src="/assets/images/darsni-full.svg" alt="Darsni" />
-              <img className="logo-mini" src="/assets/images/darsni-icon.svg" alt="" />
+              <img className="logo-mini" src="/favicon.ico" alt="Darsni" />
+              <img 
+                src="public/lovable-uploads/f24ee729-d5df-4160-b98a-a3b6ff99272e.png" 
+                alt="Graduation Cap" 
+                className="h-8 w-8 ml-3"
+              />
             </div>
           </div>
           
-          <button onClick={toggleMenu} className="">
-            <ChevronRight className="h-5 w-5" />
+          <button onClick={toggleMenu} className={cn(
+            "p-2 rounded-lg hover:bg-white/5 text-gray-400 hover:text-white transition-colors absolute",
+            isMenuCollapsed ? "left-[-16px] top-4 bg-white/5" : "right-2 top-4"
+          )}>
+            <ChevronRight className={cn("h-5 w-5", isMenuCollapsed ? "rotate-180" : "")} />
           </button>
         </div>
         
