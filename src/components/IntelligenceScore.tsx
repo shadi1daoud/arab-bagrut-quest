@@ -19,7 +19,7 @@ export const IntelligenceScore: React.FC<IntelligenceScoreProps> = ({
   return (
     <div className="flex flex-col items-center">
       <h3 className="text-sm font-bold text-white font-changa flex items-center gap-2 mb-3">
-        <Brain className="h-4 w-4 text-[#8E6DFF]" strokeWidth={2} />
+        <Brain className="h-4 w-4 text-[#FF4800]" strokeWidth={2} />
         الذكاء الاصطناعي
       </h3>
       
@@ -38,7 +38,7 @@ export const IntelligenceScore: React.FC<IntelligenceScoreProps> = ({
             cy="60" 
             r="54" 
             fill="none" 
-            stroke="#8E6DFF" 
+            stroke="#FF4800" 
             strokeWidth="6" 
             strokeLinecap="round"
             strokeDasharray="339.3" 
@@ -51,7 +51,7 @@ export const IntelligenceScore: React.FC<IntelligenceScoreProps> = ({
       </div>
       
       <div className="text-center">
-        <div className="py-1 px-2 bg-[#8E6DFF]/10 rounded-full text-[#8E6DFF] border border-[#8E6DFF]/20 font-['Share_Tech_Mono'] text-xs mb-2">
+        <div className="py-1 px-2 bg-[#FF4800]/10 rounded-full text-[#FF4800] border border-[#FF4800]/20 font-['Share_Tech_Mono'] text-xs mb-2">
           +{weeklyGain} هذا الأسبوع
         </div>
         <p className="text-xs text-gray-400 font-noto">أعلى من {percentile}% من الطلاب</p>

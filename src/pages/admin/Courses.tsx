@@ -1,4 +1,3 @@
-
 import { useState } from 'react';
 import { Link } from 'react-router-dom';
 import { 
@@ -42,7 +41,7 @@ const COURSES_DATA = [
     students: 98,
     lastUpdated: '2023-11-05',
     icon: '⚛️',
-    color: 'bg-purple-600',
+    color: 'bg-[#FF4800]',
   },
   {
     id: '4',
