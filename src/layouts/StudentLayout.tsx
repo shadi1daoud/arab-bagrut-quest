@@ -6,6 +6,7 @@ import { cn } from '@/lib/utils';
 import { motion, AnimatePresence } from 'framer-motion';
 import '../styles/theme-nebula.css';
 import '../styles/sidebar.css';
+
 const StudentLayout = () => {
   const {
     user,
@@ -132,9 +133,17 @@ const StudentLayout = () => {
         {user && <div className={cn("px-4 py-2 flex items-center gap-3 relative overflow-hidden border-b border-white/5", isMenuCollapsed ? "justify-center" : "")}>
             <div className="relative flex-shrink-0 glow-effect">
               <div className="h-12 w-12 rounded-full overflow-hidden border-2 border-[#FF4800]/20 shadow-lg">
-                {user?.avatar ? <img src={user.avatar} alt={user.name} className="h-full w-full object-cover" /> : <div className="h-full w-full bg-gradient-to-br from-[#10122A] to-[#0B0D19] flex items-center justify-center">
-                    <span className="text-white text-xl font-bold font-['Changa']">{user?.name?.charAt(0)}</span>
-                  </div>}
+                {user?.avatar ? (
+                  <img src={user.avatar} alt={user.name} className="h-full w-full object-cover" />
+                ) : (
+                  <div className="h-full w-full bg-[#1A1F2C] flex items-center justify-center">
+                    <img 
+                      src="/lovable-uploads/48f9c971-a223-40f4-9e8b-17c399b6f387.png" 
+                      alt="Profile" 
+                      className="h-full w-full object-cover"
+                    />
+                  </div>
+                )}
               </div>
               <div className="absolute -top-1 -right-1 h-5 w-5 bg-[#FF4800] rounded-full flex items-center justify-center text-white text-xs font-bold shadow-lg shadow-[#FF4800]/20 font-['Share_Tech_Mono']">5</div>
             </div>
