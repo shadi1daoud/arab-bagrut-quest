@@ -122,7 +122,7 @@ const StudentLayout = () => {
               <img 
                 src="public/lovable-uploads/f24ee729-d5df-4160-b98a-a3b6ff99272e.png" 
                 alt="Graduation Cap" 
-                className="h-8 w-8 ml-3"
+                className="h-8 w-8 ml-3 logo-mini"
               />
             </div>
           </div>
