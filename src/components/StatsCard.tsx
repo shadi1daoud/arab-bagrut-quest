@@ -61,7 +61,7 @@ export const StatsCard: React.FC<StatsCardProps> = ({
         </div>
         
         <div className="p-2 rounded-xl bg-[rgba(255,255,255,0.03)] flex flex-col items-center">
-          <Award className="h-4 w-4 text-[#8E6DFF]" strokeWidth={2} />
+          <Award strokeWidth={2} className="h-4 w-4 text-[#FF4800]" />
           <span className="text-white font-medium text-[10px] mb-0.5 font-noto">النقاط</span>
           <div className="text-sm font-bold text-white font-['Share_Tech_Mono']">{(points / 1000).toFixed(1)}K</div>
         </div>
