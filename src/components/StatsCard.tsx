@@ -44,7 +44,7 @@ export const StatsCard: React.FC<StatsCardProps> = ({
           
           <div className="w-full">
             <div className="flex justify-between items-center mb-1">
-              <span className="text-xs text-[#8E6DFF] font-['Share_Tech_Mono']">{xp}/{maxXp}</span>
+              <span className="text-xs font-['Share_Tech_Mono'] text-[#ff4800]">{xp}/{maxXp}</span>
             </div>
             
             <Progress value={Math.floor(xp / maxXp * 100)} className="h-1.5" />
