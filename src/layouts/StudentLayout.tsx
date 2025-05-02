@@ -1,7 +1,6 @@
-
 import { useState, useEffect } from 'react';
 import { Outlet, NavLink, useLocation } from 'react-router-dom';
-import { Home, BookOpen, ShoppingCart, Users, Settings, LogOut, Menu, X, Bell, Search, Flame, Award, ChevronRight } from 'lucide-react';
+import { Home, BookOpen, ShoppingCart, Users, Settings, LogOut, Menu, X, Bell, Search, Flame, Award, ChevronRight, Upload } from 'lucide-react';
 import { useAuth } from '@/contexts/AuthContext';
 import { cn } from '@/lib/utils';
 import { motion, AnimatePresence } from 'framer-motion';
@@ -14,11 +13,30 @@ const StudentLayout = () => {
   } = useAuth();
   const [isMobileMenuOpen, setIsMobileMenuOpen] = useState(false);
   const [isMenuCollapsed, setIsMenuCollapsed] = useState(false);
+  const [customLogo, setCustomLogo] = useState<string | null>(localStorage.getItem('customMiniLogo'));
   const location = useLocation();
   
   useEffect(() => {
     setIsMobileMenuOpen(false);
   }, [location.pathname]);
+  
+  const handleLogoUpload = (event: React.ChangeEvent<HTMLInputElement>) => {
+    const file = event.target.files?.[0];
+    if (file) {
+      const reader = new FileReader();
+      reader.onloadend = () => {
+        const base64String = reader.result as string;
+        setCustomLogo(base64String);
+        localStorage.setItem('customMiniLogo', base64String);
+      };
+      reader.readAsDataURL(file);
+    }
+  };
+  
+  const resetCustomLogo = () => {
+    setCustomLogo(null);
+    localStorage.removeItem('customMiniLogo');
+  };
   
   const navItems = [{
     path: '/',
@@ -123,9 +141,40 @@ const StudentLayout = () => {
     }} className={cn("fixed inset-y-0 right-0 z-30 transform lg:translate-x-0 lg:static flex flex-col overflow-hidden", isMobileMenuOpen ? "translate-x-0" : "translate-x-full lg:translate-x-0")} data-state={isMenuCollapsed ? "collapsed" : "expanded"}>
         <div className="p-4 flex items-center justify-between">
           <div className={cn("flex items-center", isMenuCollapsed ? "justify-center w-full" : "")}>
-            <div id="logo-wrapper">
+            <div id="logo-wrapper" className="relative group">
               <img alt="Darsni" src="/lovable-uploads/883e84cb-3765-41fc-acde-905616ee0377.png" className="logo-full object-scale-down" />
-              <img className="logo-mini" src="/favicon.ico" alt="Darsni" width="32" height="32" />
+              {customLogo ? (
+                <img className="logo-mini" src={customLogo} alt="Custom Logo" width="32" height="32" />
+              ) : (
+                <img className="logo-mini" src="/favicon.ico" alt="Darsni" width="32" height="32" />
+              )}
+              
+              {isMenuCollapsed && (
+                <div className="absolute inset-0 flex items-center justify-center opacity-0 group-hover:opacity-100 transition-opacity">
+                  <div className="absolute inset-0 bg-black bg-opacity-70 rounded-lg"></div>
+                  <div className="flex flex-col gap-1 z-10">
+                    <label htmlFor="logo-upload" className="cursor-pointer bg-[#FF4800] hover:bg-[#FF4800]/80 text-white text-xs py-1 px-2 rounded flex items-center justify-center">
+                      <Upload className="h-3 w-3 mr-1" />
+                      <span>تغيير</span>
+                    </label>
+                    {customLogo && (
+                      <button 
+                        onClick={resetCustomLogo}
+                        className="text-white text-xs py-1 px-2 bg-gray-700 hover:bg-gray-600 rounded"
+                      >
+                        إعادة
+                      </button>
+                    )}
+                  </div>
+                  <input 
+                    id="logo-upload" 
+                    type="file" 
+                    accept="image/*" 
+                    className="hidden" 
+                    onChange={handleLogoUpload}
+                  />
+                </div>
+              )}
             </div>
           </div>
           
