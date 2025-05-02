@@ -15,9 +15,11 @@ const StudentLayout = () => {
   const [isMobileMenuOpen, setIsMobileMenuOpen] = useState(false);
   const [isMenuCollapsed, setIsMenuCollapsed] = useState(false);
   const location = useLocation();
+  
   useEffect(() => {
     setIsMobileMenuOpen(false);
   }, [location.pathname]);
+  
   const navItems = [{
     path: '/',
     label: 'الرئيسية',
@@ -39,9 +41,11 @@ const StudentLayout = () => {
     label: 'الإعدادات',
     icon: Settings
   }];
+  
   const toggleMenu = () => {
     setIsMenuCollapsed(!isMenuCollapsed);
   };
+  
   const NavItem = ({
     path,
     label,
@@ -205,7 +209,7 @@ const StudentLayout = () => {
         </div>
       </motion.aside>
       
-      {/* Main content area - updated to use flex column layout */}
+      {/* Main content area - updated to allow proper scrolling */}
       <div className="flex-1 flex flex-col">
         {/* Header - more compact */}
         <header>
@@ -257,8 +261,8 @@ const StudentLayout = () => {
           </div>
         </header>
         
-        {/* Main content with fixed height - updated with flex layout */}
-        <main className="flex-1 p-3 overflow-hidden relative z-10 h-[calc(100vh-56px)] px-[14px] py-0 mx-[8px] my-[4px] flex flex-col">
+        {/* Main content with proper scrolling - updated with flex layout and proper overflow */}
+        <main className="flex-1 p-3 overflow-y-auto relative z-10 px-[14px] py-0 mx-[8px] my-[4px] flex flex-col">
           <Outlet />
         </main>
       </div>
