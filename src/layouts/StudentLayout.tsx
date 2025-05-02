@@ -1,3 +1,4 @@
+
 import { useState, useEffect } from 'react';
 import { Outlet, NavLink, useLocation } from 'react-router-dom';
 import { Home, BookOpen, ShoppingCart, Users, Settings, LogOut, Menu, X, Bell, Search, Flame, Award, ChevronRight } from 'lucide-react';
@@ -5,6 +6,7 @@ import { useAuth } from '@/contexts/AuthContext';
 import { cn } from '@/lib/utils';
 import { motion, AnimatePresence } from 'framer-motion';
 import '../styles/theme-nebula.css';
+
 const StudentLayout = () => {
   const {
     user,
@@ -13,9 +15,11 @@ const StudentLayout = () => {
   const [isMobileMenuOpen, setIsMobileMenuOpen] = useState(false);
   const [isMenuCollapsed, setIsMenuCollapsed] = useState(false);
   const location = useLocation();
+  
   useEffect(() => {
     setIsMobileMenuOpen(false);
   }, [location.pathname]);
+  
   const navItems = [{
     path: '/',
     label: 'الرئيسية',
@@ -37,9 +41,11 @@ const StudentLayout = () => {
     label: 'الإعدادات',
     icon: Settings
   }];
+  
   const toggleMenu = () => {
     setIsMenuCollapsed(!isMenuCollapsed);
   };
+  
   const NavItem = ({
     path,
     label,
@@ -93,6 +99,7 @@ const StudentLayout = () => {
     return stars;
   };
   const stars = createStars();
+  
   return <div className="h-screen w-full flex overflow-hidden bg-transparent">
       {/* Background effects */}
       <div className="star-field">
@@ -118,12 +125,18 @@ const StudentLayout = () => {
           <div className={cn("flex items-center", isMenuCollapsed ? "justify-center w-full" : "")}>
             <div id="logo-wrapper">
               <img alt="Darsni" src="/lovable-uploads/883e84cb-3765-41fc-acde-905616ee0377.png" className="logo-full object-scale-down" />
-              <img className="logo-mini" src="/assets/images/darsni-icon.svg" alt="" />
+              <img className="logo-mini" src="/favicon.ico" alt="Darsni" width="32" height="32" />
             </div>
           </div>
           
-          <button onClick={toggleMenu} className={cn("p-2 rounded-lg hover:bg-white/5 text-gray-400 hover:text-white transition-colors", isMenuCollapsed ? "rotate-180" : "")}>
-            <ChevronRight className="h-5 w-5" />
+          <button 
+            onClick={toggleMenu} 
+            className={cn(
+              "p-2 rounded-lg hover:bg-white/5 text-gray-400 hover:text-white transition-colors absolute",
+              isMenuCollapsed ? "left-[-16px] top-4 bg-white/5" : "right-2 top-4"
+            )}
+          >
+            <ChevronRight className={cn("h-5 w-5", isMenuCollapsed ? "rotate-180" : "")} />
           </button>
         </div>
         
@@ -253,4 +266,5 @@ const StudentLayout = () => {
       </div>
     </div>;
 };
+
 export default StudentLayout;
