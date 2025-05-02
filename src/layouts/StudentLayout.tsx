@@ -121,6 +121,7 @@ const StudentLayout = () => {
             <div id="logo-wrapper">
               <img alt="Darsni" src="/lovable-uploads/389a6f4c-bab8-4bbc-aa92-54a785b1a946.png" className="logo-full object-scale-down" />
               <img className="logo-mini" src="/assets/images/darsni-icon.svg" alt="Darsni Icon" />
+              <img className="extra-icon" src="/assets/images/darsni-icon.svg" alt="Additional Icon" />
             </div>
           </div>
           

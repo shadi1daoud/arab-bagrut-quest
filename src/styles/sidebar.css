@@ -1,6 +1,6 @@
 
 /* Common logo style */
-.logo-full, .logo-mini {
+.logo-full, .logo-mini, .extra-icon {
   display: block;
   height: auto;
   margin: 16px 20px;
@@ -10,20 +10,35 @@
   width: 140px;
 }
 
-.logo-mini {
+.logo-mini, .extra-icon {
   width: 32px;
 }
 
 /* Show / hide based on sidebar state */
-[data-state="expanded"] .logo-mini { display: none; }
-[data-state="expanded"] .logo-full { display: block; }
+[data-state="expanded"] .logo-mini, 
+[data-state="expanded"] .extra-icon { 
+  display: none; 
+}
 
-[data-state="collapsed"] .logo-full { display: none; }
-[data-state="collapsed"] .logo-mini { display: block; }
+[data-state="expanded"] .logo-full { 
+  display: block; 
+}
+
+[data-state="collapsed"] .logo-full { 
+  display: none; 
+}
+
+[data-state="collapsed"] .logo-mini,
+[data-state="collapsed"] .extra-icon { 
+  display: block; 
+}
 
 /* Center the mini icon in collapsed state */
 [data-state="collapsed"] #logo-wrapper {
   display: flex;
   justify-content: center;
+  align-items: center;
+  flex-direction: column;
   padding: 12px 0;
+  gap: 8px;
 }
