@@ -1,3 +1,4 @@
+
 import { useState } from 'react';
 import { Link } from 'react-router-dom';
 import { Search, Filter, ChevronLeft, BookOpen, Star, Clock, CheckCircle, Activity, Calculator, Languages, Atom, FlaskConical, Microscope, Scroll } from 'lucide-react';
@@ -12,11 +13,11 @@ const COURSES = [{
   grade: 'الثاني عشر',
   units: 5,
   progress: 35,
-  icon: <Calculator size={20} color="#8E6DFF" strokeWidth={2} />,
+  icon: <Calculator size={20} color="#FF4800" strokeWidth={2} />,
   color: 'from-blue-600 to-blue-400',
   enrolled: true,
   xpReward: 1500,
-  realmImage: <Calculator size={20} color="#8E6DFF" strokeWidth={2} />
+  realmImage: <Calculator size={20} color="#FF4800" strokeWidth={2} />
 }, {
   id: 2,
   title: 'إنجليزي',
@@ -24,11 +25,11 @@ const COURSES = [{
   grade: 'الثاني عشر',
   units: 5,
   progress: 65,
-  icon: <Languages size={20} color="#8E6DFF" strokeWidth={2} />,
+  icon: <Languages size={20} color="#FF4800" strokeWidth={2} />,
   color: 'from-green-600 to-green-400',
   enrolled: true,
   xpReward: 1200,
-  realmImage: <Languages size={20} color="#8E6DFF" strokeWidth={2} />
+  realmImage: <Languages size={20} color="#FF4800" strokeWidth={2} />
 }, {
   id: 3,
   title: 'فيزياء',
@@ -36,11 +37,11 @@ const COURSES = [{
   grade: 'الثاني عشر',
   units: 5,
   progress: 0,
-  icon: <Atom size={20} color="#8E6DFF" strokeWidth={2} />,
+  icon: <Atom size={20} color="#FF4800" strokeWidth={2} />,
   color: 'from-purple-600 to-purple-400',
   enrolled: false,
   xpReward: 1800,
-  realmImage: <Atom size={20} color="#8E6DFF" strokeWidth={2} />
+  realmImage: <Atom size={20} color="#FF4800" strokeWidth={2} />
 }, {
   id: 4,
   title: 'كيمياء',
@@ -48,11 +49,11 @@ const COURSES = [{
   grade: 'الثاني عشر',
   units: 5,
   progress: 0,
-  icon: <FlaskConical size={20} color="#8E6DFF" strokeWidth={2} />,
+  icon: <FlaskConical size={20} color="#FF4800" strokeWidth={2} />,
   color: 'from-red-600 to-red-400',
   enrolled: false,
   xpReward: 1650,
-  realmImage: <FlaskConical size={20} color="#8E6DFF" strokeWidth={2} />
+  realmImage: <FlaskConical size={20} color="#FF4800" strokeWidth={2} />
 }, {
   id: 5,
   title: 'أحياء',
@@ -60,11 +61,11 @@ const COURSES = [{
   grade: 'الثاني عشر',
   units: 5,
   progress: 0,
-  icon: <Microscope size={20} color="#8E6DFF" strokeWidth={2} />,
+  icon: <Microscope size={20} color="#FF4800" strokeWidth={2} />,
   color: 'from-teal-600 to-teal-400',
   enrolled: false,
   xpReward: 1400,
-  realmImage: <Microscope size={20} color="#8E6DFF" strokeWidth={2} />
+  realmImage: <Microscope size={20} color="#FF4800" strokeWidth={2} />
 }, {
   id: 6,
   title: 'تاريخ',
@@ -72,12 +73,13 @@ const COURSES = [{
   grade: 'الثاني عشر',
   units: 3,
   progress: 0,
-  icon: <Scroll size={20} color="#8E6DFF" strokeWidth={2} />,
+  icon: <Scroll size={20} color="#FF4800" strokeWidth={2} />,
   color: 'from-yellow-600 to-yellow-400',
   enrolled: false,
   xpReward: 1100,
-  realmImage: <Scroll size={20} color="#8E6DFF" strokeWidth={2} />
+  realmImage: <Scroll size={20} color="#FF4800" strokeWidth={2} />
 }];
+
 const Courses = () => {
   const [searchTerm, setSearchTerm] = useState('');
   const [filterBy, setFilterBy] = useState('all'); // 'all', 'enrolled', 'available'
@@ -161,7 +163,7 @@ const Courses = () => {
                         <div className="flex justify-between items-start">
                           <h3 className="font-semibold text-white font-lexend text-sm">{course.title}</h3>
                           <span className="text-xs px-1.5 py-0.5 bg-game-primary/20 text-game-primary rounded-full flex items-center">
-                            <CheckCircle color="#8E6DFF" strokeWidth={2} className="h-2.5 w-2.5 mr-0.5-text-[#FF4800]" />
+                            <CheckCircle color="#FF4800" strokeWidth={2} className="h-2.5 w-2.5 mr-0.5-text-[#FF4800]" />
                             مسجل
                           </span>
                         </div>
@@ -169,7 +171,7 @@ const Courses = () => {
                         <div className="flex justify-between text-xs text-gray-400 mt-0.5">
                           <span>{course.subject}</span>
                           <span className="flex items-center">
-                            <BookOpen className="h-2.5 w-2.5 mr-0.5" color="#8E6DFF" strokeWidth={2} />
+                            <BookOpen className="h-2.5 w-2.5 mr-0.5" color="#FF4800" strokeWidth={2} />
                             {course.units} وحدات
                           </span>
                         </div>
@@ -197,7 +199,7 @@ const Courses = () => {
               </motion.div> : <div className="flex items-center justify-center h-full animate-fade-in">
                 <div className="text-center">
                   <div className="flex justify-center mb-3 opacity-30">
-                    <BookOpen size={48} color="#8E6DFF" strokeWidth={2} />
+                    <BookOpen size={48} color="#FF4800" strokeWidth={2} />
                   </div>
                   <p className="text-gray-400 text-sm">لم تسجل في أي كورس بعد</p>
                   <button className="mt-3 px-4 py-1.5 bg-game-primary rounded-md text-white text-sm">استعرض الكورسات</button>
@@ -243,14 +245,14 @@ const Courses = () => {
                                 <div className="flex justify-between text-xs text-gray-400 mt-0.5">
                                   <span>{course.subject}</span>
                                   <span className="flex items-center">
-                                    <BookOpen className="h-2.5 w-2.5 mr-0.5" color="#8E6DFF" strokeWidth={2} />
+                                    <BookOpen className="h-2.5 w-2.5 mr-0.5" color="#FF4800" strokeWidth={2} />
                                     {course.units} وحدات
                                   </span>
                                 </div>
                                 
                                 <div className="flex justify-between items-center mt-3 text-xs">
                                   <div className="flex items-center text-game-accent bg-game-accent/10 px-1.5 py-0.5 rounded">
-                                    <Star className="h-2.5 w-2.5 mr-0.5" color="#8E6DFF" strokeWidth={2} />
+                                    <Star className="h-2.5 w-2.5 mr-0.5" color="#FF4800" strokeWidth={2} />
                                     <span className="font-share-tech">+{course.xpReward} XP</span>
                                   </div>
                                   
@@ -268,7 +270,7 @@ const Courses = () => {
               </div> : <div className="flex items-center justify-center h-full animate-fade-in">
                 <div className="text-center">
                   <div className="flex justify-center mb-3 opacity-30">
-                    <Search size={48} color="#8E6DFF" strokeWidth={2} />
+                    <Search size={48} color="#FF4800" strokeWidth={2} />
                   </div>
                   <p className="text-gray-400 text-sm">لا توجد كورسات متاحة الآن</p>
                 </div>
