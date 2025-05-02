@@ -15,7 +15,10 @@
 }
 
 /* Show / hide based on sidebar state */
-[data-state="expanded"] .logo-mini, 
+[data-state="expanded"] .logo-mini { 
+  display: none; 
+}
+
 [data-state="expanded"] .extra-icon { 
   display: none; 
 }
@@ -28,7 +31,10 @@
   display: none; 
 }
 
-[data-state="collapsed"] .logo-mini,
+[data-state="collapsed"] .logo-mini { 
+  display: block; 
+}
+
 [data-state="collapsed"] .extra-icon { 
   display: block; 
 }
