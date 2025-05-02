@@ -1,10 +1,10 @@
-
 import { useState } from 'react';
 import { useAuth } from '@/contexts/AuthContext';
 import { Coins, ShoppingCart, Star, Shield, ChevronsUp, Gift, Sparkles } from 'lucide-react';
 import { useToast } from '@/hooks/use-toast';
 import { motion } from 'framer-motion';
 import { Tab } from '@headlessui/react';
+import { ScrollArea } from '@/components/ui/scroll-area';
 
 // Shop item types
 type ItemCategory = 'avatars' | 'backgrounds' | 'boosters' | 'mystery';
@@ -269,83 +269,85 @@ const Shop = () => {
         </button>
       </div>
       
-      {/* Shop Items Grid */}
+      {/* Shop Items Grid - wrapped in ScrollArea */}
       <div className="flex-1 overflow-hidden">
-        {filteredItems.length > 0 ? (
-          <motion.div 
-            className="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-2 h-full"
-            variants={containerVariants}
-            initial="hidden"
-            animate="show"
-          >
-            {filteredItems.map((item) => {
-              const rarityStyle = getRarityStyle(item.rarity);
-              return (
-                <motion.div 
-                  key={item.id} 
-                  variants={itemVariants}
-                  className={`game-panel p-2 hover:border-game-primary transition-all duration-300 hover:shadow-lg ${rarityStyle.glow}`}
-                >
-                  <div className="text-center relative">
-                    {/* Rarity corner label */}
-                    {item.rarity && item.rarity !== 'common' && (
-                      <div className={`absolute top-0 right-0 px-1.5 py-0.5 ${rarityStyle.bg} ${rarityStyle.text} text-xs rounded-bl-lg border-b border-l ${rarityStyle.border} font-share-tech`}>
-                        {item.rarity === 'legendary' && <Sparkles className="h-2.5 w-2.5 inline mr-0.5" />}
-                        {item.rarity}
-                      </div>
-                    )}
-                    
-                    <div className="flex justify-center items-center mb-2 mt-1">
-                      <div className={`h-12 w-12 ${rarityStyle.bg} rounded-lg flex items-center justify-center text-3xl border ${rarityStyle.border}`}>
-                        {item.image}
-                        {item.rarity === 'legendary' && (
-                          <div className="absolute inset-0 bg-gradient-to-t from-yellow-400/20 to-transparent rounded-lg opacity-30 animate-pulse"></div>
-                        )}
-                      </div>
-                    </div>
-                    
-                    <h3 className="font-semibold text-white text-sm mb-1 font-lexend">{item.name}</h3>
-                    <p className="text-gray-400 text-xs mb-2 line-clamp-1">{item.description}</p>
-                    
-                    {item.effect && (
-                      <div className={`text-xs ${rarityStyle.text} mb-2 py-0.5 px-1.5 rounded-md ${rarityStyle.bg} inline-block`}>
-                        {item.effect}
-                      </div>
-                    )}
-                    
-                    <div className="flex justify-between items-center mt-2 pt-2 border-t border-white/5">
-                      <div className="flex items-center gap-1 py-0.5 px-2 bg-yellow-500/10 rounded">
-                        <Coins className="h-3 w-3 text-yellow-400" />
-                        <span className="font-bold font-share-tech text-white text-xs">{item.price}</span>
+        <ScrollArea className="h-full w-full pr-2">
+          {filteredItems.length > 0 ? (
+            <motion.div 
+              className="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-2 pb-4"
+              variants={containerVariants}
+              initial="hidden"
+              animate="show"
+            >
+              {filteredItems.map((item) => {
+                const rarityStyle = getRarityStyle(item.rarity);
+                return (
+                  <motion.div 
+                    key={item.id} 
+                    variants={itemVariants}
+                    className={`game-panel p-2 hover:border-game-primary transition-all duration-300 hover:shadow-lg ${rarityStyle.glow}`}
+                  >
+                    <div className="text-center relative">
+                      {/* Rarity corner label */}
+                      {item.rarity && item.rarity !== 'common' && (
+                        <div className={`absolute top-0 right-0 px-1.5 py-0.5 ${rarityStyle.bg} ${rarityStyle.text} text-xs rounded-bl-lg border-b border-l ${rarityStyle.border} font-share-tech`}>
+                          {item.rarity === 'legendary' && <Sparkles className="h-2.5 w-2.5 inline mr-0.5" />}
+                          {item.rarity}
+                        </div>
+                      )}
+                      
+                      <div className="flex justify-center items-center mb-2 mt-1">
+                        <div className={`h-12 w-12 ${rarityStyle.bg} rounded-lg flex items-center justify-center text-3xl border ${rarityStyle.border}`}>
+                          {item.image}
+                          {item.rarity === 'legendary' && (
+                            <div className="absolute inset-0 bg-gradient-to-t from-yellow-400/20 to-transparent rounded-lg opacity-30 animate-pulse"></div>
+                          )}
+                        </div>
                       </div>
                       
-                      <button
-                        onClick={() => handlePurchase(item)}
-                        className={`px-2 py-1 rounded flex items-center gap-1 transition-all text-xs ${
-                          (user?.coins || 0) < item.price 
-                            ? 'bg-gray-700/50 text-gray-400 cursor-not-allowed' 
-                            : 'bg-gradient-to-r from-game-primary to-game-primary/70 text-white hover:shadow-md hover:shadow-game-primary/20'
-                        }`}
-                        disabled={(user?.coins || 0) < item.price}
-                      >
-                        <ShoppingCart className="h-3 w-3" />
-                        شراء
-                      </button>
+                      <h3 className="font-semibold text-white text-sm mb-1 font-lexend">{item.name}</h3>
+                      <p className="text-gray-400 text-xs mb-2 line-clamp-1">{item.description}</p>
+                      
+                      {item.effect && (
+                        <div className={`text-xs ${rarityStyle.text} mb-2 py-0.5 px-1.5 rounded-md ${rarityStyle.bg} inline-block`}>
+                          {item.effect}
+                        </div>
+                      )}
+                      
+                      <div className="flex justify-between items-center mt-2 pt-2 border-t border-white/5">
+                        <div className="flex items-center gap-1 py-0.5 px-2 bg-yellow-500/10 rounded">
+                          <Coins className="h-3 w-3 text-yellow-400" />
+                          <span className="font-bold font-share-tech text-white text-xs">{item.price}</span>
+                        </div>
+                        
+                        <button
+                          onClick={() => handlePurchase(item)}
+                          className={`px-2 py-1 rounded flex items-center gap-1 transition-all text-xs ${
+                            (user?.coins || 0) < item.price 
+                              ? 'bg-gray-700/50 text-gray-400 cursor-not-allowed' 
+                              : 'bg-gradient-to-r from-game-primary to-game-primary/70 text-white hover:shadow-md hover:shadow-game-primary/20'
+                          }`}
+                          disabled={(user?.coins || 0) < item.price}
+                        >
+                          <ShoppingCart className="h-3 w-3" />
+                          شراء
+                        </button>
+                      </div>
                     </div>
-                  </div>
-                </motion.div>
-              );
-            })}
-          </motion.div>
-        ) : (
-          <div className="flex items-center justify-center h-full">
-            <div className="text-center">
-              <div className="text-5xl mb-3 opacity-30">🛒</div>
-              <p className="text-gray-400 text-sm">لا توجد عناصر متاحة في هذه الفئة حالياً</p>
-              <p className="text-gray-500 text-xs mt-1">تحقق من الفئات الأخرى أو عد لاحقاً</p>
+                  </motion.div>
+                );
+              })}
+            </motion.div>
+          ) : (
+            <div className="flex items-center justify-center h-full">
+              <div className="text-center">
+                <div className="text-5xl mb-3 opacity-30">🛒</div>
+                <p className="text-gray-400 text-sm">لا توجد عناصر متاحة في هذه الفئة حالياً</p>
+                <p className="text-gray-500 text-xs mt-1">تحقق من الفئات الأخرى أو عد لاحقاً</p>
+              </div>
             </div>
-          </div>
-        )}
+          )}
+        </ScrollArea>
       </div>
       
       {/* Purchase Confirmation Modal */}

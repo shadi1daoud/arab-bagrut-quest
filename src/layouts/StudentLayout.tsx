@@ -77,7 +77,7 @@ const StudentLayout = () => {
       </NavLink>;
   };
 
-  // Create particles for star field effect
+  // Create stars for star field effect
   const createStars = () => {
     const stars = [];
     for (let i = 0; i < 100; i++) {
@@ -196,7 +196,7 @@ const StudentLayout = () => {
         </div>
       </motion.aside>
       
-      {/* Main content area */}
+      {/* Main content area - updated to use flex column layout */}
       <div className="flex-1 flex flex-col">
         {/* Header - more compact */}
         <header>
@@ -248,8 +248,8 @@ const StudentLayout = () => {
           </div>
         </header>
         
-        {/* Main content with fixed height */}
-        <main className="flex-1 p-3 overflow-hidden relative z-10 h-[calc(100vh-56px)] px-[14px] py-0 mx-[8px] my-[4px]">
+        {/* Main content with fixed height - updated with flex layout */}
+        <main className="flex-1 p-3 overflow-hidden relative z-10 h-[calc(100vh-56px)] px-[14px] py-0 mx-[8px] my-[4px] flex flex-col">
           <Outlet />
         </main>
       </div>
