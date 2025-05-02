@@ -55,7 +55,7 @@ export const StatsCard: React.FC<StatsCardProps> = ({
       {/* Stats Row */}
       <div className="grid grid-cols-3 gap-2 mt-4">
         <div className="p-2 rounded-xl bg-[rgba(255,255,255,0.03)] flex flex-col items-center">
-          <Flame className="h-4 w-4 text-[#8E6DFF]" strokeWidth={2} />
+          <Flame strokeWidth={2} className="h-4 w-4 text-[#FF4800]" />
           <span className="text-white font-medium text-[10px] mb-0.5 font-noto">الجهد</span>
           <div className="text-sm font-bold text-white font-['Share_Tech_Mono']">{effort}</div>
         </div>
@@ -67,7 +67,7 @@ export const StatsCard: React.FC<StatsCardProps> = ({
         </div>
         
         <div className="p-2 rounded-xl bg-[rgba(255,255,255,0.03)] flex flex-col items-center">
-          <Brain className="h-4 w-4 text-[#8E6DFF]" strokeWidth={2} />
+          <Brain strokeWidth={2} className="h-4 w-4 text-[#FF4800]" />
           <span className="text-white font-medium text-[10px] mb-0.5 font-noto">الذكاء</span>
           <div className="text-sm font-bold text-white font-['Share_Tech_Mono']">{iq}</div>
         </div>
