@@ -31,7 +31,7 @@ export const StatsCard: React.FC<StatsCardProps> = ({
               {name.charAt(0)}
             </AvatarFallback>
           </Avatar>
-          <div className="absolute -top-1 -right-1 h-5 w-5 bg-[#8E6DFF] rounded-full flex items-center justify-center text-[#0C0E1A] text-xs font-bold shadow-lg shadow-[#8E6DFF]/20 font-['Share_Tech_Mono']">{level}</div>
+          <div className="absolute -top-1 -right-1 h-5 w-5 rounded-full flex items-center justify-center text-[#0C0E1A] text-xs font-bold shadow-lg shadow-[#8E6DFF]/20 font-['Share_Tech_Mono'] bg-[#ff4800]">{level}</div>
         </div>
         
         <div className="flex-1">
