@@ -1,9 +1,7 @@
-
 import React from 'react';
 import { Award, Brain, Flame } from 'lucide-react';
 import { Progress } from './ui/progress';
 import { Avatar, AvatarFallback, AvatarImage } from './ui/avatar';
-
 interface StatsCardProps {
   name: string;
   level: number;
@@ -14,7 +12,6 @@ interface StatsCardProps {
   points: number;
   iq: number;
 }
-
 export const StatsCard: React.FC<StatsCardProps> = ({
   name = "شادي داود",
   level = 5,
@@ -23,10 +20,9 @@ export const StatsCard: React.FC<StatsCardProps> = ({
   maxXp = 3000,
   effort = 12,
   points = 8900,
-  iq = 8.9,
+  iq = 8.9
 }) => {
-  return (
-    <div>
+  return <div>
       <div className="flex items-center gap-4">
         <div className="relative">
           <Avatar className="h-14 w-14 border-2 border-[#8E6DFF]/20">
@@ -41,7 +37,7 @@ export const StatsCard: React.FC<StatsCardProps> = ({
         <div className="flex-1">
           <div className="flex justify-between">
             <h2 className="text-white font-bold text-base font-changa">{name}</h2>
-            <span className="text-xs py-0.5 px-2 bg-[#8E6DFF]/10 rounded-md font-bold text-[#8E6DFF] font-['Share_Tech_Mono']">Lv {level}</span>
+            <span className="text-xs py-0.5 px-2 bg-[#8E6DFF]/10 rounded-md font-bold font-['Share_Tech_Mono'] text-[#ff4800]">Lv {level}</span>
           </div>
           
           <p className="text-gray-400 text-xs mb-2 font-noto">{grade}</p>
@@ -51,7 +47,7 @@ export const StatsCard: React.FC<StatsCardProps> = ({
               <span className="text-xs text-[#8E6DFF] font-['Share_Tech_Mono']">{xp}/{maxXp}</span>
             </div>
             
-            <Progress value={Math.floor((xp / maxXp) * 100)} className="h-1.5" />
+            <Progress value={Math.floor(xp / maxXp * 100)} className="h-1.5" />
           </div>
         </div>
       </div>
@@ -76,8 +72,6 @@ export const StatsCard: React.FC<StatsCardProps> = ({
           <div className="text-sm font-bold text-white font-['Share_Tech_Mono']">{iq}</div>
         </div>
       </div>
-    </div>
-  );
+    </div>;
 };
-
 export default StatsCard;
