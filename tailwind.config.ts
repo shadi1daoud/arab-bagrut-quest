@@ -74,12 +74,12 @@ export default {
 				cosmic: {
 					primary: '#FF4800',       // Main action (cosmic orange)
 					secondary: '#CC3900',     // Secondary actions (cosmic dark orange)
-					accent: '#FFA476',        // Highlights (cosmic light orange)
-					background: '#050714',    // Deep space background
+					accent: '#FFA56E',        // Highlights (cosmic light orange)
+					background: '#0E0E0E',    // Deep space background
 					'card-bg': 'rgba(255,255,255,0.05)',     // Card background (glass)
 					'card-bg-hover': 'rgba(255,255,255,0.08)',  // Card hover
-					'text-primary': '#FFFFFF',  // Main text
-					'text-secondary': '#FFA476', // Secondary text
+					'text-primary': '#E9E9E9',  // Main text
+					'text-secondary': '#B5B5B5', // Secondary text
 				}
 			},
 			borderRadius: {

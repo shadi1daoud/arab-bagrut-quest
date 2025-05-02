@@ -21,18 +21,18 @@ CHANGELOG:
    DESIGN TOKENS
    ------------------------------------------------ */
 :root {
-  --color-bg-base: #0B0D19;
-  --color-bg-mid: #10122A;
-  --color-bg-deep: #070812;
+  --color-bg-base: #0E0E0E;
+  --color-bg-mid: #141414;
+  --color-bg-deep: #0E0E0E;
   --color-accent-primary: #FF4800;
   --color-accent-primary-hover: #CC3900;
-  --color-accent-primary-light: #FFA476;
+  --color-accent-primary-light: #FFA56E;
   --color-accent-secondary: #FF4800;
   --color-success: #33CC88;
   --color-danger: #FF4D55;
   --color-info: #34B3FF;
-  --color-text-primary: #E5E5F0;
-  --color-text-muted: rgba(229, 229, 240, 0.55);
+  --color-text-primary: #E9E9E9;
+  --color-text-muted: #B5B5B5;
   --color-glass-bg: rgba(255, 255, 255, 0.03);
   --color-glass-border: hsla(16, 100%, 60%, 0.20);
   --color-glass-highlight: rgba(255, 255, 255, 0.05);
@@ -213,7 +213,7 @@ h1, h2, h3, h4, h5, h6 {
 
 /* Sidebar styles */
 aside {
-  background: rgba(11, 13, 25, 0.85) !important;
+  background: rgba(14, 14, 14, 0.85) !important;
   backdrop-filter: blur(20px) !important;
   border-left: 1px solid var(--color-glass-border) !important;
   transition: width 0.3s ease;
