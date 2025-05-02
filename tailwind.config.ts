@@ -1,3 +1,4 @@
+
 import type { Config } from "tailwindcss";
 
 export default {
@@ -71,14 +72,14 @@ export default {
 				},
 				// Theme colors with cosmic inspiration
 				cosmic: {
-					primary: '#8E6DFF',       // Main action (cosmic purple)
-					secondary: '#5E5BFF',     // Secondary actions (cosmic blue)
-					accent: '#FF84D8',        // Highlights (cosmic pink)
+					primary: '#FF4800',       // Main action (cosmic orange)
+					secondary: '#CC3900',     // Secondary actions (cosmic dark orange)
+					accent: '#FFA476',        // Highlights (cosmic light orange)
 					background: '#050714',    // Deep space background
 					'card-bg': 'rgba(255,255,255,0.05)',     // Card background (glass)
 					'card-bg-hover': 'rgba(255,255,255,0.08)',  // Card hover
 					'text-primary': '#FFFFFF',  // Main text
-					'text-secondary': '#B8B8FF', // Secondary text
+					'text-secondary': '#FFA476', // Secondary text
 				}
 			},
 			borderRadius: {
@@ -97,11 +98,11 @@ export default {
 				},
 				'pulse-glow': {
 					'0%, 100%': { 
-						boxShadow: '0 0 5px 0px rgba(128, 86, 255, 0.5)',
+						boxShadow: '0 0 5px 0px rgba(255, 72, 0, 0.5)',
 						opacity: '0.8'
 					},
 					'50%': { 
-						boxShadow: '0 0 15px 5px rgba(128, 86, 255, 0.65)',
+						boxShadow: '0 0 15px 5px rgba(255, 72, 0, 0.65)',
 						opacity: '1'
 					}
 				},
@@ -131,12 +132,12 @@ export default {
 				},
 				'border-glow': {
 					'0%, 100%': { 
-						borderColor: 'rgba(80, 70, 230, 0.5)',
-						boxShadow: '0 0 5px rgba(80, 70, 230, 0.3)'
+						borderColor: 'rgba(255, 72, 0, 0.5)',
+						boxShadow: '0 0 5px rgba(255, 72, 0, 0.3)'
 					},
 					'50%': { 
-						borderColor: 'rgba(245, 110, 255, 0.6)',
-						boxShadow: '0 0 12px rgba(245, 110, 255, 0.5)'
+						borderColor: 'rgba(255, 116, 0, 0.6)',
+						boxShadow: '0 0 12px rgba(255, 116, 0, 0.5)'
 					}
 				},
 				'border-rotate': {

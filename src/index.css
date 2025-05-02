@@ -26,7 +26,7 @@
     --muted: 230 25% 25%;
     --muted-foreground: 240 5% 64.9%;
     
-    --accent: 255 100% 72%;
+    --accent: 16 100% 72%; /* Updated to match #FFA476 */
     --accent-foreground: 0 0% 98%;
     
     --destructive: 0 62.8% 30.6%;
