@@ -1,6 +1,6 @@
 import { useState } from 'react';
 import { useAuth } from '@/contexts/AuthContext';
-import { Coins, ShoppingCart, Star, Shield, ChevronsUp, Gift, Sparkles } from 'lucide-react';
+import { ShoppingCart, Star, Shield, ChevronsUp, Gift, Sparkles } from 'lucide-react';
 import { useToast } from '@/hooks/use-toast';
 import { motion } from 'framer-motion';
 import { Tab } from '@headlessui/react';
@@ -208,7 +208,11 @@ const Shop = () => {
         </div>
         
         <div className="bg-gradient-to-br from-game-card-bg-alt to-game-card-bg px-4 py-1.5 rounded-xl flex items-center gap-1.5 border border-yellow-500/20 shadow-lg shadow-yellow-500/5">
-          <Coins className="h-4 w-4 text-yellow-400 animate-pulse" />
+          <img 
+            src="/lovable-uploads/b01a3696-c05d-49eb-b8f2-6b1f7dcbeaab.png" 
+            alt="Dbucks" 
+            className="h-5 w-5 object-contain"
+          />
           <span className="text-white font-bold font-share-tech">{user?.coins || 0}</span>
           <span className="text-gray-400 text-sm">عملة</span>
         </div>
@@ -316,7 +320,11 @@ const Shop = () => {
                       
                       <div className="flex justify-between items-center mt-2 pt-2 border-t border-white/5">
                         <div className="flex items-center gap-1 py-0.5 px-2 bg-yellow-500/10 rounded">
-                          <Coins className="h-3 w-3 text-yellow-400" />
+                          <img 
+                            src="/lovable-uploads/b01a3696-c05d-49eb-b8f2-6b1f7dcbeaab.png" 
+                            alt="Dbucks" 
+                            className="h-3.5 w-3.5 object-contain"
+                          />
                           <span className="font-bold font-share-tech text-white text-xs">{item.price}</span>
                         </div>
                         
@@ -364,7 +372,16 @@ const Shop = () => {
               
               <h3 className="font-semibold text-white text-lg mb-2 font-changa">تأكيد الشراء</h3>
               <p className="text-gray-400 text-sm mb-3">
-                هل أنت متأكد من رغبتك في شراء {selectedItem.name} مقابل <span className="text-yellow-400 font-share-tech">{selectedItem.price}</span> عملة؟
+                هل أنت متأكد من رغبتك في شراء {selectedItem.name} مقابل 
+                <span className="inline-flex items-center ml-1 mr-1">
+                  <img 
+                    src="/lovable-uploads/b01a3696-c05d-49eb-b8f2-6b1f7dcbeaab.png" 
+                    alt="Dbucks" 
+                    className="h-4 w-4 object-contain mr-1" 
+                  />
+                  <span className="text-yellow-400 font-share-tech">{selectedItem.price}</span>
+                </span> 
+                عملة؟
               </p>
               
               <div className="flex justify-between items-center mt-4">

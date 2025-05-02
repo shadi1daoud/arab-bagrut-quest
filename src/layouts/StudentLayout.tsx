@@ -239,7 +239,11 @@ const StudentLayout = () => {
                     
                     <div className="flex items-center gap-2">
                       <div className="glass-card py-1 px-2 rounded-full border border-white/5 hidden md:flex items-center gap-1.5">
-                        <Award className="h-3.5 w-3.5 text-[#FF4800]" />
+                        <img 
+                          src="/lovable-uploads/b01a3696-c05d-49eb-b8f2-6b1f7dcbeaab.png" 
+                          alt="Dbucks" 
+                          className="h-3.5 w-3.5 object-contain" 
+                        />
                         <span className="text-white font-['Share_Tech_Mono'] text-sm">8965</span>
                       </div>
                       

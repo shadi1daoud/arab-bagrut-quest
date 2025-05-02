@@ -1,3 +1,4 @@
+
 import React, { useState } from 'react';
 import { Activity, Award, BookOpen, Calendar, Clock, Lock } from 'lucide-react';
 import { Card, CardContent } from '@/components/ui/card';
@@ -104,6 +105,7 @@ const comingSoonCourses = [{
   name: 'علوم الحاسب',
   color: 'indigo'
 }];
+
 const Dashboard = () => {
   const [leaderboardFilter, setLeaderboardFilter] = useState('week');
 
@@ -157,7 +159,11 @@ const Dashboard = () => {
                     </div>
                     
                     <div className="py-1 px-2 bg-[#FF4800]/10 rounded-full text-xs text-[#FF4800] font-['Share_Tech_Mono'] flex items-center gap-1">
-                      <Award className="h-3 w-3 text-[#FF4800]" strokeWidth={2} />
+                      <img 
+                        src="/lovable-uploads/b01a3696-c05d-49eb-b8f2-6b1f7dcbeaab.png" 
+                        alt="Dbucks" 
+                        className="h-3.5 w-3.5 object-contain" 
+                      />
                       +{totalWeeklyXP} XP
                     </div>
                   </div>
