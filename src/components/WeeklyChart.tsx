@@ -24,7 +24,7 @@ export const WeeklyChart: React.FC<WeeklyChartProps> = ({ data = weeklyData }) =
           <defs>
             <linearGradient id="barGradient" x1="0" y1="0" x2="0" y2="1">
               <stop offset="0%" stopColor="#FF4800" stopOpacity={1} />
-              <stop offset="100%" stopColor="#FF4800" stopOpacity={0.8} />
+              <stop offset="100%" stopColor="#FF4800" stopOpacity={0.6} />
             </linearGradient>
           </defs>
           <XAxis 
