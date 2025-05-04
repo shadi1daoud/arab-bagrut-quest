@@ -113,7 +113,7 @@ const Dashboard = () => {
   return <>
       <StarParticles />
       <ScrollArea className="h-full w-full">
-        <div className="grid grid-cols-12 gap-4 pb-4">
+        <div className="grid grid-cols-12 gap-4 pb-4 py-[10px] my-0 px-0 mx-[9px]">
           {/* LEFT COLUMN - 3 cols */}
           <div className="col-span-3 flex flex-col gap-4">
             {/* Profile Card with Stats */}
