@@ -174,7 +174,7 @@ const Login = () => {
                   </div>
                   <input id="password" type="password" value={password} onChange={e => setPassword(e.target.value)} className="w-full px-4 py-3 pr-10 rounded-lg bg-muted/20 border border-white/10 text-white focus:outline-none focus:ring-2 focus:ring-game-accent/50 transition-all" placeholder="أدخل كلمة المرور" required />
                 </div>
-                <div className="text-xs text-white-400/80 mt-1">
+                <div className="text-xs text-white-400/80 mt-1 text-RTL">
                   للتجربة: أي كلمة مرور
                 </div>
               </div>
