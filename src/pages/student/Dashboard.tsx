@@ -1,5 +1,5 @@
 import React, { useState } from 'react';
-import { Activity, Award, BookOpen, Calendar, Clock, Lock } from 'lucide-react';
+import { Activity, Award, BookOpen, Calendar, Clock, Lock, Star } from 'lucide-react';
 import { Card, CardContent } from '@/components/ui/card';
 import { Tabs, TabsList, TabsTrigger, TabsContent } from '@/components/ui/tabs';
 import { ScrollArea } from '@/components/ui/scroll-area';
@@ -156,7 +156,7 @@ const Dashboard = () => {
                     </div>
                     
                     <div className="py-1 px-2 bg-[#FF4800]/10 rounded-full text-xs text-[#FF4800] font-['Share_Tech_Mono'] flex items-center gap-1">
-                      
+                      <Star className="h-3 w-3 text-[#FF4800]" strokeWidth={2} />
                       +{totalWeeklyXP} XP
                     </div>
                   </div>
