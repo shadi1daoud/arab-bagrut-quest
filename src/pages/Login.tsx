@@ -159,7 +159,7 @@ const Login = () => {
                   </div>
                   <input id="email" type="email" value={email} onChange={e => setEmail(e.target.value)} className="w-full px-4 py-3 pr-10 rounded-lg bg-muted/20 border border-white/10 text-white focus:outline-none focus:ring-2 focus:ring-game-accent/50 transition-all" placeholder="أدخل بريدك الإلكتروني" required />
                 </div>
-                <div className="text-xs text-cyan-400/80 mt-1">
+                <div className="text-xs text-white-400/80 mt-1 bg-[cosmic-text-secondary] bg-transparent">
                   للتجربة: student@darsni.com أو admin@darsni.com
                 </div>
               </div>
