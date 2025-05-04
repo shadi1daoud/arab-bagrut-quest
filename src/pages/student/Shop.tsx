@@ -1,4 +1,3 @@
-
 import { useState, useEffect } from 'react';
 import { useAuth } from '@/contexts/AuthContext';
 import { 
@@ -196,35 +195,35 @@ const getRarityStyle = (rarity: string | undefined) => {
   switch(rarity) {
     case 'legendary':
       return {
-        border: 'border-game-legendary/30',
-        bg: 'bg-gradient-to-br from-game-legendary/20 to-game-legendary/10',
+        border: 'border-game-legendary/80',
+        bg: 'from-game-legendary/20 to-game-legendary/5',
         text: 'text-game-legendary',
-        glow: 'shadow-game-legendary/20',
-        hoverGlow: 'group-hover:shadow-[0_0_15px_rgba(255,215,0,0.5)]'
+        glow: 'shadow-[0_0_15px_rgba(255,215,0,0.3)]',
+        bgGradient: 'linear-gradient(180deg, rgba(255,215,0,0.2) 0%, rgba(255,215,0,0.05) 100%)'
       };
     case 'epic':
       return {
-        border: 'border-game-epic/30',
-        bg: 'bg-gradient-to-br from-game-epic/20 to-game-epic/10',
+        border: 'border-game-epic/80',
+        bg: 'from-game-epic/20 to-game-epic/5',
         text: 'text-game-epic',
-        glow: 'shadow-game-epic/20',
-        hoverGlow: 'group-hover:shadow-[0_0_15px_rgba(163,53,238,0.5)]'
+        glow: 'shadow-[0_0_15px_rgba(163,53,238,0.3)]',
+        bgGradient: 'linear-gradient(180deg, rgba(163,53,238,0.2) 0%, rgba(163,53,238,0.05) 100%)'
       };
     case 'rare':
       return {
-        border: 'border-game-rare/30',
-        bg: 'bg-gradient-to-br from-game-rare/20 to-game-rare/10',
+        border: 'border-game-rare/80',
+        bg: 'from-game-rare/20 to-game-rare/5',
         text: 'text-game-rare',
-        glow: 'shadow-game-rare/20',
-        hoverGlow: 'group-hover:shadow-[0_0_15px_rgba(0,112,221,0.5)]'
+        glow: 'shadow-[0_0_15px_rgba(0,112,221,0.3)]',
+        bgGradient: 'linear-gradient(180deg, rgba(0,112,221,0.2) 0%, rgba(0,112,221,0.05) 100%)'
       };
     default: // common
       return {
-        border: 'border-game-common/30',
-        bg: 'bg-gradient-to-br from-game-common/20 to-game-common/10',
-        text: 'text-game-common',
-        glow: 'shadow-game-common/10',
-        hoverGlow: 'group-hover:shadow-[0_0_15px_rgba(157,157,157,0.5)]'
+        border: 'border-game-common/80',
+        bg: 'from-game-common/20 to-game-common/5',
+        text: 'text-gray-200',
+        glow: 'shadow-[0_0_10px_rgba(157,157,157,0.2)]',
+        bgGradient: 'linear-gradient(180deg, rgba(157,157,157,0.15) 0%, rgba(157,157,157,0.05) 100%)'
       };
   }
 };
@@ -433,7 +432,7 @@ const Shop = () => {
         </motion.div>
       </div>
       
-      {/* Featured items (limited time offers) */}
+      {/* Featured items (limited time offers) - Fortnite Style */}
       {featuredItems.length > 0 && (
         <div className="mb-4">
           <h2 className="text-lg font-bold mb-2 font-['Changa'] flex items-center gap-2 text-white">
@@ -441,82 +440,89 @@ const Shop = () => {
           </h2>
           
           <ScrollArea className="pb-2">
-            <div className="flex gap-3 pb-2">
+            <div className="flex gap-2 pb-2">
               {featuredItems.map(item => {
                 const rarityStyle = getRarityStyle(item.rarity);
                 return (
                   <motion.div
                     key={`featured-${item.id}`}
-                    className={`relative min-w-[270px] group ${rarityStyle.glow} rounded-lg overflow-hidden`}
-                    whileHover={{ y: -5 }}
+                    className={`relative w-[200px] ${rarityStyle.glow} rounded-md overflow-hidden group h-[280px]`}
+                    whileHover={{ y: -5, scale: 1.02 }}
                     initial={{ opacity: 0, y: 20 }}
                     animate={{ opacity: 1, y: 0 }}
                     transition={{ duration: 0.3 }}
                   >
-                    <div className="absolute inset-0 bg-gradient-to-r from-game-legendary/30 via-transparent to-game-legendary/30 rounded-lg opacity-0 group-hover:opacity-100 transition-opacity duration-700 animate-border-rotate z-0"></div>
+                    {/* Rarity border */}
+                    <div className={`absolute inset-0 border-2 ${rarityStyle.border} rounded-md z-10 pointer-events-none`}></div>
                     
-                    <Card className="border border-game-legendary/40 bg-black/60 backdrop-blur-md overflow-hidden z-10 relative">
-                      <div className="absolute top-0 left-0 right-0 h-1 bg-gradient-to-r from-transparent via-game-legendary to-transparent"></div>
-                      
-                      <CardHeader className="pb-1">
-                        <div className="flex justify-between">
-                          <CardTitle className={`text-xl ${rarityStyle.text}`}>{item.name}</CardTitle>
-                          
-                          <div className="flex items-center text-xs text-white bg-black/50 px-2 py-1 rounded-full border border-white/10">
-                            <span className="animate-pulse mr-1">⏱️</span>
-                            <span className="font-['Share_Tech_Mono']">
-                              {formatTimeRemaining(item.timeRemaining || 0)}
-                            </span>
-                          </div>
+                    {/* Limited time indicator */}
+                    <div className="absolute top-2 right-2 px-1.5 py-0.5 bg-game-primary/90 text-xs text-white rounded z-20 flex items-center gap-1 font-['Share_Tech_Mono']">
+                      <span className="animate-pulse">⏱️</span>
+                      <span>{formatTimeRemaining(item.timeRemaining || 0)}</span>
+                    </div>
+                    
+                    {/* Card with large image area */}
+                    <div className="h-full flex flex-col">
+                      {/* Main image area */}
+                      <div 
+                        className="flex-1 flex items-center justify-center p-3 relative overflow-hidden"
+                        style={{background: rarityStyle.bgGradient}}
+                      >
+                        {/* Rarity effect background */}
+                        <div className="absolute inset-0 opacity-20">
+                          <div className="absolute inset-0 bg-gradient-to-t from-black/50 to-transparent"></div>
+                          <motion.div 
+                            className="absolute inset-0 bg-gradient-to-r from-transparent via-white/10 to-transparent"
+                            animate={{ x: ['-100%', '100%'] }}
+                            transition={{ duration: 2, repeat: Infinity, repeatDelay: 1 }}
+                          />
                         </div>
-                        <CardDescription className="text-gray-300">
-                          {item.description}
-                        </CardDescription>
-                      </CardHeader>
-                      
-                      <CardContent className="py-2">
-                        <div className="flex justify-center items-center my-2">
-                          <div className={`text-4xl w-16 h-16 rounded-lg flex items-center justify-center ${rarityStyle.bg} ${rarityStyle.border} relative overflow-hidden`}>
+                        
+                        {/* Item image */}
+                        <div className="relative z-10 w-full h-full flex items-center justify-center">
+                          <div className="text-7xl transform group-hover:scale-110 transition-transform duration-300 filter drop-shadow-lg">
                             {item.image}
-                            <div className="absolute inset-0 bg-gradient-to-t from-game-legendary/20 to-transparent opacity-50"></div>
-                            <motion.div 
-                              className="absolute inset-0 bg-white/10"
-                              animate={{ opacity: [0, 0.5, 0] }}
-                              transition={{ duration: 2, repeat: Infinity }}
-                            />
                           </div>
                         </div>
-                      </CardContent>
+
+                        {/* Effect tag if present */}
+                        {item.effect && (
+                          <div className="absolute bottom-2 left-2 bg-black/70 px-2 py-0.5 text-xs rounded text-white border border-white/20 z-20">
+                            {item.effect.length > 12 ? `${item.effect.substring(0, 10)}...` : item.effect}
+                          </div>
+                        )}
+                      </div>
                       
-                      <CardFooter className="pt-0">
-                        <div className="w-full flex justify-between items-center">
-                          <div className="flex items-center gap-1">
-                            <img 
-                              src="/lovable-uploads/b01a3696-c05d-49eb-b8f2-6b1f7dcbeaab.png" 
-                              alt="Dbucks" 
-                              className="h-6 w-6 object-contain"
-                            />
-                            <span className="font-bold font-['Share_Tech_Mono'] text-white">
-                              {item.price}
-                            </span>
-                          </div>
-                          
-                          <Button
-                            onClick={() => handlePurchase(item)}
-                            disabled={(user?.coins || 0) < item.price}
-                            className="bg-gradient-to-r from-game-primary to-game-secondary text-white font-['Noto_Sans_Arabic'] border-0 relative overflow-hidden"
-                          >
-                            <motion.div
-                              className="absolute inset-0 bg-white/10"
-                              animate={{ x: ['-100%', '100%'] }}
-                              transition={{ duration: 1.5, repeat: Infinity, repeatDelay: 1 }}
-                            />
-                            <ShoppingCart className="h-4 w-4 mr-1" />
-                            شراء الآن
-                          </Button>
+                      {/* Fortnite-style black bottom bar */}
+                      <div className="bg-black/90 px-3 py-2 flex items-center justify-between">
+                        <h3 className={`font-bold text-white truncate max-w-[120px] font-['Changa'] text-sm`}>
+                          {item.name}
+                        </h3>
+                        
+                        <div className="flex items-center gap-0.5">
+                          <img 
+                            src="/lovable-uploads/b01a3696-c05d-49eb-b8f2-6b1f7dcbeaab.png" 
+                            alt="Dbucks" 
+                            className="h-5 w-5 object-contain"
+                          />
+                          <span className="font-bold text-white font-['Share_Tech_Mono'] text-sm">
+                            {item.price}
+                          </span>
                         </div>
-                      </CardFooter>
-                    </Card>
+                      </div>
+                    </div>
+                    
+                    {/* Purchase overlay on hover */}
+                    <div className="absolute inset-0 bg-black/60 opacity-0 group-hover:opacity-100 flex items-center justify-center transition-opacity z-30">
+                      <Button
+                        onClick={() => handlePurchase(item)}
+                        disabled={(user?.coins || 0) < item.price}
+                        className="bg-game-primary hover:bg-game-secondary text-white font-['Noto_Sans_Arabic'] px-4"
+                      >
+                        <ShoppingCart className="h-4 w-4 mr-1" />
+                        شراء الآن
+                      </Button>
+                    </div>
                   </motion.div>
                 );
               })}
@@ -525,13 +531,13 @@ const Shop = () => {
         </div>
       )}
       
-      {/* Category Tabs - Modern Gaming-inspired design */}
+      {/* Category Tabs */}
       <Tabs 
         defaultValue="boosters" 
         className="w-full" 
         onValueChange={setSelectedTab}
       >
-        <div className="bg-black/40 backdrop-blur-md rounded-xl p-1 mb-4 border border-white/5 overflow-auto">
+        <div className="bg-black/40 backdrop-blur-md rounded-xl p-1 mb-3 border border-white/5 overflow-auto">
           <TabsList className="w-full bg-transparent gap-1 h-auto p-1">
             <TabsTrigger 
               value="boosters"
@@ -630,7 +636,7 @@ const Shop = () => {
           </TabsList>
         </div>
         
-        {/* Tab Content */}
+        {/* Tab Content - Fortnite Style */}
         <div className="flex-1 overflow-hidden relative">
           <AnimatePresence mode="wait">
             <TabsContent 
@@ -649,7 +655,7 @@ const Shop = () => {
                 <ScrollArea className="h-full w-full pr-2">
                   {filteredItems.length > 0 ? (
                     <motion.div 
-                      className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-4 pb-4"
+                      className="grid grid-cols-2 sm:grid-cols-3 lg:grid-cols-4 xl:grid-cols-5 gap-2 pb-4"
                       variants={containerVariants}
                       initial="hidden"
                       animate="show"
@@ -661,116 +667,76 @@ const Shop = () => {
                           <motion.div
                             key={item.id}
                             variants={itemVariants}
-                            whileHover="hover"
-                            initial="rest"
-                            animate="rest"
-                            className={`group relative rounded-xl transition-all duration-300 ${rarityStyle.glow} ${rarityStyle.hoverGlow} perspective`}
+                            className={`relative rounded-md overflow-hidden group h-[280px] ${rarityStyle.glow}`}
                           >
-                            <Card className={`border ${rarityStyle.border} bg-black/40 backdrop-blur-md h-full`}>
-                              {/* Top highlight edge */}
-                              <motion.div 
-                                className="absolute top-0 left-0 right-0 h-px bg-gradient-to-r from-transparent via-white/50 to-transparent"
-                                animate={{ opacity: [0.2, 0.5, 0.2] }}
-                                transition={{ duration: 2, repeat: Infinity }}
-                              />
-                              
-                              {/* Rarity corner label */}
-                              {item.rarity && item.rarity !== 'common' && (
-                                <div className={`absolute top-2 right-2 px-1.5 py-0.5 ${rarityStyle.bg} ${rarityStyle.text} text-xs rounded-md border ${rarityStyle.border} font-['Share_Tech_Mono'] flex items-center gap-1 z-10`}>
-                                  <Star className="h-3 w-3" />
-                                  {item.rarity}
-                                </div>
-                              )}
-                              
-                              <CardHeader>
-                                <CardTitle className="text-lg font-['Changa']">{item.name}</CardTitle>
-                                <CardDescription className="text-sm text-gray-300 line-clamp-2">
-                                  {item.description}
-                                </CardDescription>
-                              </CardHeader>
-                              
-                              <CardContent className="pt-0">
-                                <div className="flex justify-center items-center mb-3 mt-1">
-                                  <div className={`h-16 w-16 ${rarityStyle.bg} rounded-lg flex items-center justify-center text-3xl border ${rarityStyle.border} relative overflow-hidden transition-all duration-300 group-hover:scale-110`}>
-                                    {item.image}
-                                    <div className="absolute inset-0 bg-gradient-to-t from-white/10 to-transparent opacity-30"></div>
-                                    {item.rarity === 'legendary' && (
-                                      <motion.div 
-                                        className="absolute inset-0 bg-white/10"
-                                        animate={{ 
-                                          opacity: [0, 0.3, 0]
-                                        }}
-                                        transition={{ 
-                                          duration: 1.5, 
-                                          repeat: Infinity
-                                        }}
-                                      />
-                                    )}
-                                  </div>
+                            {/* Rarity border */}
+                            <div className={`absolute inset-0 border-2 ${rarityStyle.border} rounded-md z-10 pointer-events-none`}></div>
+                            
+                            {/* Rarity corner label */}
+                            {item.rarity && item.rarity !== 'common' && (
+                              <div className={`absolute top-2 right-2 px-1.5 py-0.5 bg-black/70 ${rarityStyle.text} text-xs rounded z-20 flex items-center gap-1`}>
+                                <Star className="h-3 w-3" />
+                                {item.rarity}
+                              </div>
+                            )}
+                            
+                            {/* Card with large image area */}
+                            <div className="h-full flex flex-col">
+                              {/* Main image area */}
+                              <div 
+                                className="flex-1 flex items-center justify-center p-3 relative overflow-hidden"
+                                style={{background: rarityStyle.bgGradient}}
+                              >
+                                {/* Rarity effect background */}
+                                <div className="absolute inset-0 opacity-20">
+                                  <div className="absolute inset-0 bg-gradient-to-t from-black/50 to-transparent"></div>
                                 </div>
                                 
+                                {/* Item image */}
+                                <div className="relative z-10 w-full h-full flex items-center justify-center">
+                                  <div className="text-7xl transform group-hover:scale-110 transition-transform duration-300 filter drop-shadow-lg">
+                                    {item.image}
+                                  </div>
+                                </div>
+
+                                {/* Effect tag if present */}
                                 {item.effect && (
-                                  <div className="text-center">
-                                    <div className={`text-xs ${rarityStyle.text} mb-2 py-1 px-2 rounded-md ${rarityStyle.bg} inline-block border ${rarityStyle.border}`}>
-                                      {item.effect}
-                                    </div>
+                                  <div className="absolute bottom-2 left-2 bg-black/70 px-2 py-0.5 text-xs rounded text-white border border-white/20 z-20">
+                                    {item.effect.length > 12 ? `${item.effect.substring(0, 10)}...` : item.effect}
                                   </div>
                                 )}
-                              </CardContent>
+                              </div>
                               
-                              <CardFooter className="flex justify-between items-center pt-1">
-                                {item.category === 'dbucks' ? (
-                                  <div className="w-full">
-                                    <Button 
-                                      onClick={() => handlePurchase(item)}
-                                      className="w-full bg-gradient-to-r from-game-legendary to-game-primary text-white font-['Noto_Sans_Arabic'] relative overflow-hidden"
-                                    >
-                                      <motion.div
-                                        className="absolute inset-0 bg-white/5"
-                                        animate={{ x: ['-100%', '100%'] }}
-                                        transition={{ duration: 1.5, repeat: Infinity }}
-                                      />
-                                      <CircleDollarSign className="h-4 w-4 mr-1" />
-                                      شراء الآن
-                                    </Button>
-                                  </div>
-                                ) : (
-                                  <>
-                                    <div className="flex items-center gap-1 py-0.5 px-2 bg-black/30 rounded-lg border border-white/5">
-                                      <img 
-                                        src="/lovable-uploads/b01a3696-c05d-49eb-b8f2-6b1f7dcbeaab.png" 
-                                        alt="Dbucks" 
-                                        className="h-5 w-5 object-contain"
-                                      />
-                                      <span className="font-bold font-['Share_Tech_Mono'] text-white text-sm">{item.price}</span>
-                                    </div>
-                                    
-                                    <Button
-                                      onClick={() => handlePurchase(item)}
-                                      disabled={(user?.coins || 0) < item.price}
-                                      variant="outline"
-                                      className="relative group overflow-hidden bg-gradient-to-r from-game-primary/10 to-transparent border-game-primary/30"
-                                    >
-                                      <motion.div 
-                                        className="absolute inset-0 bg-gradient-to-r from-game-primary/0 via-game-primary/20 to-game-primary/0"
-                                        initial={{ x: -100, opacity: 0 }}
-                                        animate={{ 
-                                          x: 100, 
-                                          opacity: [0, 1, 0]
-                                        }}
-                                        transition={{
-                                          duration: 2,
-                                          repeat: Infinity,
-                                          repeatDelay: 0.5
-                                        }}
-                                      />
-                                      <ShoppingCart className="h-4 w-4 mr-1" />
-                                      شراء الآن
-                                    </Button>
-                                  </>
-                                )}
-                              </CardFooter>
-                            </Card>
+                              {/* Fortnite-style black bottom bar */}
+                              <div className="bg-black/90 px-3 py-2 flex items-center justify-between">
+                                <h3 className={`font-bold text-white truncate max-w-[120px] font-['Changa'] text-sm`}>
+                                  {item.name}
+                                </h3>
+                                
+                                <div className="flex items-center gap-0.5">
+                                  <img 
+                                    src="/lovable-uploads/b01a3696-c05d-49eb-b8f2-6b1f7dcbeaab.png" 
+                                    alt="Dbucks" 
+                                    className="h-5 w-5 object-contain"
+                                  />
+                                  <span className="font-bold text-white font-['Share_Tech_Mono'] text-sm">
+                                    {item.price}
+                                  </span>
+                                </div>
+                              </div>
+                            </div>
+                            
+                            {/* Purchase overlay on hover */}
+                            <div className="absolute inset-0 bg-black/60 opacity-0 group-hover:opacity-100 flex items-center justify-center transition-opacity z-30">
+                              <Button
+                                onClick={() => handlePurchase(item)}
+                                disabled={(user?.coins || 0) < item.price}
+                                className="bg-game-primary hover:bg-game-secondary text-white font-['Noto_Sans_Arabic'] px-4"
+                              >
+                                <ShoppingCart className="h-4 w-4 mr-1" />
+                                شراء الآن
+                              </Button>
+                            </div>
                           </motion.div>
                         );
                       })}
@@ -792,80 +758,4 @@ const Shop = () => {
       {isConfirmingPurchase && selectedItem && (
         <div className="fixed inset-0 bg-black/70 backdrop-blur-md flex items-center justify-center z-50">
           <motion.div
-            initial={{ scale: 0.9, opacity: 0 }}
-            animate={{ scale: 1, opacity: 1 }}
-            className="bg-black/80 p-6 rounded-xl border border-game-primary/30 w-[90%] max-w-md"
-          >
-            <h3 className="text-xl font-bold font-['Changa'] text-white mb-4">تأكيد الشراء</h3>
-            <p className="text-gray-300 mb-6 font-['Noto_Sans_Arabic']">
-              هل أنت متأكد من شراء "{selectedItem.name}" مقابل {selectedItem.price} عملة؟
-            </p>
-            
-            <div className="flex gap-4 justify-end">
-              <Button 
-                variant="outline" 
-                onClick={cancelPurchase}
-                className="border-white/10 hover:bg-white/5"
-              >
-                إلغاء
-              </Button>
-              <Button 
-                onClick={confirmPurchase}
-                className="bg-gradient-to-r from-game-primary to-game-secondary"
-              >
-                تأكيد الشراء
-              </Button>
-            </div>
-          </motion.div>
-        </div>
-      )}
-      
-      {/* Mystery box opening animation */}
-      {isBoxOpening && (
-        <div className="fixed inset-0 bg-black/80 backdrop-blur-md flex items-center justify-center z-50">
-          <motion.div className="text-center">
-            {!boxReward ? (
-              <motion.div
-                initial={{ rotate: 0 }}
-                animate={{ 
-                  rotate: 360,
-                  scale: [1, 1.1, 1]
-                }}
-                transition={{ 
-                  duration: 2,
-                  repeat: Infinity,
-                  repeatType: "loop"
-                }}
-                className="text-8xl mb-6"
-              >
-                🎁
-              </motion.div>
-            ) : (
-              <motion.div
-                initial={{ opacity: 0, scale: 0.5 }}
-                animate={{ opacity: 1, scale: 1 }}
-                transition={{ duration: 0.5 }}
-              >
-                <div className="text-8xl mb-6">🎉</div>
-                <h3 className="text-xl font-bold text-white mb-2 font-['Changa']">
-                  لقد حصلت على
-                </h3>
-                <div className="bg-gradient-to-r from-game-primary to-game-secondary p-4 rounded-lg text-2xl font-bold text-white mb-6 font-['Share_Tech_Mono']">
-                  {boxReward}
-                </div>
-                <Button 
-                  onClick={closeMysteryBox}
-                  className="bg-gradient-to-r from-game-primary to-game-secondary"
-                >
-                  رائع!
-                </Button>
-              </motion.div>
-            )}
-          </motion.div>
-        </div>
-      )}
-    </div>
-  );
-};
-
-export default Shop;
+            initial={{ scale: 0.9, opacity: 0
