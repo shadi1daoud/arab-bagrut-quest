@@ -236,7 +236,7 @@ const Dashboard = () => {
           <div className="col-span-3 flex flex-col gap-4">
             {/* Leaderboard */}
             <Card>
-              <CardContent className="my-[5px]">
+              <CardContent className="py-0 my-[14px]">
                 <Leaderboard data={leaderboardData} filter={leaderboardFilter} onFilterChange={setLeaderboardFilter} />
               </CardContent>
             </Card>
