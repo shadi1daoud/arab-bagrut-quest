@@ -226,7 +226,7 @@ const StudentLayout = () => {
                     
                     <div className="flex items-center gap-2">
                       <div className="glass-card py-1 px-2 rounded-full border border-white/5 hidden md:flex items-center gap-1.5">
-                        <img src="/lovable-uploads/b01a3696-c05d-49eb-b8f2-6b1f7dcbeaab.png" alt="Dbucks" className="h-5 w-5 object-contain" />
+                        <img alt="Dbucks" src="/lovable-uploads/0e8e99cc-9278-487b-a22d-d0558c2f11dc.png" className="h-7 w-7 object-contain" />
                         <span className="text-white font-['Share_Tech_Mono'] text-sm">8965</span>
                       </div>
                       
