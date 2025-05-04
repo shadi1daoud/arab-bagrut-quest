@@ -142,7 +142,7 @@ const Login = () => {
         }}>
             <div className="flex items-center justify-between mb-8">
               <h2 className="text-2xl font-bold text-white font-changa">
-                <span className="text-game-accent mr-2">🎮</span>
+                <span className="mr-2 text-cosmic-primary">🎮</span>
                 لنبدأ المغامرة!
               </h2>
               <Sparkles className="text-game-accent w-6 h-6" />
