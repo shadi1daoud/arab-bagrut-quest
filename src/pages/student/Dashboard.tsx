@@ -1,6 +1,6 @@
 
 import React, { useState } from 'react';
-import { Activity, Award, BookOpen, Calendar, Clock, Lock } from 'lucide-react';
+import { Activity, Award, BookOpen, Calendar, Clock, Lock, Target, Trophy } from 'lucide-react';
 import { Card, CardContent, CardFooter } from '@/components/ui/card';
 import { Tabs, TabsList, TabsTrigger, TabsContent } from '@/components/ui/tabs';
 import { ScrollArea } from '@/components/ui/scroll-area';
