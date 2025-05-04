@@ -1,7 +1,9 @@
+
 import React from 'react';
 import { Award, Brain, Flame } from 'lucide-react';
 import { Progress } from './ui/progress';
 import { Avatar, AvatarFallback, AvatarImage } from './ui/avatar';
+
 interface StatsCardProps {
   name: string;
   level: number;
@@ -12,6 +14,7 @@ interface StatsCardProps {
   points: number;
   iq: number;
 }
+
 export const StatsCard: React.FC<StatsCardProps> = ({
   name = "شادي داود",
   level = 5,
@@ -22,22 +25,23 @@ export const StatsCard: React.FC<StatsCardProps> = ({
   points = 8900,
   iq = 8.9
 }) => {
-  return <div>
+  return (
+    <div className="p-4 bg-black/30 rounded-xl border border-white/5">
       <div className="flex items-center gap-5">
         <div className="relative">
-          <Avatar className="h-14 w-14 border-2 border-[#8E6DFF]/20">
+          <Avatar className="h-14 w-14 border-2 border-[#FF4800]/20">
             <AvatarImage src="/assets/avatars/student.png" />
             <AvatarFallback className="bg-[#1A1D2F] text-xl font-bold">
               {name.charAt(0)}
             </AvatarFallback>
           </Avatar>
-          <div className="absolute -top-1 -right-1 h-5 w-5 rounded-full flex items-center justify-center text-[#0C0E1A] text-xs font-bold shadow-lg shadow-[#8E6DFF]/20 font-['Share_Tech_Mono'] bg-[#ff4800]">{level}</div>
+          <div className="absolute -top-1 -right-1 h-5 w-5 rounded-full flex items-center justify-center text-[#0C0E1A] text-xs font-bold shadow-lg shadow-[#FF4800]/20 font-['Share_Tech_Mono'] bg-[#ff4800]">{level}</div>
         </div>
         
         <div className="flex-1">
           <div className="flex justify-between">
             <h2 className="text-white font-bold text-base font-changa">{name}</h2>
-            <span className="py-0.5 bg-[#8E6DFF]/10 rounded-md font-['Share_Tech_Mono'] text-[#ff4800] px-[10px] text-xs font-normal">Lv {level}</span>
+            <span className="py-0.5 bg-[#FF4800]/10 rounded-md font-['Share_Tech_Mono'] text-[#ff4800] px-[10px] text-xs font-normal">Lv {level}</span>
           </div>
           
           <p className="text-gray-400 text-xs mb-2 font-noto">{grade}</p>
@@ -72,6 +76,8 @@ export const StatsCard: React.FC<StatsCardProps> = ({
           <div className="text-sm font-bold text-white font-['Share_Tech_Mono']">{iq}</div>
         </div>
       </div>
-    </div>;
+    </div>
+  );
 };
+
 export default StatsCard;

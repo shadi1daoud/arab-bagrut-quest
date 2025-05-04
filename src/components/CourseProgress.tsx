@@ -2,6 +2,7 @@
 import React from 'react';
 import { BookOpen } from 'lucide-react';
 import { Progress } from './ui/progress';
+import { SectionHeader } from './ui/section-header';
 
 interface CourseItem {
   id: number;
@@ -11,9 +12,13 @@ interface CourseItem {
 
 interface CourseProgressProps {
   courses: CourseItem[];
+  showHeader?: boolean;
 }
 
-export const CourseProgress: React.FC<CourseProgressProps> = ({ courses }) => {
+export const CourseProgress: React.FC<CourseProgressProps> = ({ 
+  courses, 
+  showHeader = true 
+}) => {
   return (
     <div className="space-y-4">
       {courses.map(course => (
@@ -25,10 +30,19 @@ export const CourseProgress: React.FC<CourseProgressProps> = ({ courses }) => {
           
           <Progress 
             value={course.progress} 
-            className="h-6 bg-black/40 border border-white/5"
+            className="h-4 bg-black/40 border border-white/5"
           />
         </div>
       ))}
+      
+      {showHeader && (
+        <SectionHeader 
+          title="تقدم الكورسات"
+          icon={<BookOpen className="h-4 w-4 text-[#FF4800]" strokeWidth={2} />}
+          actionLabel="عرض الكل"
+          actionHref="/courses"
+        />
+      )}
     </div>
   );
 };
