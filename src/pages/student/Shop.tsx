@@ -758,4 +758,101 @@ const Shop = () => {
       {isConfirmingPurchase && selectedItem && (
         <div className="fixed inset-0 bg-black/70 backdrop-blur-md flex items-center justify-center z-50">
           <motion.div
-            initial={{ scale: 0.9, opacity: 0
+            initial={{ scale: 0.9, opacity: 0 }}
+            animate={{ scale: 1, opacity: 1 }}
+            exit={{ scale: 0.9, opacity: 0 }}
+            className="bg-black/80 border border-white/10 rounded-lg p-5 max-w-sm w-full"
+          >
+            <h2 className="text-xl font-bold mb-3 text-center font-['Changa']">تأكيد الشراء</h2>
+            <div className="flex items-center justify-center mb-4">
+              <div className="text-5xl p-3">{selectedItem.image}</div>
+            </div>
+            <p className="text-center mb-5 text-sm">
+              هل تريد شراء <span className="text-game-primary font-bold">{selectedItem.name}</span> مقابل <span className="text-game-legendary font-bold">{selectedItem.price}</span> عملة؟
+            </p>
+            <div className="flex gap-3 justify-center">
+              <Button
+                variant="outline"
+                onClick={cancelPurchase}
+                className="border-white/10 hover:border-white/20"
+              >
+                إلغاء
+              </Button>
+              <Button 
+                onClick={confirmPurchase}
+                className="bg-game-primary hover:bg-game-secondary"
+              >
+                تأكيد الشراء
+              </Button>
+            </div>
+          </motion.div>
+        </div>
+      )}
+      
+      {/* Mystery box opening animation */}
+      {isBoxOpening && (
+        <div className="fixed inset-0 bg-black/80 backdrop-blur-md flex items-center justify-center z-50 flex-col">
+          <div className="relative max-w-xs w-full h-64 mb-5">
+            {!boxReward ? (
+              // Box shaking animation
+              <motion.div 
+                className="absolute inset-0 flex items-center justify-center"
+                animate={{ 
+                  rotate: [0, -2, 0, 2, 0],
+                  scale: [1, 1.05, 1, 1.05, 1]
+                }}
+                transition={{
+                  duration: 0.5,
+                  repeat: Infinity
+                }}
+              >
+                <div className="text-9xl">🎁</div>
+              </motion.div>
+            ) : (
+              // Reward reveal animation
+              <motion.div 
+                className="absolute inset-0 flex items-center justify-center flex-col"
+                initial={{ scale: 0.5, opacity: 0 }}
+                animate={{ scale: 1, opacity: 1 }}
+                transition={{ type: "spring", duration: 0.5 }}
+              >
+                <motion.div
+                  animate={{ 
+                    y: [0, -10, 0],
+                    rotate: [0, -3, 3, 0]
+                  }}
+                  transition={{ duration: 2, repeat: Infinity }}
+                  className="text-9xl mb-2"
+                >
+                  {boxReward.includes("XP") ? "⭐" :
+                    boxReward.includes("عملة") ? "💰" :
+                    boxReward.includes("مضاعف") ? "⚡" :
+                    boxReward.includes("طابع") ? "🏆" : "🎮"}
+                </motion.div>
+                <motion.p
+                  initial={{ opacity: 0 }}
+                  animate={{ opacity: 1 }}
+                  transition={{ delay: 0.3 }}
+                  className="text-xl font-bold mt-4 bg-gradient-to-r from-game-primary to-game-legendary bg-clip-text text-transparent"
+                >
+                  {boxReward}
+                </motion.p>
+              </motion.div>
+            )}
+          </div>
+          
+          {boxReward && (
+            <Button
+              onClick={closeMysteryBox}
+              className="mt-5 bg-game-primary hover:bg-game-secondary"
+            >
+              حسناً
+            </Button>
+          )}
+        </div>
+      )}
+    </div>
+  );
+};
+
+export default Shop;
