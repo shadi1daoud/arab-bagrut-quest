@@ -226,8 +226,8 @@ const StudentLayout = () => {
                     
                     <div className="flex items-center gap-2">
                       <div className="glass-card py-1 px-2 rounded-full border border-white/5 hidden md:flex items-center gap-1.5">
-                        <img alt="Dbucks" src="/lovable-uploads/11a661b7-cce2-43f6-95cc-b8a348d3e039.png" className="h-7 w-7 object-contain" />
-                        <span className="text-white font-['Share_Tech_Mono'] text-sm">{user?.coins || 450}</span>
+                        <img src="/lovable-uploads/b01a3696-c05d-49eb-b8f2-6b1f7dcbeaab.png" alt="Dbucks" className="h-5 w-5 object-contain" />
+                        <span className="text-white font-['Share_Tech_Mono'] text-sm">8965</span>
                       </div>
                       
                       <button className="relative text-gray-400 hover:text-white group">
