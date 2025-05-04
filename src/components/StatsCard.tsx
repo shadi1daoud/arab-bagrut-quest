@@ -23,7 +23,7 @@ export const StatsCard: React.FC<StatsCardProps> = ({
   iq = 8.9
 }) => {
   return <div>
-      <div className="flex items-center gap-4">
+      <div className="flex items-center gap-5">
         <div className="relative">
           <Avatar className="h-14 w-14 border-2 border-[#8E6DFF]/20">
             <AvatarImage src="/assets/avatars/student.png" />
@@ -37,7 +37,7 @@ export const StatsCard: React.FC<StatsCardProps> = ({
         <div className="flex-1">
           <div className="flex justify-between">
             <h2 className="text-white font-bold text-base font-changa">{name}</h2>
-            <span className="text-xs py-0.5 px-2 bg-[#8E6DFF]/10 rounded-md font-bold font-['Share_Tech_Mono'] text-[#ff4800]">Lv {level}</span>
+            <span className="py-0.5 bg-[#8E6DFF]/10 rounded-md font-['Share_Tech_Mono'] text-[#ff4800] px-[10px] text-xs font-normal">Lv {level}</span>
           </div>
           
           <p className="text-gray-400 text-xs mb-2 font-noto">{grade}</p>

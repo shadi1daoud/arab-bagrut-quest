@@ -118,7 +118,7 @@ const Dashboard = () => {
           <div className="col-span-3 flex flex-col gap-4">
             {/* Profile Card with Stats */}
             <Card>
-              <CardContent className="my-[5px]">
+              <CardContent className="my-[5px] px-[5px] mx-0 py-[6px]">
                 <StatsCard name="شادي داود" level={5} grade="الثاني عشر - دار الأرقم" xp={2450} maxXp={3000} effort={12} points={8900} iq={8.9} />
               </CardContent>
             </Card>
