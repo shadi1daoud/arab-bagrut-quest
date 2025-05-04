@@ -130,7 +130,7 @@ const Login = () => {
       }}>
           {/* Card background effect */}
           <div className="absolute inset-0 bg-gradient-to-br from-purple-900/10 to-cyan-900/10 z-0"></div>
-          <div className="absolute inset-0 bg-[radial-gradient(ellipse_at_top,_var(--tw-gradient-stops))] from-game-accent/5 via-transparent to-transparent z-0"></div>
+          <div className="absolute inset-0 from-game-accent/5 via-transparent to-transparent z-0 bg-stone-900 bg-[cosmic-card-bg-hover]"></div>
           
           <motion.div className="relative z-10" initial={{
           opacity: 0
