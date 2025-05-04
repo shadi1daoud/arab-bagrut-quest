@@ -6,7 +6,6 @@ import { cn } from '@/lib/utils';
 import { motion, AnimatePresence } from 'framer-motion';
 import '../styles/theme-nebula.css';
 import '../styles/sidebar.css';
-
 const StudentLayout = () => {
   const {
     user,
@@ -15,11 +14,9 @@ const StudentLayout = () => {
   const [isMobileMenuOpen, setIsMobileMenuOpen] = useState(false);
   const [isMenuCollapsed, setIsMenuCollapsed] = useState(false);
   const location = useLocation();
-  
   useEffect(() => {
     setIsMobileMenuOpen(false);
   }, [location.pathname]);
-  
   const navItems = [{
     path: '/',
     label: 'الرئيسية',
@@ -41,11 +38,9 @@ const StudentLayout = () => {
     label: 'الإعدادات',
     icon: Settings
   }];
-  
   const toggleMenu = () => {
     setIsMenuCollapsed(!isMenuCollapsed);
   };
-  
   const NavItem = ({
     path,
     label,
@@ -120,7 +115,7 @@ const StudentLayout = () => {
       duration: 0.3,
       ease: "easeInOut"
     }} className={cn("fixed inset-y-0 right-0 z-30 transform lg:translate-x-0 lg:static flex flex-col overflow-hidden", isMobileMenuOpen ? "translate-x-0" : "translate-x-full lg:translate-x-0")} data-state={isMenuCollapsed ? "collapsed" : "expanded"}>
-        <div className="p-4 flex items-center justify-between">
+        <div className="p-4 flex items-center justify-between py-[4px]">
           <div className={cn("flex items-center", isMenuCollapsed ? "justify-center w-full" : "")}>
             <div id="logo-wrapper">
               <img alt="Darsni" src="/lovable-uploads/389a6f4c-bab8-4bbc-aa92-54a785b1a946.png" className="logo-full object-scale-down" />
@@ -137,17 +132,9 @@ const StudentLayout = () => {
         {user && <div className={cn("px-4 py-2 flex items-center gap-3 relative overflow-hidden border-b border-white/5", isMenuCollapsed ? "justify-center" : "")}>
             <div className="relative flex-shrink-0 glow-effect">
               <div className="h-12 w-12 rounded-full overflow-hidden border-2 border-[#FF4800]/20 shadow-lg">
-                {user?.avatar ? (
-                  <img src={user.avatar} alt={user.name} className="h-full w-full object-cover" />
-                ) : (
-                  <div className="h-full w-full bg-[#1A1F2C] flex items-center justify-center">
-                    <img 
-                      src="/lovable-uploads/48f9c971-a223-40f4-9e8b-17c399b6f387.png" 
-                      alt="Profile" 
-                      className="h-full w-full object-cover"
-                    />
-                  </div>
-                )}
+                {user?.avatar ? <img src={user.avatar} alt={user.name} className="h-full w-full object-cover" /> : <div className="h-full w-full bg-[#1A1F2C] flex items-center justify-center">
+                    <img src="/lovable-uploads/48f9c971-a223-40f4-9e8b-17c399b6f387.png" alt="Profile" className="h-full w-full object-cover" />
+                  </div>}
               </div>
               <div className="absolute -top-1 -right-1 h-5 w-5 bg-[#FF4800] rounded-full flex items-center justify-center text-white text-xs font-bold shadow-lg shadow-[#FF4800]/20 font-['Share_Tech_Mono']">5</div>
             </div>
@@ -239,11 +226,7 @@ const StudentLayout = () => {
                     
                     <div className="flex items-center gap-2">
                       <div className="glass-card py-1 px-2 rounded-full border border-white/5 hidden md:flex items-center gap-1.5">
-                        <img 
-                          src="/lovable-uploads/b01a3696-c05d-49eb-b8f2-6b1f7dcbeaab.png" 
-                          alt="Dbucks" 
-                          className="h-5 w-5 object-contain" 
-                        />
+                        <img src="/lovable-uploads/b01a3696-c05d-49eb-b8f2-6b1f7dcbeaab.png" alt="Dbucks" className="h-5 w-5 object-contain" />
                         <span className="text-white font-['Share_Tech_Mono'] text-sm">8965</span>
                       </div>
                       
