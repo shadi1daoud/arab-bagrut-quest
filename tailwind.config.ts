@@ -70,7 +70,33 @@ export default {
 					border: 'hsl(var(--sidebar-border))',
 					ring: 'hsl(var(--sidebar-ring))'
 				},
-				// Theme colors with cosmic inspiration
+				// Improved game theme colors with consistent naming
+				game: {
+					primary: '#FF4800',       // Main action color (cosmic orange)
+					secondary: '#CC3900',     // Secondary actions (darker orange)
+					accent: '#FFA56E',        // Highlights and accents
+					background: '#0E0E0E',    // Deep space background
+					foreground: '#E9E9E9',    // Main text color
+					'foreground-muted': '#B5B5B5', // Secondary text color
+					
+					// Card styles
+					'card-bg': 'rgba(255,255,255,0.05)',     // Card background (glass)
+					'card-bg-hover': 'rgba(255,255,255,0.08)',  // Card hover
+					'card-bg-alt': 'rgba(20,20,25,0.5)',      // Alternative card background
+					'card-border': 'rgba(255,255,255,0.1)',    // Card border
+					
+					// Status colors
+					success: '#4CAF50',
+					warning: '#FF9800', 
+					error: '#F44336',
+					info: '#03A9F4',
+					
+					// Rarity colors
+					legendary: '#FFD700',
+					epic: '#A335EE',
+					rare: '#0070DD',
+					common: '#9D9D9D',
+				},
 				cosmic: {
 					primary: '#FF4800',       // Main action (cosmic orange)
 					secondary: '#CC3900',     // Secondary actions (cosmic dark orange)
