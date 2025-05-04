@@ -1,4 +1,3 @@
-
 import { useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { useAuth } from '@/contexts/AuthContext';
@@ -107,19 +106,11 @@ const Login = () => {
       >
         <div className="text-center mb-8">
           <div className="flex items-center justify-center gap-2 mb-4">
-            <motion.div 
-              className="bg-primary p-2.5 rounded-lg shadow-lg shadow-primary/30"
-              animate={{ 
-                boxShadow: ['0 0 10px rgba(255, 66, 147, 0.3)', '0 0 20px rgba(255, 66, 147, 0.5)', '0 0 10px rgba(255, 66, 147, 0.3)']
-              }}
-              transition={{ duration: 2, repeat: Infinity, ease: "easeInOut" }}
-            >
-              <svg width="24" height="24" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
-                <path d="M21 10C21 10 18.995 7.26822 17.3662 5.63824C15.7373 4.00827 13.4864 3 11 3C6.02944 3 2 7.02944 2 12C2 16.9706 6.02944 21 11 21C15.9706 21 20 16.9706 20 12" stroke="white" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"/>
-                <path d="M22 2L13 11" stroke="white" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"/>
-              </svg>
-            </motion.div>
-            <h1 className="text-5xl font-bold text-white font-changa">درسني</h1>
+            <img 
+              src="/lovable-uploads/7d6a3b3b-a0be-4ec3-8796-51da0a277b60.png" 
+              alt="Darsni Logo" 
+              className="h-20 w-auto"
+            />
           </div>
           <p className="text-xl text-cyan-400 font-semibold mt-2 font-outfit">منصة التحضير للبجروت</p>
           <motion.div
