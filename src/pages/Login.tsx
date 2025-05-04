@@ -243,7 +243,7 @@ const Login = () => {
             <div className="mt-6 text-center text-sm text-gray-400">
               <a href="#" className="text-gray-400 hover:underline font-outfit transition-colors">نسيت كلمة المرور؟</a>
               <span className="mx-2">•</span>
-              <a href="#" className="text-orange-400 hover:underline font-outfit transition-colors">إنشاء حساب جديد</a>
+              <a href="#" className="text-blue-400 hover:underline font-outfit transition-colors">إنشاء حساب جديد</a>
             </div>
           </motion.div>
         </motion.div>
