@@ -106,7 +106,7 @@ const Login = () => {
           <div className="flex items-center justify-center gap-2 mb-4 my-[10px]">
             <img src="/lovable-uploads/7d6a3b3b-a0be-4ec3-8796-51da0a277b60.png" alt="Darsni Logo" className="h-14 w-auto" />
           </div>
-          <p className="text-xl text-cyan-400 font-semibold mt-2 font-outfit">منصة التحضير للبجروت</p>
+          <p className="text-xl font-semibold mt-2 font-outfit text-cosmic-primary">منصة التحضير للبجروت</p>
           <motion.div className="absolute top-44 left-1/2 -translate-x-1/2 z-0 opacity-20 pointer-events-none" animate={{
           rotate: 360
         }} transition={{
