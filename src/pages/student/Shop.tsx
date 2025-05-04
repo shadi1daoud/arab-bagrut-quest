@@ -1,3 +1,4 @@
+
 import { useState, useEffect } from 'react';
 import { useAuth } from '@/contexts/AuthContext';
 import { 
@@ -663,7 +664,6 @@ const Shop = () => {
                             whileHover="hover"
                             initial="rest"
                             animate="rest"
-                            variants={cardTiltEffect}
                             className={`group relative rounded-xl transition-all duration-300 ${rarityStyle.glow} ${rarityStyle.hoverGlow} perspective`}
                           >
                             <Card className={`border ${rarityStyle.border} bg-black/40 backdrop-blur-md h-full`}>
@@ -759,3 +759,113 @@ const Shop = () => {
                                           opacity: [0, 1, 0]
                                         }}
                                         transition={{
+                                          duration: 2,
+                                          repeat: Infinity,
+                                          repeatDelay: 0.5
+                                        }}
+                                      />
+                                      <ShoppingCart className="h-4 w-4 mr-1" />
+                                      شراء الآن
+                                    </Button>
+                                  </>
+                                )}
+                              </CardFooter>
+                            </Card>
+                          </motion.div>
+                        );
+                      })}
+                    </motion.div>
+                  ) : (
+                    <div className="flex flex-col items-center justify-center h-full text-center text-game-foreground-muted">
+                      <div className="text-5xl mb-4">😿</div>
+                      <p className="font-['Noto_Sans_Arabic']">لا توجد عناصر في هذه الفئة حاليًا</p>
+                    </div>
+                  )}
+                </ScrollArea>
+              </motion.div>
+            </TabsContent>
+          </AnimatePresence>
+        </div>
+      </Tabs>
+      
+      {/* Purchase confirmation modal */}
+      {isConfirmingPurchase && selectedItem && (
+        <div className="fixed inset-0 bg-black/70 backdrop-blur-md flex items-center justify-center z-50">
+          <motion.div
+            initial={{ scale: 0.9, opacity: 0 }}
+            animate={{ scale: 1, opacity: 1 }}
+            className="bg-black/80 p-6 rounded-xl border border-game-primary/30 w-[90%] max-w-md"
+          >
+            <h3 className="text-xl font-bold font-['Changa'] text-white mb-4">تأكيد الشراء</h3>
+            <p className="text-gray-300 mb-6 font-['Noto_Sans_Arabic']">
+              هل أنت متأكد من شراء "{selectedItem.name}" مقابل {selectedItem.price} عملة؟
+            </p>
+            
+            <div className="flex gap-4 justify-end">
+              <Button 
+                variant="outline" 
+                onClick={cancelPurchase}
+                className="border-white/10 hover:bg-white/5"
+              >
+                إلغاء
+              </Button>
+              <Button 
+                onClick={confirmPurchase}
+                className="bg-gradient-to-r from-game-primary to-game-secondary"
+              >
+                تأكيد الشراء
+              </Button>
+            </div>
+          </motion.div>
+        </div>
+      )}
+      
+      {/* Mystery box opening animation */}
+      {isBoxOpening && (
+        <div className="fixed inset-0 bg-black/80 backdrop-blur-md flex items-center justify-center z-50">
+          <motion.div className="text-center">
+            {!boxReward ? (
+              <motion.div
+                initial={{ rotate: 0 }}
+                animate={{ 
+                  rotate: 360,
+                  scale: [1, 1.1, 1]
+                }}
+                transition={{ 
+                  duration: 2,
+                  repeat: Infinity,
+                  repeatType: "loop"
+                }}
+                className="text-8xl mb-6"
+              >
+                🎁
+              </motion.div>
+            ) : (
+              <motion.div
+                initial={{ opacity: 0, scale: 0.5 }}
+                animate={{ opacity: 1, scale: 1 }}
+                transition={{ duration: 0.5 }}
+              >
+                <div className="text-8xl mb-6">🎉</div>
+                <h3 className="text-xl font-bold text-white mb-2 font-['Changa']">
+                  لقد حصلت على
+                </h3>
+                <div className="bg-gradient-to-r from-game-primary to-game-secondary p-4 rounded-lg text-2xl font-bold text-white mb-6 font-['Share_Tech_Mono']">
+                  {boxReward}
+                </div>
+                <Button 
+                  onClick={closeMysteryBox}
+                  className="bg-gradient-to-r from-game-primary to-game-secondary"
+                >
+                  رائع!
+                </Button>
+              </motion.div>
+            )}
+          </motion.div>
+        </div>
+      )}
+    </div>
+  );
+};
+
+export default Shop;
