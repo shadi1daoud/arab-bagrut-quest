@@ -1,4 +1,3 @@
-
 import React, { useState } from 'react';
 import { Activity, Award, BookOpen, Calendar, Clock, Lock, Target, Trophy } from 'lucide-react';
 import { Card, CardContent, CardFooter } from '@/components/ui/card';
@@ -106,14 +105,12 @@ const comingSoonCourses = [{
   name: 'علوم الحاسب',
   color: 'indigo'
 }];
-
 const Dashboard = () => {
   const [leaderboardFilter, setLeaderboardFilter] = useState('week');
 
   // Calculate total weekly hours and XP
   const totalWeeklyHours = '8.7';
   const totalWeeklyXP = '870';
-  
   return <>
       <StarParticles />
       <ScrollArea className="h-full w-full">
@@ -182,12 +179,7 @@ const Dashboard = () => {
                   </div>
                   
                   <div className="flex-1">
-                    <DailyQuest 
-                      title="أكمل تحصيلي الرياضيات" 
-                      description="حل 10 مسائل جديدة من كتاب التحصيلي" 
-                      xpReward={150} 
-                      day={7} 
-                    />
+                    <DailyQuest title="أكمل تحصيلي الرياضيات" description="حل 10 مسائل جديدة من كتاب التحصيلي" xpReward={150} day={7} />
                   </div>
                 </div>
               </CardContent>
@@ -225,8 +217,7 @@ const Dashboard = () => {
                 
                 <CardContent className="p-3">
                   <TabsContent value="exams" className="mt-0 space-y-2">
-                    {upcomingExams.map(exam => (
-                      <div key={exam.id} className="flex items-center gap-3 p-3 rounded-xl bg-[rgba(255,255,255,0.03)] hover:bg-[rgba(255,255,255,0.05)] transition-colors cursor-pointer">
+                    {upcomingExams.map(exam => <div key={exam.id} className="flex items-center gap-3 p-3 rounded-xl bg-[rgba(255,255,255,0.03)] hover:bg-[rgba(255,255,255,0.05)] transition-colors cursor-pointer">
                         <div className="h-10 w-10 rounded-lg flex items-center justify-center bg-[#FF4800]/10 text-[#FF4800]">
                           <Calendar className="h-5 w-5" />
                         </div>
@@ -240,14 +231,12 @@ const Dashboard = () => {
                             </span>
                           </div>
                         </div>
-                      </div>
-                    ))}
+                      </div>)}
                   </TabsContent>
                   
                   <TabsContent value="courses" className="mt-0">
                     <div className="grid grid-cols-2 gap-3">
-                      {comingSoonCourses.map(course => (
-                        <div key={course.id} className="p-3 rounded-xl bg-[rgba(255,255,255,0.03)] border border-[rgba(255,255,255,0.05)] cursor-not-allowed hover:bg-[rgba(255,255,255,0.05)] transition-colors">
+                      {comingSoonCourses.map(course => <div key={course.id} className="p-3 rounded-xl bg-[rgba(255,255,255,0.03)] border border-[rgba(255,255,255,0.05)] cursor-not-allowed hover:bg-[rgba(255,255,255,0.05)] transition-colors">
                           <div className="flex items-center gap-3">
                             <div className="h-10 w-10 rounded-lg flex items-center justify-center bg-[#FF4800]/10">
                               <Lock className="h-4 w-4 text-[#FF4800]" />
@@ -261,8 +250,7 @@ const Dashboard = () => {
                               </div>
                             </div>
                           </div>
-                        </div>
-                      ))}
+                        </div>)}
                     </div>
                   </TabsContent>
                 </CardContent>
@@ -282,11 +270,7 @@ const Dashboard = () => {
             {/* Leaderboard - Fortnite Style */}
             <Card>
               <CardContent className="p-3">
-                <Leaderboard 
-                  data={leaderboardData} 
-                  filter={leaderboardFilter} 
-                  onFilterChange={setLeaderboardFilter} 
-                />
+                <Leaderboard data={leaderboardData} filter={leaderboardFilter} onFilterChange={setLeaderboardFilter} />
               </CardContent>
               <CardFooter>
                 <h3 className="text-sm font-bold text-white font-changa flex items-center gap-2">
@@ -298,7 +282,7 @@ const Dashboard = () => {
             </Card>
             
             {/* Course Progress - Fortnite Style */}
-            <Card className="flex-1">
+            <Card className="flex-col">
               <CardContent className="p-3">
                 <CourseProgress courses={courseProgress} />
               </CardContent>
@@ -315,5 +299,4 @@ const Dashboard = () => {
       </ScrollArea>
     </>;
 };
-
 export default Dashboard;
