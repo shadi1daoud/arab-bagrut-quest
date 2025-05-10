@@ -44,12 +44,67 @@
   * {
     @apply border-border;
   }
+  
   body {
     @apply text-foreground;
     font-feature-settings: "rlig" 1, "calt" 1;
     overflow-x: hidden;
-    /* Base styling now handled in theme-nebula.css */
+    background: radial-gradient(circle, #141414 0%, #0E0E0E 70%, #080808 100%);
+  }
+  
+  html {
+    min-height: 100vh;
+    overflow-x: hidden;
   }
 }
 
-/* Glass morphism utilities now in theme-nebula.css */
+/* Animation keyframes */
+@keyframes shine {
+  0% { left: -100%; }
+  100% { left: 100%; }
+}
+
+@keyframes progress-shimmer {
+  0% { transform: translateX(-100%); }
+  100% { transform: translateX(100%); }
+}
+
+@keyframes pulse-glow {
+  0%, 100% {
+    box-shadow: 0 0 5px 0px rgba(255, 72, 0, 0.5);
+    opacity: 0.8;
+  }
+  50% {
+    box-shadow: 0 0 15px 5px rgba(255, 72, 0, 0.65);
+    opacity: 1;
+  }
+}
+
+/* Glass morphism utilities */
+.glass-card {
+  background: rgba(255, 255, 255, 0.03);
+  border: 1px solid rgba(255, 72, 0, 0.1);
+  backdrop-filter: blur(14px);
+  -webkit-backdrop-filter: blur(14px);
+  box-shadow: 0 0 20px rgba(0, 0, 0, 0.3);
+  transition: all 0.3s ease;
+}
+
+.glass-card:hover {
+  box-shadow: 0 0 25px rgba(255, 72, 0, 0.15);
+  border-color: rgba(255, 72, 0, 0.2);
+  transform: translateY(-2px);
+}
+
+/* Apply common animation classes */
+.animate-shine {
+  animation: shine 3s infinite linear;
+}
+
+.animate-pulse-glow {
+  animation: pulse-glow 2s infinite ease-in-out;
+}
+
+.animate-progress-shimmer {
+  animation: progress-shimmer 2s infinite;
+}

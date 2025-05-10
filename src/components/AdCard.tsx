@@ -14,19 +14,19 @@ const AdCard: React.FC = () => {
         </span>
       </div>
       
-      <div className="bg-[rgba(255,255,255,0.03)] border border-dashed border-[rgba(255,255,255,0.1)] rounded-lg p-2 flex items-center justify-center h-[120px] w-full relative overflow-hidden group">
+      <div className="bg-[rgba(255,255,255,0.03)] border border-dashed border-[rgba(255,255,255,0.1)] rounded-lg p-2 flex items-center justify-center h-[120px] w-full relative overflow-hidden group hover:border-[rgba(255,72,0,0.2)] transition-all duration-300">
         {adCode ? (
           <div dangerouslySetInnerHTML={{ __html: adCode }} className="w-full h-full" />
         ) : (
           <div className="text-center">
-            <div className="h-10 w-10 rounded-full bg-[#FF4800]/10 flex items-center justify-center mx-auto mb-2">
-              <ExternalLink className="h-5 w-5 text-[#FF4800]" />
+            <div className="h-12 w-12 rounded-full bg-[#FF4800]/10 flex items-center justify-center mx-auto mb-2 group-hover:animate-pulse-glow">
+              <ExternalLink className="h-5 w-5 text-[#FF4800] group-hover:scale-110 transition-transform" />
             </div>
-            <p className="text-xs text-gray-400 font-noto">مساحة إعلانية</p>
+            <p className="text-xs text-gray-400 font-noto group-hover:text-white transition-colors">مساحة إعلانية</p>
           </div>
         )}
         
-        <div className="absolute inset-0 bg-gradient-to-r from-transparent via-white/5 to-transparent opacity-0 group-hover:opacity-100 animate-shine" />
+        <div className="absolute inset-0 bg-gradient-to-r from-transparent via-white/10 to-transparent opacity-0 group-hover:opacity-100 animate-shine pointer-events-none" />
       </div>
     </div>
   );

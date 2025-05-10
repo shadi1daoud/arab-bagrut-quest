@@ -8,8 +8,8 @@ const StarParticles: React.FC = () => {
     if (!containerRef.current) return;
     
     const container = containerRef.current;
-    const containerWidth = container.offsetWidth;
-    const containerHeight = container.offsetHeight;
+    const containerWidth = window.innerWidth;
+    const containerHeight = window.innerHeight;
     
     // Clear any existing stars
     container.innerHTML = '';
@@ -18,7 +18,7 @@ const StarParticles: React.FC = () => {
     const createStars = (count: number) => {
       for (let i = 0; i < count; i++) {
         const star = document.createElement('div');
-        star.className = 'star';
+        star.className = 'dynamic-star';
         
         // Random position
         const x = Math.random() * containerWidth;
@@ -45,7 +45,7 @@ const StarParticles: React.FC = () => {
     };
     
     // Create different sized stars
-    createStars(100);
+    createStars(150);
     
     // Cleanup function
     return () => {
@@ -57,8 +57,27 @@ const StarParticles: React.FC = () => {
   
   return (
     <>
-      <div ref={containerRef} className="star-field fixed inset-0 z-[-2] overflow-hidden pointer-events-none" />
-      <div className="grid-overlay fixed inset-0 z-[-1] opacity-10 pointer-events-none" />
+      <div ref={containerRef} className="fixed inset-0 z-[-2] overflow-hidden pointer-events-none" />
+      <style jsx global>{`
+        .dynamic-star {
+          position: absolute;
+          border-radius: 50%;
+          background-color: rgba(255, 255, 255, 0.8);
+          box-shadow: 0 0 10px 2px rgba(255, 255, 255, 0.3);
+          animation: star-twinkle 3s infinite ease-in-out;
+        }
+        
+        @keyframes star-twinkle {
+          0%, 100% {
+            opacity: 0.3;
+            transform: scale(0.8);
+          }
+          50% {
+            opacity: 1;
+            transform: scale(1);
+          }
+        }
+      `}</style>
     </>
   );
 };
