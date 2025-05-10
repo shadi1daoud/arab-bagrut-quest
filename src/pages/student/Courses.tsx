@@ -1,4 +1,3 @@
-
 import { useState } from 'react';
 import { Link } from 'react-router-dom';
 import { Search, Filter, ChevronLeft, BookOpen, Star, Clock, CheckCircle, Activity, Calculator, Languages, Atom, FlaskConical, Microscope, Scroll } from 'lucide-react';
@@ -79,7 +78,6 @@ const COURSES = [{
   xpReward: 1100,
   realmImage: <Scroll size={20} color="#FF4800" strokeWidth={2} />
 }];
-
 const Courses = () => {
   const [searchTerm, setSearchTerm] = useState('');
   const [filterBy, setFilterBy] = useState('all'); // 'all', 'enrolled', 'available'
@@ -152,7 +150,7 @@ const Courses = () => {
           {/* My Courses Panel */}
           <Tab.Panel className="h-full">
             {enrolledCourses.length > 0 ? <motion.div className="grid grid-cols-3 gap-2 h-full" variants={containerVariants} initial="hidden" animate="show">
-                {enrolledCourses.map(course => <motion.div key={course.id} className="game-panel p-3 hover:border-game-primary transition-all duration-300 hover:shadow-lg" variants={itemVariants} onMouseEnter={() => setHoverCourse(course.id)} onMouseLeave={() => setHoverCourse(null)}>
+                {enrolledCourses.map(course => <motion.div key={course.id} variants={itemVariants} onMouseEnter={() => setHoverCourse(course.id)} onMouseLeave={() => setHoverCourse(null)} className="game-panel p-3 hover:border-game-primary transition-all duration-300 hover:shadow-lg bg-[0A0A0A] bg-neutral-950">
                     <div className="flex items-start gap-2 relative">
                       <div className={`h-10 w-10 rounded-lg bg-gradient-to-br ${course.color} flex items-center justify-center relative shadow-lg overflow-hidden flex-shrink-0`}>
                         <div className="absolute inset-0 bg-black opacity-10"></div>
