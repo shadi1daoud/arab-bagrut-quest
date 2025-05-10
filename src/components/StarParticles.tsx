@@ -58,7 +58,8 @@ const StarParticles: React.FC = () => {
   return (
     <>
       <div ref={containerRef} className="fixed inset-0 z-[-2] overflow-hidden pointer-events-none" />
-      <style jsx global>{`
+      <style>
+        {`
         .dynamic-star {
           position: absolute;
           border-radius: 50%;
@@ -77,7 +78,8 @@ const StarParticles: React.FC = () => {
             transform: scale(1);
           }
         }
-      `}</style>
+        `}
+      </style>
     </>
   );
 };
