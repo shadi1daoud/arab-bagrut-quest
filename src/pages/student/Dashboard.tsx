@@ -111,8 +111,7 @@ const Dashboard = () => {
   // Calculate total weekly hours and XP
   const totalWeeklyHours = '8.7';
   const totalWeeklyXP = '870';
-  return <>
-      <StarParticles />
+  return (
       <ScrollArea className="h-full w-full">
         <div className="grid grid-cols-12 gap-4 pb-4 py-[10px] my-0 px-0 mx-[9px]">
           {/* LEFT COLUMN - 3 cols */}
@@ -297,6 +296,6 @@ const Dashboard = () => {
           </div>
         </div>
       </ScrollArea>
-    </>;
+  );
 };
 export default Dashboard;
