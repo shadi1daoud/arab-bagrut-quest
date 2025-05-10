@@ -1,9 +1,10 @@
 
 #root {
-  max-width: 1280px;
-  margin: 0 auto;
-  padding: 2rem;
-  text-align: center;
+  width: 100%; /* Use full width instead of max-width */
+  min-height: 100vh; /* Ensure it uses at least full viewport height */
+  margin: 0; /* Remove auto margins that center content */
+  padding: 0; /* Remove padding that shrinks content area */
+  text-align: initial; /* Reset the centered text alignment */
 }
 
 .logo {

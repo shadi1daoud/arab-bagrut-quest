@@ -111,11 +111,12 @@ const Dashboard = () => {
   // Calculate total weekly hours and XP
   const totalWeeklyHours = '8.7';
   const totalWeeklyXP = '870';
+  
   return (
       <ScrollArea className="h-full w-full">
-        <div className="grid grid-cols-12 gap-4 pb-4 py-[10px] my-0 px-0 mx-[9px]">
+        <div className="grid grid-cols-12 gap-4 pb-4 px-4 py-2">
           {/* LEFT COLUMN - 3 cols */}
-          <div className="col-span-3 flex flex-col gap-4">
+          <div className="col-span-12 md:col-span-3 flex flex-col gap-4">
             {/* Profile Card with Stats */}
             <Card>
               <CardContent className="p-3">
@@ -139,7 +140,7 @@ const Dashboard = () => {
           </div>
           
           {/* MIDDLE COLUMN - 6 cols */}
-          <div className="col-span-6 flex flex-col gap-4">
+          <div className="col-span-12 md:col-span-6 flex flex-col gap-4">
             {/* Weekly Activity Chart - Fortnite Style */}
             <Card>
               <CardContent className="p-3">
@@ -265,7 +266,7 @@ const Dashboard = () => {
           </div>
           
           {/* RIGHT COLUMN - 3 cols */}
-          <div className="col-span-3 flex flex-col gap-4">
+          <div className="col-span-12 md:col-span-3 flex flex-col gap-4">
             {/* Leaderboard - Fortnite Style */}
             <Card>
               <CardContent className="p-3">

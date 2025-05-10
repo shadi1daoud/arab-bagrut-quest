@@ -6,6 +6,7 @@ import { cn } from '@/lib/utils';
 import { motion, AnimatePresence } from 'framer-motion';
 import '../styles/theme-nebula.css';
 import '../styles/sidebar.css';
+
 const StudentLayout = () => {
   const {
     user,
@@ -14,9 +15,11 @@ const StudentLayout = () => {
   const [isMobileMenuOpen, setIsMobileMenuOpen] = useState(false);
   const [isMenuCollapsed, setIsMenuCollapsed] = useState(false);
   const location = useLocation();
+  
   useEffect(() => {
     setIsMobileMenuOpen(false);
   }, [location.pathname]);
+  
   const navItems = [{
     path: '/',
     label: 'الرئيسية',
@@ -38,9 +41,11 @@ const StudentLayout = () => {
     label: 'الإعدادات',
     icon: Settings
   }];
+  
   const toggleMenu = () => {
     setIsMenuCollapsed(!isMenuCollapsed);
   };
+  
   const NavItem = ({
     path,
     label,
@@ -76,7 +81,7 @@ const StudentLayout = () => {
         </AnimatePresence>
       </NavLink>;
   };
-
+  
   // Create stars for star field effect
   const createStars = () => {
     const stars = [];
@@ -94,19 +99,21 @@ const StudentLayout = () => {
     return stars;
   };
   const stars = createStars();
-  return <div className="h-screen w-full flex overflow-hidden bg-transparent">
+  
+  return (
+    <div className="h-screen w-full flex overflow-hidden bg-transparent">
       {/* Background effects */}
-      <div className="star-field">
+      <div className="star-field fixed inset-0 z-[-2] pointer-events-none">
         {stars.map(star => <div key={star.id} className="star" style={{
-        width: `${star.size}px`,
-        height: `${star.size}px`,
-        left: `${star.left}%`,
-        top: `${star.top}%`,
-        animationDelay: `${star.animationDelay}s`,
-        animationDuration: `${star.animationDuration}s`
-      }} />)}
+          width: `${star.size}px`,
+          height: `${star.size}px`,
+          left: `${star.left}%`,
+          top: `${star.top}%`,
+          animationDelay: `${star.animationDelay}s`,
+          animationDuration: `${star.animationDuration}s`
+        }} />)}
       </div>
-      <div className="grid-overlay"></div>
+      <div className="grid-overlay fixed inset-0 z-[-1] pointer-events-none"></div>
       
       {/* Sidebar - controllable expand/collapse */}
       <motion.aside initial={false} animate={{
@@ -253,6 +260,8 @@ const StudentLayout = () => {
           <Outlet />
         </main>
       </div>
-    </div>;
+    </div>
+  );
 };
+
 export default StudentLayout;
