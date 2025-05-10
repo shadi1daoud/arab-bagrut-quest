@@ -1,4 +1,3 @@
-
 import type { Config } from "tailwindcss";
 
 export default {
@@ -70,6 +69,7 @@ export default {
 					border: 'hsl(var(--sidebar-border))',
 					ring: 'hsl(var(--sidebar-ring))'
 				},
+				
 				// Improved game theme colors with consistent naming
 				game: {
 					primary: '#FF4800',       // Main action color (cosmic orange)
@@ -97,16 +97,6 @@ export default {
 					rare: '#0070DD',
 					common: '#9D9D9D',
 				},
-				cosmic: {
-					primary: '#FF4800',       // Main action (cosmic orange)
-					secondary: '#CC3900',     // Secondary actions (cosmic dark orange)
-					accent: '#FFA56E',        // Highlights (cosmic light orange)
-					background: '#0E0E0E',    // Deep space background
-					'card-bg': 'rgba(255,255,255,0.05)',     // Card background (glass)
-					'card-bg-hover': 'rgba(255,255,255,0.08)',  // Card hover
-					'text-primary': '#E9E9E9',  // Main text
-					'text-secondary': '#B5B5B5', // Secondary text
-				}
 			},
 			borderRadius: {
 				lg: 'var(--radius)',
@@ -114,6 +104,7 @@ export default {
 				sm: 'calc(var(--radius) - 4px)'
 			},
 			keyframes: {
+				
 				'accordion-down': {
 					from: { height: '0' },
 					to: { height: 'var(--radix-accordion-content-height)' }
@@ -122,6 +113,7 @@ export default {
 					from: { height: 'var(--radix-accordion-content-height)' },
 					to: { height: '0' }
 				},
+				
 				'pulse-glow': {
 					'0%, 100%': { 
 						boxShadow: '0 0 5px 0px rgba(255, 72, 0, 0.5)',
@@ -132,18 +124,6 @@ export default {
 						opacity: '1'
 					}
 				},
-				'flash': {
-					'0%, 100%': { opacity: '1' },
-					'50%': { opacity: '0.5' }
-				},
-				'xp-fill': {
-					'0%': { width: '0%' },
-					'100%': { width: 'var(--progress-value)' }
-				},
-				'scale-in': {
-					'0%': { transform: 'scale(0.9)', opacity: '0' },
-					'100%': { transform: 'scale(1)', opacity: '1' }
-				},
 				'float': {
 					'0%, 100%': { transform: 'translateY(0)' },
 					'50%': { transform: 'translateY(-5px)' }
@@ -153,59 +133,35 @@ export default {
 					'50%': { filter: 'drop-shadow(0 0 10px currentColor)' }
 				},
 				'shine': {
-					'0%': { left: '-100%' },
-					'100%': { left: '100%' }
+					'0%': { transform: 'translateX(-100%)' },
+					'100%': { transform: 'translateX(100%)' }
 				},
-				'border-glow': {
-					'0%, 100%': { 
-						borderColor: 'rgba(255, 72, 0, 0.5)',
-						boxShadow: '0 0 5px rgba(255, 72, 0, 0.3)'
-					},
-					'50%': { 
-						borderColor: 'rgba(255, 116, 0, 0.6)',
-						boxShadow: '0 0 12px rgba(255, 116, 0, 0.5)'
-					}
+				'progress-shimmer': {
+					'0%': { transform: 'translateX(-100%)' },
+					'100%': { transform: 'translateX(100%)' }
 				},
-				'border-rotate': {
-					'0%': { backgroundPosition: '0% 0%' },
-					'100%': { backgroundPosition: '100% 0%' }
-				},
-				'grid-move': {
-					'0%': { backgroundPosition: '0 0' },
-					'100%': { backgroundPosition: '20px 20px' }
-				},
-				'orbit': {
-					'0%': { transform: 'rotate(0deg) translateX(6px) rotate(0deg)' },
-					'100%': { transform: 'rotate(360deg) translateX(6px) rotate(-360deg)' }
-				},
-				'counter': {
-					'0%': { opacity: '0', transform: 'translateY(10px)' },
-					'100%': { opacity: '1', transform: 'translateY(0)' }
+				'scale-in': {
+					'0%': { transform: 'scale(0.9)', opacity: '0' },
+					'100%': { transform: 'scale(1)', opacity: '1' }
 				},
 				'particles-float': {
 					'0%, 100%': { transform: 'translateY(0) translateX(0) rotate(0)' },
 					'33%': { transform: 'translateY(-10px) translateX(5px) rotate(2deg)' },
 					'66%': { transform: 'translateY(5px) translateX(-5px) rotate(-2deg)' },
-				}
+				},
 			},
 			animation: {
+				
 				'accordion-down': 'accordion-down 0.2s ease-out',
 				'accordion-up': 'accordion-up 0.2s ease-out',
+				
 				'pulse-glow': 'pulse-glow 3s infinite ease-in-out',
-				'flash': 'flash 2s infinite ease-in-out',
-				'xp-fill': 'xp-fill 1s ease-out forwards',
-				'scale-in': 'scale-in 0.3s ease-out',
 				'float': 'float 3s infinite ease-in-out',
 				'glow': 'glow 2.5s infinite ease-in-out',
 				'shine': 'shine 3s infinite linear',
-				'border-glow': 'border-glow 4s infinite ease-in-out',
-				'border-rotate': 'border-rotate 4s linear infinite',
-				'grid-move': 'grid-move 20s linear infinite',
-				'orbit': 'orbit 4s infinite linear',
-				'counter': 'counter 0.5s forwards ease-out',
-				'particles-float': 'particles-float 15s infinite ease-in-out'
+				'scale-in': 'scale-in 0.3s ease-out',
+				'particles-float': 'particles-float 15s infinite ease-in-out',
 			},
-			// Add backdrop blur utilities
 			backdropBlur: {
 				xs: '2px',
 				'2xl': '25px',

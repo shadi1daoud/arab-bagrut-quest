@@ -21,6 +21,7 @@ const Progress = React.forwardRef<
       style={{ transform: `translateX(-${100 - (value || 0)}%)` }}
     >
       <span className="absolute inset-0 bg-gradient-to-r from-transparent via-white/10 to-transparent animate-[progress-shimmer_2s_infinite]"></span>
+      <span className="absolute inset-0 shadow-[0_0_6px_rgba(255,72,0,0.6)]"></span>
     </ProgressPrimitive.Indicator>
   </ProgressPrimitive.Root>
 ))

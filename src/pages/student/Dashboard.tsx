@@ -217,8 +217,8 @@ const Dashboard = () => {
                 
                 <CardContent className="p-3">
                   <TabsContent value="exams" className="mt-0 space-y-2">
-                    {upcomingExams.map(exam => <div key={exam.id} className="flex items-center gap-3 p-3 rounded-xl bg-[rgba(255,255,255,0.03)] hover:bg-[rgba(255,255,255,0.05)] transition-colors cursor-pointer">
-                        <div className="h-10 w-10 rounded-lg flex items-center justify-center bg-[#FF4800]/10 text-[#FF4800]">
+                    {upcomingExams.map(exam => <div key={exam.id} className="flex items-center gap-3 p-3 rounded-xl bg-[rgba(255,255,255,0.03)] hover:bg-[rgba(255,255,255,0.05)] transition-colors cursor-pointer group">
+                        <div className="h-10 w-10 rounded-lg flex items-center justify-center bg-[#FF4800]/10 text-[#FF4800] group-hover:animate-pulse-glow">
                           <Calendar className="h-5 w-5" />
                         </div>
                         
@@ -236,10 +236,10 @@ const Dashboard = () => {
                   
                   <TabsContent value="courses" className="mt-0">
                     <div className="grid grid-cols-2 gap-3">
-                      {comingSoonCourses.map(course => <div key={course.id} className="p-3 rounded-xl bg-[rgba(255,255,255,0.03)] border border-[rgba(255,255,255,0.05)] cursor-not-allowed hover:bg-[rgba(255,255,255,0.05)] transition-colors">
+                      {comingSoonCourses.map(course => <div key={course.id} className="p-3 rounded-xl bg-[rgba(255,255,255,0.03)] border border-[rgba(255,255,255,0.05)] cursor-not-allowed hover:bg-[rgba(255,255,255,0.05)] transition-colors group">
                           <div className="flex items-center gap-3">
                             <div className="h-10 w-10 rounded-lg flex items-center justify-center bg-[#FF4800]/10">
-                              <Lock className="h-4 w-4 text-[#FF4800]" />
+                              <Lock className="h-4 w-4 text-[#FF4800] group-hover:animate-pulse" />
                             </div>
                             
                             <div>

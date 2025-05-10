@@ -1,95 +1,65 @@
 
-import { useEffect, useRef } from 'react';
+import React, { useEffect, useRef } from 'react';
 
-interface Particle {
-  x: number;
-  y: number;
-  size: number;
-  speed: number;
-  opacity: number;
-  direction: { x: number; y: number };
-}
-
-export const StarParticles = () => {
-  const canvasRef = useRef<HTMLCanvasElement>(null);
-
+const StarParticles: React.FC = () => {
+  const containerRef = useRef<HTMLDivElement>(null);
+  
   useEffect(() => {
-    const canvas = canvasRef.current;
-    if (!canvas) return;
-
-    const ctx = canvas.getContext('2d');
-    if (!ctx) return;
-
-    let particles: Particle[] = [];
-    let animationFrameId: number;
-
-    // Set canvas to full window size
-    const resizeCanvas = () => {
-      canvas.width = window.innerWidth;
-      canvas.height = window.innerHeight;
-    };
-
-    // Create particles
-    const createParticles = () => {
-      particles = [];
-      const numberOfParticles = Math.floor((window.innerWidth * window.innerHeight) / 10000);
-      
-      for (let i = 0; i < numberOfParticles; i++) {
-        particles.push({
-          x: Math.random() * canvas.width,
-          y: Math.random() * canvas.height,
-          size: Math.random() * 1 + 0.5,
-          speed: 0.05 + Math.random() * 0.05,
-          opacity: Math.random() * 0.25,
-          direction: {
-            x: (Math.random() - 0.5) * 0.4,
-            y: (Math.random() - 0.5) * 0.4
-          }
-        });
+    if (!containerRef.current) return;
+    
+    const container = containerRef.current;
+    const containerWidth = container.offsetWidth;
+    const containerHeight = container.offsetHeight;
+    
+    // Clear any existing stars
+    container.innerHTML = '';
+    
+    // Create stars
+    const createStars = (count: number) => {
+      for (let i = 0; i < count; i++) {
+        const star = document.createElement('div');
+        star.className = 'star';
+        
+        // Random position
+        const x = Math.random() * containerWidth;
+        const y = Math.random() * containerHeight;
+        
+        // Random size
+        const size = Math.random() * 2 + 1;
+        
+        // Random opacity
+        const opacity = Math.random() * 0.5 + 0.3;
+        
+        // Random animation delay
+        const delay = Math.random() * 4;
+        
+        star.style.left = `${x}px`;
+        star.style.top = `${y}px`;
+        star.style.width = `${size}px`;
+        star.style.height = `${size}px`;
+        star.style.opacity = opacity.toString();
+        star.style.animationDelay = `${delay}s`;
+        
+        container.appendChild(star);
       }
     };
-
-    // Draw particles on canvas
-    const renderParticles = () => {
-      ctx.clearRect(0, 0, canvas.width, canvas.height);
-      
-      particles.forEach((particle) => {
-        ctx.beginPath();
-        ctx.arc(particle.x, particle.y, particle.size, 0, Math.PI * 2);
-        ctx.fillStyle = `rgba(255, 255, 255, ${particle.opacity})`;
-        ctx.fill();
-
-        // Update particle position
-        particle.x += particle.direction.x * particle.speed;
-        particle.y += particle.direction.y * particle.speed;
-
-        // Wrap particles around the screen
-        if (particle.x < 0) particle.x = canvas.width;
-        if (particle.x > canvas.width) particle.x = 0;
-        if (particle.y < 0) particle.y = canvas.height;
-        if (particle.y > canvas.height) particle.y = 0;
-      });
-
-      animationFrameId = requestAnimationFrame(renderParticles);
-    };
-
-    window.addEventListener('resize', resizeCanvas);
-    resizeCanvas();
-    createParticles();
-    renderParticles();
-
-    // Cleanup
+    
+    // Create different sized stars
+    createStars(100);
+    
+    // Cleanup function
     return () => {
-      window.removeEventListener('resize', resizeCanvas);
-      cancelAnimationFrame(animationFrameId);
+      if (container) {
+        container.innerHTML = '';
+      }
     };
   }, []);
-
+  
   return (
-    <canvas 
-      ref={canvasRef} 
-      className="fixed inset-0 z-0 pointer-events-none"
-    />
+    <>
+      <div ref={containerRef} className="star-field fixed inset-0 z-[-2] overflow-hidden pointer-events-none" />
+      <div className="grid-overlay fixed inset-0 z-[-1] opacity-10 pointer-events-none" />
+    </>
   );
 };
 
