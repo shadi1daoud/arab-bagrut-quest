@@ -1,4 +1,3 @@
-
 import React, { useState, useEffect } from 'react';
 import { Link } from 'react-router-dom';
 import { 
@@ -188,7 +187,7 @@ const getCoursesBySubject = (): Realm[] => {
   return Object.values(subjects);
 };
 
-const Courses = () => {
+const Courses: React.FC = () => {
   const [searchTerm, setSearchTerm] = useState('');
   const [filterBy, setFilterBy] = useState('all');
   const [hoverCourse, setHoverCourse] = useState<number | null>(null);
