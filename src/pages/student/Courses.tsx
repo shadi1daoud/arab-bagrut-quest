@@ -1,12 +1,12 @@
 
-import { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import { Link } from 'react-router-dom';
 import { 
   Search, Filter, ChevronLeft, ChevronRight, BookOpen, Star, Clock, 
   CheckCircle, Activity, Calculator, Languages, Atom, FlaskConical, 
   Microscope, Scroll, GraduationCap, School, Trophy
 } from 'lucide-react';
-import { motion } from 'framer-motion';
+import { motion, Variants } from 'framer-motion';
 import { 
   Card, CardHeader, CardTitle, CardDescription, CardContent, CardFooter
 } from '@/components/ui/card';
@@ -147,7 +147,7 @@ const TIME_LIMITED_OFFERS = [
 ];
 
 // Helper function to format time (HH:MM:SS)
-const formatTime = (seconds) => {
+const formatTime = (seconds: number): string => {
   const hrs = Math.floor(seconds / 3600);
   const mins = Math.floor((seconds % 3600) / 60);
   const secs = Math.floor(seconds % 60);
@@ -159,9 +159,19 @@ const formatTime = (seconds) => {
   ].join(':');
 };
 
+// Define a type for realm structure
+interface Realm {
+  name: string;
+  color: string;
+  icon: React.ReactNode;
+  description: string;
+  image: string;
+  courses: typeof COURSES;
+}
+
 // Group courses by subject for realms
-const getCoursesBySubject = () => {
-  const subjects = {};
+const getCoursesBySubject = (): Realm[] => {
+  const subjects: Record<string, Realm> = {};
   COURSES.forEach(course => {
     if (!subjects[course.subject]) {
       subjects[course.subject] = {
@@ -191,7 +201,7 @@ const Courses = () => {
   const realms = getCoursesBySubject();
 
   // Animation variants
-  const containerVariants = {
+  const containerVariants: Variants = {
     hidden: { opacity: 0 },
     show: {
       opacity: 1,
@@ -199,7 +209,7 @@ const Courses = () => {
     }
   };
   
-  const itemVariants = {
+  const itemVariants: Variants = {
     hidden: { opacity: 0, y: 20 },
     show: {
       opacity: 1,
@@ -208,7 +218,7 @@ const Courses = () => {
     }
   };
   
-  const floatVariants = {
+  const floatVariants: Variants = {
     initial: { y: 0 },
     hover: { 
       y: -10,
@@ -217,7 +227,7 @@ const Courses = () => {
   };
   
   // Simulate countdown effect
-  React.useEffect(() => {
+  useEffect(() => {
     const timer = setInterval(() => {
       setTimers(prev => 
         prev.map((time, i) => {
