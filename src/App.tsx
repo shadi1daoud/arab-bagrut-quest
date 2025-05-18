@@ -10,6 +10,7 @@ import StudentLayout from "./layouts/StudentLayout";
 import AdminLayout from "./layouts/AdminLayout";
 import Dashboard from "./pages/student/Dashboard";
 import Courses from "./pages/student/Courses";
+import MyCourses from "./pages/student/MyCourses";
 import Shop from "./pages/student/Shop";
 import Community from "./pages/student/Community";
 import Settings from "./pages/student/Settings";
@@ -46,6 +47,7 @@ const App = () => (
             >
               <Route index element={<Dashboard />} />
               <Route path="courses" element={<Courses />} />
+              <Route path="my-courses" element={<MyCourses />} />
               <Route path="courses/:id" element={<CourseDetail />} />
               <Route path="shop" element={<Shop />} />
               <Route path="community" element={<Community />} />
