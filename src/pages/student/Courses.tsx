@@ -135,7 +135,7 @@ const Courses: React.FC = () => {
         ease: "easeInOut",
         times: [0, 0.5, 1],
         repeat: Infinity,
-        repeatType: "loop"
+        repeatType: "loop" as const
       }
     }
   };
@@ -152,7 +152,7 @@ const Courses: React.FC = () => {
         ease: "easeInOut",
         times: [0, 0.5, 1],
         repeat: Infinity,
-        repeatType: "loop"
+        repeatType: "loop" as const
       }
     })
   };
@@ -399,7 +399,7 @@ const Courses: React.FC = () => {
                 duration: 5 + i % 5,
                 ease: "easeInOut",
                 repeat: Infinity,
-                repeatType: "reverse"
+                repeatType: "reverse" as const
               }
             }}
           />
