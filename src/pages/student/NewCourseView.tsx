@@ -1,4 +1,3 @@
-
 import React, { useState, useEffect, useRef } from 'react';
 import { useParams } from 'react-router-dom';
 import { Link } from 'react-router-dom';
@@ -171,7 +170,8 @@ const NewCourseView = () => {
   
   return (
     <div className="darsni-course-view">
-      <style jsx>{`
+      {/* Fix: Remove the jsx property from the style tag */}
+      <style>{`
         /* Base Styles */
         .darsni-course-view {
           width: 100%;
