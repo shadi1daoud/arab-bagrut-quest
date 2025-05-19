@@ -118,3 +118,23 @@
 .scrollbar-none::-webkit-scrollbar {
   display: none;  /* Chrome, Safari, Opera */
 }
+
+/* Video player custom styles */
+@layer components {
+  .video-controls-gradient {
+    background: linear-gradient(to top, rgba(0,0,0,0.8) 0%, rgba(0,0,0,0.4) 30%, rgba(0,0,0,0) 100%);
+  }
+  
+  .chapter-marker {
+    @apply absolute h-full w-1 bg-white/50 transform -translate-x-1/2 cursor-pointer hover:bg-white transition-colors;
+  }
+  
+  .control-button {
+    @apply flex items-center justify-center rounded-full transition-all duration-200;
+  }
+  
+  .backdrop-blur {
+    backdrop-filter: blur(8px);
+    -webkit-backdrop-filter: blur(8px);
+  }
+}

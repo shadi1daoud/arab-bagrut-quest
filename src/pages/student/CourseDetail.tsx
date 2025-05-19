@@ -13,6 +13,7 @@ import ActionPanel from '@/components/course/ActionPanel';
 import CourseFooter from '@/components/course/CourseFooter';
 import MiniQuiz from '@/components/course/MiniQuiz';
 import AskAiModal from '@/components/course/AskAiModal';
+import { useIsMobile } from '@/hooks/use-mobile';
 
 // Import types
 import type { Unit, QuizQuestion } from '@/types/course';
@@ -177,6 +178,9 @@ const CourseDetail = () => {
   const [showMiniQuiz, setShowMiniQuiz] = useState(false);
   const [showAiModal, setShowAiModal] = useState(false);
   const [notes, setNotes] = useState<Record<string, string>>({});
+  const [sidebarOpen, setSidebarOpen] = useState(true);
+  const [actionPanelOpen, setActionPanelOpen] = useState(true);
+  const isMobile = useIsMobile();
   const videoRef = useRef<HTMLDivElement>(null);
   
   // Find current course data (for this example we'll use the sample data)
@@ -185,6 +189,14 @@ const CourseDetail = () => {
   // Find the current unit
   const currentUnit = course.units.find(unit => unit.id === currentUnitId) || course.units[0];
   const currentUnitIndex = course.units.findIndex(unit => unit.id === currentUnitId);
+  
+  // Auto-collapse sidebar on mobile
+  useEffect(() => {
+    if (isMobile) {
+      setSidebarOpen(false);
+      setActionPanelOpen(false);
+    }
+  }, [isMobile]);
   
   // Keyboard shortcuts
   useEffect(() => {
@@ -213,10 +225,12 @@ const CourseDetail = () => {
           setShowMiniQuiz(true);
           break;
         case 's':
-          // Focus notes tab
-          document.querySelector('[data-value="notes"]')?.dispatchEvent(
-            new MouseEvent('click', { bubbles: true })
-          );
+          // Toggle sidebar
+          setSidebarOpen(prev => !prev);
+          break;
+        case 'a':
+          // Toggle action panel
+          setActionPanelOpen(prev => !prev);
           break;
         default:
           break;
@@ -238,6 +252,10 @@ const CourseDetail = () => {
     // Scroll to top of video when changing units
     if (videoRef.current) {
       videoRef.current.scrollIntoView({ behavior: 'smooth', block: 'start' });
+    }
+    // Auto-close sidebar on mobile after selection
+    if (isMobile) {
+      setSidebarOpen(false);
     }
   };
   
@@ -287,50 +305,63 @@ const CourseDetail = () => {
     });
   };
 
+  const toggleSidebar = () => {
+    setSidebarOpen(prev => !prev);
+  };
+  
+  const toggleActionPanel = () => {
+    setActionPanelOpen(prev => !prev);
+  };
+
   return (
-    <div className="min-h-screen h-screen flex flex-col relative overflow-hidden">
+    <div className="min-h-screen flex flex-col relative bg-gradient-to-b from-[#0E0E0E] to-[#121212]">
       {/* Course header */}
       <CourseHeader 
         courseTitle={course.title}
         totalXP={course.totalXP}
         progress={course.progress}
         courseId={id || '1'}
+        onToggleSidebar={toggleSidebar}
       />
       
-      {/* Main content */}
-      <div className="pt-[88px] h-[calc(100vh-88px-64px)] flex relative">
+      {/* Main content - using flex layout with proper overflow handling */}
+      <div className="flex flex-1 overflow-hidden pt-[88px] pb-16">
         {/* Left sidebar - Units list */}
         <UnitsList 
           units={course.units}
           currentUnitId={currentUnitId}
           onSelectUnit={handleUnitChange}
+          isOpen={sidebarOpen}
+          onToggle={toggleSidebar}
         />
         
-        {/* Main content area */}
-        <div className="flex-1 overflow-y-auto lg:overflow-y-hidden pb-16 lg:pb-0">
-          <div className="max-w-[920px] mx-auto px-4 lg:px-6 py-4 lg:grid lg:grid-cols-12 lg:gap-4">
-            {/* Video player takes up full width in the 12-column grid */}
-            <div ref={videoRef} className="lg:col-span-12">
-              <VideoPlayer 
-                videoSrc={currentUnit.videoSrc || ''}
-                chapters={currentUnit.chapters || []}
-                poster="/lovable-uploads/1c2c3b5b-f76f-459a-94ed-22d2f3e35da0.png"
-                onVideoEnd={handleVideoEnd}
-              />
-            </div>
-            
-            {/* Content tabs also take full width */}
-            <div className="lg:col-span-12">
-              <ContentTabs 
-                pdfUrl={currentUnit.pdfUrl}
-                faqs={currentUnit.faqs || []}
-                notes={notes[currentUnitId] || currentUnit.notes || ''}
-                onNotesChange={handleNotesChange}
-                onJumpToTimestamp={handleJumpToTimestamp}
-              />
+        {/* Main content area with proper scrolling */}
+        <main className="flex-1 relative overflow-y-auto scrollbar-none">
+          <div className="container max-w-[1200px] mx-auto px-4 py-6">
+            <div className="grid grid-cols-1 gap-6">
+              {/* Video player */}
+              <div ref={videoRef}>
+                <VideoPlayer 
+                  videoSrc={currentUnit.videoSrc || ''}
+                  chapters={currentUnit.chapters || []}
+                  poster="/lovable-uploads/1c2c3b5b-f76f-459a-94ed-22d2f3e35da0.png"
+                  onVideoEnd={handleVideoEnd}
+                />
+              </div>
+              
+              {/* Content tabs */}
+              <div>
+                <ContentTabs 
+                  pdfUrl={currentUnit.pdfUrl}
+                  faqs={currentUnit.faqs || []}
+                  notes={notes[currentUnitId] || currentUnit.notes || ''}
+                  onNotesChange={handleNotesChange}
+                  onJumpToTimestamp={handleJumpToTimestamp}
+                />
+              </div>
             </div>
           </div>
-        </div>
+        </main>
         
         {/* Right action panel */}
         <ActionPanel 
@@ -338,6 +369,8 @@ const CourseDetail = () => {
           onAskAiClick={() => setShowAiModal(true)}
           leaderboard={LEADERBOARD}
           currentUser={LEADERBOARD[3]}
+          isOpen={actionPanelOpen}
+          onToggle={toggleActionPanel}
         />
       </div>
       

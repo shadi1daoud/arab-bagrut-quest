@@ -50,7 +50,7 @@ const CourseFooter = ({
           الوحدة السابقة
         </Button>
         
-        <div className="text-center">
+        <div className="text-center hidden sm:block">
           <p className="text-gray-400 text-sm font-['Noto_Sans_Arabic']">
             الوحدة <span className="text-white font-['Share_Tech_Mono']">{currentUnit}</span> من <span className="text-white font-['Share_Tech_Mono']">{totalUnits}</span>
           </p>
@@ -61,7 +61,7 @@ const CourseFooter = ({
           variant="default"
           className={cn(
             "font-['Noto_Sans_Arabic'] transition-all duration-300 hover:shadow-[0_0_8px_rgba(255,75,26,0.33)]",
-            isLastUnit && !isUnitCompleted && "bg-green-500 hover:bg-green-600"
+            isLastUnit && !isUnitCompleted ? "bg-green-500 hover:bg-green-600" : ""
           )}
           disabled={isLastUnit && isUnitCompleted}
         >

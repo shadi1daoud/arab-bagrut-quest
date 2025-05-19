@@ -1,9 +1,10 @@
 
-import React, { useState, useEffect } from 'react';
+import React from 'react';
 import { Button } from "@/components/ui/button";
-import { CircularProgressbar, buildStyles } from 'react-circular-progressbar';
-import 'react-circular-progressbar/dist/styles.css';
-import { Brain, Share2, Play, Pause, RotateCcw } from 'lucide-react';
+import { ScrollArea } from "@/components/ui/scroll-area";
+import { ChevronLeft, Brain, Activity, ChevronRight } from 'lucide-react';
+import { motion } from 'framer-motion';
+import { cn } from "@/lib/utils";
 
 interface User {
   id: string;
@@ -17,179 +18,134 @@ interface ActionPanelProps {
   onAskAiClick: () => void;
   leaderboard: User[];
   currentUser: User;
+  isOpen: boolean;
+  onToggle: () => void;
 }
 
-const ActionPanel = ({ onQuizClick, onAskAiClick, leaderboard, currentUser }: ActionPanelProps) => {
-  const [pomodoro, setPomodoro] = useState({
-    isRunning: false,
-    timeLeft: 25 * 60, // 25 minutes in seconds
-    totalTime: 25 * 60
-  });
-
-  useEffect(() => {
-    let interval: number | null = null;
-    
-    if (pomodoro.isRunning && pomodoro.timeLeft > 0) {
-      interval = window.setInterval(() => {
-        setPomodoro(prev => ({
-          ...prev,
-          timeLeft: prev.timeLeft - 1
-        }));
-      }, 1000);
-    } else if (pomodoro.timeLeft === 0) {
-      // Timer ended
-      setPomodoro(prev => ({
-        ...prev,
-        isRunning: false
-      }));
-      
-      // Notification or sound could be added here
-    }
-    
-    return () => {
-      if (interval) clearInterval(interval);
-    };
-  }, [pomodoro.isRunning, pomodoro.timeLeft]);
-
-  const togglePomodoro = () => {
-    setPomodoro(prev => ({
-      ...prev,
-      isRunning: !prev.isRunning
-    }));
-  };
-
-  const resetPomodoro = () => {
-    setPomodoro({
-      isRunning: false,
-      timeLeft: 25 * 60,
-      totalTime: 25 * 60
-    });
-  };
-
-  const formatTime = (seconds: number) => {
-    const minutes = Math.floor(seconds / 60);
-    const remainingSeconds = seconds % 60;
-    return `${minutes.toString().padStart(2, '0')}:${remainingSeconds.toString().padStart(2, '0')}`;
-  };
-
+const ActionPanel = ({ 
+  onQuizClick, 
+  onAskAiClick, 
+  leaderboard, 
+  currentUser,
+  isOpen,
+  onToggle
+}: ActionPanelProps) => {
   return (
-    <div className="fixed top-[88px] right-0 w-[240px] bottom-16 bg-[#0F0F0F] border-l border-white/5 hidden lg:block shadow-[-2px_0_10px_rgba(0,0,0,0.3)]">
-      <div className="h-full flex flex-col p-4">
-        {/* Quick actions */}
-        <div className="space-y-3 mb-6">
-          <Button
-            onClick={onQuizClick}
-            className="w-full bg-[#FF4B1A] hover:bg-[#FF4B1A]/90 text-white font-['Noto_Sans_Arabic'] hover:shadow-[0_0_8px_rgba(255,75,26,0.33)] transition-all duration-300"
+    <motion.div
+      initial={false}
+      animate={{ 
+        width: isOpen ? 300 : 0,
+        opacity: isOpen ? 1 : 0
+      }}
+      transition={{ duration: 0.3, ease: "easeInOut" }}
+      className={cn(
+        "h-full bg-[#0F0F0F]/80 backdrop-blur-sm border-l border-white/5 z-20 shadow-[-2px_0_10px_rgba(0,0,0,0.3)] overflow-hidden"
+      )}
+    >
+      <div className="flex flex-col h-full w-[300px]">
+        <div className="flex items-center justify-between p-4 border-b border-white/5">
+          <Button 
+            variant="ghost"
+            size="icon"
+            className="h-8 w-8 rounded-full bg-black/40 flex items-center justify-center border border-white/10 hover:bg-white/10 transition-colors hover:shadow-[0_0_8px_rgba(255,75,26,0.33)]"
+            onClick={onToggle}
           >
-            اختبار سريع
+            <ChevronLeft className="h-4 w-4 text-gray-400" />
           </Button>
-          
-          <Button
-            onClick={onAskAiClick}
-            variant="outline"
-            className="w-full border-[#FF4B1A]/30 text-[#FF4B1A] hover:bg-[#FF4B1A]/10 font-['Noto_Sans_Arabic'] hover:shadow-[0_0_8px_rgba(255,75,26,0.33)] transition-all duration-300"
-          >
-            <Brain className="h-4 w-4 mr-2" />
-            اسأل D-Bot
-          </Button>
-          
-          <button className="w-full flex items-center justify-center gap-2 py-2 bg-black/40 rounded-lg text-gray-300 hover:text-white hover:bg-black/60 transition-colors border border-white/10 hover:shadow-[0_0_8px_rgba(255,255,255,0.15)] transition-all duration-300">
-            <Share2 className="h-4 w-4" />
-            <span className="text-sm font-['Noto_Sans_Arabic']">مشاركة</span>
-          </button>
+          <h3 className="text-white font-['Changa'] text-lg">
+            أدوات مساعدة
+          </h3>
         </div>
         
-        {/* Pomodoro timer */}
-        <div className="bg-black/30 rounded-xl p-4 border border-white/10 mb-6 shadow-[inset_0_0_6px_rgba(0,0,0,0.4)]">
-          <h3 className="text-white text-center font-['Noto_Sans_Arabic'] mb-4">مؤقت بومودورو</h3>
-          
-          <div className="w-32 h-32 mx-auto mb-3">
-            <CircularProgressbar
-              value={(pomodoro.timeLeft / pomodoro.totalTime) * 100}
-              text={formatTime(pomodoro.timeLeft)}
-              strokeWidth={5}
-              styles={buildStyles({
-                textSize: '16px',
-                textColor: '#fff',
-                pathColor: '#FF4B1A',
-                trailColor: 'rgba(255, 255, 255, 0.1)'
-              })}
-            />
-          </div>
-          
-          <div className="flex justify-center space-x-2">
-            <button
-              onClick={togglePomodoro}
-              className="h-8 w-8 rounded-full bg-[#FF4B1A]/20 flex items-center justify-center text-[#FF4B1A] hover:bg-[#FF4B1A]/30 transition-colors hover:shadow-[0_0_8px_rgba(255,75,26,0.33)] transition-all duration-300"
-            >
-              {pomodoro.isRunning ? <Pause className="h-4 w-4" /> : <Play className="h-4 w-4" />}
-            </button>
-            
-            <button
-              onClick={resetPomodoro}
-              className="h-8 w-8 rounded-full bg-white/5 flex items-center justify-center text-gray-400 hover:bg-white/10 hover:text-white transition-colors"
-            >
-              <RotateCcw className="h-4 w-4" />
-            </button>
-          </div>
-        </div>
-        
-        {/* Mini leaderboard */}
-        <div className="bg-black/30 rounded-xl p-4 border border-white/10 shadow-[inset_0_0_6px_rgba(0,0,0,0.4)]">
-          <h3 className="text-white text-center font-['Noto_Sans_Arabic'] mb-3">لوحة المتصدرين</h3>
-          
-          <div className="space-y-2">
-            {leaderboard.slice(0, 3).map((user, index) => (
-              <div 
-                key={user.id} 
-                className="flex items-center justify-between p-2 rounded-lg bg-black/30"
-              >
-                <div className="flex items-center">
-                  <div className="w-5 h-5 flex items-center justify-center text-xs font-['Share_Tech_Mono'] text-white/70">
-                    {index + 1}
-                  </div>
-                  
-                  <div className="h-7 w-7 rounded-full overflow-hidden border border-white/10 ml-2">
-                    <img src={user.avatar} alt={user.name} className="h-full w-full object-cover" />
-                  </div>
-                  
-                  <span className="text-sm text-white font-['Noto_Sans_Arabic'] ml-2 truncate max-w-[80px]">
-                    {user.name}
-                  </span>
-                </div>
-                
-                <span className="text-xs font-['Share_Tech_Mono'] text-[#FF4B1A] bg-[#FF4B1A]/10 px-2 py-0.5 rounded">
-                  {user.xp} XP
-                </span>
+        <ScrollArea className="flex-1 p-4">
+          <div className="space-y-6">
+            {/* Quick actions */}
+            <div className="space-y-3">
+              <h4 className="text-sm font-medium text-gray-400 font-['Noto_Sans_Arabic']">
+                أدوات سريعة
+              </h4>
+              <div className="grid grid-cols-2 gap-3">
+                <Button
+                  variant="outline"
+                  onClick={onQuizClick}
+                  className="bg-[#1A1A1A] border-white/5 hover:bg-[#252525] hover:border-white/10 transition-all duration-300 hover:shadow-[0_0_8px_rgba(255,75,26,0.2)]"
+                >
+                  <Activity className="h-4 w-4 mr-2 text-[#FF4B1A]" />
+                  <span className="font-['Noto_Sans_Arabic']">اختبار سريع</span>
+                </Button>
+                <Button
+                  variant="outline"
+                  onClick={onAskAiClick}
+                  className="bg-[#1A1A1A] border-white/5 hover:bg-[#252525] hover:border-white/10 transition-all duration-300 hover:shadow-[0_0_8px_rgba(255,75,26,0.2)]"
+                >
+                  <Brain className="h-4 w-4 mr-2 text-[#FF4B1A]" />
+                  <span className="font-['Noto_Sans_Arabic']">اسأل AI</span>
+                </Button>
               </div>
-            ))}
+            </div>
             
-            {/* Current user position */}
-            <div className="mt-3 p-2 rounded-lg bg-[#FF4B1A]/5 border border-[#FF4B1A]/20">
-              <div className="flex items-center justify-between">
-                <div className="flex items-center">
-                  <div className="w-5 h-5 flex items-center justify-center text-xs font-['Share_Tech_Mono'] text-[#FF4B1A]">
-                    {leaderboard.findIndex(u => u.id === currentUser.id) + 1}
-                  </div>
-                  
-                  <div className="h-7 w-7 rounded-full overflow-hidden border border-[#FF4B1A]/30 ml-2">
-                    <img src={currentUser.avatar} alt={currentUser.name} className="h-full w-full object-cover" />
-                  </div>
-                  
-                  <span className="text-sm text-white font-['Noto_Sans_Arabic'] ml-2 truncate max-w-[80px]">
-                    أنت
-                  </span>
-                </div>
-                
-                <span className="text-xs font-['Share_Tech_Mono'] text-[#FF4B1A] bg-[#FF4B1A]/20 px-2 py-0.5 rounded">
-                  {currentUser.xp} XP
-                </span>
+            {/* Leaderboard */}
+            <div className="space-y-3">
+              <h4 className="text-sm font-medium text-gray-400 font-['Noto_Sans_Arabic']">
+                المتصدرون
+              </h4>
+              <div className="space-y-2">
+                {leaderboard.map((user, index) => {
+                  const isCurrentUser = user.id === currentUser.id;
+                  return (
+                    <div
+                      key={user.id}
+                      className={cn(
+                        "flex items-center p-2 rounded-lg",
+                        isCurrentUser 
+                          ? "bg-[#FF4B1A]/10 border border-[#FF4B1A]/20" 
+                          : "hover:bg-white/5"
+                      )}
+                    >
+                      <div className="flex items-center justify-center w-8 font-['Share_Tech_Mono']">
+                        {index + 1}
+                      </div>
+                      <div className="h-8 w-8 rounded-full overflow-hidden mr-2">
+                        <img 
+                          src={user.avatar} 
+                          alt={user.name} 
+                          className="h-full w-full object-cover"
+                        />
+                      </div>
+                      <div className="flex-1 min-w-0">
+                        <p className={cn(
+                          "text-sm truncate",
+                          isCurrentUser ? "font-medium text-white" : "text-gray-300"
+                        )}>
+                          {user.name}
+                        </p>
+                      </div>
+                      <div className="font-['Share_Tech_Mono'] text-sm font-bold text-[#FF4B1A]">
+                        {user.xp} XP
+                      </div>
+                    </div>
+                  );
+                })}
               </div>
             </div>
           </div>
-        </div>
+        </ScrollArea>
       </div>
-    </div>
+      
+      {/* Mobile toggle button (floating) */}
+      <Button 
+        variant="default"
+        size="icon"
+        className="fixed top-[100px] right-4 z-30 rounded-full shadow-lg md:hidden"
+        onClick={onToggle}
+        style={{ 
+          display: isOpen ? 'none' : 'flex',
+          background: 'linear-gradient(45deg, #FF4B1A, #FF794B)'
+        }}
+      >
+        <Activity className="h-4 w-4 text-white" />
+      </Button>
+    </motion.div>
   );
 };
 
