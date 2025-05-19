@@ -1,3 +1,4 @@
+
 import React, { useState } from 'react';
 import { motion } from 'framer-motion';
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
@@ -5,6 +6,7 @@ import { Button } from "@/components/ui/button";
 import { Card, CardHeader, CardContent, CardFooter, CardTitle } from "@/components/ui/card";
 import { Progress } from "@/components/ui/progress";
 import { Sparkles, BookOpen, GraduationCap, TrendingUp, ArrowRight } from "lucide-react";
+import { Link } from "react-router-dom";
 
 // Sample course data
 const activeCourses = [
@@ -187,7 +189,7 @@ const MyCourses = () => {
         </TabsContent>
       </Tabs>
 
-      {/* Bottom Section - Updated to remove the link to /courses */}
+      {/* Bottom Section */}
       <div className="flex flex-col md:flex-row justify-between items-center border-t border-white/5 pt-6 mt-auto">
         <motion.div
           initial={{ opacity: 0 }}
@@ -228,7 +230,7 @@ const MyCourses = () => {
   );
 };
 
-// Course Card Component
+// Course Card Component with Link to CourseDetail
 const CourseCard = ({ course, isCompleted = false }) => {
   return (
     <motion.div
@@ -299,12 +301,14 @@ const CourseCard = ({ course, isCompleted = false }) => {
         </CardContent>
 
         <CardFooter className="mt-auto">
-          <Button 
-            variant={isCompleted ? "secondary" : "default"} 
-            className="w-full font-['Noto_Sans_Arabic']"
-          >
-            {isCompleted ? 'عرض الشهادة' : 'تابع الكورس'}
-          </Button>
+          <Link to={`/courses/${course.id}`} className="w-full">
+            <Button 
+              variant={isCompleted ? "secondary" : "default"} 
+              className="w-full font-['Noto_Sans_Arabic']"
+            >
+              {isCompleted ? 'عرض الشهادة' : 'تابع الكورس'}
+            </Button>
+          </Link>
         </CardFooter>
       </Card>
     </motion.div>

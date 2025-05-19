@@ -1,11 +1,18 @@
 
-import { useState } from 'react';
-import { useParams, Link } from 'react-router-dom';
-import { ArrowRight, Play, CheckCircle, BookOpen, Award, AlertTriangle, Clock, Star, Users } from 'lucide-react';
-import { useAuth } from '@/contexts/AuthContext';
+import { useState, useRef, useEffect } from 'react';
+import { useParams } from 'react-router-dom';
 import { useToast } from '@/hooks/use-toast';
-import { motion } from 'framer-motion';
-import { Tab } from '@headlessui/react';
+import { AnimatePresence } from 'framer-motion';
+
+// Import custom components
+import CourseHeader from '@/components/course/CourseHeader';
+import UnitsList from '@/components/course/UnitsList';
+import VideoPlayer from '@/components/course/VideoPlayer';
+import ContentTabs from '@/components/course/ContentTabs';
+import ActionPanel from '@/components/course/ActionPanel';
+import CourseFooter from '@/components/course/CourseFooter';
+import MiniQuiz from '@/components/course/MiniQuiz';
+import AskAiModal from '@/components/course/AskAiModal';
 
 // Sample course data
 const COURSE_DATA = {
@@ -13,380 +20,350 @@ const COURSE_DATA = {
   title: 'رياضيات',
   subject: 'رياضيات',
   grade: 'الثاني عشر',
-  units: 5,
   description: 'كورس شامل للرياضيات للصف الثاني عشر يغطي جميع مواضيع البجروت بشكل مفصل وتفاعلي.',
   progress: 35,
-  icon: '🧮',
-  color: 'from-blue-600 to-blue-400',
-  xpReward: 1500,
-  studentsCount: 256,
-  difficulty: 'متوسط',
-  instructor: 'د. أحمد محمود',
-  sections: [
+  totalXP: 1500,
+  totalUnits: 24,
+  units: [
     {
-      id: 's1',
-      title: 'الجبر',
-      lessons: [
+      id: 'unit1',
+      number: 1,
+      title: 'مقدمة في الجبر',
+      status: 'completed',
+      duration: '18 دقيقة',
+      hasStreak: true,
+      videoSrc: 'https://sample-videos.com/video123/mp4/720/big_buck_bunny_720p_1mb.mp4',
+      chapters: [
+        { time: 15, title: 'تعريف المصفوفات' },
+        { time: 45, title: 'جمع المصفوفات' },
+        { time: 72, title: 'ضرب المصفوفات' },
+      ],
+      pdfUrl: 'https://www.w3.org/WAI/ER/tests/xhtml/testfiles/resources/pdf/dummy.pdf',
+      notes: 'ملاحظات حول الدرس الأول...',
+      faqs: [
         {
-          id: 'l1',
-          title: 'المعادلات الخطية',
-          duration: '15 دقيقة',
-          isCompleted: true,
-          hasQuiz: true,
-          xpReward: 50
+          question: 'ما هي المصفوفة؟',
+          answer: 'المصفوفة هي مجموعة من الأعداد أو الرموز مرتبة في صفوف وأعمدة.',
+          timestamps: [
+            { time: 15, label: 'تعريف المصفوفة (0:15)' }
+          ]
         },
         {
-          id: 'l2',
-          title: 'المعادلات التربيعية',
-          duration: '20 دقيقة',
-          isCompleted: true,
-          hasQuiz: true,
-          xpReward: 75
+          question: 'كيف نضرب مصفوفتين؟',
+          answer: 'لضرب مصفوفتين، يجب أن يكون عدد أعمدة المصفوفة الأولى مساويًا لعدد صفوف المصفوفة الثانية.',
+          timestamps: [
+            { time: 72, label: 'شرح الضرب (1:12)' }
+          ]
         },
-        {
-          id: 'l3',
-          title: 'المصفوفات',
-          duration: '25 دقيقة',
-          isCompleted: false,
-          hasQuiz: true,
-          xpReward: 100
-        }
-      ]
+      ],
     },
     {
-      id: 's2',
-      title: 'حساب التفاضل والتكامل',
-      lessons: [
+      id: 'unit2',
+      number: 2,
+      title: 'المعادلات التربيعية',
+      status: 'in-progress',
+      duration: '22 دقيقة',
+      videoSrc: 'https://sample-videos.com/video123/mp4/720/big_buck_bunny_720p_1mb.mp4',
+      chapters: [
+        { time: 20, title: 'القانون العام' },
+        { time: 60, title: 'طرق الحل' },
+        { time: 90, title: 'تطبيقات' },
+      ],
+      pdfUrl: 'https://www.w3.org/WAI/ER/tests/xhtml/testfiles/resources/pdf/dummy.pdf',
+      notes: '',
+      faqs: [
         {
-          id: 'l4',
-          title: 'مفهوم المشتقة',
-          duration: '18 دقيقة',
-          isCompleted: false,
-          hasQuiz: true,
-          xpReward: 80
+          question: 'ما هو القانون العام لحل المعادلة التربيعية؟',
+          answer: 'القانون العام هو x = [-b ± √(b² - 4ac)] / 2a حيث المعادلة على الشكل ax² + bx + c = 0',
+          timestamps: [
+            { time: 20, label: 'القانون العام (0:20)' }
+          ]
         },
-        {
-          id: 'l5',
-          title: 'قواعد الاشتقاق',
-          duration: '22 دقيقة',
-          isCompleted: false,
-          hasQuiz: false,
-          xpReward: 90
-        },
-        {
-          id: 'l6',
-          title: 'تطبيقات المشتقة',
-          duration: '30 دقيقة',
-          isCompleted: false,
-          hasQuiz: true,
-          xpReward: 120
-        }
-      ]
+      ],
     },
     {
-      id: 's3',
-      title: 'الهندسة',
-      lessons: [
-        {
-          id: 'l7',
-          title: 'الهندسة الإقليدية',
-          duration: '20 دقيقة',
-          isCompleted: false,
-          hasQuiz: false,
-          xpReward: 85
-        },
-        {
-          id: 'l8',
-          title: 'الهندسة التحليلية',
-          duration: '25 دقيقة',
-          isCompleted: false,
-          hasQuiz: true,
-          xpReward: 95
-        }
-      ]
+      id: 'unit3',
+      number: 3,
+      title: 'حساب المثلثات',
+      status: 'idle',
+      duration: '25 دقيقة',
+      videoSrc: 'https://sample-videos.com/video123/mp4/720/big_buck_bunny_720p_1mb.mp4',
+      chapters: [
+        { time: 30, title: 'الدوال المثلثية' },
+        { time: 75, title: 'تطبيقات' },
+      ],
+      notes: '',
+      faqs: [],
+    },
+    {
+      id: 'unit4',
+      number: 4,
+      title: 'التفاضل والتكامل',
+      status: 'idle',
+      duration: '30 دقيقة',
+      videoSrc: 'https://sample-videos.com/video123/mp4/720/big_buck_bunny_720p_1mb.mp4',
+      chapters: [],
+      notes: '',
+      faqs: [],
+    },
+    {
+      id: 'unit5',
+      number: 5,
+      title: 'الوحدات المركبة',
+      status: 'idle',
+      duration: '20 دقيقة',
+      videoSrc: 'https://sample-videos.com/video123/mp4/720/big_buck_bunny_720p_1mb.mp4',
+      chapters: [],
+      notes: '',
+      faqs: [],
     }
   ]
 };
 
-// Calculate completed lessons
-const calculateProgress = (course: typeof COURSE_DATA) => {
-  let totalLessons = 0;
-  let completedLessons = 0;
+// Sample quiz questions
+const QUIZ_QUESTIONS = [
+  {
+    id: 'q1',
+    question: 'ما هو الناتج من ضرب المصفوفة [1, 2; 3, 4] في المصفوفة [0, 1; 1, 0]؟',
+    options: ['[1, 2; 3, 4]', '[2, 1; 4, 3]', '[1, 0; 0, 1]', '[0, 0; 0, 0]'],
+    correctAnswer: 1,
+    type: 'multiple-choice'
+  },
+  {
+    id: 'q2',
+    question: 'المصفوفة الوحدة هي مصفوفة مربعة تكون فيها جميع القيم الموجودة على القطر الرئيسي تساوي 1، وباقي القيم تساوي 0.',
+    options: ['صحيح', 'خطأ'],
+    correctAnswer: 0,
+    type: 'true-false'
+  },
+  {
+    id: 'q3',
+    question: 'أي من الآتي يمثل حلاً للمعادلة التربيعية x² - 5x + 6 = 0؟',
+    options: ['x = 2, x = 3', 'x = -2, x = -3', 'x = 2, x = -3', 'x = -2, x = 3'],
+    correctAnswer: 0,
+    type: 'multiple-choice'
+  },
+  {
+    id: 'q4',
+    question: 'لإيجاد مشتقة الدالة f(x) = x³، نستخدم قاعدة القوة ونحصل على f\'(x) = 3x².',
+    options: ['صحيح', 'خطأ'],
+    correctAnswer: 0,
+    type: 'true-false'
+  },
+  {
+    id: 'q5',
+    question: 'ما هي قيمة جا(90°)؟',
+    options: ['0', '1', '-1', 'غير معرفة'],
+    correctAnswer: 1,
+    type: 'multiple-choice'
+  }
+];
 
-  course.sections.forEach(section => {
-    totalLessons += section.lessons.length;
-    completedLessons += section.lessons.filter(lesson => lesson.isCompleted).length;
-  });
-
-  return {
-    totalLessons,
-    completedLessons,
-    progressPercentage: Math.round((completedLessons / totalLessons) * 100)
-  };
-};
+// Sample leaderboard
+const LEADERBOARD = [
+  { id: 'user1', name: 'أحمد محمد', avatar: '/lovable-uploads/48f9c971-a223-40f4-9e8b-17c399b6f387.png', xp: 2450 },
+  { id: 'user2', name: 'سارة أحمد', avatar: '/lovable-uploads/48f9c971-a223-40f4-9e8b-17c399b6f387.png', xp: 2100 },
+  { id: 'user3', name: 'محمود علي', avatar: '/lovable-uploads/48f9c971-a223-40f4-9e8b-17c399b6f387.png', xp: 1950 },
+  { id: 'currentUser', name: 'أنت', avatar: '/lovable-uploads/48f9c971-a223-40f4-9e8b-17c399b6f387.png', xp: 1800 }
+];
 
 const CourseDetail = () => {
   const { id } = useParams<{ id: string }>();
-  const { user } = useAuth();
-  const [activeLesson, setActiveLesson] = useState<string | null>(null);
-  const [videoModalOpen, setVideoModalOpen] = useState(false);
   const { toast } = useToast();
+  const [currentUnitId, setCurrentUnitId] = useState<string>('unit1');
+  const [showMiniQuiz, setShowMiniQuiz] = useState(false);
+  const [showAiModal, setShowAiModal] = useState(false);
+  const [notes, setNotes] = useState<Record<string, string>>({});
+  const videoRef = useRef<HTMLDivElement>(null);
   
-  // For this MVP, we'll use the sample course data
+  // Find current course data (for this example we'll use the sample data)
   const course = COURSE_DATA;
   
-  const { totalLessons, completedLessons, progressPercentage } = calculateProgress(course);
+  // Find the current unit
+  const currentUnit = course.units.find(unit => unit.id === currentUnitId) || course.units[0];
+  const currentUnitIndex = course.units.findIndex(unit => unit.id === currentUnitId);
   
-  const openVideoModal = (lessonId: string) => {
-    setActiveLesson(lessonId);
-    setVideoModalOpen(true);
+  // Keyboard shortcuts
+  useEffect(() => {
+    const handleKeyDown = (e: KeyboardEvent) => {
+      // Don't trigger shortcuts when typing in text fields
+      const activeElement = document.activeElement;
+      const isInputActive = activeElement instanceof HTMLInputElement || 
+                           activeElement instanceof HTMLTextAreaElement;
+      if (isInputActive) return;
+      
+      switch(e.key.toLowerCase()) {
+        case 'n':
+          // Next unit
+          if (currentUnitIndex < course.units.length - 1) {
+            setCurrentUnitId(course.units[currentUnitIndex + 1].id);
+          }
+          break;
+        case 'p':
+          // Previous unit
+          if (currentUnitIndex > 0) {
+            setCurrentUnitId(course.units[currentUnitIndex - 1].id);
+          }
+          break;
+        case 'q':
+          // Open quiz
+          setShowMiniQuiz(true);
+          break;
+        case 's':
+          // Focus notes tab
+          document.querySelector('[data-value="notes"]')?.dispatchEvent(
+            new MouseEvent('click', { bubbles: true })
+          );
+          break;
+        default:
+          break;
+      }
+    };
+    
+    window.addEventListener('keydown', handleKeyDown);
+    return () => {
+      window.removeEventListener('keydown', handleKeyDown);
+    };
+  }, [currentUnitIndex, course.units]);
+  
+  const handleVideoEnd = () => {
+    setShowMiniQuiz(true);
   };
   
-  const closeVideoModal = () => {
-    setVideoModalOpen(false);
+  const handleUnitChange = (unitId: string) => {
+    setCurrentUnitId(unitId);
+    // Scroll to top of video when changing units
+    if (videoRef.current) {
+      videoRef.current.scrollIntoView({ behavior: 'smooth', block: 'start' });
+    }
   };
   
-  const markAsComplete = () => {
+  const handlePrevUnit = () => {
+    if (currentUnitIndex > 0) {
+      setCurrentUnitId(course.units[currentUnitIndex - 1].id);
+    }
+  };
+  
+  const handleNextUnit = () => {
+    if (currentUnitIndex < course.units.length - 1) {
+      setCurrentUnitId(course.units[currentUnitIndex + 1].id);
+    }
+  };
+  
+  const handleQuizComplete = (score: number) => {
+    // Update XP based on score
+    if (score === QUIZ_QUESTIONS.length) {
+      toast({
+        title: "مبروك!",
+        description: "لقد أكملت الاختبار بنجاح وحصلت على +80 XP إضافي!",
+      });
+    }
+  };
+  
+  const handleNotesChange = (newNotes: string) => {
+    setNotes(prev => ({
+      ...prev,
+      [currentUnitId]: newNotes
+    }));
+  };
+  
+  const handleJumpToTimestamp = (time: number) => {
+    const videoElement = document.querySelector('video');
+    if (videoElement) {
+      videoElement.currentTime = time;
+      videoElement.play();
+    }
+  };
+  
+  // Handle course completion
+  const handleCourseComplete = () => {
     toast({
-      title: "تم الإكمال بنجاح!",
-      description: "تم إكمال الدرس بنجاح وإضافة النقاط إلى حسابك",
+      title: "مبروك!",
+      description: `لقد أكملت كورس ${course.title} بنجاح وحصلت على ${course.totalXP} XP!`,
       variant: "default",
     });
-    
-    closeVideoModal();
   };
 
   return (
-    <div className="h-full overflow-hidden flex flex-col">
-      {/* Course Header */}
-      <div className="flex items-center justify-between gap-4 mb-4">
-        <div className="flex items-center gap-3">
-          <Link to="/courses" className="text-gray-400 hover:text-white bg-game-card-bg-alt hover:bg-game-card-bg p-2.5 rounded-full transition-colors">
-            <ArrowRight className="h-5 w-5" />
-          </Link>
-          
-          <div className={`h-14 w-14 rounded-xl bg-gradient-to-br ${course.color} flex items-center justify-center shadow-lg shadow-blue-600/20 overflow-hidden`}>
-            <span className="text-3xl">{course.icon}</span>
-          </div>
-          
-          <div>
-            <h1 className="text-2xl font-bold text-white font-changa bg-gradient-to-r from-white to-gray-300 bg-clip-text text-transparent">{course.title}</h1>
-            <p className="text-gray-400">{course.grade} • {course.units} وحدات</p>
-          </div>
-        </div>
-        
-        <div className="flex items-center gap-3">
-          <div className="bg-game-card-bg px-3 py-2 rounded-xl flex items-center gap-2 text-sm border border-white/5">
-            <Star className="h-4 w-4 text-game-accent" />
-            <span className="text-game-accent font-share-tech">+{course.xpReward} XP</span>
-          </div>
-          
-          <div className="bg-game-card-bg px-3 py-2 rounded-xl flex items-center gap-2 text-sm border border-white/5">
-            <Users className="h-4 w-4 text-gray-400" />
-            <span className="text-white font-share-tech">{course.studentsCount}</span>
-            <span className="text-gray-400">طالب</span>
-          </div>
-        </div>
-      </div>
+    <div className="pb-16 lg:p-0">
+      {/* Course header */}
+      <CourseHeader 
+        courseTitle={course.title}
+        totalXP={course.totalXP}
+        progress={course.progress}
+        courseId={id || '1'}
+      />
       
-      {/* Main Content */}
-      <div className="flex-1 grid grid-cols-3 gap-4">
-        {/* Left Column: Course Overview */}
-        <div className="col-span-1">
-          <div className="game-panel h-full flex flex-col">
-            <div className="relative">
-              <div className="absolute top-0 right-0 w-full h-1 bg-gradient-to-r from-transparent via-blue-500/30 to-transparent"></div>
-              
-              <h2 className="text-lg font-semibold text-white mb-3 font-lexend">نظرة عامة</h2>
-              <p className="text-gray-400 text-sm">{course.description}</p>
-              
-              <div className="mt-4 flex flex-wrap gap-2">
-                <div className="bg-game-card-bg-alt px-3 py-1.5 rounded-lg text-sm flex items-center gap-2 border border-white/5">
-                  <BookOpen className="h-4 w-4 text-gray-400" />
-                  <span className="text-gray-300">{course.instructor}</span>
-                </div>
-                
-                <div className="bg-game-card-bg-alt px-3 py-1.5 rounded-lg text-sm flex items-center gap-2 border border-white/5">
-                  <AlertTriangle className="h-4 w-4 text-yellow-400" />
-                  <span className="text-gray-300">{course.difficulty}</span>
-                </div>
-              </div>
-              
-              <div className="mt-4 bg-game-card-bg-alt p-4 rounded-xl border border-white/5">
-                <div className="flex items-center gap-2 text-sm mb-2">
-                  <CheckCircle className="h-4 w-4 text-green-500" />
-                  <span className="text-white font-share-tech">{completedLessons} / {totalLessons}</span>
-                  <span className="text-gray-400">درس مكتمل</span>
-                </div>
-                
-                <div className="w-full bg-game-background h-3 rounded-full overflow-hidden">
-                  <div 
-                    className={`bg-gradient-to-r ${course.color} h-full rounded-full relative`} 
-                    style={{ width: `${progressPercentage}%` }}
-                  >
-                    <div className="absolute inset-0 bg-white opacity-10 animate-pulse"></div>
-                  </div>
-                </div>
-                
-                <div className="mt-2 text-xs text-gray-400">
-                  <span className="text-blue-400 font-share-tech">{progressPercentage}%</span> مكتمل
-                </div>
-              </div>
-              
-              <div className="mt-4">
-                <h3 className="text-white font-medium mb-2">المهارات المكتسبة</h3>
-                <div className="flex flex-wrap gap-1">
-                  <span className="text-xs px-2 py-1 bg-blue-500/10 text-blue-400 rounded-md">معادلات</span>
-                  <span className="text-xs px-2 py-1 bg-purple-500/10 text-purple-400 rounded-md">جبر</span>
-                  <span className="text-xs px-2 py-1 bg-green-500/10 text-green-400 rounded-md">إحصاء</span>
-                  <span className="text-xs px-2 py-1 bg-yellow-500/10 text-yellow-400 rounded-md">هندسة</span>
-                </div>
-              </div>
-              
-              <div className="mt-6">
-                <button className="w-full py-2.5 bg-gradient-to-r from-game-primary to-game-primary/70 text-white rounded-lg flex items-center justify-center gap-2 hover:shadow-lg hover:shadow-game-primary/20 transition-all">
-                  <Award className="h-5 w-5" />
-                  تحدي المستوى النهائي
-                </button>
-              </div>
-            </div>
-          </div>
-        </div>
+      {/* Main content */}
+      <div className="pt-[88px] min-h-[calc(100vh-88px-64px)] flex">
+        {/* Left sidebar - Units list */}
+        <UnitsList 
+          units={course.units}
+          currentUnitId={currentUnitId}
+          onSelectUnit={handleUnitChange}
+        />
         
-        {/* Right Column: Course Content with Tabs */}
-        <div className="col-span-2">
-          <Tab.Group>
-            <div className="flex flex-col h-full">
-              <Tab.List className="flex mb-4">
-                {course.sections.map((section) => (
-                  <Tab
-                    key={section.id}
-                    className={({ selected }) =>
-                      `px-4 py-2 text-sm font-medium transition-all border-b-2 ${
-                        selected
-                          ? 'text-white border-game-primary'
-                          : 'text-gray-400 border-transparent hover:text-white hover:border-gray-700'
-                      }`
-                    }
-                  >
-                    {section.title}
-                  </Tab>
-                ))}
-              </Tab.List>
-              
-              <Tab.Panels className="flex-1 overflow-hidden">
-                {course.sections.map((section) => (
-                  <Tab.Panel key={section.id} className="h-full outline-none">
-                    <div className="game-panel h-full overflow-y-auto scrollbar-none">
-                      <div className="space-y-2">
-                        {section.lessons.map((lesson) => (
-                          <motion.div 
-                            key={lesson.id}
-                            className={`p-3 rounded-lg flex items-center gap-3 cursor-pointer transition-all ${
-                              lesson.isCompleted 
-                                ? 'bg-green-500/10 border border-green-500/20' 
-                                : 'bg-game-card-bg-alt hover:bg-gray-700/50'
-                            }`}
-                            onClick={() => openVideoModal(lesson.id)}
-                            whileHover={{ scale: 1.01 }}
-                            transition={{ duration: 0.2 }}
-                          >
-                            <div className={`h-10 w-10 rounded-full flex items-center justify-center ${
-                              lesson.isCompleted ? 'bg-green-500/20 text-green-500' : 'bg-game-card-bg text-white'
-                            }`}>
-                              {lesson.isCompleted ? (
-                                <CheckCircle className="h-5 w-5" />
-                              ) : (
-                                <Play className="h-5 w-5" />
-                              )}
-                            </div>
-                            
-                            <div className="flex-1">
-                              <div className="flex justify-between">
-                                <h4 className="font-medium text-white">{lesson.title}</h4>
-                                <div className="flex items-center gap-2">
-                                  {lesson.hasQuiz && (
-                                    <span className="px-2 py-0.5 bg-blue-500/20 text-blue-400 rounded-md text-xs border border-blue-500/20">
-                                      اختبار
-                                    </span>
-                                  )}
-                                  <span className="text-gray-400 text-xs flex items-center">
-                                    <Clock className="h-3 w-3 mr-1" />
-                                    {lesson.duration}
-                                  </span>
-                                </div>
-                              </div>
-                              
-                              <div className="flex justify-between items-center mt-1">
-                                <div className="text-xs text-gray-400">
-                                  {lesson.isCompleted ? 'تم الإكمال' : 'غير مكتمل'}
-                                </div>
-                                <div className="text-xs text-game-accent bg-game-accent/10 px-2 py-0.5 rounded-md">
-                                  <span className="font-share-tech">+{lesson.xpReward} XP</span>
-                                </div>
-                              </div>
-                            </div>
-                          </motion.div>
-                        ))}
-                      </div>
-                    </div>
-                  </Tab.Panel>
-                ))}
-              </Tab.Panels>
-            </div>
-          </Tab.Group>
-        </div>
-      </div>
-      
-      {/* Video Modal */}
-      {videoModalOpen && activeLesson && (
-        <div className="fixed inset-0 bg-black/80 backdrop-blur-sm flex items-center justify-center z-50 p-4">
-          <div className="max-w-4xl w-full bg-game-card-bg rounded-2xl overflow-hidden border border-white/10 shadow-2xl animate-scale-in">
-            <div className="aspect-video bg-black flex items-center justify-center relative">
-              <div className="absolute inset-0 cyber-grid opacity-10"></div>
-              
-              <div className="text-white text-center z-10">
-                <Play className="h-16 w-16 mx-auto mb-4 text-game-primary animate-pulse-glow" />
-                <p className="text-xl font-bold font-changa">هذا محاكاة لمشغل الفيديو</p>
-                <p className="text-sm text-gray-400 mt-2 font-lexend">في الإصدار النهائي، سيظهر هنا فيديو الدرس</p>
-              </div>
-              
-              <button
-                onClick={closeVideoModal}
-                className="absolute top-4 left-4 h-10 w-10 rounded-full bg-black/50 border border-white/10 flex items-center justify-center text-gray-400 hover:text-white backdrop-blur-sm transition-colors"
-                aria-label="إغلاق"
-              >
-                ✕
-              </button>
+        {/* Main content area */}
+        <div className="flex-1 overflow-y-auto pt-4 pr-4 pb-20 lg:pb-4 pl-4 lg:pl-4 lg:pr-[260px]">
+          <div className="max-w-[920px] mx-auto">
+            {/* Video player */}
+            <div ref={videoRef}>
+              <VideoPlayer 
+                videoSrc={currentUnit.videoSrc || ''}
+                chapters={currentUnit.chapters || []}
+                poster="/lovable-uploads/1c2c3b5b-f76f-459a-94ed-22d2f3e35da0.png"
+                onVideoEnd={handleVideoEnd}
+              />
             </div>
             
-            <div className="p-6">
-              <h3 className="text-xl font-semibold text-white mb-4 font-lexend">
-                {course.sections
-                  .flatMap(s => s.lessons)
-                  .find(l => l.id === activeLesson)?.title}
-              </h3>
-              
-              <div className="flex justify-between">
-                <button
-                  onClick={closeVideoModal}
-                  className="px-5 py-2.5 bg-game-card-bg-alt text-white rounded-lg hover:bg-gray-700 transition-colors border border-white/5"
-                >
-                  إغلاق
-                </button>
-                
-                <button
-                  onClick={markAsComplete}
-                  className="px-5 py-2.5 bg-gradient-to-r from-game-primary to-game-primary/70 text-white rounded-lg hover:shadow-lg hover:shadow-game-primary/20 transition-all flex items-center gap-2"
-                >
-                  <CheckCircle className="h-5 w-5" />
-                  إكمال الدرس
-                </button>
-              </div>
-            </div>
+            {/* Content tabs */}
+            <ContentTabs 
+              pdfUrl={currentUnit.pdfUrl}
+              faqs={currentUnit.faqs || []}
+              notes={notes[currentUnitId] || currentUnit.notes || ''}
+              onNotesChange={handleNotesChange}
+              onJumpToTimestamp={handleJumpToTimestamp}
+            />
           </div>
         </div>
-      )}
+        
+        {/* Right action panel */}
+        <ActionPanel 
+          onQuizClick={() => setShowMiniQuiz(true)}
+          onAskAiClick={() => setShowAiModal(true)}
+          leaderboard={LEADERBOARD}
+          currentUser={LEADERBOARD[3]}
+        />
+      </div>
+      
+      {/* Footer */}
+      <CourseFooter 
+        currentUnit={currentUnitIndex + 1}
+        totalUnits={course.units.length}
+        onPrevUnit={handlePrevUnit}
+        onNextUnit={handleNextUnit}
+        isLastUnit={currentUnitIndex === course.units.length - 1}
+        onComplete={handleCourseComplete}
+        isUnitCompleted={currentUnit.status === 'completed'}
+      />
+      
+      {/* Modals */}
+      <AnimatePresence>
+        {showMiniQuiz && (
+          <MiniQuiz 
+            questions={QUIZ_QUESTIONS}
+            onClose={() => setShowMiniQuiz(false)}
+            onComplete={handleQuizComplete}
+          />
+        )}
+        
+        {showAiModal && (
+          <AskAiModal onClose={() => setShowAiModal(false)} />
+        )}
+      </AnimatePresence>
+      
+      {/* Add a grain overlay */}
+      <div className="fixed inset-0 pointer-events-none z-50 bg-[url('data:image/svg+xml;base64,PHN2ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIHdpZHRoPSIzMDAiIGhlaWdodD0iMzAwIj48ZmlsdGVyIGlkPSJhIiB4PSIwIiB5PSIwIj48ZmVUdXJidWxlbmNlIGJhc2VGcmVxdWVuY3k9Ii43NSIgc3RpdGNoVGlsZXM9InN0aXRjaCIgdHlwZT0iZnJhY3RhbE5vaXNlIi8+PGZlQ29sb3JNYXRyaXggdHlwZT0ic2F0dXJhdGUiIHZhbHVlcz0iMCIvPjwvZmlsdGVyPjxwYXRoIGQ9Ik0wIDBoMzAwdjMwMEgweiIgZmlsdGVyPSJ1cmwoI2EpIiBvcGFjaXR5PSIuMDUiLz48L3N2Zz4=')]"></div>
     </div>
   );
 };
