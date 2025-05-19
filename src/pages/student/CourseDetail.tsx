@@ -177,9 +177,9 @@ const CourseDetail = () => {
   const [showMiniQuiz, setShowMiniQuiz] = useState(false);
   const [showAiModal, setShowAiModal] = useState(false);
   const [notes, setNotes] = useState<Record<string, string>>({});
-  // Always keep sidebars open
-  const [sidebarOpen] = useState(true);
-  const [actionPanelOpen] = useState(true);
+  // Always keep sidebars open - using constants instead of state since they never change
+  const sidebarOpen = true;
+  const actionPanelOpen = true;
   const isMobile = useIsMobile();
   const videoRef = useRef<HTMLDivElement>(null);
   
@@ -290,14 +290,6 @@ const CourseDetail = () => {
       description: `لقد أكملت كورس ${course.title} بنجاح وحصلت على ${course.totalXP} XP!`,
       variant: "default",
     });
-  };
-
-  const toggleSidebar = () => {
-    setSidebarOpen(prev => !prev);
-  };
-  
-  const toggleActionPanel = () => {
-    setActionPanelOpen(prev => !prev);
   };
 
   return (
