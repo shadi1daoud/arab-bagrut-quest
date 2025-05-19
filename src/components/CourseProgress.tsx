@@ -1,20 +1,40 @@
-
 import React from 'react';
 import { ChevronRight } from 'lucide-react';
 import { Progress } from './ui/progress';
 
 interface CourseProgressProps {
-  courses: Array<{
+  courses?: Array<{
     id: number;
     name: string;
     progress: number;
   }>;
+  progress?: number;
+  className?: string;
 }
 
-const CourseProgress: React.FC<CourseProgressProps> = ({ courses }) => {
+const CourseProgress: React.FC<CourseProgressProps> = ({ courses, progress, className }) => {
+  // If we have a single progress value, render just the progress bar
+  if (progress !== undefined) {
+    return (
+      <div className={className}>
+        <div className="relative overflow-hidden rounded-md">
+          <Progress 
+            value={progress} 
+            className="h-2" 
+          />
+          <div 
+            className="absolute top-0 bottom-0 left-0 w-full bg-gradient-to-r from-transparent via-[rgba(255,72,0,0.3)] to-transparent opacity-0 group-hover:opacity-100 transition-opacity animate-shine"
+            style={{pointerEvents: 'none'}}
+          />
+        </div>
+      </div>
+    );
+  }
+  
+  // Otherwise render the full course list with progress bars
   return (
-    <div className="space-y-3">
-      {courses.map(course => (
+    <div className={`space-y-3 ${className || ''}`}>
+      {courses && courses.map(course => (
         <div key={course.id} className="hover:bg-[rgba(255,255,255,0.05)] p-2 rounded-lg transition-all duration-300 group cursor-pointer border border-transparent hover:border-[rgba(255,72,0,0.2)]">
           <div className="flex justify-between items-center mb-1">
             <h4 className="text-white text-sm font-changa">{course.name}</h4>
