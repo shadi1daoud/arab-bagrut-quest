@@ -1,31 +1,20 @@
+
 import React from 'react';
 import { ChevronRight } from 'lucide-react';
 import { Progress } from './ui/progress';
 
 interface CourseProgressProps {
-  courses?: Array<{
+  courses: Array<{
     id: number;
     name: string;
     progress: number;
   }>;
-  progress?: number; // Add this to support the direct progress prop
-  className?: string; // Add support for className
 }
 
-const CourseProgress: React.FC<CourseProgressProps> = ({ courses, progress, className }) => {
-  // If a single progress value is provided, render a simple progress bar
-  if (typeof progress === 'number') {
-    return (
-      <div className={className}>
-        <Progress value={progress} className="h-2" />
-      </div>
-    );
-  }
-  
-  // Otherwise render the courses list with progress bars
+const CourseProgress: React.FC<CourseProgressProps> = ({ courses }) => {
   return (
     <div className="space-y-3">
-      {courses?.map(course => (
+      {courses.map(course => (
         <div key={course.id} className="hover:bg-[rgba(255,255,255,0.05)] p-2 rounded-lg transition-all duration-300 group cursor-pointer border border-transparent hover:border-[rgba(255,72,0,0.2)]">
           <div className="flex justify-between items-center mb-1">
             <h4 className="text-white text-sm font-changa">{course.name}</h4>

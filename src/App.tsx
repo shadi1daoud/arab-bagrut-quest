@@ -14,7 +14,6 @@ import Shop from "./pages/student/Shop";
 import Community from "./pages/student/Community";
 import Settings from "./pages/student/Settings";
 import CourseDetail from "./pages/student/CourseDetail";
-import NewCourseView from "./pages/student/NewCourseView"; // Import the new course view
 import Login from "./pages/Login";
 import AdminDashboard from "./pages/admin/Dashboard";
 import AdminCourses from "./pages/admin/Courses";
@@ -48,7 +47,6 @@ const App = () => (
               <Route index element={<Dashboard />} />
               <Route path="my-courses" element={<MyCourses />} />
               <Route path="courses/:id" element={<CourseDetail />} />
-              <Route path="courses/:id/new" element={<NewCourseView />} /> {/* Add the new course view route */}
               <Route path="shop" element={<Shop />} />
               <Route path="community" element={<Community />} />
               <Route path="settings" element={<Settings />} />
