@@ -1,4 +1,3 @@
-
 import React, { useState } from 'react';
 import { motion } from 'framer-motion';
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
@@ -188,17 +187,8 @@ const MyCourses = () => {
         </TabsContent>
       </Tabs>
 
-      {/* Bottom Section */}
+      {/* Bottom Section - Updated to remove the link to /courses */}
       <div className="flex flex-col md:flex-row justify-between items-center border-t border-white/5 pt-6 mt-auto">
-        <Button
-          variant="secondary"
-          className="flex items-center gap-2 mb-4 md:mb-0 font-['Noto_Sans_Arabic']"
-          onClick={() => window.location.href = '/courses'}
-        >
-          استعرض كل الكورسات
-          <ArrowRight className="h-4 w-4 mr-1" />
-        </Button>
-        
         <motion.div
           initial={{ opacity: 0 }}
           animate={{ opacity: 1 }}

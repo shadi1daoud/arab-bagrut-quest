@@ -1,4 +1,3 @@
-
 import { useState, useEffect } from 'react';
 import { Outlet, NavLink, useLocation } from 'react-router-dom';
 import { Home, BookOpen, ShoppingCart, Users, Settings, LogOut, Menu, X, Bell, Search, Flame, Award, ChevronRight } from 'lucide-react';
@@ -25,10 +24,6 @@ const StudentLayout = () => {
     path: '/',
     label: 'الرئيسية',
     icon: Home
-  }, {
-    path: '/courses',
-    label: 'كورساتي',
-    icon: BookOpen
   }, {
     path: '/my-courses',
     label: 'كورساتي الخاصة',
