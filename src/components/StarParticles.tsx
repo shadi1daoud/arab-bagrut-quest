@@ -1,5 +1,5 @@
 
-import React, { useEffect, useRef } from 'react';
+import React, { useRef } from 'react';
 
 const StarParticles: React.FC = () => {
   const containerRef = useRef<HTMLDivElement>(null);
