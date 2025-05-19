@@ -14,9 +14,9 @@ const CollapsibleContent = React.forwardRef<
     forceMount?: boolean;
   }
 >(({ children, forceMount, ...props }, ref) => {
-  // Access the open state correctly from the props
-  // The open property comes from Radix UI's CollapsibleContent component
-  const isOpen = props.open || forceMount;
+  // Use optional chaining to safely access the open property
+  // from CollapsiblePrimitive.CollapsibleContentProps
+  const isOpen = (props as { open?: boolean }).open || forceMount;
   
   return (
     <AnimatePresence>
