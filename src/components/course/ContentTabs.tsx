@@ -44,21 +44,21 @@ const ContentTabs = ({ pdfUrl, faqs, notes, onNotesChange, onJumpToTimestamp }: 
         <TabsList className="bg-black/40 border border-white/5 p-1 mb-4 w-full grid grid-cols-3">
           <TabsTrigger
             value="summary"
-            className="font-['Noto_Sans_Arabic'] data-[state=active]:bg-[#FF4B1A] data-[state=active]:text-white"
+            className="font-['Noto_Sans_Arabic'] data-[state=active]:bg-[#FF4B1A] data-[state=active]:text-white transition-all duration-300"
           >
             <FileText className="h-4 w-4 mr-2" />
             ملخص PDF
           </TabsTrigger>
           <TabsTrigger
             value="notes"
-            className="font-['Noto_Sans_Arabic'] data-[state=active]:bg-[#FF4B1A] data-[state=active]:text-white"
+            className="font-['Noto_Sans_Arabic'] data-[state=active]:bg-[#FF4B1A] data-[state=active]:text-white transition-all duration-300"
           >
             <File className="h-4 w-4 mr-2" />
             ملاحظاتي
           </TabsTrigger>
           <TabsTrigger
             value="faq"
-            className="font-['Noto_Sans_Arabic'] data-[state=active]:bg-[#FF4B1A] data-[state=active]:text-white"
+            className="font-['Noto_Sans_Arabic'] data-[state=active]:bg-[#FF4B1A] data-[state=active]:text-white transition-all duration-300"
           >
             <ChevronDown className="h-4 w-4 mr-2" />
             الأسئلة المتكررة
@@ -67,7 +67,7 @@ const ContentTabs = ({ pdfUrl, faqs, notes, onNotesChange, onJumpToTimestamp }: 
 
         {/* PDF Summary Tab */}
         <TabsContent value="summary" className="mt-0">
-          <div className="bg-black/30 border border-white/10 rounded-xl p-4">
+          <div className="bg-black/30 border border-white/10 rounded-xl p-4 shadow-[inset_0_0_6px_rgba(0,0,0,0.4)]">
             {pdfUrl ? (
               <div className="relative h-[500px] mb-4">
                 <iframe 
@@ -77,7 +77,7 @@ const ContentTabs = ({ pdfUrl, faqs, notes, onNotesChange, onJumpToTimestamp }: 
                 />
                 <Button 
                   size="sm" 
-                  className="absolute top-2 right-2 flex items-center bg-black/70"
+                  className="absolute top-2 right-2 flex items-center bg-black/70 hover:shadow-[0_0_8px_rgba(255,75,26,0.33)] transition-all duration-300"
                 >
                   <Download className="h-4 w-4 mr-2" />
                   تحميل PDF
@@ -95,7 +95,7 @@ const ContentTabs = ({ pdfUrl, faqs, notes, onNotesChange, onJumpToTimestamp }: 
 
         {/* Notes Tab */}
         <TabsContent value="notes" className="mt-0">
-          <div className="bg-black/30 border border-white/10 rounded-xl p-4">
+          <div className="bg-black/30 border border-white/10 rounded-xl p-4 shadow-[inset_0_0_6px_rgba(0,0,0,0.4)]">
             <textarea
               value={notes}
               onChange={(e) => onNotesChange(e.target.value)}
@@ -115,7 +115,7 @@ const ContentTabs = ({ pdfUrl, faqs, notes, onNotesChange, onJumpToTimestamp }: 
               <div 
                 key={index}
                 className={cn(
-                  "bg-black/30 border border-white/10 rounded-xl overflow-hidden transition-all",
+                  "bg-black/30 border border-white/10 rounded-xl overflow-hidden transition-all shadow-[inset_0_0_6px_rgba(0,0,0,0.4)]",
                   expandedFaq === index ? "border-[#FF4B1A]/20" : ""
                 )}
               >
@@ -144,7 +144,7 @@ const ContentTabs = ({ pdfUrl, faqs, notes, onNotesChange, onJumpToTimestamp }: 
                         {faq.timestamps.map((stamp, i) => (
                           <button
                             key={i}
-                            className="inline-flex items-center px-3 py-1 text-xs bg-[#FF4B1A]/10 text-[#FF4B1A] rounded-full border border-[#FF4B1A]/20 hover:bg-[#FF4B1A]/20 transition-colors"
+                            className="inline-flex items-center px-3 py-1 text-xs bg-[#FF4B1A]/10 text-[#FF4B1A] rounded-full border border-[#FF4B1A]/20 hover:bg-[#FF4B1A]/20 transition-colors hover:shadow-[0_0_8px_rgba(255,75,26,0.33)] transition-all duration-300"
                             onClick={() => onJumpToTimestamp(stamp.time)}
                           >
                             <SkipForward className="h-3 w-3 mr-1" />

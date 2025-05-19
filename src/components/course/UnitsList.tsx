@@ -1,6 +1,6 @@
 
 import React, { useState } from 'react';
-import { ChevronRight, ChevronLeft, Circle, Clock } from 'lucide-react';
+import { ChevronRight, ChevronLeft, Check, Clock } from 'lucide-react';
 import { Tooltip, TooltipContent, TooltipProvider, TooltipTrigger } from "@/components/ui/tooltip";
 import { Collapsible, CollapsibleContent, CollapsibleTrigger } from "@/components/ui/collapsible";
 import { motion, AnimatePresence } from 'framer-motion';
@@ -32,20 +32,22 @@ const UnitsList = ({ units, currentUnitId, onSelectUnit }: UnitsListProps) => {
       case 'completed':
         return (
           <div className="h-5 w-5 rounded-full bg-[#FF4B1A] flex items-center justify-center text-white">
-            <div className="h-2 w-2 bg-white rounded-full"></div>
+            <Check className="h-3 w-3" />
           </div>
         );
       case 'in-progress':
         return (
           <div className="relative h-5 w-5">
-            <div className="absolute inset-0 rounded-full border-2 border-[#FF4B1A] opacity-50"></div>
-            <div 
-              className="absolute inset-0 rounded-full border-2 border-[#FF4B1A]"
-              style={{
-                clipPath: 'polygon(0 0, 50% 0, 50% 50%, 0 50%)',
-                transform: 'rotate(45deg)'
-              }}
-            ></div>
+            <svg className="w-5 h-5" viewBox="0 0 24 24">
+              <circle cx="12" cy="12" r="10" fill="none" stroke="#FF4B1A" strokeWidth="2" />
+              <path 
+                d="M12 2 A10 10 0 0 1 22 12" 
+                fill="none" 
+                stroke="#FF4B1A" 
+                strokeWidth="2" 
+                strokeLinecap="round"
+              />
+            </svg>
           </div>
         );
       default:
@@ -60,7 +62,7 @@ const UnitsList = ({ units, currentUnitId, onSelectUnit }: UnitsListProps) => {
       open={!isCollapsed}
       onOpenChange={(open) => setIsCollapsed(!open)}
       className={cn(
-        "fixed top-[88px] bottom-0 h-[calc(100vh-88px)] bg-[#0F0F0F] border-r border-white/5 z-20 transition-all duration-300",
+        "fixed top-[88px] bottom-16 h-[calc(100vh-88px-64px)] bg-[#0F0F0F] border-r border-white/5 z-20 transition-all duration-300 shadow-[2px_0_10px_rgba(0,0,0,0.3)]",
         isCollapsed ? "w-[68px]" : "w-[260px]"
       )}
     >
@@ -71,7 +73,7 @@ const UnitsList = ({ units, currentUnitId, onSelectUnit }: UnitsListProps) => {
           </h3>
           <CollapsibleTrigger asChild>
             <button 
-              className="h-8 w-8 rounded-full bg-black/40 flex items-center justify-center border border-white/10 hover:bg-white/10 transition-colors"
+              className="h-8 w-8 rounded-full bg-black/40 flex items-center justify-center border border-white/10 hover:bg-white/10 transition-colors hover:shadow-[0_0_8px_rgba(255,75,26,0.33)]"
             >
               {isCollapsed ? <ChevronLeft className="h-4 w-4 text-gray-400" /> : <ChevronRight className="h-4 w-4 text-gray-400" />}
             </button>
@@ -86,15 +88,16 @@ const UnitsList = ({ units, currentUnitId, onSelectUnit }: UnitsListProps) => {
                   initial={{ opacity: 0 }}
                   animate={{ opacity: 1 }}
                   exit={{ opacity: 0 }}
+                  transition={{ duration: 0.3 }}
                   className="space-y-1 px-2"
                 >
                   {units.map(unit => (
                     <div 
                       key={unit.id}
                       className={cn(
-                        "flex items-center py-2.5 px-3 rounded-xl cursor-pointer transition-all",
+                        "flex items-center py-2.5 px-3 rounded-xl cursor-pointer transition-all duration-300",
                         unit.id === currentUnitId 
-                          ? "bg-[#151515] border border-[#FF4B1A]/20" 
+                          ? "bg-[#151515] border border-[#FF4B1A]/20 shadow-[0_0_8px_rgba(255,75,26,0.15)]" 
                           : "hover:bg-black/40"
                       )}
                       onClick={() => onSelectUnit(unit.id)}
@@ -130,6 +133,7 @@ const UnitsList = ({ units, currentUnitId, onSelectUnit }: UnitsListProps) => {
                   initial={{ opacity: 0 }}
                   animate={{ opacity: 1 }}
                   exit={{ opacity: 0 }}
+                  transition={{ duration: 0.3 }}
                   className="flex flex-col items-center space-y-4 pt-4"
                 >
                   {units.map(unit => (

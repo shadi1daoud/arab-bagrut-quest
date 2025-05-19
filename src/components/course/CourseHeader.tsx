@@ -36,8 +36,7 @@ const CourseHeader = ({ courseTitle, totalXP, progress, courseId }: CourseHeader
             </div>
             <Progress 
               value={progress} 
-              className="h-1.5 bg-[#262626]"
-              // Fixed: Using className to style the indicator instead of indicatorClassName
+              className="h-2 bg-[#262626]"
               style={{
                 "--progress-indicator-color": "linear-gradient(to right, #FF4B1A, #FF794B)",
                 "--progress-indicator-shadow": "0 0 8px rgba(255,75,26,0.33)"

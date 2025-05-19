@@ -28,21 +28,22 @@ const CourseFooter = ({
   const handleComplete = () => {
     // Trigger confetti effect
     confetti({
-      particleCount: 100,
-      spread: 70,
-      origin: { y: 0.6 }
+      particleCount: 150,
+      spread: 80,
+      origin: { y: 0.6 },
+      colors: ['#FF4B1A', '#FF794B', '#FFD0B5', '#FFF']
     });
     
     if (onComplete) onComplete();
   };
   
   return (
-    <footer className="fixed bottom-0 left-0 right-0 h-16 bg-gradient-to-r from-[#0E0E0E] to-[#1A1A1A] border-t border-white/5 flex items-center px-4 z-30">
+    <footer className="fixed bottom-0 left-0 right-0 h-16 bg-gradient-to-r from-[#0E0E0E] to-[#1A1A1A] border-t border-white/5 shadow-[0_-4px_20px_rgba(0,0,0,0.3)] flex items-center px-4 z-30">
       <div className="max-w-[1480px] w-full mx-auto flex items-center justify-between">
         <Button
           onClick={onPrevUnit}
           variant="outline"
-          className="font-['Noto_Sans_Arabic']"
+          className="font-['Noto_Sans_Arabic'] hover:shadow-[0_0_8px_rgba(255,75,26,0.33)] transition-all duration-300 border-white/10"
           disabled={currentUnit <= 1}
         >
           <ChevronRight className="h-4 w-4 mr-2" />
@@ -59,7 +60,7 @@ const CourseFooter = ({
           onClick={isLastUnit && !isUnitCompleted ? handleComplete : onNextUnit}
           variant="default"
           className={cn(
-            "font-['Noto_Sans_Arabic']",
+            "font-['Noto_Sans_Arabic'] transition-all duration-300 hover:shadow-[0_0_8px_rgba(255,75,26,0.33)]",
             isLastUnit && !isUnitCompleted && "bg-green-500 hover:bg-green-600"
           )}
           disabled={isLastUnit && isUnitCompleted}

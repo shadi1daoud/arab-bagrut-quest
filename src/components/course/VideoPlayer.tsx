@@ -135,7 +135,7 @@ const VideoPlayer = ({ videoSrc, chapters = [], poster, onVideoEnd }: VideoPlaye
 
   return (
     <div 
-      className="video-container relative rounded-xl overflow-hidden bg-black aspect-video"
+      className="video-container relative rounded-xl overflow-hidden bg-black aspect-video shadow-[inset_0_0_6px_rgba(0,0,0,0.4)]"
       onMouseMove={handleMouseMove}
     >
       <video 
@@ -173,7 +173,6 @@ const VideoPlayer = ({ videoSrc, chapters = [], poster, onVideoEnd }: VideoPlaye
               step={0.1}
               onValueChange={handleProgressChange}
               className="absolute inset-0 flex cursor-pointer"
-              // Fixed: Using inline style instead of trackClassName
               style={{
                 "--slider-track-color": "linear-gradient(to right, #FF4B1A, #FF794B)"
               } as React.CSSProperties}
@@ -228,7 +227,6 @@ const VideoPlayer = ({ videoSrc, chapters = [], poster, onVideoEnd }: VideoPlaye
                     step={0.01}
                     onValueChange={handleVolumeChange}
                     className="cursor-pointer"
-                    // Fixed: Using inline style instead of trackClassName
                     style={{
                       "--slider-track-color": "white"
                     } as React.CSSProperties}

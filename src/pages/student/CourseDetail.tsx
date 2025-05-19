@@ -1,3 +1,4 @@
+
 import { useState, useRef, useEffect } from 'react';
 import { useParams } from 'react-router-dom';
 import { useToast } from '@/hooks/use-toast';
@@ -287,7 +288,7 @@ const CourseDetail = () => {
   };
 
   return (
-    <div className="pb-16 lg:p-0">
+    <div className="min-h-screen h-screen flex flex-col relative overflow-hidden">
       {/* Course header */}
       <CourseHeader 
         courseTitle={course.title}
@@ -297,7 +298,7 @@ const CourseDetail = () => {
       />
       
       {/* Main content */}
-      <div className="pt-[88px] min-h-[calc(100vh-88px-64px)] flex">
+      <div className="pt-[88px] h-[calc(100vh-88px-64px)] flex relative">
         {/* Left sidebar - Units list */}
         <UnitsList 
           units={course.units}
@@ -306,10 +307,10 @@ const CourseDetail = () => {
         />
         
         {/* Main content area */}
-        <div className="flex-1 overflow-y-auto pt-4 pr-4 pb-20 lg:pb-4 pl-4 lg:pl-4 lg:pr-[260px]">
-          <div className="max-w-[920px] mx-auto">
-            {/* Video player */}
-            <div ref={videoRef}>
+        <div className="flex-1 overflow-y-auto lg:overflow-y-hidden pb-16 lg:pb-0">
+          <div className="max-w-[920px] mx-auto px-4 lg:px-6 py-4 lg:grid lg:grid-cols-12 lg:gap-4">
+            {/* Video player takes up full width in the 12-column grid */}
+            <div ref={videoRef} className="lg:col-span-12">
               <VideoPlayer 
                 videoSrc={currentUnit.videoSrc || ''}
                 chapters={currentUnit.chapters || []}
@@ -318,14 +319,16 @@ const CourseDetail = () => {
               />
             </div>
             
-            {/* Content tabs */}
-            <ContentTabs 
-              pdfUrl={currentUnit.pdfUrl}
-              faqs={currentUnit.faqs || []}
-              notes={notes[currentUnitId] || currentUnit.notes || ''}
-              onNotesChange={handleNotesChange}
-              onJumpToTimestamp={handleJumpToTimestamp}
-            />
+            {/* Content tabs also take full width */}
+            <div className="lg:col-span-12">
+              <ContentTabs 
+                pdfUrl={currentUnit.pdfUrl}
+                faqs={currentUnit.faqs || []}
+                notes={notes[currentUnitId] || currentUnit.notes || ''}
+                onNotesChange={handleNotesChange}
+                onJumpToTimestamp={handleJumpToTimestamp}
+              />
+            </div>
           </div>
         </div>
         
@@ -365,7 +368,7 @@ const CourseDetail = () => {
       </AnimatePresence>
       
       {/* Add a grain overlay */}
-      <div className="fixed inset-0 pointer-events-none z-50 bg-[url('data:image/svg+xml;base64,PHN2ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIHdpZHRoPSIzMDAiIGhlaWdodD0iMzAwIj48ZmlsdGVyIGlkPSJhIiB4PSIwIiB5PSIwIj48ZmVUdXJidWxlbmNlIGJhc2VGcmVxdWVuY3k9Ii43NSIgc3RpdGNoVGlsZXM9InN0aXRjaCIgdHlwZT0iZnJhY3RhbE5vaXNlIi8+PGZlQ29sb3JNYXRyaXggdHlwZT0ic2F0dXJhdGUiIHZhbHVlcz0iMCIvPjwvZmlsdGVyPjxwYXRoIGQ9Ik0wIDBoMzAwdjMwMEgweiIgZmlsdGVyPSJ1cmwoI2EpIiBvcGFjaXR5PSIuMDUiLz48L3N2Zz4=')]"></div>
+      <div className="fixed inset-0 pointer-events-none z-50 bg-[url('data:image/svg+xml;base64,PHN2ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIHdpZHRoPSIzMDAiIGhlaWdodD0iMzAwIj48ZmlsdGVyIGlkPSJhIiB4PSIwIiB5PSIwIj48ZmVUdXJidWxlbmNlIGJhc2VGcmVxdWVuY3k9Ii43NSIgc3RpdGNoVGlsZXM9InN0aXRjaCIgdHlwZT0iZnJhY3RhbE5vaXNlIi8+PGZlQ29sb3JNYXRyaXggdHlwZT0ic2F0dXJhdGUiIHZhbHVlcz0iMCIvPjwvZmlsdGVyPjxwYXRoIGQ9Ik0wIDBoMzAwdjMwMEgweiIgZmlsdGVyPSJ1cmwoI2EpIiBvcGFjaXR5PSIuMDUiLz48L3N2Zz4=')] opacity-20"></div>
     </div>
   );
 };

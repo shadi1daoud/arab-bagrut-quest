@@ -73,13 +73,13 @@ const ActionPanel = ({ onQuizClick, onAskAiClick, leaderboard, currentUser }: Ac
   };
 
   return (
-    <div className="fixed top-[88px] right-0 w-[240px] bottom-0 bg-[#0F0F0F] border-l border-white/5 hidden lg:block">
+    <div className="fixed top-[88px] right-0 w-[240px] bottom-16 bg-[#0F0F0F] border-l border-white/5 hidden lg:block shadow-[-2px_0_10px_rgba(0,0,0,0.3)]">
       <div className="h-full flex flex-col p-4">
         {/* Quick actions */}
         <div className="space-y-3 mb-6">
           <Button
             onClick={onQuizClick}
-            className="w-full bg-[#FF4B1A] hover:bg-[#FF4B1A]/90 text-white font-['Noto_Sans_Arabic']"
+            className="w-full bg-[#FF4B1A] hover:bg-[#FF4B1A]/90 text-white font-['Noto_Sans_Arabic'] hover:shadow-[0_0_8px_rgba(255,75,26,0.33)] transition-all duration-300"
           >
             اختبار سريع
           </Button>
@@ -87,20 +87,20 @@ const ActionPanel = ({ onQuizClick, onAskAiClick, leaderboard, currentUser }: Ac
           <Button
             onClick={onAskAiClick}
             variant="outline"
-            className="w-full border-[#FF4B1A]/30 text-[#FF4B1A] hover:bg-[#FF4B1A]/10 font-['Noto_Sans_Arabic']"
+            className="w-full border-[#FF4B1A]/30 text-[#FF4B1A] hover:bg-[#FF4B1A]/10 font-['Noto_Sans_Arabic'] hover:shadow-[0_0_8px_rgba(255,75,26,0.33)] transition-all duration-300"
           >
             <Brain className="h-4 w-4 mr-2" />
             اسأل D-Bot
           </Button>
           
-          <button className="w-full flex items-center justify-center gap-2 py-2 bg-black/40 rounded-lg text-gray-300 hover:text-white hover:bg-black/60 transition-colors border border-white/10">
+          <button className="w-full flex items-center justify-center gap-2 py-2 bg-black/40 rounded-lg text-gray-300 hover:text-white hover:bg-black/60 transition-colors border border-white/10 hover:shadow-[0_0_8px_rgba(255,255,255,0.15)] transition-all duration-300">
             <Share2 className="h-4 w-4" />
             <span className="text-sm font-['Noto_Sans_Arabic']">مشاركة</span>
           </button>
         </div>
         
         {/* Pomodoro timer */}
-        <div className="bg-black/30 rounded-xl p-4 border border-white/10 mb-6">
+        <div className="bg-black/30 rounded-xl p-4 border border-white/10 mb-6 shadow-[inset_0_0_6px_rgba(0,0,0,0.4)]">
           <h3 className="text-white text-center font-['Noto_Sans_Arabic'] mb-4">مؤقت بومودورو</h3>
           
           <div className="w-32 h-32 mx-auto mb-3">
@@ -120,7 +120,7 @@ const ActionPanel = ({ onQuizClick, onAskAiClick, leaderboard, currentUser }: Ac
           <div className="flex justify-center space-x-2">
             <button
               onClick={togglePomodoro}
-              className="h-8 w-8 rounded-full bg-[#FF4B1A]/20 flex items-center justify-center text-[#FF4B1A] hover:bg-[#FF4B1A]/30 transition-colors"
+              className="h-8 w-8 rounded-full bg-[#FF4B1A]/20 flex items-center justify-center text-[#FF4B1A] hover:bg-[#FF4B1A]/30 transition-colors hover:shadow-[0_0_8px_rgba(255,75,26,0.33)] transition-all duration-300"
             >
               {pomodoro.isRunning ? <Pause className="h-4 w-4" /> : <Play className="h-4 w-4" />}
             </button>
@@ -135,7 +135,7 @@ const ActionPanel = ({ onQuizClick, onAskAiClick, leaderboard, currentUser }: Ac
         </div>
         
         {/* Mini leaderboard */}
-        <div className="bg-black/30 rounded-xl p-4 border border-white/10">
+        <div className="bg-black/30 rounded-xl p-4 border border-white/10 shadow-[inset_0_0_6px_rgba(0,0,0,0.4)]">
           <h3 className="text-white text-center font-['Noto_Sans_Arabic'] mb-3">لوحة المتصدرين</h3>
           
           <div className="space-y-2">
