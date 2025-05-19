@@ -1,4 +1,3 @@
-
 import { useState, useRef, useEffect } from 'react';
 import { useParams } from 'react-router-dom';
 import { useToast } from '@/hooks/use-toast';
@@ -178,8 +177,9 @@ const CourseDetail = () => {
   const [showMiniQuiz, setShowMiniQuiz] = useState(false);
   const [showAiModal, setShowAiModal] = useState(false);
   const [notes, setNotes] = useState<Record<string, string>>({});
-  const [sidebarOpen, setSidebarOpen] = useState(true);
-  const [actionPanelOpen, setActionPanelOpen] = useState(true);
+  // Always keep sidebars open
+  const [sidebarOpen] = useState(true);
+  const [actionPanelOpen] = useState(true);
   const isMobile = useIsMobile();
   const videoRef = useRef<HTMLDivElement>(null);
   
@@ -190,15 +190,12 @@ const CourseDetail = () => {
   const currentUnit = course.units.find(unit => unit.id === currentUnitId) || course.units[0];
   const currentUnitIndex = course.units.findIndex(unit => unit.id === currentUnitId);
   
-  // Auto-collapse sidebar on mobile
+  // Mobile behavior can still collapse sidebars if needed
   useEffect(() => {
-    if (isMobile) {
-      setSidebarOpen(false);
-      setActionPanelOpen(false);
-    }
+    // No auto collapse on mobile now
   }, [isMobile]);
   
-  // Keyboard shortcuts
+  // Keyboard shortcuts - removing sidebar toggle shortcuts
   useEffect(() => {
     const handleKeyDown = (e: KeyboardEvent) => {
       // Don't trigger shortcuts when typing in text fields
@@ -224,14 +221,7 @@ const CourseDetail = () => {
           // Open quiz
           setShowMiniQuiz(true);
           break;
-        case 's':
-          // Toggle sidebar
-          setSidebarOpen(prev => !prev);
-          break;
-        case 'a':
-          // Toggle action panel
-          setActionPanelOpen(prev => !prev);
-          break;
+        // Removed 's' and 'a' shortcuts for toggling sidebars
         default:
           break;
       }
@@ -253,10 +243,7 @@ const CourseDetail = () => {
     if (videoRef.current) {
       videoRef.current.scrollIntoView({ behavior: 'smooth', block: 'start' });
     }
-    // Auto-close sidebar on mobile after selection
-    if (isMobile) {
-      setSidebarOpen(false);
-    }
+    // No auto-close on mobile anymore
   };
   
   const handlePrevUnit = () => {
@@ -321,7 +308,7 @@ const CourseDetail = () => {
         totalXP={course.totalXP}
         progress={course.progress}
         courseId={id || '1'}
-        onToggleSidebar={toggleSidebar}
+        onToggleSidebar={() => {}} // Empty function as we don't toggle anymore
       />
       
       {/* Main content - using flex layout with proper overflow handling */}
@@ -332,7 +319,7 @@ const CourseDetail = () => {
           currentUnitId={currentUnitId}
           onSelectUnit={handleUnitChange}
           isOpen={sidebarOpen}
-          onToggle={toggleSidebar}
+          onToggle={() => {}} // Empty function as we don't toggle anymore
         />
         
         {/* Main content area with proper scrolling */}
@@ -370,7 +357,7 @@ const CourseDetail = () => {
           leaderboard={LEADERBOARD}
           currentUser={LEADERBOARD[3]}
           isOpen={actionPanelOpen}
-          onToggle={toggleActionPanel}
+          onToggle={() => {}} // Empty function as we don't toggle anymore
         />
       </div>
       
