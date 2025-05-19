@@ -37,7 +37,11 @@ const CourseHeader = ({ courseTitle, totalXP, progress, courseId }: CourseHeader
             <Progress 
               value={progress} 
               className="h-1.5 bg-[#262626]"
-              indicatorClassName="bg-gradient-to-r from-[#FF4B1A] to-[#FF794B] shadow-[0_0_8px_rgba(255,75,26,0.33)]" 
+              // Fixed: Using className to style the indicator instead of indicatorClassName
+              style={{
+                "--progress-indicator-color": "linear-gradient(to right, #FF4B1A, #FF794B)",
+                "--progress-indicator-shadow": "0 0 8px rgba(255,75,26,0.33)"
+              } as React.CSSProperties}
             />
           </div>
           

@@ -173,7 +173,10 @@ const VideoPlayer = ({ videoSrc, chapters = [], poster, onVideoEnd }: VideoPlaye
               step={0.1}
               onValueChange={handleProgressChange}
               className="absolute inset-0 flex cursor-pointer"
-              trackClassName="bg-gradient-to-r from-[#FF4B1A] to-[#FF794B]"
+              // Fixed: Using inline style instead of trackClassName
+              style={{
+                "--slider-track-color": "linear-gradient(to right, #FF4B1A, #FF794B)"
+              } as React.CSSProperties}
             />
           </div>
           
@@ -225,7 +228,10 @@ const VideoPlayer = ({ videoSrc, chapters = [], poster, onVideoEnd }: VideoPlaye
                     step={0.01}
                     onValueChange={handleVolumeChange}
                     className="cursor-pointer"
-                    trackClassName="bg-white"
+                    // Fixed: Using inline style instead of trackClassName
+                    style={{
+                      "--slider-track-color": "white"
+                    } as React.CSSProperties}
                   />
                 </div>
               </div>

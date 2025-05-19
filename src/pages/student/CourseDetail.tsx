@@ -1,4 +1,3 @@
-
 import { useState, useRef, useEffect } from 'react';
 import { useParams } from 'react-router-dom';
 import { useToast } from '@/hooks/use-toast';
@@ -13,6 +12,9 @@ import ActionPanel from '@/components/course/ActionPanel';
 import CourseFooter from '@/components/course/CourseFooter';
 import MiniQuiz from '@/components/course/MiniQuiz';
 import AskAiModal from '@/components/course/AskAiModal';
+
+// Import types
+import type { Unit, QuizQuestion } from '@/types/course';
 
 // Sample course data
 const COURSE_DATA = {
@@ -29,7 +31,7 @@ const COURSE_DATA = {
       id: 'unit1',
       number: 1,
       title: 'مقدمة في الجبر',
-      status: 'completed',
+      status: 'completed' as const,
       duration: '18 دقيقة',
       hasStreak: true,
       videoSrc: 'https://sample-videos.com/video123/mp4/720/big_buck_bunny_720p_1mb.mp4',
@@ -61,7 +63,7 @@ const COURSE_DATA = {
       id: 'unit2',
       number: 2,
       title: 'المعادلات التربيعية',
-      status: 'in-progress',
+      status: 'in-progress' as const,
       duration: '22 دقيقة',
       videoSrc: 'https://sample-videos.com/video123/mp4/720/big_buck_bunny_720p_1mb.mp4',
       chapters: [
@@ -85,7 +87,7 @@ const COURSE_DATA = {
       id: 'unit3',
       number: 3,
       title: 'حساب المثلثات',
-      status: 'idle',
+      status: 'idle' as const,
       duration: '25 دقيقة',
       videoSrc: 'https://sample-videos.com/video123/mp4/720/big_buck_bunny_720p_1mb.mp4',
       chapters: [
@@ -99,7 +101,7 @@ const COURSE_DATA = {
       id: 'unit4',
       number: 4,
       title: 'التفاضل والتكامل',
-      status: 'idle',
+      status: 'idle' as const,
       duration: '30 دقيقة',
       videoSrc: 'https://sample-videos.com/video123/mp4/720/big_buck_bunny_720p_1mb.mp4',
       chapters: [],
@@ -110,18 +112,18 @@ const COURSE_DATA = {
       id: 'unit5',
       number: 5,
       title: 'الوحدات المركبة',
-      status: 'idle',
+      status: 'idle' as const,
       duration: '20 دقيقة',
       videoSrc: 'https://sample-videos.com/video123/mp4/720/big_buck_bunny_720p_1mb.mp4',
       chapters: [],
       notes: '',
       faqs: [],
     }
-  ]
+  ] as Unit[]
 };
 
 // Sample quiz questions
-const QUIZ_QUESTIONS = [
+const QUIZ_QUESTIONS: QuizQuestion[] = [
   {
     id: 'q1',
     question: 'ما هو الناتج من ضرب المصفوفة [1, 2; 3, 4] في المصفوفة [0, 1; 1, 0]؟',

@@ -100,7 +100,14 @@ const MiniQuiz = ({ questions, onClose, onComplete }: MiniQuizProps) => {
                   </span>
                 </div>
               </div>
-              <Progress value={progress} className="h-1.5" />
+              <Progress 
+                value={progress} 
+                className="h-1.5"
+                // Fixed: Using inline style instead of indicatorClassName
+                style={{
+                  "--progress-indicator-color": "#FF4B1A"
+                } as React.CSSProperties}
+              />
             </div>
             
             {/* Question */}
@@ -169,7 +176,10 @@ const MiniQuiz = ({ questions, onClose, onComplete }: MiniQuizProps) => {
               <Progress 
                 value={(score / questions.length) * 100} 
                 className="h-3"
-                indicatorClassName={score === questions.length ? "bg-green-500" : "bg-[#FF4B1A]"} 
+                // Fixed: Using inline style instead of indicatorClassName
+                style={{
+                  "--progress-indicator-color": score === questions.length ? "#10B981" : "#FF4B1A"
+                } as React.CSSProperties}
               />
               
               <p className="mt-3 text-sm text-center text-gray-400 font-['Noto_Sans_Arabic']">
