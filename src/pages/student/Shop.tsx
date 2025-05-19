@@ -432,7 +432,7 @@ const Shop = () => {
         </motion.div>
       </div>
       
-      {/* Featured items (limited time offers) - Fortnite Style */}
+      {/* Featured items (limited time offers) */}
       {featuredItems.length > 0 && (
         <div className="mb-4">
           <h2 className="text-lg font-bold mb-2 font-['Changa'] flex items-center gap-2 text-white">
@@ -441,63 +441,41 @@ const Shop = () => {
           
           <ScrollArea className="pb-2">
             <div className="flex gap-2 pb-2">
-              {featuredItems.map(item => {
-                const rarityStyle = getRarityStyle(item.rarity);
-                return (
-                  <motion.div
-                    key={`featured-${item.id}`}
-                    className={`relative w-[200px] ${rarityStyle.glow} rounded-md overflow-hidden group h-[280px]`}
-                    whileHover={{ y: -5, scale: 1.02 }}
-                    initial={{ opacity: 0, y: 20 }}
-                    animate={{ opacity: 1, y: 0 }}
-                    transition={{ duration: 0.3 }}
-                  >
-                    {/* Rarity border */}
-                    <div className={`absolute inset-0 border-2 ${rarityStyle.border} rounded-md z-10 pointer-events-none`}></div>
-                    
+              {featuredItems.map(item => (
+                <motion.div
+                  key={`featured-${item.id}`}
+                  className="relative w-[200px] min-w-[200px]"
+                  whileHover={{ y: -5, scale: 1.02 }}
+                  initial={{ opacity: 0, y: 20 }}
+                  animate={{ opacity: 1, y: 0 }}
+                  transition={{ duration: 0.3 }}
+                >
+                  <Card rarity={item.rarity} className="h-[280px] group">
                     {/* Limited time indicator */}
                     <div className="absolute top-2 right-2 px-1.5 py-0.5 bg-game-primary/90 text-xs text-white rounded z-20 flex items-center gap-1 font-['Share_Tech_Mono']">
                       <span className="animate-pulse">⏱️</span>
                       <span>{formatTimeRemaining(item.timeRemaining || 0)}</span>
                     </div>
                     
-                    {/* Card with large image area */}
-                    <div className="h-full flex flex-col">
-                      {/* Main image area */}
-                      <div 
-                        className="flex-1 flex items-center justify-center p-3 relative overflow-hidden"
-                        style={{background: rarityStyle.bgGradient}}
-                      >
-                        {/* Rarity effect background */}
-                        <div className="absolute inset-0 opacity-20">
-                          <div className="absolute inset-0 bg-gradient-to-t from-black/50 to-transparent"></div>
-                          <motion.div 
-                            className="absolute inset-0 bg-gradient-to-r from-transparent via-white/10 to-transparent"
-                            animate={{ x: ['-100%', '100%'] }}
-                            transition={{ duration: 2, repeat: Infinity, repeatDelay: 1 }}
-                          />
+                    {/* Card content */}
+                    <div className="flex flex-col h-full">
+                      <CardContent className="flex-1 flex items-center justify-center p-3">
+                        <div className="text-7xl transform group-hover:scale-110 transition-transform duration-300 filter drop-shadow-lg">
+                          {item.image}
                         </div>
                         
-                        {/* Item image */}
-                        <div className="relative z-10 w-full h-full flex items-center justify-center">
-                          <div className="text-7xl transform group-hover:scale-110 transition-transform duration-300 filter drop-shadow-lg">
-                            {item.image}
-                          </div>
-                        </div>
-
                         {/* Effect tag if present */}
                         {item.effect && (
-                          <div className="absolute bottom-2 left-2 bg-black/70 px-2 py-0.5 text-xs rounded text-white border border-white/20 z-20">
+                          <div className="absolute bottom-16 left-2 bg-black/70 px-2 py-0.5 text-xs rounded text-white border border-white/20 z-20">
                             {item.effect.length > 12 ? `${item.effect.substring(0, 10)}...` : item.effect}
                           </div>
                         )}
-                      </div>
+                      </CardContent>
                       
-                      {/* Fortnite-style black bottom bar */}
-                      <div className="bg-black/90 px-3 py-2 flex items-center justify-between">
-                        <h3 className={`font-bold text-white truncate max-w-[120px] font-['Changa'] text-sm`}>
+                      <CardFooter className="justify-between flex items-center">
+                        <CardTitle className="text-sm max-w-[120px] font-['Changa']">
                           {item.name}
-                        </h3>
+                        </CardTitle>
                         
                         <div className="flex items-center gap-0.5">
                           <img 
@@ -509,7 +487,7 @@ const Shop = () => {
                             {item.price}
                           </span>
                         </div>
-                      </div>
+                      </CardFooter>
                     </div>
                     
                     {/* Purchase overlay on hover */}
@@ -523,9 +501,9 @@ const Shop = () => {
                         شراء الآن
                       </Button>
                     </div>
-                  </motion.div>
-                );
-              })}
+                  </Card>
+                </motion.div>
+              ))}
             </div>
           </ScrollArea>
         </div>
@@ -636,7 +614,7 @@ const Shop = () => {
           </TabsList>
         </div>
         
-        {/* Tab Content - Fortnite Style */}
+        {/* Tab Content */}
         <div className="flex-1 overflow-hidden relative">
           <AnimatePresence mode="wait">
             <TabsContent 
@@ -660,58 +638,39 @@ const Shop = () => {
                       initial="hidden"
                       animate="show"
                     >
-                      {filteredItems.map((item) => {
-                        const rarityStyle = getRarityStyle(item.rarity);
-                        
-                        return (
-                          <motion.div
-                            key={item.id}
-                            variants={itemVariants}
-                            className={`relative rounded-md overflow-hidden group h-[280px] ${rarityStyle.glow}`}
-                          >
-                            {/* Rarity border */}
-                            <div className={`absolute inset-0 border-2 ${rarityStyle.border} rounded-md z-10 pointer-events-none`}></div>
-                            
+                      {filteredItems.map((item) => (
+                        <motion.div
+                          key={item.id}
+                          variants={itemVariants}
+                          className="h-[280px] relative"
+                        >
+                          <Card rarity={item.rarity} className="h-full group">
                             {/* Rarity corner label */}
                             {item.rarity && item.rarity !== 'common' && (
-                              <div className={`absolute top-2 right-2 px-1.5 py-0.5 bg-black/70 ${rarityStyle.text} text-xs rounded z-20 flex items-center gap-1`}>
+                              <div className={`absolute top-2 right-2 px-1.5 py-0.5 bg-black/70 text-${getRarityTextColor(item.rarity)} text-xs rounded z-20 flex items-center gap-1`}>
                                 <Star className="h-3 w-3" />
                                 {item.rarity}
                               </div>
                             )}
                             
-                            {/* Card with large image area */}
-                            <div className="h-full flex flex-col">
-                              {/* Main image area */}
-                              <div 
-                                className="flex-1 flex items-center justify-center p-3 relative overflow-hidden"
-                                style={{background: rarityStyle.bgGradient}}
-                              >
-                                {/* Rarity effect background */}
-                                <div className="absolute inset-0 opacity-20">
-                                  <div className="absolute inset-0 bg-gradient-to-t from-black/50 to-transparent"></div>
+                            <div className="flex flex-col h-full">
+                              <CardContent className="flex-1 flex items-center justify-center">
+                                <div className="text-7xl transform group-hover:scale-110 transition-transform duration-300 filter drop-shadow-lg">
+                                  {item.image}
                                 </div>
                                 
-                                {/* Item image */}
-                                <div className="relative z-10 w-full h-full flex items-center justify-center">
-                                  <div className="text-7xl transform group-hover:scale-110 transition-transform duration-300 filter drop-shadow-lg">
-                                    {item.image}
-                                  </div>
-                                </div>
-
                                 {/* Effect tag if present */}
                                 {item.effect && (
-                                  <div className="absolute bottom-2 left-2 bg-black/70 px-2 py-0.5 text-xs rounded text-white border border-white/20 z-20">
+                                  <div className="absolute bottom-16 left-2 bg-black/70 px-2 py-0.5 text-xs rounded text-white border border-white/20 z-20">
                                     {item.effect.length > 12 ? `${item.effect.substring(0, 10)}...` : item.effect}
                                   </div>
                                 )}
-                              </div>
+                              </CardContent>
                               
-                              {/* Fortnite-style black bottom bar */}
-                              <div className="bg-black/90 px-3 py-2 flex items-center justify-between">
-                                <h3 className={`font-bold text-white truncate max-w-[120px] font-['Changa'] text-sm`}>
+                              <CardFooter>
+                                <CardTitle className="text-sm max-w-[120px]">
                                   {item.name}
-                                </h3>
+                                </CardTitle>
                                 
                                 <div className="flex items-center gap-0.5">
                                   <img 
@@ -723,7 +682,7 @@ const Shop = () => {
                                     {item.price}
                                   </span>
                                 </div>
-                              </div>
+                              </CardFooter>
                             </div>
                             
                             {/* Purchase overlay on hover */}
@@ -737,9 +696,9 @@ const Shop = () => {
                                 شراء الآن
                               </Button>
                             </div>
-                          </motion.div>
-                        );
-                      })}
+                          </Card>
+                        </motion.div>
+                      ))}
                     </motion.div>
                   ) : (
                     <div className="flex flex-col items-center justify-center h-full text-center text-game-foreground-muted">
@@ -854,5 +813,15 @@ const Shop = () => {
     </div>
   );
 };
+
+// Helper function to get rarity text color classes
+function getRarityTextColor(rarity: string): string {
+  switch(rarity) {
+    case 'legendary': return 'game-legendary';
+    case 'epic': return 'game-epic';
+    case 'rare': return 'game-rare';
+    default: return 'gray-200';
+  }
+}
 
 export default Shop;
