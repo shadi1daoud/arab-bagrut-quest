@@ -37,22 +37,33 @@ const weeklyActivity = [{
   xp: 7
 }];
 
-// Leaderboard data
+// Leaderboard data - Updated to match LeaderboardUser interface
 const leaderboardData = [{
   id: 1,
   name: 'سارة',
   level: 15,
-  xp: 8450
+  xp: 8450,
+  avatar: '👧',
+  rank: 1,
+  streak: 5,
+  badge: 'legendary'
 }, {
   id: 2,
   name: 'محمد',
   level: 14,
-  xp: 7920
+  xp: 7920,
+  avatar: '👦',
+  rank: 2,
+  streak: 3,
+  badge: 'master'
 }, {
   id: 3,
   name: 'أحمد',
   level: 12,
-  xp: 6540
+  xp: 6540,
+  avatar: '👨',
+  rank: 3,
+  badge: 'expert'
 }];
 
 // Course progress data
