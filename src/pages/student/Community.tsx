@@ -1,4 +1,3 @@
-
 import React, { useState } from 'react';
 import { motion } from 'framer-motion';
 import { Tab } from '@headlessui/react';
@@ -14,15 +13,14 @@ import {
   Star,
   Trophy,
   Clock,
-  Fire,
+  Flame,
   ThumbsUp,
   PlusCircle,
   Search,
   ChevronUp,
   ChevronDown,
   Heart,
-  ExternalLink,
-  Flame
+  ExternalLink
 } from 'lucide-react';
 import { Card, CardHeader, CardContent, CardFooter, CardTitle, CardDescription } from '@/components/ui/card';
 import { Button } from '@/components/ui/button';
@@ -217,7 +215,7 @@ const CommunityPage = () => {
         {/* Main Column - 8 cols on large screens */}
         <div className="lg:col-span-8 space-y-6">
           
-          {/* Section 1: Student of the Week */}
+          {/* Student of the Week section */}
           <motion.div
             variants={containerVariants}
             initial="hidden"
@@ -270,7 +268,7 @@ const CommunityPage = () => {
             </motion.div>
           </motion.div>
           
-          {/* Section 3: Weekly Challenges */}
+          {/* Weekly Challenges section */}
           <motion.div
             variants={containerVariants}
             initial="hidden"
@@ -340,7 +338,7 @@ const CommunityPage = () => {
             </motion.div>
           </motion.div>
           
-          {/* Section 4: Ask Darsni */}
+          {/* Ask Darsni section */}
           <motion.div
             variants={containerVariants}
             initial="hidden"
@@ -453,7 +451,7 @@ const CommunityPage = () => {
             </div>
           </motion.div>
 
-          {/* Section 5: Subject Hubs */}
+          {/* Subject Hubs section */}
           <motion.div
             variants={containerVariants}
             initial="hidden"
@@ -508,7 +506,7 @@ const CommunityPage = () => {
         
         {/* Sidebar Column - 4 cols on large screens */}
         <div className="lg:col-span-4 space-y-6">
-          {/* Section 2: Leaderboard */}
+          {/* Leaderboard section */}
           <motion.div
             variants={containerVariants}
             initial="hidden"
@@ -611,7 +609,7 @@ const CommunityPage = () => {
                         </div>
                       </Tab.Panel>
                       
-                      {/* Monthly Leaderboard Panel - Identical structure but would have different data */}
+                      {/* Monthly Leaderboard Panel */}
                       <Tab.Panel>
                         <div className="p-3 text-center text-gray-400">
                           سيتم تحديث المتصدرين الشهريين في بداية الشهر القادم
@@ -624,7 +622,7 @@ const CommunityPage = () => {
             </motion.div>
           </motion.div>
           
-          {/* Section 6: Roles & Badges */}
+          {/* Roles & Badges section */}
           <motion.div
             variants={containerVariants}
             initial="hidden"
@@ -662,7 +660,7 @@ const CommunityPage = () => {
             </motion.div>
           </motion.div>
           
-          {/* Section 7: Quick Poll */}
+          {/* Quick Poll section */}
           <motion.div
             variants={containerVariants}
             initial="hidden"
