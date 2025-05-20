@@ -8,6 +8,9 @@ import { motion } from 'framer-motion';
 import { Card, CardContent } from '@/components/ui/card';
 import { Input } from '@/components/ui/input';
 import { Button } from '@/components/ui/button';
+import { Switch } from '@/components/ui/switch'; 
+import { Toggle } from '@/components/ui/toggle';
+import { Tabs, TabsList, TabsTrigger } from '@/components/ui/tabs';
 import StarParticles from '@/components/StarParticles';
 
 // Define tab categories
@@ -102,6 +105,7 @@ const Settings = () => {
   
   return (
     <div className="h-full overflow-hidden relative">
+      {/* Fixed: Removed className prop from StarParticles */}
       <StarParticles className="absolute inset-0 z-0 opacity-20" />
       
       <div className="flex flex-col h-full z-10 relative">
@@ -282,19 +286,12 @@ const Settings = () => {
                               <h3 className="font-medium text-white font-noto-arabic">تنبيهات التطبيق</h3>
                               <p className="text-sm text-gray-400 mt-1 font-noto-arabic">استلام إشعارات داخل التطبيق</p>
                             </div>
-                            <label className="relative inline-flex items-center cursor-pointer">
-                              <input 
-                                type="checkbox" 
-                                className="sr-only peer" 
-                                checked={notifications} 
-                                onChange={() => setNotifications(!notifications)} 
-                              />
-                              <div className="w-11 h-6 bg-black/60 rounded-full peer peer-checked:after:translate-x-full 
-                                           peer-checked:after:border-white after:content-[''] after:absolute after:top-0.5 
-                                           after:left-0.5 after:bg-white after:border-gray-300 after:border after:rounded-full 
-                                           after:h-5 after:w-5 after:transition-all peer-checked:bg-[#FF4800]">
-                              </div>
-                            </label>
+                            {/* Fixed: Using shadcn Switch component instead */}
+                            <Switch 
+                              checked={notifications} 
+                              onCheckedChange={() => setNotifications(!notifications)}
+                              className="data-[state=checked]:bg-[#FF4800]"
+                            />
                           </CardContent>
                         </Card>
                         
@@ -304,14 +301,10 @@ const Settings = () => {
                               <h3 className="font-medium text-white font-noto-arabic">تذكيرات الدراسة</h3>
                               <p className="text-sm text-gray-400 mt-1 font-noto-arabic">تذكير يومي لإكمال دروسك</p>
                             </div>
-                            <label className="relative inline-flex items-center cursor-pointer">
-                              <input type="checkbox" className="sr-only peer" defaultChecked />
-                              <div className="w-11 h-6 bg-black/60 rounded-full peer peer-checked:after:translate-x-full 
-                                           peer-checked:after:border-white after:content-[''] after:absolute after:top-0.5 
-                                           after:left-0.5 after:bg-white after:border-gray-300 after:border after:rounded-full 
-                                           after:h-5 after:w-5 after:transition-all peer-checked:bg-[#FF4800]">
-                              </div>
-                            </label>
+                            <Switch 
+                              defaultChecked 
+                              className="data-[state=checked]:bg-[#FF4800]"
+                            />
                           </CardContent>
                         </Card>
                         
@@ -321,14 +314,10 @@ const Settings = () => {
                               <h3 className="font-medium text-white font-noto-arabic">إشعارات التحديات</h3>
                               <p className="text-sm text-gray-400 mt-1 font-noto-arabic">إشعارات عند وجود تحديات جديدة</p>
                             </div>
-                            <label className="relative inline-flex items-center cursor-pointer">
-                              <input type="checkbox" className="sr-only peer" defaultChecked />
-                              <div className="w-11 h-6 bg-black/60 rounded-full peer peer-checked:after:translate-x-full 
-                                           peer-checked:after:border-white after:content-[''] after:absolute after:top-0.5 
-                                           after:left-0.5 after:bg-white after:border-gray-300 after:border after:rounded-full 
-                                           after:h-5 after:w-5 after:transition-all peer-checked:bg-[#FF4800]">
-                              </div>
-                            </label>
+                            <Switch 
+                              defaultChecked
+                              className="data-[state=checked]:bg-[#FF4800]"
+                            />
                           </CardContent>
                         </Card>
                       </div>
@@ -443,7 +432,10 @@ const Settings = () => {
                         >
                           <div className="w-full h-32 mb-4 rounded-md bg-black/40 flex flex-col items-center justify-center overflow-hidden relative p-3">
                             <div className="w-full h-full absolute inset-0">
-                              <StarParticles className="opacity-40" />
+                              {/* Fixed: Passing StarParticles without className prop */}
+                              <div className="opacity-40">
+                                <StarParticles />
+                              </div>
                             </div>
                             <div className="relative z-10 space-y-2 w-full">
                               <div className="w-3/4 h-4 rounded-full bg-[#FF4800]/40 mb-2"></div>
