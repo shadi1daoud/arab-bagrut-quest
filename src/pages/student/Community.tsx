@@ -1,30 +1,17 @@
+
 import React, { useState } from 'react';
 import { motion } from 'framer-motion';
-import { Tab } from '@headlessui/react';
 import { 
-  Award, 
-  Users, 
-  BarChart, 
-  MessageCircle, 
-  Book, 
-  Badge, 
-  PieChart,
-  ChevronRight, 
-  Star,
-  Trophy,
-  Clock,
-  Flame,
-  ThumbsUp,
-  PlusCircle,
-  Search,
-  ChevronUp,
-  ChevronDown,
-  Heart,
-  ExternalLink
+  Award, Users, MessageCircle, Book, 
+  Badge, PieChart, ChevronRight, ThumbsUp,
+  PlusCircle, Search, ChevronUp, ChevronDown, Heart
 } from 'lucide-react';
-import { Card, CardHeader, CardContent, CardFooter, CardTitle, CardDescription } from '@/components/ui/card';
+import { Tabs, TabsList, TabsTrigger, TabsContent } from '@/components/ui/tabs';
+import { Card, CardContent } from '@/components/ui/card';
 import { Button } from '@/components/ui/button';
-import { Progress } from '@/components/ui/progress';
+import Leaderboard from '@/components/Leaderboard';
+import StudentOfWeek from '@/components/StudentOfWeek';
+import WeeklyQuiz from '@/components/WeeklyQuiz';
 
 // Student of the Week Data
 const STUDENT_OF_WEEK = {
@@ -51,31 +38,91 @@ const LEADERBOARD_DATA = [
   { id: 10, name: 'عمر سامي', avatar: '👦', level: 9, xp: 10200, streak: 4, badge: null, rank: 10 },
 ];
 
-// Weekly Challenges Data
-const WEEKLY_CHALLENGES = [
-  { 
-    id: 1, 
-    title: 'اكسب ٣٠٠ نقطة خبرة من كورسات الرياضيات',
-    description: 'أكمل الدروس واختبر معرفتك',
-    progress: 65, 
-    totalXp: 300,
-    currentXp: 195,
+// Quiz Data
+const WEEKLY_QUIZZES = [
+  {
+    id: 1,
+    title: 'الرياضيات',
+    description: 'اختبر معلوماتك في الرياضيات واكسب نقاط الخبرة',
     reward: 150,
     participants: 247,
-    deadline: '3 أيام متبقية',
-    joined: true
+    questions: [
+      {
+        id: 1,
+        question: 'ما هو ناتج 9 × 8 + 12 ÷ 4?',
+        options: [
+          { id: 1, text: '72' },
+          { id: 2, text: '75' },
+          { id: 3, text: '69' },
+          { id: 4, text: '78' }
+        ],
+        correctAnswer: 2
+      },
+      {
+        id: 2,
+        question: 'إذا كان محيط مربع 20 سم، فما هي مساحته؟',
+        options: [
+          { id: 1, text: '25 سم²' },
+          { id: 2, text: '16 سم²' },
+          { id: 3, text: '20 سم²' },
+          { id: 4, text: '100 سم²' }
+        ],
+        correctAnswer: 2
+      },
+      {
+        id: 3,
+        question: 'ما هي قيمة س في المعادلة: 3س + 7 = 22',
+        options: [
+          { id: 1, text: '5' },
+          { id: 2, text: '15' },
+          { id: 3, text: '7.33' },
+          { id: 4, text: '4' }
+        ],
+        correctAnswer: 1
+      }
+    ]
   },
-  { 
-    id: 2, 
-    title: 'أجب على ٥ أسئلة في منتدى الكيمياء',
-    description: 'ساعد زملائك واكسب المكافآت',
-    progress: 40, 
-    totalXp: 250,
-    currentXp: 100,
+  {
+    id: 2,
+    title: 'العلوم',
+    description: 'اختبر معلوماتك في العلوم العامة واكسب نقاط الخبرة',
     reward: 120,
     participants: 183,
-    deadline: '5 أيام متبقية',
-    joined: false
+    questions: [
+      {
+        id: 1,
+        question: 'أي من العناصر التالية ليس من المعادن؟',
+        options: [
+          { id: 1, text: 'الحديد' },
+          { id: 2, text: 'الكربون' },
+          { id: 3, text: 'الألومنيوم' },
+          { id: 4, text: 'النحاس' }
+        ],
+        correctAnswer: 2
+      },
+      {
+        id: 2,
+        question: 'ما اسم الغاز الذي تستخدمه النباتات لصنع الغذاء؟',
+        options: [
+          { id: 1, text: 'النيتروجين' },
+          { id: 2, text: 'الأكسجين' },
+          { id: 3, text: 'ثاني أكسيد الكربون' },
+          { id: 4, text: 'الهيدروجين' }
+        ],
+        correctAnswer: 3
+      },
+      {
+        id: 3,
+        question: 'ما هي الوحدة الأساسية لقياس التيار الكهربائي؟',
+        options: [
+          { id: 1, text: 'فولت' },
+          { id: 2, text: 'واط' },
+          { id: 3, text: 'أمبير' },
+          { id: 4, text: 'أوم' }
+        ],
+        correctAnswer: 3
+      }
+    ]
   }
 ];
 
@@ -147,25 +194,10 @@ const POLL_DATA = {
   refreshDate: 'استطلاع جديد كل يوم أحد'
 };
 
-// Helper functions
-const getBadgeStyle = (badge: string | null) => {
-  switch(badge) {
-    case 'legendary':
-      return { icon: '👑', color: 'text-yellow-400', bg: 'bg-yellow-500/20' };
-    case 'expert':
-      return { icon: '🏆', color: 'text-purple-400', bg: 'bg-purple-500/20' };  
-    case 'master':
-      return { icon: '⭐', color: 'text-blue-400', bg: 'bg-blue-500/20' };
-    default:
-      return null;
-  }
-};
-
 const CommunityPage = () => {
   // State for interactive components
   const [activeTimeRange, setActiveTimeRange] = useState<'week' | 'month'>('week');
   const [expandedQuestion, setExpandedQuestion] = useState<number | null>(1); // First question expanded by default
-  const [activeChallenge, setActiveChallenge] = useState(0);
   const [pollVote, setPollVote] = useState<number | null>(null);
   const [hasVoted, setHasVoted] = useState(false);
   
@@ -198,284 +230,290 @@ const CommunityPage = () => {
     setExpandedQuestion(expandedQuestion === questionId ? null : questionId);
   };
 
-  // Join challenge
-  const joinChallenge = (challengeIndex: number) => {
-    // This would typically update backend state
-    setActiveChallenge(challengeIndex);
-  };
-
   return (
     <div className="w-full flex flex-col gap-6">
       <h1 className="text-xl font-bold text-white font-changa bg-gradient-to-r from-game-primary to-game-accent bg-clip-text text-transparent">
         مجتمع دارسني
       </h1>
       
-      {/* Grid Layout */}
-      <div className="grid grid-cols-1 lg:grid-cols-12 gap-4">
-        {/* Main Column - 8 cols on large screens */}
-        <div className="lg:col-span-8 space-y-6">
-          
-          {/* Student of the Week section */}
-          <motion.div
-            variants={containerVariants}
-            initial="hidden"
-            animate="show"
-          >
-            <motion.div variants={itemVariants}>
-              <Card rarity="legendary" className="bg-gradient-to-br from-[#FF4B1A]/20 to-[#FFA56E]/10 border-[#FF4B1A]/30 overflow-hidden">
-                <CardContent className="p-0">
-                  <div className="flex flex-col md:flex-row justify-between items-center p-4">
-                    <div className="flex items-center gap-4 mb-4 md:mb-0">
-                      <div className="relative">
-                        <div className="h-16 w-16 rounded-full bg-[#FF4B1A]/30 flex items-center justify-center text-3xl ring-2 ring-[#FF4B1A]/50 shadow-[0_0_15px_rgba(255,75,26,0.4)]">
-                          {STUDENT_OF_WEEK.avatar}
-                          <div className="absolute -bottom-1 -right-1 h-6 w-6 rounded-full bg-[#FF4B1A] flex items-center justify-center text-white text-xs">
-                            {STUDENT_OF_WEEK.badgeIcon}
-                          </div>
-                        </div>
-                      </div>
-                      
-                      <div>
-                        <div className="flex items-center gap-2">
-                          <Award className="h-5 w-5 text-[#FF4B1A]" />
-                          <h2 className="text-xl font-changa text-white">طالب الأسبوع</h2>
-                        </div>
-                        <h3 className="text-lg font-bold text-white">{STUDENT_OF_WEEK.name}</h3>
-                        <p className="text-sm text-gray-300">{STUDENT_OF_WEEK.reason}</p>
-                      </div>
-                    </div>
-                    
-                    <div className="flex flex-col md:flex-row items-center gap-4">
-                      <div className="flex flex-col items-center md:items-end">
-                        <div className="flex items-center gap-1">
-                          <Star className="h-4 w-4 text-[#FF4B1A]" />
-                          <span className="text-white font-share-tech text-lg">{STUDENT_OF_WEEK.xp.toLocaleString()} XP</span>
-                        </div>
-                        <div className="flex items-center gap-1">
-                          <Trophy className="h-4 w-4 text-yellow-400" />
-                          <span className="text-white font-share-tech">Lv {STUDENT_OF_WEEK.level}</span>
-                        </div>
-                      </div>
-                      
-                      <Button className="text-sm">
-                        عرض الملف
-                        <ExternalLink className="h-4 w-4 mr-1" />
-                      </Button>
-                    </div>
-                  </div>
-                </CardContent>
-              </Card>
+      {/* Main Tabbed Interface */}
+      <Tabs defaultValue="main" className="w-full">
+        <TabsList className="w-full justify-between mb-6">
+          <TabsTrigger value="main">الرئيسية</TabsTrigger>
+          <TabsTrigger value="challenges">الاختبارات</TabsTrigger>
+          <TabsTrigger value="community">المجتمع</TabsTrigger>
+          <TabsTrigger value="leaderboard">المتصدرون</TabsTrigger>
+        </TabsList>
+        
+        {/* Main Tab - Student of the Week and Featured Content */}
+        <TabsContent value="main">
+          <div className="space-y-6">
+            <motion.div
+              variants={containerVariants}
+              initial="hidden"
+              animate="show"
+            >
+              <motion.div variants={itemVariants}>
+                <StudentOfWeek student={STUDENT_OF_WEEK} />
+              </motion.div>
             </motion.div>
-          </motion.div>
-          
-          {/* Weekly Challenges section */}
-          <motion.div
-            variants={containerVariants}
-            initial="hidden"
-            animate="show"
-            className="space-y-3"
-          >
-            <div className="flex justify-between items-center">
-              <h2 className="text-lg font-bold text-white font-changa flex items-center gap-2">
-                <BarChart className="h-5 w-5 text-[#FF4B1A]" />
-                التحديات الأسبوعية
-              </h2>
-              <span className="text-xs text-gray-400">تحديات جديدة كل أسبوع</span>
-            </div>
             
-            <motion.div variants={itemVariants} className="grid gap-4 grid-cols-1">
-              {WEEKLY_CHALLENGES.map((challenge, index) => (
-                <Card key={challenge.id} className="bg-black/40 border border-white/10 overflow-hidden">
+            {/* Roles & Badges section */}
+            <motion.div
+              variants={containerVariants}
+              initial="hidden"
+              animate="show"
+              className="space-y-3"
+            >
+              <div className="flex justify-between items-center">
+                <h2 className="text-lg font-bold text-white font-changa flex items-center gap-2">
+                  <Badge className="h-5 w-5 text-purple-400" />
+                  الأدوار والشارات
+                </h2>
+              </div>
+              
+              <motion.div variants={itemVariants}>
+                <Card className="bg-black/40 border border-white/10 overflow-hidden">
                   <CardContent className="p-3">
-                    <div className="flex flex-col md:flex-row justify-between items-start md:items-center gap-2">
-                      <div className="flex-1">
-                        <h3 className="text-white font-bold text-lg">{challenge.title}</h3>
-                        <p className="text-sm text-gray-400 mb-2">{challenge.description}</p>
-                        
-                        <div className="space-y-2 mt-3">
-                          <div className="flex justify-between items-center text-sm">
-                            <span className="text-gray-300">التقدم</span>
-                            <span className="text-white font-share-tech">{challenge.currentXp}/{challenge.totalXp} XP</span>
-                          </div>
-                          
-                          <div className="relative">
-                            <Progress value={challenge.progress} className="h-2" />
-                          </div>
-                          
-                          <div className="flex justify-between items-center text-xs mt-1">
-                            <div className="flex items-center gap-1">
-                              <Clock className="h-3 w-3 text-gray-400" />
-                              <span className="text-gray-400">{challenge.deadline}</span>
-                            </div>
-                            
-                            <div className="flex items-center gap-1">
-                              <Users className="h-3 w-3 text-gray-400" />
-                              <span className="text-gray-400">{challenge.participants} مشارك</span>
-                            </div>
-                          </div>
-                        </div>
-                      </div>
-                      
-                      <div className="flex flex-col items-center gap-2">
-                        <div className="flex items-center justify-center bg-[#FF4B1A]/20 text-[#FF4B1A] rounded-full px-3 py-1.5 text-sm">
-                          <Trophy className="h-4 w-4 mr-1" />
-                          +{challenge.reward} XP
-                        </div>
-                        
-                        <Button 
-                          variant={challenge.joined ? "outline" : "default"} 
-                          size="sm"
-                          onClick={() => joinChallenge(index)}
-                          className="w-full"
+                    <div className="grid grid-cols-2 gap-2">
+                      {ROLES_BADGES.map((badge) => (
+                        <div 
+                          key={badge.id} 
+                          className={`p-2 rounded-lg border ${badge.color} ${!badge.isEarned ? 'opacity-50' : ''}`}
                         >
-                          {challenge.joined ? 'متابعة التقدم' : 'انضم للتحدي'}
-                        </Button>
-                      </div>
+                          <div className="flex items-center gap-2">
+                            <div className="text-xl">{badge.icon}</div>
+                            <div>
+                              <div className="text-white font-medium text-sm">{badge.title}</div>
+                              <div className="text-gray-400 text-xs">{badge.requirement}</div>
+                            </div>
+                          </div>
+                        </div>
+                      ))}
                     </div>
                   </CardContent>
                 </Card>
-              ))}
+              </motion.div>
             </motion.div>
-          </motion.div>
-          
-          {/* Ask Darsni section */}
-          <motion.div
-            variants={containerVariants}
-            initial="hidden"
-            animate="show"
-            className="space-y-3"
-          >
-            <div className="flex justify-between items-center">
-              <h2 className="text-lg font-bold text-white font-changa flex items-center gap-2">
-                <MessageCircle className="h-5 w-5 text-blue-400" />
-                اسأل دارسني
-              </h2>
-              <Button variant="outline" size="sm" className="text-xs">
-                <PlusCircle className="h-3 w-3 mr-1" />
-                طرح سؤال
-              </Button>
-            </div>
             
-            <div className="grid gap-4 grid-cols-1">
-              {ASK_DARSNI_DATA.map((question) => (
-                <motion.div key={question.id} variants={itemVariants}>
-                  <Card className="bg-black/40 border border-white/10 overflow-hidden">
-                    <CardContent className="p-0">
-                      <div className="p-3">
-                        <div className="flex justify-between">
-                          <div className="flex items-center gap-2">
-                            <div className="h-8 w-8 rounded-full bg-game-card-bg flex items-center justify-center text-xl">
-                              {question.authorAvatar}
-                            </div>
-                            <div>
-                              <span className="text-sm font-medium text-white">{question.author}</span>
-                              <span className="text-xs text-gray-400 block">{question.time}</span>
-                            </div>
-                          </div>
-                          
-                          <div className="flex items-center bg-[#FF4B1A]/10 text-[#FF4B1A] rounded-full px-2 py-1 text-xs">
-                            <Star className="h-3 w-3 mr-1" />
-                            +{question.xpReward} XP
-                          </div>
-                        </div>
-                        
-                        <h3 className="text-white font-bold mt-2">{question.title}</h3>
-                        <p className="text-gray-300 text-sm mt-1">{question.content}</p>
-                        
-                        <div className="flex justify-between items-center mt-3">
-                          <div className="flex items-center gap-3">
-                            <div className="flex items-center gap-1 text-gray-400 text-xs">
-                              <ThumbsUp className="h-3 w-3" />
-                              <span>{question.votes}</span>
-                            </div>
-                            <div className="flex items-center gap-1 text-gray-400 text-xs">
-                              <MessageCircle className="h-3 w-3" />
-                              <span>{question.answers} إجابات</span>
-                            </div>
-                          </div>
-                          
-                          <button 
-                            className="flex items-center gap-1 text-blue-400 text-xs hover:text-blue-300 transition-colors"
-                            onClick={() => toggleQuestionExpansion(question.id)}
+            {/* Quick Poll section */}
+            <motion.div
+              variants={containerVariants}
+              initial="hidden"
+              animate="show"
+              className="space-y-3"
+            >
+              <div className="flex justify-between items-center">
+                <h2 className="text-lg font-bold text-white font-changa flex items-center gap-2">
+                  <PieChart className="h-5 w-5 text-cyan-400" />
+                  استطلاع سريع
+                </h2>
+              </div>
+              
+              <motion.div variants={itemVariants}>
+                <Card className="bg-black/40 border border-white/10 overflow-hidden">
+                  <CardContent className="p-3">
+                    <h3 className="text-white font-bold text-lg mb-3">{POLL_DATA.question}</h3>
+                    
+                    {!hasVoted ? (
+                      <div className="space-y-2">
+                        {POLL_DATA.options.map((option) => (
+                          <button
+                            key={option.id}
+                            className="w-full p-2.5 text-left bg-white/5 border border-white/10 rounded-md hover:bg-white/10 transition-colors flex justify-between items-center"
+                            onClick={() => handleVote(option.id)}
                           >
-                            {expandedQuestion === question.id ? (
-                              <>
-                                <ChevronUp className="h-4 w-4" />
-                                <span>إخفاء الإجابات</span>
-                              </>
-                            ) : (
-                              <>
-                                <ChevronDown className="h-4 w-4" />
-                                <span>عرض الإجابات</span>
-                              </>
-                            )}
+                            <span className="text-white">{option.text}</span>
+                            <div className="h-5 w-5 rounded-full border border-white/30"></div>
                           </button>
+                        ))}
+                      </div>
+                    ) : (
+                      <div className="space-y-2">
+                        {POLL_DATA.options.map((option) => (
+                          <div key={option.id} className="relative">
+                            <div className="flex justify-between items-center mb-1">
+                              <span className="text-sm text-white">{option.text}</span>
+                              <span className="text-sm text-white font-share-tech">{option.percentage}%</span>
+                            </div>
+                            <div className="h-8 w-full bg-white/5 rounded-md overflow-hidden">
+                              <div 
+                                className={`h-full ${
+                                  option.id === pollVote 
+                                    ? 'bg-[#FF4B1A]' 
+                                    : 'bg-white/10'
+                                } transition-all duration-1000 ease-out`}
+                                style={{ width: `${option.percentage}%` }}
+                              >
+                                {option.id === pollVote && (
+                                  <div className="h-full w-full relative overflow-hidden">
+                                    <div className="absolute inset-0 bg-gradient-to-r from-transparent via-white/20 to-transparent animate-shine"></div>
+                                  </div>
+                                )}
+                              </div>
+                            </div>
+                          </div>
+                        ))}
+                        
+                        <div className="text-center text-xs text-gray-400 mt-3">
+                          {POLL_DATA.totalVotes} صوت • {POLL_DATA.refreshDate}
                         </div>
                       </div>
-                      
-                      {/* Answers Section */}
-                      {expandedQuestion === question.id && (
-                        <div className="border-t border-white/5 bg-white/5 p-3 space-y-3">
-                          {question.answersData && question.answersData.length > 0 ? (
-                            question.answersData.map(answer => (
-                              <div key={answer.id} className="flex gap-2">
-                                <div className="h-7 w-7 rounded-full bg-game-card-bg flex items-center justify-center text-lg">
-                                  {answer.avatar}
-                                </div>
-                                <div className="flex-1">
-                                  <div className="flex justify-between items-center">
-                                    <span className="text-sm font-medium text-white">{answer.author}</span>
-                                    <div className="flex items-center gap-1 text-gray-400 text-xs">
-                                      <Heart className="h-3 w-3" />
-                                      <span>{answer.votes}</span>
-                                    </div>
-                                  </div>
-                                  <p className="text-gray-300 text-sm mt-1">{answer.content}</p>
-                                </div>
-                              </div>
-                            ))
-                          ) : (
-                            <p className="text-center text-gray-400 text-sm py-2">لا توجد إجابات بعد. كن أول من يجيب!</p>
-                          )}
-                          
-                          <Button variant="outline" size="sm" className="w-full text-sm">
-                            <MessageCircle className="h-4 w-4 mr-1" />
-                            أجب واكسب النقاط
-                          </Button>
-                        </div>
-                      )}
-                    </CardContent>
-                  </Card>
-                </motion.div>
-              ))}
-            </div>
-          </motion.div>
-
-          {/* Subject Hubs section */}
-          <motion.div
-            variants={containerVariants}
-            initial="hidden"
-            animate="show"
-            className="space-y-3"
-          >
-            <div className="flex justify-between items-center">
-              <h2 className="text-lg font-bold text-white font-changa flex items-center gap-2">
-                <Book className="h-5 w-5 text-green-400" />
-                الأقسام التعليمية
-              </h2>
-              <div className="flex items-center gap-2">
+                    )}
+                  </CardContent>
+                </Card>
+              </motion.div>
+            </motion.div>
+          </div>
+        </TabsContent>
+        
+        {/* Challenges Tab - Weekly Quizzes */}
+        <TabsContent value="challenges">
+          <div className="space-y-6">
+            <WeeklyQuiz quizzes={WEEKLY_QUIZZES} />
+          </div>
+        </TabsContent>
+        
+        {/* Community Tab - Q&A and Subject Hubs */}
+        <TabsContent value="community">
+          <div className="space-y-6">
+            {/* Ask Darsni section */}
+            <motion.div
+              variants={containerVariants}
+              initial="hidden"
+              animate="show"
+              className="space-y-3"
+            >
+              <div className="flex justify-between items-center">
+                <h2 className="text-lg font-bold text-white font-changa flex items-center gap-2">
+                  <MessageCircle className="h-5 w-5 text-blue-400" />
+                  اسأل دارسني
+                </h2>
                 <Button variant="outline" size="sm" className="text-xs">
-                  <Search className="h-3 w-3 mr-1" />
-                  بحث
+                  <PlusCircle className="h-3 w-3 mr-1" />
+                  طرح سؤال
                 </Button>
               </div>
-            </div>
-            
-            <div className="overflow-x-auto pb-2">
-              <div className="flex gap-3" style={{ minWidth: 'max-content' }}>
+              
+              <div className="grid gap-4 grid-cols-1">
+                {ASK_DARSNI_DATA.map((question) => (
+                  <motion.div key={question.id} variants={itemVariants}>
+                    <Card className="bg-black/40 border border-white/10 overflow-hidden">
+                      <CardContent className="p-0">
+                        <div className="p-3">
+                          <div className="flex justify-between">
+                            <div className="flex items-center gap-2">
+                              <div className="h-8 w-8 rounded-full bg-game-card-bg flex items-center justify-center text-xl">
+                                {question.authorAvatar}
+                              </div>
+                              <div>
+                                <span className="text-sm font-medium text-white">{question.author}</span>
+                                <span className="text-xs text-gray-400 block">{question.time}</span>
+                              </div>
+                            </div>
+                            
+                            <div className="flex items-center bg-[#FF4B1A]/10 text-[#FF4B1A] rounded-full px-2 py-1 text-xs">
+                              <Award className="h-3 w-3 mr-1" />
+                              +{question.xpReward} XP
+                            </div>
+                          </div>
+                          
+                          <h3 className="text-white font-bold mt-2">{question.title}</h3>
+                          <p className="text-gray-300 text-sm mt-1">{question.content}</p>
+                          
+                          <div className="flex justify-between items-center mt-3">
+                            <div className="flex items-center gap-3">
+                              <div className="flex items-center gap-1 text-gray-400 text-xs">
+                                <ThumbsUp className="h-3 w-3" />
+                                <span>{question.votes}</span>
+                              </div>
+                              <div className="flex items-center gap-1 text-gray-400 text-xs">
+                                <MessageCircle className="h-3 w-3" />
+                                <span>{question.answers} إجابات</span>
+                              </div>
+                            </div>
+                            
+                            <button 
+                              className="flex items-center gap-1 text-blue-400 text-xs hover:text-blue-300 transition-colors"
+                              onClick={() => toggleQuestionExpansion(question.id)}
+                            >
+                              {expandedQuestion === question.id ? (
+                                <>
+                                  <ChevronUp className="h-4 w-4" />
+                                  <span>إخفاء الإجابات</span>
+                                </>
+                              ) : (
+                                <>
+                                  <ChevronDown className="h-4 w-4" />
+                                  <span>عرض الإجابات</span>
+                                </>
+                              )}
+                            </button>
+                          </div>
+                        </div>
+                        
+                        {/* Answers Section */}
+                        {expandedQuestion === question.id && (
+                          <div className="border-t border-white/5 bg-white/5 p-3 space-y-3">
+                            {question.answersData && question.answersData.length > 0 ? (
+                              question.answersData.map(answer => (
+                                <div key={answer.id} className="flex gap-2">
+                                  <div className="h-7 w-7 rounded-full bg-game-card-bg flex items-center justify-center text-lg">
+                                    {answer.avatar}
+                                  </div>
+                                  <div className="flex-1">
+                                    <div className="flex justify-between items-center">
+                                      <span className="text-sm font-medium text-white">{answer.author}</span>
+                                      <div className="flex items-center gap-1 text-gray-400 text-xs">
+                                        <Heart className="h-3 w-3" />
+                                        <span>{answer.votes}</span>
+                                      </div>
+                                    </div>
+                                    <p className="text-gray-300 text-sm mt-1">{answer.content}</p>
+                                  </div>
+                                </div>
+                              ))
+                            ) : (
+                              <p className="text-center text-gray-400 text-sm py-2">لا توجد إجابات بعد. كن أول من يجيب!</p>
+                            )}
+                            
+                            <Button variant="outline" size="sm" className="w-full text-sm">
+                              <MessageCircle className="h-4 w-4 mr-1" />
+                              أجب واكسب النقاط
+                            </Button>
+                          </div>
+                        )}
+                      </CardContent>
+                    </Card>
+                  </motion.div>
+                ))}
+              </div>
+            </motion.div>
+
+            {/* Subject Hubs section */}
+            <motion.div
+              variants={containerVariants}
+              initial="hidden"
+              animate="show"
+              className="space-y-3"
+            >
+              <div className="flex justify-between items-center">
+                <h2 className="text-lg font-bold text-white font-changa flex items-center gap-2">
+                  <Book className="h-5 w-5 text-green-400" />
+                  الأقسام التعليمية
+                </h2>
+                <div className="flex items-center gap-2">
+                  <Button variant="outline" size="sm" className="text-xs">
+                    <Search className="h-3 w-3 mr-1" />
+                    بحث
+                  </Button>
+                </div>
+              </div>
+              
+              <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4">
                 {SUBJECT_HUBS.map((subject) => (
-                  <motion.div key={subject.id} variants={itemVariants} className="w-48">
-                    <Card className={`border bg-gradient-to-br ${subject.backgroundColor} ${subject.borderColor}`}>
+                  <motion.div key={subject.id} variants={itemVariants}>
+                    <Card className={`border bg-gradient-to-br ${subject.backgroundColor} ${subject.borderColor} h-full`}>
                       <CardContent className="p-4 flex flex-col items-center text-center">
                         <div className="text-3xl mb-2">{subject.icon}</div>
                         <h3 className="text-white font-bold text-lg">{subject.name}</h3>
@@ -500,236 +538,37 @@ const CommunityPage = () => {
                   </motion.div>
                 ))}
               </div>
-            </div>
-          </motion.div>
-        </div>
+            </motion.div>
+          </div>
+        </TabsContent>
         
-        {/* Sidebar Column - 4 cols on large screens */}
-        <div className="lg:col-span-4 space-y-6">
-          {/* Leaderboard section */}
-          <motion.div
-            variants={containerVariants}
-            initial="hidden"
-            animate="show"
-            className="space-y-3"
-          >
-            <div className="flex justify-between items-center">
-              <h2 className="text-lg font-bold text-white font-changa flex items-center gap-2">
-                <Users className="h-5 w-5 text-yellow-400" />
-                المتصدرون
-              </h2>
-            </div>
-            
-            <motion.div variants={itemVariants}>
-              <Card className="bg-black/40 border border-white/10 overflow-hidden">
-                <CardContent className="p-0">
-                  <Tab.Group>
-                    <Tab.List className="flex bg-black/60 border-b border-white/5">
-                      <Tab 
-                        className={({ selected }) => 
-                          `flex-1 py-2 text-sm font-medium transition-colors ${
-                            selected 
-                              ? 'text-[#FF4B1A] border-b-2 border-[#FF4B1A]' 
-                              : 'text-gray-400 hover:text-white'
-                          }`
-                        }
-                        onClick={() => setActiveTimeRange('week')}
-                      >
-                        الأسبوعي
-                      </Tab>
-                      <Tab 
-                        className={({ selected }) => 
-                          `flex-1 py-2 text-sm font-medium transition-colors ${
-                            selected 
-                              ? 'text-[#FF4B1A] border-b-2 border-[#FF4B1A]' 
-                              : 'text-gray-400 hover:text-white'
-                          }`
-                        }
-                        onClick={() => setActiveTimeRange('month')}
-                      >
-                        الشهري
-                      </Tab>
-                    </Tab.List>
-                    
-                    <Tab.Panels>
-                      {/* Weekly Leaderboard Panel */}
-                      <Tab.Panel>
-                        <div className="divide-y divide-white/5">
-                          {LEADERBOARD_DATA.slice(0, 10).map((user) => {
-                            const badgeStyle = getBadgeStyle(user.badge);
-                            return (
-                              <div 
-                                key={user.id} 
-                                className={`flex items-center gap-2 p-2 ${
-                                  user.isCurrentUser ? 'bg-[#FF4B1A]/5 border-r-2 border-[#FF4B1A]' : ''
-                                }`}
-                              >
-                                <div className={`h-6 w-6 rounded-full flex items-center justify-center border ${
-                                  user.rank === 1 ? 'border-yellow-500/50 text-yellow-400' : 
-                                  user.rank === 2 ? 'border-gray-300/50 text-gray-300' : 
-                                  user.rank === 3 ? 'border-orange-500/50 text-orange-400' : 
-                                  'border-white/10 text-white/70'
-                                }`}>
-                                  <span className="text-xs font-share-tech">{user.rank}</span>
-                                </div>
-                                
-                                <div className="relative">
-                                  <div className="h-8 w-8 rounded-full bg-game-card-bg-alt flex items-center justify-center text-lg">
-                                    {user.avatar}
-                                  </div>
-                                  {user.streak > 0 && (
-                                    <div className="absolute -bottom-1 -right-1 h-4 w-4 rounded-full bg-orange-500 flex items-center justify-center text-white text-xs">
-                                      <Flame className="h-2.5 w-2.5" />
-                                    </div>
-                                  )}
-                                </div>
-                                
-                                <div className="flex-1">
-                                  <div className="flex justify-between items-center">
-                                    <span className="text-sm text-white">{user.name}</span>
-                                    <span className="text-xs text-[#FF4B1A] font-share-tech">{user.xp.toLocaleString()} XP</span>
-                                  </div>
-                                  
-                                  <div className="flex items-center justify-between">
-                                    <div className="flex items-center gap-1">
-                                      <Trophy className="h-3 w-3 text-yellow-400" />
-                                      <span className="text-xs text-gray-400">Lv {user.level}</span>
-                                    </div>
-                                    
-                                    {badgeStyle && (
-                                      <div className={`px-1.5 py-0.5 rounded text-xs flex items-center gap-1 ${badgeStyle.bg}`}>
-                                        <span>{badgeStyle.icon}</span>
-                                      </div>
-                                    )}
-                                  </div>
-                                </div>
-                              </div>
-                            );
-                          })}
-                        </div>
-                      </Tab.Panel>
-                      
-                      {/* Monthly Leaderboard Panel */}
-                      <Tab.Panel>
-                        <div className="p-3 text-center text-gray-400">
-                          سيتم تحديث المتصدرين الشهريين في بداية الشهر القادم
-                        </div>
-                      </Tab.Panel>
-                    </Tab.Panels>
-                  </Tab.Group>
-                </CardContent>
-              </Card>
+        {/* Leaderboard Tab */}
+        <TabsContent value="leaderboard">
+          <div className="space-y-6">
+            <motion.div
+              variants={containerVariants}
+              initial="hidden"
+              animate="show"
+              className="space-y-3"
+            >
+              <div className="flex justify-between items-center">
+                <h2 className="text-lg font-bold text-white font-changa flex items-center gap-2">
+                  <Users className="h-5 w-5 text-yellow-400" />
+                  المتصدرون
+                </h2>
+              </div>
+              
+              <motion.div variants={itemVariants}>
+                <Leaderboard 
+                  data={LEADERBOARD_DATA} 
+                  filter={activeTimeRange} 
+                  onFilterChange={(filter) => setActiveTimeRange(filter as 'week' | 'month')} 
+                />
+              </motion.div>
             </motion.div>
-          </motion.div>
-          
-          {/* Roles & Badges section */}
-          <motion.div
-            variants={containerVariants}
-            initial="hidden"
-            animate="show"
-            className="space-y-3"
-          >
-            <div className="flex justify-between items-center">
-              <h2 className="text-lg font-bold text-white font-changa flex items-center gap-2">
-                <Badge className="h-5 w-5 text-purple-400" />
-                الأدوار والشارات
-              </h2>
-            </div>
-            
-            <motion.div variants={itemVariants}>
-              <Card className="bg-black/40 border border-white/10 overflow-hidden">
-                <CardContent className="p-3">
-                  <div className="grid grid-cols-2 gap-2">
-                    {ROLES_BADGES.map((badge) => (
-                      <div 
-                        key={badge.id} 
-                        className={`p-2 rounded-lg border ${badge.color} ${!badge.isEarned ? 'opacity-50' : ''}`}
-                      >
-                        <div className="flex items-center gap-2">
-                          <div className="text-xl">{badge.icon}</div>
-                          <div>
-                            <div className="text-white font-medium text-sm">{badge.title}</div>
-                            <div className="text-gray-400 text-xs">{badge.requirement}</div>
-                          </div>
-                        </div>
-                      </div>
-                    ))}
-                  </div>
-                </CardContent>
-              </Card>
-            </motion.div>
-          </motion.div>
-          
-          {/* Quick Poll section */}
-          <motion.div
-            variants={containerVariants}
-            initial="hidden"
-            animate="show"
-            className="space-y-3"
-          >
-            <div className="flex justify-between items-center">
-              <h2 className="text-lg font-bold text-white font-changa flex items-center gap-2">
-                <PieChart className="h-5 w-5 text-cyan-400" />
-                استطلاع سريع
-              </h2>
-            </div>
-            
-            <motion.div variants={itemVariants}>
-              <Card className="bg-black/40 border border-white/10 overflow-hidden">
-                <CardContent className="p-3">
-                  <h3 className="text-white font-bold text-lg mb-3">{POLL_DATA.question}</h3>
-                  
-                  {!hasVoted ? (
-                    <div className="space-y-2">
-                      {POLL_DATA.options.map((option) => (
-                        <button
-                          key={option.id}
-                          className="w-full p-2.5 text-left bg-white/5 border border-white/10 rounded-md hover:bg-white/10 transition-colors flex justify-between items-center"
-                          onClick={() => handleVote(option.id)}
-                        >
-                          <span className="text-white">{option.text}</span>
-                          <div className="h-5 w-5 rounded-full border border-white/30"></div>
-                        </button>
-                      ))}
-                    </div>
-                  ) : (
-                    <div className="space-y-2">
-                      {POLL_DATA.options.map((option) => (
-                        <div key={option.id} className="relative">
-                          <div className="flex justify-between items-center mb-1">
-                            <span className="text-sm text-white">{option.text}</span>
-                            <span className="text-sm text-white font-share-tech">{option.percentage}%</span>
-                          </div>
-                          <div className="h-8 w-full bg-white/5 rounded-md overflow-hidden">
-                            <div 
-                              className={`h-full ${
-                                option.id === pollVote 
-                                  ? 'bg-[#FF4B1A]' 
-                                  : 'bg-white/10'
-                              } transition-all duration-1000 ease-out`}
-                              style={{ width: `${option.percentage}%` }}
-                            >
-                              {option.id === pollVote && (
-                                <div className="h-full w-full relative overflow-hidden">
-                                  <div className="absolute inset-0 bg-gradient-to-r from-transparent via-white/20 to-transparent animate-shine"></div>
-                                </div>
-                              )}
-                            </div>
-                          </div>
-                        </div>
-                      ))}
-                      
-                      <div className="text-center text-xs text-gray-400 mt-3">
-                        {POLL_DATA.totalVotes} صوت • {POLL_DATA.refreshDate}
-                      </div>
-                    </div>
-                  )}
-                </CardContent>
-              </Card>
-            </motion.div>
-          </motion.div>
-        </div>
-      </div>
+          </div>
+        </TabsContent>
+      </Tabs>
     </div>
   );
 };
