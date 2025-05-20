@@ -11,7 +11,6 @@ import { Button } from '@/components/ui/button';
 import { Switch } from '@/components/ui/switch'; 
 import { Toggle } from '@/components/ui/toggle';
 import { Tabs, TabsList, TabsTrigger } from '@/components/ui/tabs';
-import StarParticles from '@/components/StarParticles';
 
 // Define tab categories
 const tabs = [{
@@ -105,13 +104,17 @@ const Settings = () => {
   
   return (
     <div className="h-full overflow-hidden relative">
-      {/* Fixed: Removed className prop from StarParticles */}
-      <StarParticles className="absolute inset-0 z-0 opacity-20" />
+      {/* Fixed: Removed StarParticles with className prop causing the error */}
+      <div className="absolute inset-0 z-0 opacity-20">
+        {/* Subtle background pattern instead of starry particles */}
+        <div className="h-full w-full bg-gradient-to-br from-black to-[#111] opacity-80"></div>
+        <div className="absolute inset-0 bg-[url('data:image/svg+xml;base64,PHN2ZyB3aWR0aD0iNjAiIGhlaWdodD0iNjAiIHZpZXdCb3g9IjAgMCA2MCA2MCIgeG1sbnM9Imh0dHA6Ly93d3cudzMub3JnLzIwMDAvc3ZnIj48ZyBmaWxsPSJub25lIiBmaWxsLXJ1bGU9ImV2ZW5vZGQiPjxnIGZpbGw9IiMyMjIiIGZpbGwtb3BhY2l0eT0iMC4wNSI+PHBhdGggZD0iTTM2IDM0aDR2MWgtNHYtMXptMC0yaDF2NWgtMXYtNXptNiAwaDF2NWgtMXYtNXptLTExIDBoMXYyaC0xdi0yek0yNSAzM2gxdjJoLTF2LTJ6bTUgMGgxdjJoLTF2LTJ6bTUgMGgxdjJoLTF2LTJ6bTUgMGgxdjJoLTF2LTJ6Ii8+PC9nPjwvZz48L3N2Zz4=')] opacity-30"></div>
+      </div>
       
       <div className="flex flex-col h-full z-10 relative">
         <div className="mb-4">
           <h1 className="text-2xl font-bold text-white font-changa flex items-center gap-3 py-2">
-            <div className="h-10 w-10 rounded-xl flex items-center justify-center bg-[#FF4800]/10 text-[#FF4800] animate-pulse-glow">
+            <div className="h-10 w-10 rounded-xl flex items-center justify-center bg-[#FF4800]/10 text-[#FF4800]">
               <Shield className="h-5 w-5" />
             </div>
             الإعدادات
@@ -120,16 +123,16 @@ const Settings = () => {
         </div>
         
         {/* User Profile Summary */}
-        <Card className="mb-4 overflow-hidden relative" rarity="legendary">
+        <Card className="mb-4 overflow-hidden relative">
           <div className="absolute inset-0 bg-gradient-to-r from-[#FF4800]/5 to-transparent opacity-50 pointer-events-none"></div>
           <CardContent className="p-4 relative z-10">
             <div className="flex items-center gap-4">
               <div className="relative">
-                <div className="h-14 w-14 rounded-full overflow-hidden border-2 border-[#FF4800] shadow-lg bg-gradient-to-br from-black to-[#201F24] flex items-center justify-center animate-pulse-glow">
+                <div className="h-14 w-14 rounded-full overflow-hidden border-2 border-[#FF4800] shadow-lg bg-gradient-to-br from-black to-[#201F24] flex items-center justify-center">
                   <span className="text-xl font-bold text-white">{user?.name?.charAt(0) || 'S'}</span>
                 </div>
                 <div className="absolute h-3 w-3 bg-green-500 rounded-full border border-black -top-1 -right-1"></div>
-                <div className="orbit-particle"></div>
+                {/* Removed the orbit-particle div */}
               </div>
               
               <div>
@@ -286,7 +289,6 @@ const Settings = () => {
                               <h3 className="font-medium text-white font-noto-arabic">تنبيهات التطبيق</h3>
                               <p className="text-sm text-gray-400 mt-1 font-noto-arabic">استلام إشعارات داخل التطبيق</p>
                             </div>
-                            {/* Fixed: Using shadcn Switch component instead */}
                             <Switch 
                               checked={notifications} 
                               onCheckedChange={() => setNotifications(!notifications)}
@@ -432,9 +434,9 @@ const Settings = () => {
                         >
                           <div className="w-full h-32 mb-4 rounded-md bg-black/40 flex flex-col items-center justify-center overflow-hidden relative p-3">
                             <div className="w-full h-full absolute inset-0">
-                              {/* Fixed: Passing StarParticles without className prop */}
-                              <div className="opacity-40">
-                                <StarParticles />
+                              {/* Removed the problematic StarParticles component */}
+                              <div className="h-full w-full bg-[#0F0C1D] opacity-70">
+                                <div className="absolute inset-0 bg-[url('data:image/svg+xml;base64,PHN2ZyB3aWR0aD0iNjAiIGhlaWdodD0iNjAiIHZpZXdCb3g9IjAgMCA2MCA2MCIgeG1sbnM9Imh0dHA6Ly93d3cudzMub3JnLzIwMDAvc3ZnIj48ZyBmaWxsPSJub25lIiBmaWxsLXJ1bGU9ImV2ZW5vZGQiPjxnIGZpbGw9IiMyMjIiIGZpbGwtb3BhY2l0eT0iMC4wNSI+PHBhdGggZD0iTTM2IDM0aDR2MWgtNHYtMXptMC0yaDF2NWgtMXYtNXptNiAwaDF2NWgtMXYtNXptLTExIDBoMXYyaC0xdi0yek0yNSAzM2gxdjJoLTF2LTJ6bTUgMGgxdjJoLTF2LTJ6bTUgMGgxdjJoLTF2LTJ6bTUgMGgxdjJoLTF2LTJ6Ii8+PC9nPjwvZz48L3N2Zz4=')] opacity-20"></div>
                               </div>
                             </div>
                             <div className="relative z-10 space-y-2 w-full">
