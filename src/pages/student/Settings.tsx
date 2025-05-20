@@ -1,5 +1,4 @@
-
-import { useState } from 'react';
+import { useState, useEffect } from 'react';
 import { useAuth } from '@/contexts/AuthContext';
 import { User, Bell, Phone, Moon, Sun, Save, Shield, Globe, ArrowRight, ChevronRight } from 'lucide-react';
 import { useToast } from '@/hooks/use-toast';
@@ -11,6 +10,8 @@ import { Button } from '@/components/ui/button';
 import { Switch } from '@/components/ui/switch'; 
 import { Toggle } from '@/components/ui/toggle';
 import { Tabs, TabsList, TabsTrigger } from '@/components/ui/tabs';
+import { useTheme } from 'next-themes';
+import StarParticles from '@/components/StarParticles';
 
 // Define tab categories
 const tabs = [{
@@ -45,9 +46,17 @@ const Settings = () => {
   const [city, setCity] = useState(user?.city || '');
   const [notifications, setNotifications] = useState(true);
   const [whatsapp, setWhatsapp] = useState('');
-  const [darkMode, setDarkMode] = useState(true);
   const [isSaving, setIsSaving] = useState(false);
   const { toast } = useToast();
+  const { theme, setTheme } = useTheme();
+  const [mounted, setMounted] = useState(false);
+  const [darkMode, setDarkMode] = useState(theme === 'dark');
+  
+  // Ensure we only access theme information after mounting to prevent hydration mismatch
+  useEffect(() => {
+    setMounted(true);
+    setDarkMode(theme === 'dark');
+  }, [theme]);
   
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
@@ -90,6 +99,8 @@ const Settings = () => {
   };
   
   const handleToggleDarkMode = () => {
+    const newTheme = darkMode ? 'light' : 'dark';
+    setTheme(newTheme);
     setDarkMode(!darkMode);
     toast({
       title: "تم تغيير الوضع",
@@ -102,14 +113,14 @@ const Settings = () => {
     visible: { opacity: 1, y: 0, transition: { duration: 0.3 } }
   };
   
+  // Wait until component has mounted to avoid hydration mismatch
+  if (!mounted) {
+    return null;
+  }
+  
   return (
     <div className="h-full overflow-hidden relative">
-      {/* Fixed: Removed StarParticles with className prop causing the error */}
-      <div className="absolute inset-0 z-0 opacity-20">
-        {/* Subtle background pattern instead of starry particles */}
-        <div className="h-full w-full bg-gradient-to-br from-black to-[#111] opacity-80"></div>
-        <div className="absolute inset-0 bg-[url('data:image/svg+xml;base64,PHN2ZyB3aWR0aD0iNjAiIGhlaWdodD0iNjAiIHZpZXdCb3g9IjAgMCA2MCA2MCIgeG1sbnM9Imh0dHA6Ly93d3cudzMub3JnLzIwMDAvc3ZnIj48ZyBmaWxsPSJub25lIiBmaWxsLXJ1bGU9ImV2ZW5vZGQiPjxnIGZpbGw9IiMyMjIiIGZpbGwtb3BhY2l0eT0iMC4wNSI+PHBhdGggZD0iTTM2IDM0aDR2MWgtNHYtMXptMC0yaDF2NWgtMXYtNXptNiAwaDF2NWgtMXYtNXptLTExIDBoMXYyaC0xdi0yek0yNSAzM2gxdjJoLTF2LTJ6bTUgMGgxdjJoLTF2LTJ6bTUgMGgxdjJoLTF2LTJ6bTUgMGgxdjJoLTF2LTJ6Ii8+PC9nPjwvZz48L3N2Zz4=')] opacity-30"></div>
-      </div>
+      <StarParticles density={50} />
       
       <div className="flex flex-col h-full z-10 relative">
         <div className="mb-4">
@@ -430,11 +441,13 @@ const Settings = () => {
                         <div 
                           className={`rounded-xl p-4 flex flex-col items-center border-2 hover:border-[#FF4800] cursor-pointer transition-all 
                                     ${darkMode ? 'border-[#FF4800] bg-gradient-to-br from-[#191919] to-[#0F0C1D]/80' : 'border-transparent bg-[#111]/60'}`} 
-                          onClick={() => setDarkMode(true)}
+                          onClick={() => {
+                            setTheme('dark');
+                            setDarkMode(true);
+                          }}
                         >
                           <div className="w-full h-32 mb-4 rounded-md bg-black/40 flex flex-col items-center justify-center overflow-hidden relative p-3">
                             <div className="w-full h-full absolute inset-0">
-                              {/* Removed the problematic StarParticles component */}
                               <div className="h-full w-full bg-[#0F0C1D] opacity-70">
                                 <div className="absolute inset-0 bg-[url('data:image/svg+xml;base64,PHN2ZyB3aWR0aD0iNjAiIGhlaWdodD0iNjAiIHZpZXdCb3g9IjAgMCA2MCA2MCIgeG1sbnM9Imh0dHA6Ly93d3cudzMub3JnLzIwMDAvc3ZnIj48ZyBmaWxsPSJub25lIiBmaWxsLXJ1bGU9ImV2ZW5vZGQiPjxnIGZpbGw9IiMyMjIiIGZpbGwtb3BhY2l0eT0iMC4wNSI+PHBhdGggZD0iTTM2IDM0aDR2MWgtNHYtMXptMC0yaDF2NWgtMXYtNXptNiAwaDF2NWgtMXYtNXptLTExIDBoMXYyaC0xdi0yek0yNSAzM2gxdjJoLTF2LTJ6bTUgMGgxdjJoLTF2LTJ6bTUgMGgxdjJoLTF2LTJ6bTUgMGgxdjJoLTF2LTJ6Ii8+PC9nPjwvZz48L3N2Zz4=')] opacity-20"></div>
                               </div>
@@ -454,7 +467,10 @@ const Settings = () => {
                         <div 
                           className={`rounded-xl p-4 flex flex-col items-center border-2 hover:border-[#FF4800] cursor-pointer transition-all
                                     ${!darkMode ? 'border-[#FF4800] bg-gradient-to-br from-[#F8F9FA] to-[#EAECF3]' : 'border-transparent bg-[#F8F9FA]/10'}`} 
-                          onClick={() => setDarkMode(false)}
+                          onClick={() => {
+                            setTheme('light');
+                            setDarkMode(false);
+                          }}
                         >
                           <div className="w-full h-32 mb-4 rounded-md bg-white shadow-sm flex flex-col items-center justify-center p-4">
                             <div className="w-3/4 h-4 rounded-full bg-[#FF4800]/40 mb-2"></div>

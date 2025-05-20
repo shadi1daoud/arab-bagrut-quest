@@ -6,9 +6,12 @@ import './index.css'
 import './styles/sidebar.css'
 import './App.css'
 import './styles/theme-nebula.css'
+import { ThemeProvider } from 'next-themes'
 
 ReactDOM.createRoot(document.getElementById('root')!).render(
   <React.StrictMode>
-    <App />
+    <ThemeProvider attribute="class" defaultTheme="dark" enableSystem>
+      <App />
+    </ThemeProvider>
   </React.StrictMode>,
 )
