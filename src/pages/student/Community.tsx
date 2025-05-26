@@ -1,15 +1,15 @@
-
 import React, { useState } from 'react';
 import { motion } from 'framer-motion';
 import { 
   Award, Users, MessageCircle, Book, 
   Badge, PieChart, ChevronRight, ThumbsUp,
   PlusCircle, Search, ChevronUp, ChevronDown, Heart,
-  Star, Trophy, ExternalLink
+  Star, Trophy, ExternalLink, UserPlus
 } from 'lucide-react';
 import { Tabs, TabsList, TabsTrigger, TabsContent } from '@/components/ui/tabs';
 import { Card, CardContent } from '@/components/ui/card';
 import { Button } from '@/components/ui/button';
+import FriendsSection from '@/components/friends/FriendsSection';
 
 // Student of the Week Component (inline since it might not exist)
 const StudentOfWeek = ({ student }: { student: any }) => {
@@ -316,6 +316,7 @@ const CommunityPage = () => {
       <Tabs defaultValue="main" className="w-full">
         <TabsList className="w-full justify-between mb-6">
           <TabsTrigger value="main">الرئيسية</TabsTrigger>
+          <TabsTrigger value="friends">الأصدقاء</TabsTrigger>
           <TabsTrigger value="challenges">الاختبارات</TabsTrigger>
           <TabsTrigger value="community">المجتمع</TabsTrigger>
           <TabsTrigger value="leaderboard">المتصدرون</TabsTrigger>
@@ -420,6 +421,10 @@ const CommunityPage = () => {
               </motion.div>
             </motion.div>
           </div>
+        </TabsContent>
+        
+        <TabsContent value="friends">
+          <FriendsSection />
         </TabsContent>
         
         <TabsContent value="challenges">
