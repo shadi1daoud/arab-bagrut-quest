@@ -4,16 +4,173 @@ import { motion } from 'framer-motion';
 import { 
   Award, Users, MessageCircle, Book, 
   Badge, PieChart, ChevronRight, ThumbsUp,
-  PlusCircle, Search, ChevronUp, ChevronDown, Heart
+  PlusCircle, Search, ChevronUp, ChevronDown, Heart,
+  Star, Trophy, ExternalLink
 } from 'lucide-react';
 import { Tabs, TabsList, TabsTrigger, TabsContent } from '@/components/ui/tabs';
 import { Card, CardContent } from '@/components/ui/card';
 import { Button } from '@/components/ui/button';
-import Leaderboard from '@/components/Leaderboard';
-import StudentOfWeek from '@/components/StudentOfWeek';
-import WeeklyQuiz from '@/components/WeeklyQuiz';
 
-// Student of the Week Data
+// Student of the Week Component (inline since it might not exist)
+const StudentOfWeek = ({ student }: { student: any }) => {
+  return (
+    <Card className="bg-gradient-to-br from-[#FF4B1A]/20 to-[#FFA56E]/10 border-[#FF4B1A]/30 overflow-hidden">
+      <CardContent className="p-0">
+        <div className="flex flex-col md:flex-row justify-between items-center p-4">
+          <div className="flex items-center gap-4 mb-4 md:mb-0">
+            <div className="relative">
+              <div className="h-16 w-16 rounded-full bg-[#FF4B1A]/30 flex items-center justify-center text-3xl ring-2 ring-[#FF4B1A]/50 shadow-[0_0_15px_rgba(255,75,26,0.4)]">
+                {student.avatar}
+                <div className="absolute -bottom-1 -right-1 h-6 w-6 rounded-full bg-[#FF4B1A] flex items-center justify-center text-white text-xs">
+                  {student.badgeIcon}
+                </div>
+              </div>
+            </div>
+            
+            <div>
+              <div className="flex items-center gap-2">
+                <Award className="h-5 w-5 text-[#FF4B1A]" />
+                <h2 className="text-xl font-bold text-white">طالب الأسبوع</h2>
+              </div>
+              <h3 className="text-lg font-bold text-white">{student.name}</h3>
+              <p className="text-sm text-gray-300">{student.reason}</p>
+            </div>
+          </div>
+          
+          <div className="flex flex-col md:flex-row items-center gap-4">
+            <div className="flex flex-col items-center md:items-end">
+              <div className="flex items-center gap-1">
+                <Star className="h-4 w-4 text-[#FF4B1A]" />
+                <span className="text-white font-mono text-lg">{student.xp.toLocaleString()} XP</span>
+              </div>
+              <div className="flex items-center gap-1">
+                <Trophy className="h-4 w-4 text-yellow-400" />
+                <span className="text-white font-mono">Lv {student.level}</span>
+              </div>
+            </div>
+            
+            <Button className="text-sm">
+              عرض الملف
+              <ExternalLink className="h-4 w-4 mr-1" />
+            </Button>
+          </div>
+        </div>
+      </CardContent>
+    </Card>
+  );
+};
+
+// Leaderboard Component (inline)
+const Leaderboard = ({ data, filter, onFilterChange }: { data: any[], filter: string, onFilterChange: (filter: string) => void }) => {
+  return (
+    <Card className="bg-black/40 border border-white/10 overflow-hidden">
+      <CardContent className="p-4">
+        <div className="flex justify-between items-center mb-4">
+          <h3 className="text-lg font-bold text-white">المتصدرون</h3>
+          <div className="flex gap-2">
+            <Button 
+              variant={filter === 'week' ? 'default' : 'outline'} 
+              size="sm"
+              onClick={() => onFilterChange('week')}
+            >
+              الأسبوع
+            </Button>
+            <Button 
+              variant={filter === 'month' ? 'default' : 'outline'} 
+              size="sm"
+              onClick={() => onFilterChange('month')}
+            >
+              الشهر
+            </Button>
+          </div>
+        </div>
+        
+        <div className="space-y-3">
+          {data.slice(0, 10).map((student) => (
+            <div key={student.id} className={`flex items-center gap-3 p-3 rounded-lg ${student.isCurrentUser ? 'bg-[#FF4B1A]/10 border border-[#FF4B1A]/30' : 'bg-white/5'}`}>
+              <div className="flex items-center gap-3 flex-1">
+                <div className={`w-8 h-8 rounded-full flex items-center justify-center text-sm font-bold ${
+                  student.rank === 1 ? 'bg-yellow-500/20 text-yellow-400' :
+                  student.rank === 2 ? 'bg-gray-400/20 text-gray-300' :
+                  student.rank === 3 ? 'bg-orange-500/20 text-orange-400' :
+                  'bg-white/10 text-white'
+                }`}>
+                  {student.rank}
+                </div>
+                
+                <div className="text-xl">{student.avatar}</div>
+                
+                <div className="flex-1">
+                  <div className="flex items-center gap-2">
+                    <span className="text-white font-medium">{student.name}</span>
+                    {student.isCurrentUser && (
+                      <span className="text-xs bg-[#FF4B1A] text-white px-2 py-1 rounded-full">أنت</span>
+                    )}
+                  </div>
+                  <div className="text-sm text-gray-400">
+                    Level {student.level} • {student.xp.toLocaleString()} XP
+                  </div>
+                </div>
+              </div>
+              
+              {student.streak > 0 && (
+                <div className="flex items-center gap-1 text-orange-400">
+                  <span className="text-sm">🔥</span>
+                  <span className="text-sm font-mono">{student.streak}</span>
+                </div>
+              )}
+            </div>
+          ))}
+        </div>
+      </CardContent>
+    </Card>
+  );
+};
+
+// Weekly Quiz Component (inline)
+const WeeklyQuiz = ({ quizzes }: { quizzes: any[] }) => {
+  return (
+    <div className="space-y-4">
+      <div className="flex justify-between items-center">
+        <h2 className="text-lg font-bold text-white flex items-center gap-2">
+          <Award className="h-5 w-5 text-green-400" />
+          الاختبارات الأسبوعية
+        </h2>
+      </div>
+      
+      <div className="grid gap-4">
+        {quizzes.map((quiz) => (
+          <Card key={quiz.id} className="bg-black/40 border border-white/10 overflow-hidden">
+            <CardContent className="p-4">
+              <div className="flex justify-between items-start mb-3">
+                <div>
+                  <h3 className="text-white font-bold text-lg">{quiz.title}</h3>
+                  <p className="text-gray-300 text-sm">{quiz.description}</p>
+                </div>
+                <div className="flex items-center bg-[#FF4B1A]/10 text-[#FF4B1A] rounded-full px-3 py-1 text-sm">
+                  <Award className="h-4 w-4 mr-1" />
+                  +{quiz.reward} XP
+                </div>
+              </div>
+              
+              <div className="flex justify-between items-center">
+                <div className="text-sm text-gray-400">
+                  {quiz.participants} مشارك
+                </div>
+                <Button size="sm">
+                  بدء الاختبار
+                  <ChevronRight className="h-4 w-4 mr-1" />
+                </Button>
+              </div>
+            </CardContent>
+          </Card>
+        ))}
+      </div>
+    </div>
+  );
+};
+
+// Data definitions
 const STUDENT_OF_WEEK = {
   name: 'سارة الخالدي',
   avatar: '👧',
@@ -24,7 +181,6 @@ const STUDENT_OF_WEEK = {
   badgeIcon: '🏆'
 };
 
-// Leaderboard Data
 const LEADERBOARD_DATA = [
   { id: 1, name: 'رامي سعيد', avatar: '👨‍🎓', level: 21, xp: 28950, streak: 14, badge: 'legendary', rank: 1 },
   { id: 2, name: 'ليان خالد', avatar: '👩‍🎓', level: 19, xp: 25600, streak: 8, badge: 'expert', rank: 2 },
@@ -38,95 +194,23 @@ const LEADERBOARD_DATA = [
   { id: 10, name: 'عمر سامي', avatar: '👦', level: 9, xp: 10200, streak: 4, badge: null, rank: 10 },
 ];
 
-// Quiz Data
 const WEEKLY_QUIZZES = [
   {
     id: 1,
     title: 'الرياضيات',
     description: 'اختبر معلوماتك في الرياضيات واكسب نقاط الخبرة',
     reward: 150,
-    participants: 247,
-    questions: [
-      {
-        id: 1,
-        question: 'ما هو ناتج 9 × 8 + 12 ÷ 4?',
-        options: [
-          { id: 1, text: '72' },
-          { id: 2, text: '75' },
-          { id: 3, text: '69' },
-          { id: 4, text: '78' }
-        ],
-        correctAnswer: 2
-      },
-      {
-        id: 2,
-        question: 'إذا كان محيط مربع 20 سم، فما هي مساحته؟',
-        options: [
-          { id: 1, text: '25 سم²' },
-          { id: 2, text: '16 سم²' },
-          { id: 3, text: '20 سم²' },
-          { id: 4, text: '100 سم²' }
-        ],
-        correctAnswer: 2
-      },
-      {
-        id: 3,
-        question: 'ما هي قيمة س في المعادلة: 3س + 7 = 22',
-        options: [
-          { id: 1, text: '5' },
-          { id: 2, text: '15' },
-          { id: 3, text: '7.33' },
-          { id: 4, text: '4' }
-        ],
-        correctAnswer: 1
-      }
-    ]
+    participants: 247
   },
   {
     id: 2,
     title: 'العلوم',
     description: 'اختبر معلوماتك في العلوم العامة واكسب نقاط الخبرة',
     reward: 120,
-    participants: 183,
-    questions: [
-      {
-        id: 1,
-        question: 'أي من العناصر التالية ليس من المعادن؟',
-        options: [
-          { id: 1, text: 'الحديد' },
-          { id: 2, text: 'الكربون' },
-          { id: 3, text: 'الألومنيوم' },
-          { id: 4, text: 'النحاس' }
-        ],
-        correctAnswer: 2
-      },
-      {
-        id: 2,
-        question: 'ما اسم الغاز الذي تستخدمه النباتات لصنع الغذاء؟',
-        options: [
-          { id: 1, text: 'النيتروجين' },
-          { id: 2, text: 'الأكسجين' },
-          { id: 3, text: 'ثاني أكسيد الكربون' },
-          { id: 4, text: 'الهيدروجين' }
-        ],
-        correctAnswer: 3
-      },
-      {
-        id: 3,
-        question: 'ما هي الوحدة الأساسية لقياس التيار الكهربائي؟',
-        options: [
-          { id: 1, text: 'فولت' },
-          { id: 2, text: 'واط' },
-          { id: 3, text: 'أمبير' },
-          { id: 4, text: 'أوم' }
-        ],
-        correctAnswer: 3
-      }
-    ]
+    participants: 183
   }
 ];
 
-// Ask Darsni Data
 const ASK_DARSNI_DATA = [
   {
     id: 1,
@@ -159,7 +243,6 @@ const ASK_DARSNI_DATA = [
   }
 ];
 
-// Subject Hubs Data
 const SUBJECT_HUBS = [
   { id: 1, name: 'الرياضيات', icon: '🧮', summaries: 24, questions: 37, backgroundColor: 'from-blue-500/20 to-cyan-500/20', borderColor: 'border-blue-500/30' },
   { id: 2, name: 'الفيزياء', icon: '⚛️', summaries: 18, questions: 29, backgroundColor: 'from-purple-500/20 to-pink-500/20', borderColor: 'border-purple-500/30' },
@@ -169,7 +252,6 @@ const SUBJECT_HUBS = [
   { id: 6, name: 'اللغة الإنجليزية', icon: '🔤', summaries: 16, questions: 22, backgroundColor: 'from-indigo-500/20 to-violet-500/20', borderColor: 'border-indigo-500/30' }
 ];
 
-// Roles & Badges Data
 const ROLES_BADGES = [
   { id: 1, title: 'متألق', icon: '✨', requirement: 'حقق 1000 نقطة خبرة', isEarned: true, color: 'bg-yellow-500/20 border-yellow-500/30 text-yellow-400' },
   { id: 2, title: 'مساعد', icon: '💬', requirement: '10 إجابات مفيدة', isEarned: true, color: 'bg-blue-500/20 border-blue-500/30 text-blue-400' },
@@ -179,7 +261,6 @@ const ROLES_BADGES = [
   { id: 6, title: 'محترف', icon: '⭐', requirement: 'أكمل مسار تعليمي كامل', isEarned: false, color: 'bg-green-500/20 border-green-500/30 text-green-400' }
 ];
 
-// Poll Data
 const POLL_DATA = {
   question: 'ما هو الموضوع الأصعب بالنسبة لك؟',
   options: [
@@ -195,13 +276,11 @@ const POLL_DATA = {
 };
 
 const CommunityPage = () => {
-  // State for interactive components
   const [activeTimeRange, setActiveTimeRange] = useState<'week' | 'month'>('week');
-  const [expandedQuestion, setExpandedQuestion] = useState<number | null>(1); // First question expanded by default
+  const [expandedQuestion, setExpandedQuestion] = useState<number | null>(1);
   const [pollVote, setPollVote] = useState<number | null>(null);
   const [hasVoted, setHasVoted] = useState(false);
   
-  // Animation variants
   const containerVariants = {
     hidden: { opacity: 0 },
     show: {
@@ -217,7 +296,6 @@ const CommunityPage = () => {
     show: { opacity: 1, y: 0 }
   };
 
-  // Handle poll vote
   const handleVote = (optionId: number) => {
     if (!hasVoted) {
       setPollVote(optionId);
@@ -225,18 +303,16 @@ const CommunityPage = () => {
     }
   };
   
-  // Toggle question expansion
   const toggleQuestionExpansion = (questionId: number) => {
     setExpandedQuestion(expandedQuestion === questionId ? null : questionId);
   };
 
   return (
     <div className="w-full flex flex-col gap-6">
-      <h1 className="text-xl font-bold text-white font-changa bg-gradient-to-r from-game-primary to-game-accent bg-clip-text text-transparent">
+      <h1 className="text-xl font-bold text-white bg-gradient-to-r from-[#FF4800] to-[#FFA56E] bg-clip-text text-transparent">
         مجتمع دارسني
       </h1>
       
-      {/* Main Tabbed Interface */}
       <Tabs defaultValue="main" className="w-full">
         <TabsList className="w-full justify-between mb-6">
           <TabsTrigger value="main">الرئيسية</TabsTrigger>
@@ -245,28 +321,18 @@ const CommunityPage = () => {
           <TabsTrigger value="leaderboard">المتصدرون</TabsTrigger>
         </TabsList>
         
-        {/* Main Tab - Student of the Week and Featured Content */}
         <TabsContent value="main">
           <div className="space-y-6">
-            <motion.div
-              variants={containerVariants}
-              initial="hidden"
-              animate="show"
-            >
+            <motion.div variants={containerVariants} initial="hidden" animate="show">
               <motion.div variants={itemVariants}>
                 <StudentOfWeek student={STUDENT_OF_WEEK} />
               </motion.div>
             </motion.div>
             
             {/* Roles & Badges section */}
-            <motion.div
-              variants={containerVariants}
-              initial="hidden"
-              animate="show"
-              className="space-y-3"
-            >
+            <motion.div variants={containerVariants} initial="hidden" animate="show" className="space-y-3">
               <div className="flex justify-between items-center">
-                <h2 className="text-lg font-bold text-white font-changa flex items-center gap-2">
+                <h2 className="text-lg font-bold text-white flex items-center gap-2">
                   <Badge className="h-5 w-5 text-purple-400" />
                   الأدوار والشارات
                 </h2>
@@ -297,14 +363,9 @@ const CommunityPage = () => {
             </motion.div>
             
             {/* Quick Poll section */}
-            <motion.div
-              variants={containerVariants}
-              initial="hidden"
-              animate="show"
-              className="space-y-3"
-            >
+            <motion.div variants={containerVariants} initial="hidden" animate="show" className="space-y-3">
               <div className="flex justify-between items-center">
-                <h2 className="text-lg font-bold text-white font-changa flex items-center gap-2">
+                <h2 className="text-lg font-bold text-white flex items-center gap-2">
                   <PieChart className="h-5 w-5 text-cyan-400" />
                   استطلاع سريع
                 </h2>
@@ -334,7 +395,7 @@ const CommunityPage = () => {
                           <div key={option.id} className="relative">
                             <div className="flex justify-between items-center mb-1">
                               <span className="text-sm text-white">{option.text}</span>
-                              <span className="text-sm text-white font-share-tech">{option.percentage}%</span>
+                              <span className="text-sm text-white font-mono">{option.percentage}%</span>
                             </div>
                             <div className="h-8 w-full bg-white/5 rounded-md overflow-hidden">
                               <div 
@@ -344,13 +405,7 @@ const CommunityPage = () => {
                                     : 'bg-white/10'
                                 } transition-all duration-1000 ease-out`}
                                 style={{ width: `${option.percentage}%` }}
-                              >
-                                {option.id === pollVote && (
-                                  <div className="h-full w-full relative overflow-hidden">
-                                    <div className="absolute inset-0 bg-gradient-to-r from-transparent via-white/20 to-transparent animate-shine"></div>
-                                  </div>
-                                )}
-                              </div>
+                              />
                             </div>
                           </div>
                         ))}
@@ -367,25 +422,18 @@ const CommunityPage = () => {
           </div>
         </TabsContent>
         
-        {/* Challenges Tab - Weekly Quizzes */}
         <TabsContent value="challenges">
           <div className="space-y-6">
             <WeeklyQuiz quizzes={WEEKLY_QUIZZES} />
           </div>
         </TabsContent>
         
-        {/* Community Tab - Q&A and Subject Hubs */}
         <TabsContent value="community">
           <div className="space-y-6">
             {/* Ask Darsni section */}
-            <motion.div
-              variants={containerVariants}
-              initial="hidden"
-              animate="show"
-              className="space-y-3"
-            >
+            <motion.div variants={containerVariants} initial="hidden" animate="show" className="space-y-3">
               <div className="flex justify-between items-center">
-                <h2 className="text-lg font-bold text-white font-changa flex items-center gap-2">
+                <h2 className="text-lg font-bold text-white flex items-center gap-2">
                   <MessageCircle className="h-5 w-5 text-blue-400" />
                   اسأل دارسني
                 </h2>
@@ -403,7 +451,7 @@ const CommunityPage = () => {
                         <div className="p-3">
                           <div className="flex justify-between">
                             <div className="flex items-center gap-2">
-                              <div className="h-8 w-8 rounded-full bg-game-card-bg flex items-center justify-center text-xl">
+                              <div className="h-8 w-8 rounded-full bg-white/5 flex items-center justify-center text-xl">
                                 {question.authorAvatar}
                               </div>
                               <div>
@@ -452,13 +500,12 @@ const CommunityPage = () => {
                           </div>
                         </div>
                         
-                        {/* Answers Section */}
                         {expandedQuestion === question.id && (
                           <div className="border-t border-white/5 bg-white/5 p-3 space-y-3">
                             {question.answersData && question.answersData.length > 0 ? (
-                              question.answersData.map(answer => (
+                              question.answersData.map((answer: any) => (
                                 <div key={answer.id} className="flex gap-2">
-                                  <div className="h-7 w-7 rounded-full bg-game-card-bg flex items-center justify-center text-lg">
+                                  <div className="h-7 w-7 rounded-full bg-white/5 flex items-center justify-center text-lg">
                                     {answer.avatar}
                                   </div>
                                   <div className="flex-1">
@@ -491,14 +538,9 @@ const CommunityPage = () => {
             </motion.div>
 
             {/* Subject Hubs section */}
-            <motion.div
-              variants={containerVariants}
-              initial="hidden"
-              animate="show"
-              className="space-y-3"
-            >
+            <motion.div variants={containerVariants} initial="hidden" animate="show" className="space-y-3">
               <div className="flex justify-between items-center">
-                <h2 className="text-lg font-bold text-white font-changa flex items-center gap-2">
+                <h2 className="text-lg font-bold text-white flex items-center gap-2">
                   <Book className="h-5 w-5 text-green-400" />
                   الأقسام التعليمية
                 </h2>
@@ -521,11 +563,11 @@ const CommunityPage = () => {
                         <div className="w-full mt-3 space-y-1.5">
                           <div className="flex justify-between items-center text-xs">
                             <span className="text-gray-300">الملخصات</span>
-                            <span className="text-white font-share-tech">{subject.summaries}</span>
+                            <span className="text-white font-mono">{subject.summaries}</span>
                           </div>
                           <div className="flex justify-between items-center text-xs">
                             <span className="text-gray-300">الأسئلة الأسبوعية</span>
-                            <span className="text-white font-share-tech">{subject.questions}</span>
+                            <span className="text-white font-mono">{subject.questions}</span>
                           </div>
                         </div>
                         
@@ -542,17 +584,11 @@ const CommunityPage = () => {
           </div>
         </TabsContent>
         
-        {/* Leaderboard Tab */}
         <TabsContent value="leaderboard">
           <div className="space-y-6">
-            <motion.div
-              variants={containerVariants}
-              initial="hidden"
-              animate="show"
-              className="space-y-3"
-            >
+            <motion.div variants={containerVariants} initial="hidden" animate="show" className="space-y-3">
               <div className="flex justify-between items-center">
-                <h2 className="text-lg font-bold text-white font-changa flex items-center gap-2">
+                <h2 className="text-lg font-bold text-white flex items-center gap-2">
                   <Users className="h-5 w-5 text-yellow-400" />
                   المتصدرون
                 </h2>
