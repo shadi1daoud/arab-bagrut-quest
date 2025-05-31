@@ -1,4 +1,3 @@
-
 import React, { useState } from 'react';
 import { Activity, Award, BookOpen, Calendar, Clock, Target, Trophy } from 'lucide-react';
 import { Card, CardContent, CardFooter } from '@/components/ui/card';
@@ -14,7 +13,6 @@ import CourseProgress from '@/components/CourseProgress';
 import AnnouncementCard from '@/components/widgets/AnnouncementCard';
 import QuickActionsCard from '@/components/widgets/QuickActionsCard';
 import WeeklyGoalsCard from '@/components/widgets/WeeklyGoalsCard';
-import NotificationsDropdown from '@/components/widgets/NotificationsDropdown';
 import StudentOfWeekWidget from '@/components/widgets/StudentOfWeekWidget';
 
 // Weekly activity data
@@ -116,15 +114,6 @@ const Dashboard = () => {
   
   return (
     <ScrollArea className="h-full w-full">
-      {/* Header with notifications */}
-      <div className="flex justify-between items-center mb-4 px-4 py-2">
-        <div>
-          <h1 className="text-2xl font-bold text-white font-changa">مرحباً شادي! 👋</h1>
-          <p className="text-gray-400 text-sm font-noto">استمر في رحلة التعلم المميزة</p>
-        </div>
-        <NotificationsDropdown />
-      </div>
-
       <div className="grid grid-cols-12 gap-4 pb-4 px-4">
         {/* LEFT COLUMN - 3 cols */}
         <div className="col-span-12 md:col-span-3 flex flex-col gap-4">
