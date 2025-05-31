@@ -1,313 +1,279 @@
+
 import React, { useState } from 'react';
-import { Activity, Award, BookOpen, Calendar, Clock, Lock, Target, Trophy } from 'lucide-react';
-import { Card, CardContent, CardFooter } from '@/components/ui/card';
-import { Tabs, TabsList, TabsTrigger, TabsContent } from '@/components/ui/tabs';
 import { ScrollArea } from '@/components/ui/scroll-area';
-import { Button } from '@/components/ui/button';
-import StarParticles from '@/components/StarParticles';
-import StatsCard from '@/components/StatsCard';
-import IntelligenceScore from '@/components/IntelligenceScore';
-import AdCard from '@/components/AdCard';
-import WeeklyChart from '@/components/WeeklyChart';
-import DailyQuest from '@/components/DailyQuest';
+import HeroZone from '@/components/dashboard/HeroZone';
+import TodaysMission from '@/components/dashboard/TodaysMission';
+import MyCoursesSection from '@/components/dashboard/MyCoursesSection';
+import StoreTeaser from '@/components/dashboard/StoreTeaser';
+import AchievementsSection from '@/components/dashboard/AchievementsSection';
+import WhatsNewSection from '@/components/dashboard/WhatsNewSection';
 import Leaderboard from '@/components/Leaderboard';
-import CourseProgress from '@/components/CourseProgress';
+import { useNavigate } from 'react-router-dom';
 
-// Weekly activity data
-const weeklyActivity = [{
-  day: 'الأحد',
-  xp: 12
-}, {
-  day: 'الإثنين',
-  xp: 8
-}, {
-  day: 'الثلاثاء',
-  xp: 5
-}, {
-  day: 'الأربعاء',
-  xp: 6
-}, {
-  day: 'الخميس',
-  xp: 9
-}, {
-  day: 'الجمعة',
-  xp: 4
-}, {
-  day: 'السبت',
-  xp: 7
-}];
+// Sample data
+const sampleMissions = [
+  {
+    id: '1',
+    title: 'أكمل درس الرياضيات',
+    description: 'انهِ درس المعادلات التربيعية',
+    progress: 3,
+    maxProgress: 5,
+    xpReward: 150,
+    timeEstimate: '20 دقيقة',
+    completed: false
+  },
+  {
+    id: '2',
+    title: 'مراجعة الفيزياء',
+    description: 'راجع قوانين نيوتن للحركة',
+    progress: 5,
+    maxProgress: 5,
+    xpReward: 100,
+    timeEstimate: '15 دقيقة',
+    completed: true
+  },
+  {
+    id: '3',
+    title: 'حل تمارين الكيمياء',
+    description: 'اختبر فهمك للجدول الدوري',
+    progress: 1,
+    maxProgress: 3,
+    xpReward: 200,
+    timeEstimate: '30 دقيقة',
+    completed: false
+  }
+];
 
-// Leaderboard data - Updated to match LeaderboardUser interface
-const leaderboardData = [{
-  id: 1,
-  name: 'سارة',
-  level: 15,
-  xp: 8450,
-  avatar: '👧',
-  rank: 1,
-  streak: 5,
-  badge: 'legendary'
-}, {
-  id: 2,
-  name: 'محمد',
-  level: 14,
-  xp: 7920,
-  avatar: '👦',
-  rank: 2,
-  streak: 3,
-  badge: 'master'
-}, {
-  id: 3,
-  name: 'أحمد',
-  level: 12,
-  xp: 6540,
-  avatar: '👨',
-  rank: 3,
-  badge: 'expert'
-}];
+const sampleCourses = [
+  {
+    id: '1',
+    title: 'رياضيات متقدمة',
+    progress: 75,
+    totalLessons: 20,
+    completedLessons: 15,
+    estimatedTime: '2 ساعات',
+    nextLesson: 'المعادلات التربيعية',
+    color: '#FF4800'
+  },
+  {
+    id: '2',
+    title: 'فيزياء الثانوية',
+    progress: 60,
+    totalLessons: 18,
+    completedLessons: 11,
+    estimatedTime: '1.5 ساعة',
+    nextLesson: 'قوانين الحركة',
+    color: '#00FFE1'
+  },
+  {
+    id: '3',
+    title: 'كيمياء عامة',
+    progress: 45,
+    totalLessons: 25,
+    completedLessons: 11,
+    estimatedTime: '3 ساعات',
+    nextLesson: 'الجدول الدوري',
+    color: '#A335EE'
+  },
+  {
+    id: '4',
+    title: 'اللغة الإنجليزية',
+    progress: 30,
+    totalLessons: 30,
+    completedLessons: 9,
+    estimatedTime: '4 ساعات',
+    nextLesson: 'القواعد المتقدمة',
+    color: '#32FF88'
+  }
+];
 
-// Course progress data
-const courseProgress = [{
-  id: 1,
-  name: 'رياضيات',
-  progress: 75
-}, {
-  id: 2,
-  name: 'إنجليزي',
-  progress: 45
-}, {
-  id: 3,
-  name: 'فيزياء',
-  progress: 60
-}, {
-  id: 4,
-  name: 'كيمياء',
-  progress: 28
-}];
+const sampleStoreItems = [
+  {
+    id: '1',
+    name: 'تحدي الأسبوع الذهبي',
+    description: 'ضاعف نقاط XP لمدة أسبوع كامل',
+    price: 500,
+    icon: '⚡',
+    rarity: 'legendary' as const,
+    featured: true
+  },
+  {
+    id: '2',
+    name: 'شارة الإنجاز',
+    description: 'اظهر إنجازاتك للأصدقاء',
+    price: 150,
+    icon: '🏆',
+    rarity: 'epic' as const,
+    featured: true
+  }
+];
 
-// Upcoming exams
-const upcomingExams = [{
-  id: 1,
-  subject: 'رياضيات',
-  date: '١٢ مايو',
-  time: '١٠:٠٠ ص',
-  xp: 200
-}, {
-  id: 2,
-  subject: 'فيزياء',
-  date: '١٣ مايو',
-  time: '١١:٣٠ ص',
-  xp: 250
-}, {
-  id: 3,
-  subject: 'كيمياء',
-  date: '١٧ مايو',
-  time: '٩:٠٠ ص',
-  xp: 300
-}];
+const sampleAchievements = [
+  {
+    id: '1',
+    title: 'عاشق التعلم',
+    description: 'أكمل 10 دروس متتالية',
+    progress: 8,
+    maxProgress: 10,
+    completed: false,
+    icon: '📚',
+    rarity: 'gold' as const,
+    xpReward: 500
+  },
+  {
+    id: '2',
+    title: 'نجم الأسبوع',
+    description: 'حافظ على streak لمدة 7 أيام',
+    progress: 7,
+    maxProgress: 7,
+    completed: true,
+    icon: '⭐',
+    rarity: 'platinum' as const,
+    xpReward: 300
+  }
+];
 
-// Coming soon courses
-const comingSoonCourses = [{
-  id: 1,
-  name: 'علم البيانات',
-  color: 'cyan'
-}, {
-  id: 2,
-  name: 'علوم الحاسب',
-  color: 'indigo'
-}];
+const sampleMilestone = {
+  id: '1',
+  title: 'ماستر الرياضيات',
+  description: 'أكمل جميع دروس الرياضيات بدرجة 90% أو أكثر',
+  requiredValue: 20,
+  currentValue: 15,
+  completed: false,
+  locked: false
+};
+
+const sampleNews = [
+  {
+    id: '1',
+    type: 'course' as const,
+    title: 'كورس جديد: علوم البيانات',
+    description: 'تعلم أساسيات تحليل البيانات والذكاء الاصطناعي',
+    date: 'منذ يومين',
+    isNew: true,
+    actionText: 'اكتشف الآن'
+  },
+  {
+    id: '2',
+    type: 'event' as const,
+    title: 'مسابقة الرياضيات الشهرية',
+    description: 'اشترك في المسابقة واربح جوائز قيمة',
+    date: 'منذ 3 أيام',
+    isNew: true,
+    actionText: 'اشترك الآن'
+  },
+  {
+    id: '3',
+    type: 'update' as const,
+    title: 'تحديثات جديدة في المنصة',
+    description: 'تحسينات في الأداء وميزات جديدة',
+    date: 'منذ أسبوع',
+    isNew: false
+  }
+];
+
+const leaderboardData = [
+  {
+    id: 1,
+    name: 'سارة',
+    level: 15,
+    xp: 8450,
+    avatar: '👧',
+    rank: 1,
+    streak: 5,
+    badge: 'legendary' as const
+  },
+  {
+    id: 2,
+    name: 'محمد',
+    level: 14,
+    xp: 7920,
+    avatar: '👦',
+    rank: 2,
+    streak: 3,
+    badge: 'master' as const
+  },
+  {
+    id: 3,
+    name: 'أحمد',
+    level: 12,
+    xp: 6540,
+    avatar: '👨',
+    rank: 3,
+    badge: 'expert' as const
+  }
+];
+
 const Dashboard = () => {
   const [leaderboardFilter, setLeaderboardFilter] = useState('week');
+  const navigate = useNavigate();
 
-  // Calculate total weekly hours and XP
-  const totalWeeklyHours = '8.7';
-  const totalWeeklyXP = '870';
+  const handleViewAllCourses = () => {
+    navigate('/my-courses');
+  };
+
+  const handleViewStore = () => {
+    navigate('/shop');
+  };
   
   return (
-      <ScrollArea className="h-full w-full">
-        <div className="grid grid-cols-12 gap-4 pb-4 px-4 py-2">
-          {/* LEFT COLUMN - 3 cols */}
-          <div className="col-span-12 md:col-span-3 flex flex-col gap-4">
-            {/* Profile Card with Stats */}
-            <Card>
-              <CardContent className="p-3">
-                <StatsCard name="شادي داود" level={5} grade="الثاني عشر - دار الأرقم" xp={2450} maxXp={3000} effort={12} points={8900} iq={8.9} />
-              </CardContent>
-            </Card>
+    <ScrollArea className="h-full w-full">
+      <div className="min-h-screen p-4 space-y-6">
+        {/* Hero Zone - Full Width */}
+        <div className="w-full">
+          <HeroZone 
+            userName="شادي"
+            level={5}
+            xp={2450}
+            maxXp={3000}
+            streak={12}
+            nextLevelReward="شارة ذهبية جديدة"
+          />
+        </div>
+
+        {/* Main Grid Layout */}
+        <div className="grid grid-cols-1 lg:grid-cols-12 gap-6">
+          {/* Left Column - Main Content */}
+          <div className="lg:col-span-8 space-y-6">
+            {/* Today's Mission */}
+            <TodaysMission missions={sampleMissions} />
             
-            {/* AI Intelligence Score */}
-            <Card>
-              <CardContent className="p-3">
-                <IntelligenceScore score={8.9} weeklyGain={0.9} percentile={85} />
-              </CardContent>
-            </Card>
+            {/* My Courses */}
+            <MyCoursesSection 
+              courses={sampleCourses} 
+              onViewAll={handleViewAllCourses}
+            />
             
-            {/* Ad Space */}
-            <Card>
-              <CardContent className="p-3">
-                <AdCard />
-              </CardContent>
-            </Card>
+            {/* Store Teaser */}
+            <StoreTeaser 
+              featuredItems={sampleStoreItems}
+              userCoins={8965}
+              onViewStore={handleViewStore}
+            />
           </div>
-          
-          {/* MIDDLE COLUMN - 6 cols */}
-          <div className="col-span-12 md:col-span-6 flex flex-col gap-4">
-            {/* Weekly Activity Chart - Fortnite Style */}
-            <Card>
-              <CardContent className="p-3">
-                <div className="flex-1 flex flex-col">
-                  <div className="h-36 w-full">
-                    <WeeklyChart data={weeklyActivity} />
-                  </div>
-                  
-                  <div className="flex items-center gap-2 mt-2">
-                    <div className="py-1 px-2 bg-[#FF4800]/10 rounded-full text-xs text-[#FF4800] font-['Share_Tech_Mono'] flex items-center gap-1">
-                      <Clock className="h-3 w-3 text-[#FF4800]" />
-                      {totalWeeklyHours} ساعة
-                    </div>
-                    
-                    <div className="py-1 px-2 bg-[#FF4800]/10 rounded-full text-xs text-[#FF4800] font-['Share_Tech_Mono'] flex items-center gap-1">
-                      +{totalWeeklyXP} XP
-                    </div>
-                  </div>
-                </div>
-              </CardContent>
-              <CardFooter>
-                <h3 className="text-sm font-bold text-white font-changa flex items-center gap-2">
-                  <Activity className="h-4 w-4 text-[#FF4800]" strokeWidth={2} />
-                  إنجاز أسبوعي
-                </h3>
-                <Button variant="link" className="text-xs text-[#FF4800] p-0 h-auto">عرض التفاصيل</Button>
-              </CardFooter>
-            </Card>
+
+          {/* Right Column - Secondary Content */}
+          <div className="lg:col-span-4 space-y-6">
+            {/* Leaderboard */}
+            <Leaderboard 
+              data={leaderboardData}
+              filter={leaderboardFilter}
+              onFilterChange={setLeaderboardFilter}
+            />
             
-            {/* Today's Quest - Fortnite Style */}
-            <Card>
-              <CardContent className="p-3">
-                <div className="flex items-center gap-4 relative">
-                  <div className="shrink-0 flex items-center justify-center h-16 w-16 rounded-xl bg-[#FF4800]/10">
-                    <Target className="h-10 w-10 text-[#FF4800]" strokeWidth={2} />
-                  </div>
-                  
-                  <div className="flex-1">
-                    <DailyQuest title="أكمل تحصيلي الرياضيات" description="حل 10 مسائل جديدة من كتاب التحصيلي" xpReward={150} day={7} />
-                  </div>
-                </div>
-              </CardContent>
-              <CardFooter>
-                <h3 className="text-sm font-bold text-white font-changa flex items-center gap-2">
-                  <Target className="h-4 w-4 text-[#FF4800]" strokeWidth={2} />
-                  مهمة اليوم
-                </h3>
-                <div className="flex items-center gap-1 py-1 px-3 bg-[#FF4800]/10 rounded-md text-xs text-[#FF4800] font-['Share_Tech_Mono']">
-                  <Award className="h-3 w-3" strokeWidth={2} />
-                  +150 XP
-                </div>
-              </CardFooter>
-            </Card>
+            {/* Achievements */}
+            <AchievementsSection 
+              recentAchievements={sampleAchievements}
+              nextMilestone={sampleMilestone}
+            />
             
-            {/* Exams and Coming Soon Courses (Tabbed) - Fortnite Style */}
-            <Card className="flex-1">
-              <Tabs defaultValue="exams" className="w-full">
-                <div className="bg-black/40 rounded-t-xl p-1 border-b border-white/5">
-                  <TabsList className="grid w-full grid-cols-2 bg-transparent">
-                    <TabsTrigger value="exams" className="text-xs font-noto data-[state=active]:bg-[rgba(255,255,255,0.05)] data-[state=active]:text-white relative">
-                      <Calendar className="h-3.5 w-3.5 mr-1 text-[#FF4800]" />
-                      الامتحانات القادمة
-                      {/* Active indicator */}
-                      <div className="absolute bottom-0 left-0 right-0 h-0.5 bg-[#FF4800] transform scale-x-0 transition-transform data-[state=active]:scale-x-100"></div>
-                    </TabsTrigger>
-                    <TabsTrigger value="courses" className="text-xs font-noto data-[state=active]:bg-[rgba(255,255,255,0.05)] data-[state=active]:text-white relative">
-                      <BookOpen className="h-3.5 w-3.5 mr-1 text-[#FF4800]" />
-                      كورسات قريباً
-                      {/* Active indicator */}
-                      <div className="absolute bottom-0 left-0 right-0 h-0.5 bg-[#FF4800] transform scale-x-0 transition-transform data-[state=active]:scale-x-100"></div>
-                    </TabsTrigger>
-                  </TabsList>
-                </div>
-                
-                <CardContent className="p-3">
-                  <TabsContent value="exams" className="mt-0 space-y-2">
-                    {upcomingExams.map(exam => <div key={exam.id} className="flex items-center gap-3 p-3 rounded-xl bg-[rgba(255,255,255,0.03)] hover:bg-[rgba(255,255,255,0.05)] transition-colors cursor-pointer group">
-                        <div className="h-10 w-10 rounded-lg flex items-center justify-center bg-[#FF4800]/10 text-[#FF4800] group-hover:animate-pulse-glow">
-                          <Calendar className="h-5 w-5" />
-                        </div>
-                        
-                        <div className="flex-1">
-                          <h5 className="text-white font-medium text-sm font-changa">{exam.subject}</h5>
-                          <div className="flex items-center justify-between">
-                            <span className="text-[11px] text-gray-400 font-noto">{exam.date} - {exam.time}</span>
-                            <span className="text-[10px] bg-[#FF4800]/10 px-2 py-0.5 rounded-md text-[#FF4800] font-['Share_Tech_Mono']">
-                              +{exam.xp} XP
-                            </span>
-                          </div>
-                        </div>
-                      </div>)}
-                  </TabsContent>
-                  
-                  <TabsContent value="courses" className="mt-0">
-                    <div className="grid grid-cols-2 gap-3">
-                      {comingSoonCourses.map(course => <div key={course.id} className="p-3 rounded-xl bg-[rgba(255,255,255,0.03)] border border-[rgba(255,255,255,0.05)] cursor-not-allowed hover:bg-[rgba(255,255,255,0.05)] transition-colors group">
-                          <div className="flex items-center gap-3">
-                            <div className="h-10 w-10 rounded-lg flex items-center justify-center bg-[#FF4800]/10">
-                              <Lock className="h-4 w-4 text-[#FF4800] group-hover:animate-pulse" />
-                            </div>
-                            
-                            <div>
-                              <h5 className="text-white font-medium text-sm font-changa">{course.name}</h5>
-                              <div className="flex items-center text-[11px] text-gray-500 font-noto">
-                                <Lock className="h-2.5 w-2.5 mr-0.5 text-gray-500" />
-                                قريباً
-                              </div>
-                            </div>
-                          </div>
-                        </div>)}
-                    </div>
-                  </TabsContent>
-                </CardContent>
-                <CardFooter>
-                  <h3 className="text-sm font-bold text-white font-changa flex items-center gap-2">
-                    <Calendar className="h-4 w-4 text-[#FF4800]" strokeWidth={2} />
-                    الأحداث القادمة
-                  </h3>
-                  <Button variant="link" className="text-xs text-[#FF4800] p-0 h-auto">عرض الكل</Button>
-                </CardFooter>
-              </Tabs>
-            </Card>
-          </div>
-          
-          {/* RIGHT COLUMN - 3 cols */}
-          <div className="col-span-12 md:col-span-3 flex flex-col gap-4">
-            {/* Leaderboard - Fortnite Style */}
-            <Card>
-              <CardContent className="p-3">
-                <Leaderboard data={leaderboardData} filter={leaderboardFilter} onFilterChange={setLeaderboardFilter} />
-              </CardContent>
-              <CardFooter>
-                <h3 className="text-sm font-bold text-white font-changa flex items-center gap-2">
-                  <Trophy className="h-4 w-4 text-[#FF4800]" strokeWidth={2} />
-                  المتصدرون
-                </h3>
-                <Button variant="link" className="text-xs text-[#FF4800] p-0 h-auto">عرض المزيد</Button>
-              </CardFooter>
-            </Card>
-            
-            {/* Course Progress - Fortnite Style */}
-            <Card className="flex-col">
-              <CardContent className="p-3">
-                <CourseProgress courses={courseProgress} />
-              </CardContent>
-              <CardFooter>
-                <h3 className="text-sm font-bold text-white font-changa flex items-center gap-2">
-                  <BookOpen className="h-4 w-4 text-[#FF4800]" strokeWidth={2} />
-                  تقدم الكورسات
-                </h3>
-                <Button variant="link" className="text-xs text-[#FF4800] p-0 h-auto">عرض الكل</Button>
-              </CardFooter>
-            </Card>
+            {/* What's New */}
+            <WhatsNewSection newsItems={sampleNews} />
           </div>
         </div>
-      </ScrollArea>
+      </div>
+    </ScrollArea>
   );
 };
+
 export default Dashboard;
