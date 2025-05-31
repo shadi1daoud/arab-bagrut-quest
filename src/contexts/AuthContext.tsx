@@ -17,6 +17,14 @@ export interface User {
   coins?: number;
 }
 
+export interface SignUpData {
+  name: string;
+  email: string;
+  password: string;
+  grade: string;
+  city: string;
+}
+
 // Sample users for the MVP
 const SAMPLE_USERS: User[] = [
   {
@@ -45,6 +53,7 @@ interface AuthContextType {
   user: User | null;
   isLoading: boolean;
   login: (email: string, password: string) => Promise<boolean>;
+  signUp: (signUpData: SignUpData) => Promise<boolean>;
   logout: () => void;
   updateUser: (userData: Partial<User>) => void;
 }
@@ -98,6 +107,47 @@ export const AuthProvider = ({ children }: { children: ReactNode }) => {
     }
   };
 
+  const signUp = async (signUpData: SignUpData): Promise<boolean> => {
+    setIsLoading(true);
+    try {
+      // Check if email already exists
+      const existingUser = SAMPLE_USERS.find(u => u.email === signUpData.email);
+      if (existingUser) {
+        setIsLoading(false);
+        return false;
+      }
+
+      // Create new user
+      const newUser: User = {
+        id: Date.now().toString(),
+        name: signUpData.name,
+        email: signUpData.email,
+        role: 'student',
+        avatar: '/assets/avatars/student.png',
+        grade: signUpData.grade,
+        city: signUpData.city,
+        level: 1,
+        xp: 100, // Starting XP
+        streak: 1,
+        coins: 50 // Starting coins
+      };
+
+      // Add to sample users (in a real app, this would be saved to database)
+      SAMPLE_USERS.push(newUser);
+      
+      // Set as current user
+      setUser(newUser);
+      localStorage.setItem('darsni_user', JSON.stringify(newUser));
+      
+      setIsLoading(false);
+      return true;
+    } catch (error) {
+      console.error('Sign-up error:', error);
+      setIsLoading(false);
+      return false;
+    }
+  };
+
   const logout = () => {
     setUser(null);
     localStorage.removeItem('darsni_user');
@@ -113,7 +163,7 @@ export const AuthProvider = ({ children }: { children: ReactNode }) => {
   };
 
   return (
-    <AuthContext.Provider value={{ user, isLoading, login, logout, updateUser }}>
+    <AuthContext.Provider value={{ user, isLoading, login, signUp, logout, updateUser }}>
       {children}
     </AuthContext.Provider>
   );

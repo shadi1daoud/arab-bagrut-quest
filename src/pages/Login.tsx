@@ -1,9 +1,10 @@
 import { useState } from 'react';
-import { useNavigate } from 'react-router-dom';
+import { useNavigate, Link } from 'react-router-dom';
 import { useAuth } from '@/contexts/AuthContext';
 import { useToast } from '@/hooks/use-toast';
 import { motion } from 'framer-motion';
 import { ArrowRight, Lock, Mail, Sparkles } from 'lucide-react';
+
 const Login = () => {
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
@@ -243,7 +244,7 @@ const Login = () => {
             <div className="mt-6 text-center text-sm text-gray-400">
               <a href="#" className="text-gray-400 hover:underline font-outfit transition-colors">نسيت كلمة المرور؟</a>
               <span className="mx-2">•</span>
-              <a href="#" className="text-blue-400 hover:underline font-outfit transition-colors">إنشاء حساب جديد</a>
+              <Link to="/signup" className="text-blue-400 hover:underline font-outfit transition-colors">إنشاء حساب جديد</Link>
             </div>
           </motion.div>
         </motion.div>
@@ -254,4 +255,5 @@ const Login = () => {
       </motion.div>
     </div>;
 };
+
 export default Login;

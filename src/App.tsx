@@ -15,6 +15,7 @@ import Community from "./pages/student/Community";
 import Settings from "./pages/student/Settings";
 import CourseDetail from "./pages/student/CourseDetail";
 import Login from "./pages/Login";
+import SignUp from "./pages/SignUp";
 import AdminDashboard from "./pages/admin/Dashboard";
 import AdminCourses from "./pages/admin/Courses";
 import AdminUsers from "./pages/admin/Users";
@@ -34,6 +35,7 @@ const App = () => (
           <Sonner />
           <Routes>
             <Route path="/login" element={<Login />} />
+            <Route path="/signup" element={<SignUp />} />
             
             {/* Student Routes */}
             <Route 
