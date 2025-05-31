@@ -1,9 +1,10 @@
 import { useState, useEffect } from 'react';
 import { Outlet, NavLink, useLocation } from 'react-router-dom';
-import { Home, BookOpen, ShoppingCart, Users, Settings, LogOut, Menu, X, Bell, Search, Flame, Award, ChevronRight } from 'lucide-react';
+import { Home, BookOpen, ShoppingCart, Users, Settings, LogOut, Menu, X, Search, Flame, Award, ChevronRight } from 'lucide-react';
 import { useAuth } from '@/contexts/AuthContext';
 import { cn } from '@/lib/utils';
 import { motion, AnimatePresence } from 'framer-motion';
+import NotificationsDropdown from '@/components/widgets/NotificationsDropdown';
 import '../styles/theme-nebula.css';
 import '../styles/sidebar.css';
 
@@ -237,12 +238,7 @@ const StudentLayout = () => {
                         <span className="text-white font-['Share_Tech_Mono'] text-sm">8965</span>
                       </div>
                       
-                      <button className="relative text-gray-400 hover:text-white group">
-                        <Bell className="h-5 w-5" />
-                        <span className="absolute -top-1 -right-1 bg-[#FF4800] w-4 h-4 rounded-full text-xs flex items-center justify-center">
-                          3
-                        </span>
-                      </button>
+                      <NotificationsDropdown />
                     </div>
                   </div>
                   

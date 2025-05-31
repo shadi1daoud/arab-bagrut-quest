@@ -1,6 +1,5 @@
-
 import React, { useState } from 'react';
-import { Activity, Award, BookOpen, Calendar, Clock, Target, Trophy, Bell } from 'lucide-react';
+import { Activity, Award, BookOpen, Calendar, Clock, Target, Trophy } from 'lucide-react';
 import { Card, CardContent, CardFooter } from '@/components/ui/card';
 import { ScrollArea } from '@/components/ui/scroll-area';
 import { Button } from '@/components/ui/button';
@@ -14,7 +13,6 @@ import CourseProgress from '@/components/CourseProgress';
 import AnnouncementCard from '@/components/widgets/AnnouncementCard';
 import QuickActionsCard from '@/components/widgets/QuickActionsCard';
 import WeeklyGoalsCard from '@/components/widgets/WeeklyGoalsCard';
-import NotificationsDropdown from '@/components/widgets/NotificationsDropdown';
 import StudentOfWeekWidget from '@/components/widgets/StudentOfWeekWidget';
 
 // Weekly activity data
