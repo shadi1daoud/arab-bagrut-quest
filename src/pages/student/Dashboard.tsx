@@ -1,3 +1,4 @@
+
 import React, { useState } from 'react';
 import { Activity, Award, BookOpen, Calendar, Clock, Target, Trophy } from 'lucide-react';
 import { Card, CardContent, CardFooter } from '@/components/ui/card';
@@ -10,10 +11,10 @@ import WeeklyChart from '@/components/WeeklyChart';
 import DailyQuest from '@/components/DailyQuest';
 import Leaderboard from '@/components/Leaderboard';
 import CourseProgress from '@/components/CourseProgress';
-import AnnouncementCard from '@/components/widgets/AnnouncementCard';
 import QuickActionsCard from '@/components/widgets/QuickActionsCard';
 import WeeklyGoalsCard from '@/components/widgets/WeeklyGoalsCard';
 import StudentOfWeekWidget from '@/components/widgets/StudentOfWeekWidget';
+import DailyMotivationCard from '@/components/widgets/DailyMotivationCard';
 
 // Weekly activity data
 const weeklyActivity = [{
@@ -87,24 +88,6 @@ const courseProgress = [{
   progress: 28
 }];
 
-// Announcements data
-const announcements = [
-  {
-    title: 'امتحان الرياضيات قريباً',
-    content: 'سيكون امتحان الرياضيات يوم الأحد القادم في تمام الساعة 10 صباحاً',
-    type: 'important' as const,
-    timestamp: 'منذ ساعتين',
-    isNew: true
-  },
-  {
-    title: 'تحديث جديد للمنصة',
-    content: 'تم إضافة ميزات جديدة لتحسين تجربة التعلم',
-    type: 'info' as const,
-    timestamp: 'منذ يوم',
-    isNew: false
-  }
-];
-
 const Dashboard = () => {
   const [leaderboardFilter, setLeaderboardFilter] = useState('week');
 
@@ -134,10 +117,10 @@ const Dashboard = () => {
           {/* Quick Actions */}
           <QuickActionsCard />
           
-          {/* Ad Space */}
+          {/* Daily Motivational Sentence */}
           <Card>
             <CardContent className="p-3">
-              <AdCard />
+              <DailyMotivationCard />
             </CardContent>
           </Card>
         </div>
@@ -198,26 +181,15 @@ const Dashboard = () => {
             </CardFooter>
           </Card>
           
-          {/* Announcements */}
+          {/* Course Progress */}
           <Card className="flex-1">
             <CardContent className="p-3">
-              <div className="space-y-3">
-                {announcements.map((announcement, index) => (
-                  <AnnouncementCard
-                    key={index}
-                    title={announcement.title}
-                    content={announcement.content}
-                    type={announcement.type}
-                    timestamp={announcement.timestamp}
-                    isNew={announcement.isNew}
-                  />
-                ))}
-              </div>
+              <CourseProgress courses={courseProgress} />
             </CardContent>
             <CardFooter>
               <h3 className="text-sm font-bold text-white font-changa flex items-center gap-2">
-                <Calendar className="h-4 w-4 text-[#FF4800]" strokeWidth={2} />
-                الإعلانات
+                <BookOpen className="h-4 w-4 text-[#FF4800]" strokeWidth={2} />
+                تقدم الكورسات
               </h3>
               <Button variant="link" className="text-xs text-[#FF4800] p-0 h-auto">عرض الكل</Button>
             </CardFooter>
@@ -246,18 +218,11 @@ const Dashboard = () => {
             </CardFooter>
           </Card>
           
-          {/* Course Progress */}
-          <Card className="flex-col">
+          {/* Ad Space */}
+          <Card>
             <CardContent className="p-3">
-              <CourseProgress courses={courseProgress} />
+              <AdCard />
             </CardContent>
-            <CardFooter>
-              <h3 className="text-sm font-bold text-white font-changa flex items-center gap-2">
-                <BookOpen className="h-4 w-4 text-[#FF4800]" strokeWidth={2} />
-                تقدم الكورسات
-              </h3>
-              <Button variant="link" className="text-xs text-[#FF4800] p-0 h-auto">عرض الكل</Button>
-            </CardFooter>
           </Card>
         </div>
       </div>
