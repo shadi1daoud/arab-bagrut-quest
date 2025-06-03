@@ -219,8 +219,15 @@ export const getAchievementBadge = (type: string, value: number): string | null 
   const categoryAchievements = achievements[type as keyof typeof achievements];
   if (!categoryAchievements) return null;
   
+  // Check achievements in reverse order (highest first)
   for (const achievement of categoryAchievements.reverse()) {
-    if (value >= achievement.count || value >= achievement.days || value >= achievement.points) {
+    if (type === 'streak' && 'days' in achievement && value >= achievement.days) {
+      return achievement.badge;
+    }
+    if (type === 'xp' && 'points' in achievement && value >= achievement.points) {
+      return achievement.badge;
+    }
+    if (type === 'courses' && 'count' in achievement && value >= achievement.count) {
       return achievement.badge;
     }
   }
