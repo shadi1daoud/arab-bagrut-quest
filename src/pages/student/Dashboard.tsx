@@ -1,5 +1,5 @@
 import React, { useState } from 'react';
-import { Activity, Award, BookOpen, Calendar, Clock, Target, Trophy, TrendingUp, Button as ButtonIcon } from 'lucide-react';
+import { Activity, Award, BookOpen, Calendar, Clock, Target, Trophy, TrendingUp } from 'lucide-react';
 import { Card, CardContent, CardFooter } from '@/components/ui/card';
 import { ScrollArea } from '@/components/ui/scroll-area';
 import { Button } from '@/components/ui/button';
@@ -211,9 +211,6 @@ const Dashboard = () => {
         <div className="col-span-12 md:col-span-3 flex flex-col gap-4">
           {/* Student of the Week */}
           <StudentOfWeekWidget />
-          
-          {/* Weekly Goals */}
-          <WeeklyGoalsCard />
           
           {/* Leaderboard */}
           <Card>

@@ -114,11 +114,4 @@ const WeeklyProgress: React.FC<WeeklyProgressProps> = ({
   );
 };
 
-// Export component with title and footer info for consistent usage
-export const WeeklyProgressWithFooter = ({ ...props }) => ({
-  component: <WeeklyProgress {...props} />,
-  title: "التقدم الأسبوعي",
-  icon: TrendingUp
-});
-
 export default WeeklyProgress;
