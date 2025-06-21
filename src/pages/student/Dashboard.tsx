@@ -1,6 +1,5 @@
-
 import React, { useState } from 'react';
-import { Activity, Award, BookOpen, Clock, Trophy, TrendingUp } from 'lucide-react';
+import { Activity, Award, BookOpen, Clock, Trophy, TrendingUp, Target, Flame, Star } from 'lucide-react';
 import { Card, CardContent, CardFooter } from '@/components/ui/card';
 import { ScrollArea } from '@/components/ui/scroll-area';
 import { Button } from '@/components/ui/button';
@@ -12,6 +11,8 @@ import Leaderboard from '@/components/Leaderboard';
 import CourseProgress from '@/components/CourseProgress';
 import StudentOfWeekWidget from '@/components/widgets/StudentOfWeekWidget';
 import DailyMotivationCard from '@/components/widgets/DailyMotivationCard';
+import StreakCounter from '@/components/widgets/StreakCounter';
+import TodayGoalsCard from '@/components/widgets/TodayGoalsCard';
 
 // Weekly activity data
 const weeklyActivity = [{
@@ -95,14 +96,28 @@ const Dashboard = () => {
   return (
     <ScrollArea className="h-full w-full">
       <div className="grid grid-cols-12 gap-4 pb-4 px-4">
-        {/* LEFT COLUMN - 3 cols */}
-        <div className="col-span-12 md:col-span-3 flex flex-col gap-4">
+        {/* LEFT COLUMN - 4 cols */}
+        <div className="col-span-12 md:col-span-4 flex flex-col gap-4">
           {/* Profile Card with Stats */}
           <Card>
             <CardContent className="p-3">
               <StatsCard name="شادي داود" level={5} grade="الثاني عشر - دار الأرقم" xp={2450} maxXp={3000} effort={12} points={8900} iq={8.9} />
             </CardContent>
           </Card>
+          
+          {/* Daily Goals & Streak */}
+          <div className="grid grid-cols-2 gap-3">
+            <Card>
+              <CardContent className="p-3">
+                <StreakCounter streak={5} />
+              </CardContent>
+            </Card>
+            <Card>
+              <CardContent className="p-3">
+                <TodayGoalsCard completedGoals={2} totalGoals={4} />
+              </CardContent>
+            </Card>
+          </div>
           
           {/* Weekly Progress */}
           <Card>
@@ -123,17 +138,10 @@ const Dashboard = () => {
               <Button variant="link" className="text-xs text-[#FF4800] p-0 h-auto">عرض التفاصيل</Button>
             </CardFooter>
           </Card>
-          
-          {/* Daily Motivational Sentence */}
-          <Card>
-            <CardContent className="p-3">
-              <DailyMotivationCard />
-            </CardContent>
-          </Card>
         </div>
         
-        {/* MIDDLE COLUMN - 6 cols */}
-        <div className="col-span-12 md:col-span-6 flex flex-col gap-4">
+        {/* MIDDLE COLUMN - 4 cols */}
+        <div className="col-span-12 md:col-span-4 flex flex-col gap-4">
           {/* Weekly Activity Chart */}
           <Card>
             <CardContent className="p-3">
@@ -176,10 +184,17 @@ const Dashboard = () => {
               <Button variant="link" className="text-xs text-[#FF4800] p-0 h-auto">عرض الكل</Button>
             </CardFooter>
           </Card>
+
+          {/* Daily Motivational Quote */}
+          <Card>
+            <CardContent className="p-3">
+              <DailyMotivationCard />
+            </CardContent>
+          </Card>
         </div>
         
-        {/* RIGHT COLUMN - 3 cols */}
-        <div className="col-span-12 md:col-span-3 flex flex-col gap-4">
+        {/* RIGHT COLUMN - 4 cols */}
+        <div className="col-span-12 md:col-span-4 flex flex-col gap-4">
           {/* Student of the Week */}
           <StudentOfWeekWidget />
           
