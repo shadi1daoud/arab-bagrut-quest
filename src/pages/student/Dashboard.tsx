@@ -1,11 +1,10 @@
-
 import React, { useState } from 'react';
 import { Activity, Award, BookOpen, Calendar, Clock, Target, Trophy } from 'lucide-react';
 import { Card, CardContent, CardFooter } from '@/components/ui/card';
 import { ScrollArea } from '@/components/ui/scroll-area';
 import { Button } from '@/components/ui/button';
 import StatsCard from '@/components/StatsCard';
-import IntelligenceScore from '@/components/IntelligenceScore';
+import WeeklyProgress from '@/components/WeeklyProgress';
 import AdCard from '@/components/AdCard';
 import WeeklyChart from '@/components/WeeklyChart';
 import DailyQuest from '@/components/DailyQuest';
@@ -107,10 +106,16 @@ const Dashboard = () => {
             </CardContent>
           </Card>
           
-          {/* AI Intelligence Score */}
+          {/* Weekly Progress - replacing Intelligence Score */}
           <Card>
             <CardContent className="p-3">
-              <IntelligenceScore score={8.9} weeklyGain={0.9} percentile={85} />
+              <WeeklyProgress 
+                weeklyData={weeklyActivity}
+                totalWeeklyXP={51}
+                weeklyGoal={100}
+                studyHours={8.7}
+                streak={5}
+              />
             </CardContent>
           </Card>
           
