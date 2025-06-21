@@ -33,11 +33,6 @@ const WeeklyProgress: React.FC<WeeklyProgressProps> = ({
 
   return (
     <div className="flex flex-col">
-      <h3 className="text-sm font-bold text-white font-changa flex items-center gap-2 mb-4">
-        <TrendingUp className="h-4 w-4 text-[#FF4800]" />
-        التقدم الأسبوعي
-      </h3>
-      
       {/* Weekly Goal Progress */}
       <div className="mb-4">
         <div className="flex justify-between items-center mb-2">
@@ -85,7 +80,7 @@ const WeeklyProgress: React.FC<WeeklyProgressProps> = ({
       </div>
       
       {/* Achievement Badges */}
-      <div className="flex flex-wrap gap-1 justify-center">
+      <div className="flex flex-wrap gap-1 justify-center mb-3">
         {progressPercentage >= 25 && (
           <div className="py-1 px-2 bg-[#FF4800]/10 rounded-full text-[9px] text-[#FF4800] border border-[#FF4800]/20 font-noto flex items-center gap-1">
             <Target className="h-2 w-2" />
@@ -110,7 +105,7 @@ const WeeklyProgress: React.FC<WeeklyProgressProps> = ({
       
       {/* Best Day Highlight */}
       {bestDay.xp > 0 && (
-        <div className="mt-3 text-center">
+        <div className="text-center">
           <p className="text-xs text-gray-400 font-noto">أفضل يوم: <span className="text-[#FF4800] font-medium">{bestDay.day}</span></p>
           <p className="text-[10px] text-gray-500 font-['Share_Tech_Mono']">{bestDay.xp} XP</p>
         </div>
@@ -118,5 +113,12 @@ const WeeklyProgress: React.FC<WeeklyProgressProps> = ({
     </div>
   );
 };
+
+// Export component with title and footer info for consistent usage
+export const WeeklyProgressWithFooter = ({ ...props }) => ({
+  component: <WeeklyProgress {...props} />,
+  title: "التقدم الأسبوعي",
+  icon: TrendingUp
+});
 
 export default WeeklyProgress;

@@ -1,5 +1,5 @@
 import React, { useState } from 'react';
-import { Activity, Award, BookOpen, Calendar, Clock, Target, Trophy } from 'lucide-react';
+import { Activity, Award, BookOpen, Calendar, Clock, Target, Trophy, TrendingUp, Button as ButtonIcon } from 'lucide-react';
 import { Card, CardContent, CardFooter } from '@/components/ui/card';
 import { ScrollArea } from '@/components/ui/scroll-area';
 import { Button } from '@/components/ui/button';
@@ -11,7 +11,6 @@ import DailyQuest from '@/components/DailyQuest';
 import Leaderboard from '@/components/Leaderboard';
 import CourseProgress from '@/components/CourseProgress';
 import QuickActionsCard from '@/components/widgets/QuickActionsCard';
-import WeeklyGoalsCard from '@/components/widgets/WeeklyGoalsCard';
 import StudentOfWeekWidget from '@/components/widgets/StudentOfWeekWidget';
 import DailyMotivationCard from '@/components/widgets/DailyMotivationCard';
 
@@ -106,7 +105,7 @@ const Dashboard = () => {
             </CardContent>
           </Card>
           
-          {/* Weekly Progress - replacing Intelligence Score */}
+          {/* Weekly Progress */}
           <Card>
             <CardContent className="p-3">
               <WeeklyProgress 
@@ -117,6 +116,13 @@ const Dashboard = () => {
                 streak={5}
               />
             </CardContent>
+            <CardFooter>
+              <h3 className="text-sm font-bold text-white font-changa flex items-center gap-2">
+                <TrendingUp className="h-4 w-4 text-[#FF4800]" strokeWidth={2} />
+                التقدم الأسبوعي
+              </h3>
+              <Button variant="link" className="text-xs text-[#FF4800] p-0 h-auto">عرض التفاصيل</Button>
+            </CardFooter>
           </Card>
           
           {/* Quick Actions */}
