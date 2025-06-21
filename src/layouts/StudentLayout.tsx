@@ -1,12 +1,14 @@
 import { useState, useEffect } from 'react';
 import { Outlet, NavLink, useLocation } from 'react-router-dom';
-import { Home, BookOpen, ShoppingCart, Users, Settings, LogOut, Menu, X, Search, Flame, Award, ChevronRight } from 'lucide-react';
+import { Home, BookOpen, ShoppingCart, Users, Settings, LogOut, Menu, X, Search, ChevronRight, Award, Flame } from 'lucide-react';
 import { useAuth } from '@/contexts/AuthContext';
 import { cn } from '@/lib/utils';
 import { motion, AnimatePresence } from 'framer-motion';
 import NotificationsDropdown from '@/components/widgets/NotificationsDropdown';
+import XPIndicators from '@/components/widgets/XPIndicators';
 import '../styles/theme-nebula.css';
 import '../styles/sidebar.css';
+
 const StudentLayout = () => {
   const {
     user,
@@ -15,9 +17,11 @@ const StudentLayout = () => {
   const [isMobileMenuOpen, setIsMobileMenuOpen] = useState(false);
   const [isMenuCollapsed, setIsMenuCollapsed] = useState(false);
   const location = useLocation();
+  
   useEffect(() => {
     setIsMobileMenuOpen(false);
   }, [location.pathname]);
+  
   const navItems = [{
     path: '/',
     label: 'الرئيسية',
@@ -39,9 +43,11 @@ const StudentLayout = () => {
     label: 'الإعدادات',
     icon: Settings
   }];
+  
   const toggleMenu = () => {
     setIsMenuCollapsed(!isMenuCollapsed);
   };
+  
   const NavItem = ({
     path,
     label,
@@ -95,6 +101,7 @@ const StudentLayout = () => {
     return stars;
   };
   const stars = createStars();
+  
   return <div className="h-screen w-full flex overflow-hidden bg-transparent">
       {/* Background effects */}
       <div className="star-field fixed inset-0 z-[-2] pointer-events-none">
@@ -218,30 +225,13 @@ const StudentLayout = () => {
             <div className="flex items-center gap-4">
               {user && <>
                   <div className="flex items-center gap-3">
-                    {/* Stats Display - Streak | XP | Dbucks with consistent styling */}
-                    <div className="flex items-center gap-3">
-                      {/* Streak */}
-                      <div className="flex items-center gap-2 glass-card py-2 px-4 rounded-full border border-white/5 h-9">
-                        <Flame className="h-4 w-4 text-[#FF4800]" />
-                        <span className="text-white font-['Share_Tech_Mono'] text-sm font-medium">{user?.streak || 12}</span>
-                      </div>
-                      
-                      {/* Separator */}
-                      <div className="hidden sm:block h-4 w-px bg-white/10"></div>
-                      
-                      {/* XP */}
-                      <div className="flex items-center gap-2 glass-card py-2 px-4 rounded-full border border-white/5 bg-[#FF4800]/10 h-9">
-                        <span className="text-[#FF4800] font-['Share_Tech_Mono'] text-sm font-medium">{user?.xp || 8966} XP</span>
-                      </div>
-                      
-                      {/* Separator */}
-                      <div className="hidden sm:block h-4 w-px bg-white/10"></div>
-                      
-                      {/* Dbucks */}
-                      <div className="flex items-center gap-2 glass-card py-2 px-4 rounded-full border border-white/5 h-9">
-                        <img alt="Dbucks" src="/lovable-uploads/39bf9afe-bc7e-4e79-bd59-4546ffb2e050.png" className="h-8 w-8 object-contain" />
-                        <span className="text-white font-['Share_Tech_Mono'] text-sm font-medium">{user?.coins || 450}</span>
-                      </div>
+                    {/* New XP Indicators Component */}
+                    <XPIndicators user={user} />
+                    
+                    {/* Dbucks - moved outside XPIndicators to keep it separate */}
+                    <div className="flex items-center gap-2 glass-card py-2 px-4 rounded-full border border-white/5 h-9">
+                      <img alt="Dbucks" src="/lovable-uploads/39bf9afe-bc7e-4e79-bd59-4546ffb2e050.png" className="h-8 w-8 object-contain" />
+                      <span className="text-white font-['Share_Tech_Mono'] text-sm font-medium">{user?.coins || 450}</span>
                     </div>
                     
                     <div className="hidden md:block h-4 w-px bg-white/10"></div>
@@ -265,4 +255,5 @@ const StudentLayout = () => {
       </div>
     </div>;
 };
+
 export default StudentLayout;
