@@ -226,19 +226,19 @@ const StudentLayout = () => {
             <div className="flex items-center gap-4">
               {user && <>
                   <div className="flex items-center gap-3">
-                    {/* Stats Display - Streak | XP | Dbucks */}
+                    {/* Stats Display - Streak | XP | Dbucks with consistent styling */}
                     <div className="flex items-center gap-3">
                       {/* Streak */}
-                      <div className="flex items-center gap-2 glass-card py-1 px-3 rounded-full border border-white/5">
+                      <div className="flex items-center gap-2 glass-card py-2 px-4 rounded-full border border-white/5 h-9">
                         <Flame className="h-4 w-4 text-[#FF4800]" />
-                        <span className="text-white font-['Share_Tech_Mono'] text-sm">{user?.streak || 12}</span>
+                        <span className="text-white font-['Share_Tech_Mono'] text-sm font-medium">{user?.streak || 12}</span>
                       </div>
                       
                       {/* Separator */}
                       <div className="hidden sm:block h-4 w-px bg-white/10"></div>
                       
                       {/* XP */}
-                      <div className="flex items-center gap-2 glass-card py-1 px-3 rounded-full border border-white/5 bg-[#FF4800]/10">
+                      <div className="flex items-center gap-2 glass-card py-2 px-4 rounded-full border border-white/5 bg-[#FF4800]/10 h-9">
                         <span className="text-[#FF4800] font-['Share_Tech_Mono'] text-sm font-medium">{user?.xp || 8966} XP</span>
                       </div>
                       
@@ -246,9 +246,9 @@ const StudentLayout = () => {
                       <div className="hidden sm:block h-4 w-px bg-white/10"></div>
                       
                       {/* Dbucks */}
-                      <div className="flex items-center gap-2 glass-card py-1 px-3 rounded-full border border-white/5">
+                      <div className="flex items-center gap-2 glass-card py-2 px-4 rounded-full border border-white/5 h-9">
                         <img alt="Dbucks" src="/lovable-uploads/0e8e99cc-9278-487b-a22d-d0558c2f11dc.png" className="h-4 w-4 object-contain" />
-                        <span className="text-white font-['Share_Tech_Mono'] text-sm">{user?.coins || 450}</span>
+                        <span className="text-white font-['Share_Tech_Mono'] text-sm font-medium">{user?.coins || 450}</span>
                       </div>
                     </div>
                     

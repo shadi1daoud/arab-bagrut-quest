@@ -405,31 +405,14 @@ const Shop = () => {
 
   return (
     <div className="h-full flex flex-col">
-      {/* Header with balance */}
-      <div className="flex justify-between items-center mb-4">
-        <div>
-          <h1 className="text-2xl font-bold bg-gradient-to-r from-game-primary via-game-accent to-game-secondary bg-clip-text text-transparent font-['Changa']">
-            المتجر
-          </h1>
-          <p className="text-game-foreground-muted text-sm font-['Noto_Sans_Arabic']">
-            اشترِ عناصر مميزة واستخدمها في رحلتك التعليمية
-          </p>
-        </div>
-        
-        <motion.div 
-          className="bg-gradient-to-br from-black/80 to-black/50 backdrop-blur-md px-4 py-2 rounded-xl flex items-center gap-2 border border-game-legendary/30 shadow-lg"
-          animate={{ 
-            boxShadow: ['0 0 15px rgba(255,215,0,0.1)', '0 0 25px rgba(255,215,0,0.3)', '0 0 15px rgba(255,215,0,0.1)'] 
-          }}
-          transition={{ duration: 3, repeat: Infinity }}
-        >
-          <img 
-            src="/lovable-uploads/b01a3696-c05d-49eb-b8f2-6b1f7dcbeaab.png" 
-            alt="Dbucks" 
-            className="h-7 w-7 object-contain"
-          />
-          <span className="text-white font-bold font-['Share_Tech_Mono']">{user?.coins || 0}</span>
-        </motion.div>
+      {/* Header - simplified without balance display */}
+      <div className="mb-4">
+        <h1 className="text-2xl font-bold bg-gradient-to-r from-game-primary via-game-accent to-game-secondary bg-clip-text text-transparent font-['Changa']">
+          المتجر
+        </h1>
+        <p className="text-game-foreground-muted text-sm font-['Noto_Sans_Arabic']">
+          اشترِ عناصر مميزة واستخدمها في رحلتك التعليمية
+        </p>
       </div>
       
       {/* Featured items (limited time offers) */}
