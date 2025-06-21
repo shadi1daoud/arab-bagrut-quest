@@ -1,5 +1,6 @@
+
 import React, { useState } from 'react';
-import { Activity, Award, BookOpen, Calendar, Clock, Target, Trophy, TrendingUp } from 'lucide-react';
+import { Activity, Award, BookOpen, Clock, Trophy, TrendingUp } from 'lucide-react';
 import { Card, CardContent, CardFooter } from '@/components/ui/card';
 import { ScrollArea } from '@/components/ui/scroll-area';
 import { Button } from '@/components/ui/button';
@@ -7,10 +8,8 @@ import StatsCard from '@/components/StatsCard';
 import WeeklyProgress from '@/components/WeeklyProgress';
 import AdCard from '@/components/AdCard';
 import WeeklyChart from '@/components/WeeklyChart';
-import DailyQuest from '@/components/DailyQuest';
 import Leaderboard from '@/components/Leaderboard';
 import CourseProgress from '@/components/CourseProgress';
-import QuickActionsCard from '@/components/widgets/QuickActionsCard';
 import StudentOfWeekWidget from '@/components/widgets/StudentOfWeekWidget';
 import DailyMotivationCard from '@/components/widgets/DailyMotivationCard';
 
@@ -125,9 +124,6 @@ const Dashboard = () => {
             </CardFooter>
           </Card>
           
-          {/* Quick Actions */}
-          <QuickActionsCard />
-          
           {/* Daily Motivational Sentence */}
           <Card>
             <CardContent className="p-3">
@@ -167,33 +163,8 @@ const Dashboard = () => {
             </CardFooter>
           </Card>
           
-          {/* Today's Quest */}
-          <Card>
-            <CardContent className="p-3">
-              <div className="flex items-center gap-4 relative">
-                <div className="shrink-0 flex items-center justify-center h-16 w-16 rounded-xl bg-[#FF4800]/10">
-                  <Target className="h-10 w-10 text-[#FF4800]" strokeWidth={2} />
-                </div>
-                
-                <div className="flex-1">
-                  <DailyQuest title="أكمل تحصيلي الرياضيات" description="حل 10 مسائل جديدة من كتاب التحصيلي" xpReward={150} day={7} />
-                </div>
-              </div>
-            </CardContent>
-            <CardFooter>
-              <h3 className="text-sm font-bold text-white font-changa flex items-center gap-2">
-                <Target className="h-4 w-4 text-[#FF4800]" strokeWidth={2} />
-                مهمة اليوم
-              </h3>
-              <div className="flex items-center gap-1 py-1 px-3 bg-[#FF4800]/10 rounded-md text-xs text-[#FF4800] font-['Share_Tech_Mono']">
-                <Award className="h-3 w-3" strokeWidth={2} />
-                +150 XP
-              </div>
-            </CardFooter>
-          </Card>
-          
           {/* Course Progress */}
-          <Card className="flex-1">
+          <Card>
             <CardContent className="p-3">
               <CourseProgress courses={courseProgress} />
             </CardContent>
