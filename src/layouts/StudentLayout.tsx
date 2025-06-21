@@ -1,3 +1,4 @@
+
 import { useState, useEffect } from 'react';
 import { Outlet, NavLink, useLocation } from 'react-router-dom';
 import { Home, BookOpen, ShoppingCart, Users, Settings, LogOut, Menu, X, Search, Flame, Award, ChevronRight } from 'lucide-react';
@@ -225,21 +226,35 @@ const StudentLayout = () => {
             <div className="flex items-center gap-4">
               {user && <>
                   <div className="flex items-center gap-3">
-                    <div className="flex items-center gap-2 glass-card py-1 px-2 rounded-full border border-white/5">
-                      <Flame className="h-3.5 w-3.5 text-[#FF4800]" />
-                      <span className="text-white font-['Share_Tech_Mono'] text-sm">12</span>
+                    {/* Stats Display - Streak | XP | Dbucks */}
+                    <div className="flex items-center gap-3">
+                      {/* Streak */}
+                      <div className="flex items-center gap-2 glass-card py-1 px-3 rounded-full border border-white/5">
+                        <Flame className="h-4 w-4 text-[#FF4800]" />
+                        <span className="text-white font-['Share_Tech_Mono'] text-sm">{user?.streak || 12}</span>
+                      </div>
+                      
+                      {/* Separator */}
+                      <div className="hidden sm:block h-4 w-px bg-white/10"></div>
+                      
+                      {/* XP */}
+                      <div className="flex items-center gap-2 glass-card py-1 px-3 rounded-full border border-white/5 bg-[#FF4800]/10">
+                        <span className="text-[#FF4800] font-['Share_Tech_Mono'] text-sm font-medium">{user?.xp || 8966} XP</span>
+                      </div>
+                      
+                      {/* Separator */}
+                      <div className="hidden sm:block h-4 w-px bg-white/10"></div>
+                      
+                      {/* Dbucks */}
+                      <div className="flex items-center gap-2 glass-card py-1 px-3 rounded-full border border-white/5">
+                        <img alt="Dbucks" src="/lovable-uploads/0e8e99cc-9278-487b-a22d-d0558c2f11dc.png" className="h-4 w-4 object-contain" />
+                        <span className="text-white font-['Share_Tech_Mono'] text-sm">{user?.coins || 450}</span>
+                      </div>
                     </div>
                     
                     <div className="hidden md:block h-4 w-px bg-white/10"></div>
                     
-                    <div className="flex items-center gap-2">
-                      <div className="glass-card py-1 px-2 rounded-full border border-white/5 hidden md:flex items-center gap-1.5">
-                        <img alt="Dbucks" src="/lovable-uploads/0e8e99cc-9278-487b-a22d-d0558c2f11dc.png" className="h-7 w-7 object-contain" />
-                        <span className="text-white font-['Share_Tech_Mono'] text-sm">8965</span>
-                      </div>
-                      
-                      <NotificationsDropdown />
-                    </div>
+                    <NotificationsDropdown />
                   </div>
                   
                   <div className="text-white">
