@@ -1,4 +1,3 @@
-
 import { useState, useEffect } from 'react';
 import { Outlet, NavLink, useLocation } from 'react-router-dom';
 import { Home, BookOpen, ShoppingCart, Users, Settings, LogOut, Menu, X, Search, Flame, Award, ChevronRight } from 'lucide-react';
@@ -8,7 +7,6 @@ import { motion, AnimatePresence } from 'framer-motion';
 import NotificationsDropdown from '@/components/widgets/NotificationsDropdown';
 import '../styles/theme-nebula.css';
 import '../styles/sidebar.css';
-
 const StudentLayout = () => {
   const {
     user,
@@ -17,11 +15,9 @@ const StudentLayout = () => {
   const [isMobileMenuOpen, setIsMobileMenuOpen] = useState(false);
   const [isMenuCollapsed, setIsMenuCollapsed] = useState(false);
   const location = useLocation();
-  
   useEffect(() => {
     setIsMobileMenuOpen(false);
   }, [location.pathname]);
-  
   const navItems = [{
     path: '/',
     label: 'الرئيسية',
@@ -43,11 +39,9 @@ const StudentLayout = () => {
     label: 'الإعدادات',
     icon: Settings
   }];
-  
   const toggleMenu = () => {
     setIsMenuCollapsed(!isMenuCollapsed);
   };
-  
   const NavItem = ({
     path,
     label,
@@ -83,7 +77,7 @@ const StudentLayout = () => {
         </AnimatePresence>
       </NavLink>;
   };
-  
+
   // Create stars for star field effect
   const createStars = () => {
     const stars = [];
@@ -101,19 +95,17 @@ const StudentLayout = () => {
     return stars;
   };
   const stars = createStars();
-  
-  return (
-    <div className="h-screen w-full flex overflow-hidden bg-transparent">
+  return <div className="h-screen w-full flex overflow-hidden bg-transparent">
       {/* Background effects */}
       <div className="star-field fixed inset-0 z-[-2] pointer-events-none">
         {stars.map(star => <div key={star.id} className="star" style={{
-          width: `${star.size}px`,
-          height: `${star.size}px`,
-          left: `${star.left}%`,
-          top: `${star.top}%`,
-          animationDelay: `${star.animationDelay}s`,
-          animationDuration: `${star.animationDuration}s`
-        }} />)}
+        width: `${star.size}px`,
+        height: `${star.size}px`,
+        left: `${star.left}%`,
+        top: `${star.top}%`,
+        animationDelay: `${star.animationDelay}s`,
+        animationDuration: `${star.animationDuration}s`
+      }} />)}
       </div>
       <div className="grid-overlay fixed inset-0 z-[-1] pointer-events-none"></div>
       
@@ -247,7 +239,7 @@ const StudentLayout = () => {
                       
                       {/* Dbucks */}
                       <div className="flex items-center gap-2 glass-card py-2 px-4 rounded-full border border-white/5 h-9">
-                        <img alt="Dbucks" src="/lovable-uploads/0e8e99cc-9278-487b-a22d-d0558c2f11dc.png" className="h-4 w-4 object-contain" />
+                        <img alt="Dbucks" className="h-4 w-4 object-contain" src="/lovable-uploads/39bf9afe-bc7e-4e79-bd59-4546ffb2e050.png" />
                         <span className="text-white font-['Share_Tech_Mono'] text-sm font-medium">{user?.coins || 450}</span>
                       </div>
                     </div>
@@ -271,8 +263,6 @@ const StudentLayout = () => {
           <Outlet />
         </main>
       </div>
-    </div>
-  );
+    </div>;
 };
-
 export default StudentLayout;
