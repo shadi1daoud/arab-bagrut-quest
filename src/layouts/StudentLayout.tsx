@@ -239,7 +239,7 @@ const StudentLayout = () => {
                       
                       {/* Dbucks */}
                       <div className="flex items-center gap-2 glass-card py-2 px-4 rounded-full border border-white/5 h-9">
-                        <img alt="Dbucks" className="h-4 w-4 object-contain" src="/lovable-uploads/39bf9afe-bc7e-4e79-bd59-4546ffb2e050.png" />
+                        <img alt="Dbucks" src="/lovable-uploads/39bf9afe-bc7e-4e79-bd59-4546ffb2e050.png" className="h-8 w-8 object-contain" />
                         <span className="text-white font-['Share_Tech_Mono'] text-sm font-medium">{user?.coins || 450}</span>
                       </div>
                     </div>
