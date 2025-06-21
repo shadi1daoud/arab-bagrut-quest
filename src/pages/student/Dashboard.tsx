@@ -4,7 +4,7 @@ import { Card, CardContent, CardFooter } from '@/components/ui/card';
 import { ScrollArea } from '@/components/ui/scroll-area';
 import { Button } from '@/components/ui/button';
 import StatsCard from '@/components/StatsCard';
-import WeeklyProgress from '@/components/WeeklyProgress';
+import WeeklyProgressComparison from '@/components/WeeklyProgressComparison';
 import AdCard from '@/components/AdCard';
 import WeeklyChart from '@/components/WeeklyChart';
 import Leaderboard from '@/components/Leaderboard';
@@ -102,18 +102,22 @@ const Dashboard = () => {
             </CardContent>
           </Card>
           
-          {/* Daily Goals & Streak */}
-          
-          
-          {/* Weekly Progress */}
+          {/* Weekly Progress Comparison - NEW */}
           <Card>
             <CardContent className="p-3">
-              <WeeklyProgress weeklyData={weeklyActivity} totalWeeklyXP={51} weeklyGoal={100} studyHours={8.7} streak={5} />
+              <WeeklyProgressComparison 
+                currentWeekXP={51}
+                previousWeekXP={43}
+                currentWeekHours={8.7}
+                previousWeekHours={7.2}
+                streak={5}
+                weeklyGoal={100}
+              />
             </CardContent>
             <CardFooter>
               <h3 className="text-sm font-bold text-white font-changa flex items-center gap-2">
                 <TrendingUp className="h-4 w-4 text-[#FF4800]" strokeWidth={2} />
-                التقدم الأسبوعي
+                مقارنة أسبوعية
               </h3>
               <Button variant="link" className="text-xs text-[#FF4800] p-0 h-auto">عرض التفاصيل</Button>
             </CardFooter>
