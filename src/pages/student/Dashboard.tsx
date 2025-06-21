@@ -85,16 +85,13 @@ const courseProgress = [{
   name: 'كيمياء',
   progress: 28
 }];
-
 const Dashboard = () => {
   const [leaderboardFilter, setLeaderboardFilter] = useState('week');
 
   // Calculate total weekly hours and XP
   const totalWeeklyHours = '8.7';
   const totalWeeklyXP = '870';
-  
-  return (
-    <ScrollArea className="h-full w-full">
+  return <ScrollArea className="h-full w-full">
       <div className="grid grid-cols-12 gap-4 pb-4 px-4">
         {/* LEFT COLUMN - 4 cols */}
         <div className="col-span-12 md:col-span-4 flex flex-col gap-4">
@@ -106,29 +103,12 @@ const Dashboard = () => {
           </Card>
           
           {/* Daily Goals & Streak */}
-          <div className="grid grid-cols-2 gap-3">
-            <Card>
-              <CardContent className="p-3">
-                <StreakCounter streak={5} />
-              </CardContent>
-            </Card>
-            <Card>
-              <CardContent className="p-3">
-                <TodayGoalsCard completedGoals={2} totalGoals={4} />
-              </CardContent>
-            </Card>
-          </div>
+          
           
           {/* Weekly Progress */}
           <Card>
             <CardContent className="p-3">
-              <WeeklyProgress 
-                weeklyData={weeklyActivity}
-                totalWeeklyXP={51}
-                weeklyGoal={100}
-                studyHours={8.7}
-                streak={5}
-              />
+              <WeeklyProgress weeklyData={weeklyActivity} totalWeeklyXP={51} weeklyGoal={100} studyHours={8.7} streak={5} />
             </CardContent>
             <CardFooter>
               <h3 className="text-sm font-bold text-white font-changa flex items-center gap-2">
@@ -220,8 +200,6 @@ const Dashboard = () => {
           </Card>
         </div>
       </div>
-    </ScrollArea>
-  );
+    </ScrollArea>;
 };
-
 export default Dashboard;
