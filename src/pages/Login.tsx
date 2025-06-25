@@ -1,22 +1,17 @@
 import { useState } from 'react';
 import { useNavigate, Link } from 'react-router-dom';
-import { useAuth } from '@/contexts/AuthContext';
 import { useToast } from '@/hooks/use-toast';
 import { motion } from 'framer-motion';
 import { ArrowRight, Lock, Mail, Sparkles } from 'lucide-react';
+import { signin } from '@/lib/authUtils';
 
 const Login = () => {
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
   const [isLoading, setIsLoading] = useState(false);
   const [isSuccess, setIsSuccess] = useState(false);
-  const {
-    login
-  } = useAuth();
   const navigate = useNavigate();
-  const {
-    toast
-  } = useToast();
+  const { toast } = useToast();
 
   // Create particles for galaxy effect
   const createParticles = () => {
@@ -43,44 +38,43 @@ const Login = () => {
         <div className="absolute -bottom-[30%] -left-[20%] w-96 h-96 bg-gradient-to-tr from-purple-500/20 via-pink-600/5 to-transparent rounded-full blur-3xl"></div>
       </>;
   };
+  
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
     setIsLoading(true);
+    
     try {
-      const success = await login(email, password);
-      if (success) {
-        setIsSuccess(true);
-        toast({
-          title: "تم تسجيل الدخول بنجاح",
-          description: "مرحباً بك في منصة درسني"
-        });
-
-        // Animate success then redirect
-        setTimeout(() => {
-          // Redirect based on role (from AuthContext)
-          if (email === 'admin@darsni.com') {
-            navigate('/admin');
-          } else {
-            navigate('/');
-          }
-        }, 1000);
-      } else {
-        toast({
-          title: "فشل تسجيل الدخول",
-          description: "الرجاء التحقق من البريد الإلكتروني وكلمة المرور",
-          variant: "destructive"
-        });
-      }
-    } catch (error) {
+      // Use Firebase signin function
+      const user = await signin(email, password);
+      
+      setIsSuccess(true);
       toast({
-        title: "خطأ",
-        description: "حدث خطأ أثناء تسجيل الدخول",
+        title: "تم تسجيل الدخول بنجاح",
+        description: "مرحباً بك في منصة درسني"
+      });
+
+      // Animate success then redirect
+      setTimeout(() => {
+        // Redirect based on user role
+        if (user.role === 'admin') {
+          navigate('/admin');
+        } else {
+          navigate('/');
+        }
+      }, 1000);
+      
+    } catch (error) {
+      const errorMessage = error instanceof Error ? error.message : 'حدث خطأ أثناء تسجيل الدخول';
+      toast({
+        title: "فشل تسجيل الدخول",
+        description: errorMessage,
         variant: "destructive"
       });
     } finally {
       setIsLoading(false);
     }
   };
+
   return <div className="min-h-screen flex flex-col justify-center items-center overflow-hidden relative">
       {/* Galaxy particles background */}
       <div className="galaxy-particles fixed inset-0 z-0">

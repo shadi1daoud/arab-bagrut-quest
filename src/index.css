@@ -1,10 +1,9 @@
+/* Import our nebula theme */
+@import './styles/theme-nebula.css';
 
 @tailwind base;
 @tailwind components;
 @tailwind utilities;
-
-/* Import our nebula theme */
-@import './styles/theme-nebula.css';
 
 @layer base {
   :root {

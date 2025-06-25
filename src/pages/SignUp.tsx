@@ -1,10 +1,9 @@
-
 import { useState } from 'react';
 import { useNavigate, Link } from 'react-router-dom';
-import { useAuth } from '@/contexts/AuthContext';
 import { useToast } from '@/hooks/use-toast';
 import { motion } from 'framer-motion';
 import { ArrowRight, Lock, Mail, User, Sparkles, MapPin, GraduationCap } from 'lucide-react';
+import { signup } from '@/lib/authUtils';
 
 const SignUp = () => {
   const [formData, setFormData] = useState({
@@ -17,7 +16,6 @@ const SignUp = () => {
   });
   const [isLoading, setIsLoading] = useState(false);
   const [isSuccess, setIsSuccess] = useState(false);
-  const { signUp } = useAuth();
   const navigate = useNavigate();
   const { toast } = useToast();
 
@@ -84,36 +82,25 @@ const SignUp = () => {
     setIsLoading(true);
     
     try {
-      const success = await signUp({
-        name: formData.name,
-        email: formData.email,
-        password: formData.password,
-        grade: formData.grade,
-        city: formData.city
-      });
+      // Use Firebase signup function
+      const user = await signup(formData.email, formData.password, formData.name);
       
-      if (success) {
-        setIsSuccess(true);
-        toast({
-          title: "تم إنشاء الحساب بنجاح",
-          description: "مرحباً بك في منصة درسني! تم تسجيل دخولك تلقائياً"
-        });
-
-        // Animate success then redirect
-        setTimeout(() => {
-          navigate('/');
-        }, 1000);
-      } else {
-        toast({
-          title: "فشل إنشاء الحساب",
-          description: "البريد الإلكتروني مستخدم بالفعل أو حدث خطأ",
-          variant: "destructive"
-        });
-      }
-    } catch (error) {
+      setIsSuccess(true);
       toast({
-        title: "خطأ",
-        description: "حدث خطأ أثناء إنشاء الحساب",
+        title: "تم إنشاء الحساب بنجاح",
+        description: "مرحباً بك في منصة درسني! تم تسجيل دخولك تلقائياً"
+      });
+
+      // Animate success then redirect
+      setTimeout(() => {
+        navigate('/');
+      }, 1000);
+      
+    } catch (error) {
+      const errorMessage = error instanceof Error ? error.message : 'حدث خطأ أثناء إنشاء الحساب';
+      toast({
+        title: "فشل إنشاء الحساب",
+        description: errorMessage,
         variant: "destructive"
       });
     } finally {

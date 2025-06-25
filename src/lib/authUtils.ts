@@ -1,0 +1,117 @@
+import { 
+  createUserWithEmailAndPassword, 
+  signInWithEmailAndPassword,
+  UserCredential 
+} from "firebase/auth";
+import { doc, setDoc, getDoc } from "firebase/firestore";
+import { auth, db } from "./firebase";
+
+export interface User {
+  id: string;
+  name: string;
+  email: string;
+  role: 'student' | 'admin';
+  level: number;
+  xp: number;
+  streak: number;
+  coins: number;
+  createdAt: Date;
+  lastActive: Date;
+  isBlocked: boolean;
+  preferences: {
+    notifications: boolean;
+    language: 'ar' | 'en';
+    theme: 'dark' | 'light';
+  };
+  stats: {
+    totalStudyTime: number;
+    coursesCompleted: number;
+    totalXP: number;
+    achievements: string[];
+  };
+}
+
+export async function signup(
+  email: string, 
+  password: string, 
+  name: string
+): Promise<User> {
+  try {
+    // Create Firebase Auth user
+    const userCredential: UserCredential = await createUserWithEmailAndPassword(
+      auth, 
+      email, 
+      password
+    );
+    
+    const { user } = userCredential;
+    
+    // Create user document in Firestore
+    const userData: User = {
+      id: user.uid,
+      name,
+      email,
+      role: 'student',
+      level: 1,
+      xp: 0,
+      streak: 0,
+      coins: 0,
+      createdAt: new Date(),
+      lastActive: new Date(),
+      isBlocked: false,
+      preferences: {
+        notifications: true,
+        language: 'ar',
+        theme: 'dark'
+      },
+      stats: {
+        totalStudyTime: 0,
+        coursesCompleted: 0,
+        totalXP: 0,
+        achievements: []
+      }
+    };
+    
+    // Save to Firestore
+    await setDoc(doc(db, "users", user.uid), userData);
+    
+    return userData;
+  } catch (error) {
+    throw new Error(`Signup failed: ${error instanceof Error ? error.message : 'Unknown error'}`);
+  }
+}
+
+export async function signin(email: string, password: string): Promise<User> {
+  try {
+    // Sign in with Firebase Auth
+    const userCredential: UserCredential = await signInWithEmailAndPassword(
+      auth, 
+      email, 
+      password
+    );
+    
+    const { user } = userCredential;
+    
+    // Get user data from Firestore
+    const userDoc = await getDoc(doc(db, "users", user.uid));
+    
+    if (!userDoc.exists()) {
+      throw new Error("User document not found");
+    }
+    
+    const userData = userDoc.data() as User;
+    
+    // Update lastActive timestamp
+    await setDoc(doc(db, "users", user.uid), {
+      ...userData,
+      lastActive: new Date()
+    }, { merge: true });
+    
+    return {
+      ...userData,
+      lastActive: new Date()
+    };
+  } catch (error) {
+    throw new Error(`Signin failed: ${error instanceof Error ? error.message : 'Unknown error'}`);
+  }
+} 
