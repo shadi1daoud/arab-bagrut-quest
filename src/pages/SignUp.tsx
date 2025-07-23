@@ -3,7 +3,7 @@ import { useNavigate, Link } from 'react-router-dom';
 import { useToast } from '@/hooks/use-toast';
 import { motion } from 'framer-motion';
 import { ArrowRight, Lock, Mail, User, Sparkles, MapPin, GraduationCap } from 'lucide-react';
-import { signup } from '@/lib/authUtils';
+import { useAuth } from '@/contexts/AuthContext';
 
 const SignUp = () => {
   const [formData, setFormData] = useState({
@@ -18,9 +18,14 @@ const SignUp = () => {
   const [isSuccess, setIsSuccess] = useState(false);
   const navigate = useNavigate();
   const { toast } = useToast();
+  const { signUp } = useAuth();
 
   const grades = [
     'التاسع', 'العاشر', 'الحادي عشر', 'الثاني عشر'
+  ];
+
+  const cities = [
+    'مار إلياس', 'بيروت', 'طرابلس', 'صيدا', 'بعلبك', 'زحلة', 'جونيه', 'أخرى'
   ];
 
   // Create particles for galaxy effect
@@ -51,20 +56,22 @@ const SignUp = () => {
     );
   };
 
-  const handleChange = (e: React.ChangeEvent<HTMLInputElement | HTMLSelectElement>) => {
+  const handleInputChange = (e: React.ChangeEvent<HTMLInputElement | HTMLSelectElement>) => {
+    const { name, value } = e.target;
     setFormData(prev => ({
       ...prev,
-      [e.target.name]: e.target.value
+      [name]: value
     }));
   };
 
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
     
+    // Validation
     if (formData.password !== formData.confirmPassword) {
       toast({
         title: "خطأ في كلمة المرور",
-        description: "كلمة المرور وتأكيد كلمة المرور غير متطابقتان",
+        description: "كلمات المرور غير متطابقة",
         variant: "destructive"
       });
       return;
@@ -72,7 +79,7 @@ const SignUp = () => {
 
     if (formData.password.length < 6) {
       toast({
-        title: "كلمة مرور ضعيفة",
+        title: "كلمة المرور قصيرة",
         description: "يجب أن تكون كلمة المرور 6 أحرف على الأقل",
         variant: "destructive"
       });
@@ -82,19 +89,32 @@ const SignUp = () => {
     setIsLoading(true);
     
     try {
-      // Use Firebase signup function
-      const user = await signup(formData.email, formData.password, formData.name);
-      
-      setIsSuccess(true);
-      toast({
-        title: "تم إنشاء الحساب بنجاح",
-        description: "مرحباً بك في منصة درسني! تم تسجيل دخولك تلقائياً"
+      const success = await signUp({
+        name: formData.name,
+        email: formData.email,
+        password: formData.password,
+        grade: formData.grade,
+        city: formData.city
       });
 
-      // Animate success then redirect
-      setTimeout(() => {
-        navigate('/');
-      }, 1000);
+      if (success) {
+        setIsSuccess(true);
+        toast({
+          title: "تم إنشاء الحساب بنجاح",
+          description: "مرحباً بك في منصة درسني"
+        });
+
+        // Animate success then redirect
+        setTimeout(() => {
+          navigate('/');
+        }, 1000);
+      } else {
+        toast({
+          title: "فشل إنشاء الحساب",
+          description: "يرجى المحاولة مرة أخرى",
+          variant: "destructive"
+        });
+      }
       
     } catch (error) {
       const errorMessage = error instanceof Error ? error.message : 'حدث خطأ أثناء إنشاء الحساب';
@@ -184,7 +204,7 @@ const SignUp = () => {
                     name="name"
                     type="text"
                     value={formData.name}
-                    onChange={handleChange}
+                    onChange={handleInputChange}
                     className="w-full px-4 py-3 pr-10 rounded-lg bg-muted/20 border border-white/10 text-white focus:outline-none focus:ring-2 focus:ring-game-accent/50 transition-all"
                     placeholder="أدخل اسمك الكامل"
                     required
@@ -205,7 +225,7 @@ const SignUp = () => {
                     name="email"
                     type="email"
                     value={formData.email}
-                    onChange={handleChange}
+                    onChange={handleInputChange}
                     className="w-full px-4 py-3 pr-10 rounded-lg bg-muted/20 border border-white/10 text-white focus:outline-none focus:ring-2 focus:ring-game-accent/50 transition-all"
                     placeholder="أدخل بريدك الإلكتروني"
                     required
@@ -226,7 +246,7 @@ const SignUp = () => {
                       id="grade"
                       name="grade"
                       value={formData.grade}
-                      onChange={handleChange}
+                      onChange={handleInputChange}
                       className="w-full px-4 py-3 pr-10 rounded-lg bg-muted/20 border border-white/10 text-white focus:outline-none focus:ring-2 focus:ring-game-accent/50 transition-all appearance-none"
                       required
                     >
@@ -246,16 +266,19 @@ const SignUp = () => {
                     <div className="absolute inset-y-0 right-0 flex items-center pr-3 pointer-events-none">
                       <MapPin className="h-5 w-5 text-gray-400" />
                     </div>
-                    <input
+                    <select
                       id="city"
                       name="city"
-                      type="text"
                       value={formData.city}
-                      onChange={handleChange}
-                      className="w-full px-4 py-3 pr-10 rounded-lg bg-muted/20 border border-white/10 text-white focus:outline-none focus:ring-2 focus:ring-game-accent/50 transition-all"
-                      placeholder="المدينة"
+                      onChange={handleInputChange}
+                      className="w-full px-4 py-3 pr-10 rounded-lg bg-muted/20 border border-white/10 text-white focus:outline-none focus:ring-2 focus:ring-game-accent/50 transition-all appearance-none"
                       required
-                    />
+                    >
+                      <option value="">اختر المدينة</option>
+                      {cities.map(city => (
+                        <option key={city} value={city} className="bg-gray-800">{city}</option>
+                      ))}
+                    </select>
                   </div>
                 </div>
               </div>
@@ -273,7 +296,7 @@ const SignUp = () => {
                     name="password"
                     type="password"
                     value={formData.password}
-                    onChange={handleChange}
+                    onChange={handleInputChange}
                     className="w-full px-4 py-3 pr-10 rounded-lg bg-muted/20 border border-white/10 text-white focus:outline-none focus:ring-2 focus:ring-game-accent/50 transition-all"
                     placeholder="أدخل كلمة المرور"
                     required
@@ -294,7 +317,7 @@ const SignUp = () => {
                     name="confirmPassword"
                     type="password"
                     value={formData.confirmPassword}
-                    onChange={handleChange}
+                    onChange={handleInputChange}
                     className="w-full px-4 py-3 pr-10 rounded-lg bg-muted/20 border border-white/10 text-white focus:outline-none focus:ring-2 focus:ring-game-accent/50 transition-all"
                     placeholder="أعد إدخال كلمة المرور"
                     required

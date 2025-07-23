@@ -95,22 +95,56 @@ export async function signin(email: string, password: string): Promise<User> {
     // Get user data from Firestore
     const userDoc = await getDoc(doc(db, "users", user.uid));
     
+    let userData: User;
+    
     if (!userDoc.exists()) {
-      throw new Error("User document not found");
+      // User exists in Auth but not in Firestore - create the document
+      console.log("User exists in Auth but not in Firestore. Creating Firestore document...");
+      
+      userData = {
+        id: user.uid,
+        name: user.displayName || email.split('@')[0], // Use display name or email prefix
+        email: user.email || email,
+        role: 'student',
+        level: 1,
+        xp: 0,
+        streak: 0,
+        coins: 0,
+        createdAt: new Date(),
+        lastActive: new Date(),
+        isBlocked: false,
+        preferences: {
+          notifications: true,
+          language: 'ar',
+          theme: 'dark'
+        },
+        stats: {
+          totalStudyTime: 0,
+          coursesCompleted: 0,
+          totalXP: 0,
+          achievements: []
+        }
+      };
+      
+      // Create the Firestore document
+      await setDoc(doc(db, "users", user.uid), userData);
+    } else {
+      // User exists in both Auth and Firestore
+      userData = userDoc.data() as User;
+      
+      // Update lastActive timestamp
+      await setDoc(doc(db, "users", user.uid), {
+        ...userData,
+        lastActive: new Date()
+      }, { merge: true });
+      
+      userData = {
+        ...userData,
+        lastActive: new Date()
+      };
     }
     
-    const userData = userDoc.data() as User;
-    
-    // Update lastActive timestamp
-    await setDoc(doc(db, "users", user.uid), {
-      ...userData,
-      lastActive: new Date()
-    }, { merge: true });
-    
-    return {
-      ...userData,
-      lastActive: new Date()
-    };
+    return userData;
   } catch (error) {
     throw new Error(`Signin failed: ${error instanceof Error ? error.message : 'Unknown error'}`);
   }

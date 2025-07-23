@@ -3,7 +3,7 @@ import { useNavigate, Link } from 'react-router-dom';
 import { useToast } from '@/hooks/use-toast';
 import { motion } from 'framer-motion';
 import { ArrowRight, Lock, Mail, Sparkles } from 'lucide-react';
-import { signin } from '@/lib/authUtils';
+import { useAuth } from '@/contexts/AuthContext';
 
 const Login = () => {
   const [email, setEmail] = useState('');
@@ -12,56 +12,92 @@ const Login = () => {
   const [isSuccess, setIsSuccess] = useState(false);
   const navigate = useNavigate();
   const { toast } = useToast();
+  const { login } = useAuth();
 
   // Create particles for galaxy effect
   const createParticles = () => {
     const particles = [];
     for (let i = 0; i < 60; i++) {
-      const style = {
-        left: `${Math.random() * 100}%`,
-        top: `${Math.random() * 100}%`,
-        opacity: Math.random() * 0.5 + 0.1,
-        width: `${Math.random() * 2 + 1}px`,
-        height: `${Math.random() * 2 + 1}px`,
-        animationDelay: `${Math.random() * 15}s`,
-        animationDuration: `${Math.random() * 10 + 10}s`
-      };
-      particles.push(<div key={i} className="particle" style={style}></div>);
+      const particle = (
+        <motion.div
+          key={i}
+          className="absolute w-1 h-1 bg-cyan-400/30 rounded-full"
+          style={{
+            left: `${Math.random() * 100}%`,
+            top: `${Math.random() * 100}%`,
+          }}
+          animate={{
+            y: [0, -20, 0],
+            opacity: [0.3, 0.8, 0.3],
+          }}
+          transition={{
+            duration: 3 + Math.random() * 2,
+            repeat: Infinity,
+            delay: Math.random() * 2,
+          }}
+        />
+      );
+      particles.push(particle);
     }
     return particles;
   };
 
-  // Create background shine effects
+  // Create shine effects
   const createShineEffects = () => {
-    return <>
-        <div className="absolute -top-[30%] -right-[20%] w-96 h-96 bg-gradient-to-br from-cyan-500/20 via-purple-600/5 to-transparent rounded-full blur-3xl"></div>
-        <div className="absolute -bottom-[30%] -left-[20%] w-96 h-96 bg-gradient-to-tr from-purple-500/20 via-pink-600/5 to-transparent rounded-full blur-3xl"></div>
-      </>;
+    return (
+      <>
+        <motion.div
+          className="absolute top-20 left-10 w-32 h-32 bg-gradient-to-r from-cyan-400/20 to-purple-400/20 rounded-full blur-xl"
+          animate={{
+            scale: [1, 1.2, 1],
+            opacity: [0.3, 0.6, 0.3],
+          }}
+          transition={{
+            duration: 4,
+            repeat: Infinity,
+          }}
+        />
+        <motion.div
+          className="absolute bottom-20 right-10 w-40 h-40 bg-gradient-to-r from-purple-400/20 to-pink-400/20 rounded-full blur-xl"
+          animate={{
+            scale: [1.2, 1, 1.2],
+            opacity: [0.4, 0.7, 0.4],
+          }}
+          transition={{
+            duration: 5,
+            repeat: Infinity,
+          }}
+        />
+      </>
+    );
   };
-  
+
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
     setIsLoading(true);
     
     try {
-      // Use Firebase signin function
-      const user = await signin(email, password);
+      // Use AuthContext login function
+      const success = await login(email, password);
       
-      setIsSuccess(true);
-      toast({
-        title: "تم تسجيل الدخول بنجاح",
-        description: "مرحباً بك في منصة درسني"
-      });
+      if (success) {
+        setIsSuccess(true);
+        toast({
+          title: "تم تسجيل الدخول بنجاح",
+          description: "مرحباً بك في منصة درسني"
+        });
 
-      // Animate success then redirect
-      setTimeout(() => {
-        // Redirect based on user role
-        if (user.role === 'admin') {
-          navigate('/admin');
-        } else {
+        // Animate success then redirect
+        setTimeout(() => {
           navigate('/');
-        }
-      }, 1000);
+        }, 1000);
+      } else {
+        toast({
+          title: "فشل تسجيل الدخول",
+          description: "يرجى التحقق من البريد الإلكتروني وكلمة المرور",
+          variant: "destructive"
+        });
+      }
       
     } catch (error) {
       const errorMessage = error instanceof Error ? error.message : 'حدث خطأ أثناء تسجيل الدخول';

@@ -1,6 +1,10 @@
 
 import React, { createContext, useContext, useState, useEffect, ReactNode } from 'react';
 import { useNavigate } from 'react-router-dom';
+import { onAuthStateChanged, signOut } from 'firebase/auth';
+import { doc, getDoc } from 'firebase/firestore';
+import { auth, db } from '@/lib/firebase';
+import { signin, signup, User as FirebaseUser } from '@/lib/authUtils';
 
 // User types
 export interface User {
@@ -25,30 +29,6 @@ export interface SignUpData {
   city: string;
 }
 
-// Sample users for the MVP
-const SAMPLE_USERS: User[] = [
-  {
-    id: '1',
-    name: 'شادي داود',
-    email: 'student@darsni.com',
-    role: 'student',
-    avatar: '/assets/avatars/student.png',
-    grade: 'الثاني عشر',
-    city: 'مار إلياس',
-    level: 3,
-    xp: 8966,
-    streak: 20,
-    coins: 450
-  },
-  {
-    id: '2',
-    name: 'مدرسة ليلى',
-    email: 'admin@darsni.com',
-    role: 'admin',
-    avatar: '/assets/avatars/admin.png'
-  }
-];
-
 interface AuthContextType {
   user: User | null;
   isLoading: boolean;
@@ -66,40 +46,38 @@ export const AuthProvider = ({ children }: { children: ReactNode }) => {
   const navigate = useNavigate();
 
   useEffect(() => {
-    // Check for saved user in localStorage
-    const savedUser = localStorage.getItem('darsni_user');
-    if (savedUser) {
-      setUser(JSON.parse(savedUser));
-    }
-    setIsLoading(false);
+    // Listen for Firebase auth state changes
+    const unsubscribe = onAuthStateChanged(auth, async (firebaseUser) => {
+      if (firebaseUser) {
+        try {
+          // Get user data from Firestore
+          const userDoc = await getDoc(doc(db, 'users', firebaseUser.uid));
+          if (userDoc.exists()) {
+            const userData = userDoc.data() as FirebaseUser;
+            setUser(userData);
+            localStorage.setItem('darsni_user', JSON.stringify(userData));
+          }
+        } catch (error) {
+          console.error('Error fetching user data:', error);
+        }
+      } else {
+        setUser(null);
+        localStorage.removeItem('darsni_user');
+      }
+      setIsLoading(false);
+    });
+
+    return () => unsubscribe();
   }, []);
 
   const login = async (email: string, password: string): Promise<boolean> => {
     setIsLoading(true);
     try {
-      // For MVP, just use the sample users
-      const foundUser = SAMPLE_USERS.find(u => u.email === email);
-      
-      if (foundUser) {
-        setUser(foundUser);
-        localStorage.setItem('darsni_user', JSON.stringify(foundUser));
-        
-        // Update streak for student
-        if (foundUser.role === 'student') {
-          const updatedUser = {
-            ...foundUser,
-            streak: (foundUser.streak || 0) + 1
-          };
-          setUser(updatedUser);
-          localStorage.setItem('darsni_user', JSON.stringify(updatedUser));
-        }
-        
-        setIsLoading(false);
-        return true;
-      }
-      
+      const userData = await signin(email, password);
+      setUser(userData);
+      localStorage.setItem('darsni_user', JSON.stringify(userData));
       setIsLoading(false);
-      return false;
+      return true;
     } catch (error) {
       console.error('Login error:', error);
       setIsLoading(false);
@@ -110,48 +88,27 @@ export const AuthProvider = ({ children }: { children: ReactNode }) => {
   const signUp = async (signUpData: SignUpData): Promise<boolean> => {
     setIsLoading(true);
     try {
-      // Check if email already exists
-      const existingUser = SAMPLE_USERS.find(u => u.email === signUpData.email);
-      if (existingUser) {
-        setIsLoading(false);
-        return false;
-      }
-
-      // Create new user
-      const newUser: User = {
-        id: Date.now().toString(),
-        name: signUpData.name,
-        email: signUpData.email,
-        role: 'student',
-        avatar: '/assets/avatars/student.png',
-        grade: signUpData.grade,
-        city: signUpData.city,
-        level: 1,
-        xp: 100, // Starting XP
-        streak: 1,
-        coins: 50 // Starting coins
-      };
-
-      // Add to sample users (in a real app, this would be saved to database)
-      SAMPLE_USERS.push(newUser);
-      
-      // Set as current user
-      setUser(newUser);
-      localStorage.setItem('darsni_user', JSON.stringify(newUser));
-      
+      const userData = await signup(signUpData.email, signUpData.password, signUpData.name);
+      setUser(userData);
+      localStorage.setItem('darsni_user', JSON.stringify(userData));
       setIsLoading(false);
       return true;
     } catch (error) {
-      console.error('Sign-up error:', error);
+      console.error('Signup error:', error);
       setIsLoading(false);
       return false;
     }
   };
 
-  const logout = () => {
-    setUser(null);
-    localStorage.removeItem('darsni_user');
-    navigate('/login');
+  const logout = async () => {
+    try {
+      await signOut(auth);
+      setUser(null);
+      localStorage.removeItem('darsni_user');
+      navigate('/login');
+    } catch (error) {
+      console.error('Logout error:', error);
+    }
   };
 
   const updateUser = (userData: Partial<User>) => {
@@ -162,8 +119,17 @@ export const AuthProvider = ({ children }: { children: ReactNode }) => {
     }
   };
 
+  const value: AuthContextType = {
+    user,
+    isLoading,
+    login,
+    signUp,
+    logout,
+    updateUser
+  };
+
   return (
-    <AuthContext.Provider value={{ user, isLoading, login, signUp, logout, updateUser }}>
+    <AuthContext.Provider value={value}>
       {children}
     </AuthContext.Provider>
   );
