@@ -2,9 +2,10 @@
 import React, { createContext, useContext, useState, useEffect, ReactNode } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { onAuthStateChanged, signOut } from 'firebase/auth';
-import { doc, getDoc } from 'firebase/firestore';
+import { doc, getDoc, setDoc } from 'firebase/firestore';
 import { auth, db } from '@/lib/firebase';
 import { signin, signup, User as FirebaseUser } from '@/lib/authUtils';
+import { updateUserStreak } from '@/lib/firebaseUtils';
 
 // User types
 export interface User {
@@ -63,13 +64,66 @@ export const AuthProvider = ({ children }: { children: ReactNode }) => {
             console.log('AuthProvider: User data found:', userData);
             setUser(userData);
             localStorage.setItem('darsni_user', JSON.stringify(userData));
+            
+            // Update user streak for existing user
+            await updateUserStreak(userData.id);
           } else {
-            console.log('AuthProvider: No user document found in Firestore');
-            setUser(null);
+            console.log('AuthProvider: No user document found, creating basic user profile');
+            // Create a basic user profile if it doesn't exist
+            const basicUserData: User = {
+              id: firebaseUser.uid,
+              name: firebaseUser.displayName || 'مستخدم جديد',
+              email: firebaseUser.email || '',
+              role: 'student',
+              avatar: firebaseUser.photoURL || undefined,
+              grade: 'الثاني عشر',
+              city: 'غير محدد',
+              level: 1,
+              xp: 0,
+              streak: 1, // Start with 1 day streak
+              coins: 100
+            };
+            
+            try {
+              // Save the basic user profile to Firestore
+              await setDoc(doc(db, 'users', firebaseUser.uid), basicUserData);
+              console.log('AuthProvider: Created basic user profile');
+              setUser(basicUserData);
+              localStorage.setItem('darsni_user', JSON.stringify(basicUserData));
+              
+              // Update user streak for new user (this will create analytics with 1-day streak)
+              await updateUserStreak(basicUserData.id);
+            } catch (createError) {
+              console.error('AuthProvider: Error creating user profile:', createError);
+              // Still set the user even if we can't save to Firestore
+              setUser(basicUserData);
+              localStorage.setItem('darsni_user', JSON.stringify(basicUserData));
+              
+              // Update user streak even in error case
+              await updateUserStreak(basicUserData.id);
+            }
           }
         } catch (error) {
           console.error('AuthProvider: Error fetching user data:', error);
-          setUser(null);
+          // Create a basic user profile even if there's an error
+          const basicUserData: User = {
+            id: firebaseUser.uid,
+            name: firebaseUser.displayName || 'مستخدم جديد',
+            email: firebaseUser.email || '',
+            role: 'student',
+            avatar: firebaseUser.photoURL || undefined,
+            grade: 'الثاني عشر',
+            city: 'غير محدد',
+            level: 1,
+            xp: 0,
+            streak: 1, // Start with 1 day streak
+            coins: 100
+          };
+          setUser(basicUserData);
+          localStorage.setItem('darsni_user', JSON.stringify(basicUserData));
+          
+          // Update user streak even in error case
+          await updateUserStreak(basicUserData.id);
         }
       } else {
         console.log('AuthProvider: No Firebase user, clearing state');
@@ -90,6 +144,10 @@ export const AuthProvider = ({ children }: { children: ReactNode }) => {
       console.log('AuthProvider: Login successful:', userData);
       setUser(userData);
       localStorage.setItem('darsni_user', JSON.stringify(userData));
+      
+      // Update user streak on successful login
+      await updateUserStreak(userData.id);
+      
       setIsLoading(false);
       return true;
     } catch (error) {

@@ -5,6 +5,7 @@ import {
 } from "firebase/auth";
 import { doc, setDoc, getDoc } from "firebase/firestore";
 import { auth, db } from "./firebase";
+import { Timestamp } from "firebase/firestore";
 
 export interface User {
   id: string;
@@ -54,8 +55,8 @@ export async function signup(
       role: 'student',
       level: 1,
       xp: 0,
-      streak: 0,
-      coins: 0,
+      streak: 1, // Start with 1 day streak
+      coins: 100, // Starting coins
       createdAt: new Date(),
       lastActive: new Date(),
       isBlocked: false,
@@ -74,6 +75,41 @@ export async function signup(
     
     // Save to Firestore
     await setDoc(doc(db, "users", user.uid), userData);
+    
+    // Initialize user analytics
+    const now = new Date();
+    const weekKey = `${now.getFullYear()}-W${Math.ceil((now.getTime() - new Date(now.getFullYear(), 0, 1).getTime()) / (7 * 24 * 60 * 60 * 1000)).toString().padStart(2, '0')}`;
+    const monthKey = `${now.getFullYear()}-${(now.getMonth() + 1).toString().padStart(2, '0')}`;
+    
+    const initialAnalytics = {
+      userId: user.uid,
+      totalStudyTime: 0,
+      totalXP: 0,
+      currentStreak: 1, // Start with 1 day streak
+      longestStreak: 1,
+      coursesCompleted: 0,
+      unitsCompleted: 0,
+      quizzesPassed: 0,
+      averageScore: 0,
+      lastActive: Timestamp.now(),
+      weeklyProgress: {
+        [weekKey]: {
+          xp: 0,
+          studyTime: 0,
+          unitsCompleted: 0,
+          quizzesPassed: 0
+        }
+      },
+      monthlyProgress: {
+        [monthKey]: {
+          xp: 0,
+          studyTime: 0,
+          coursesCompleted: 0
+        }
+      }
+    };
+    
+    await setDoc(doc(db, "userAnalytics", user.uid), initialAnalytics);
     
     return userData;
   } catch (error) {
@@ -108,8 +144,8 @@ export async function signin(email: string, password: string): Promise<User> {
         role: 'student',
         level: 1,
         xp: 0,
-        streak: 0,
-        coins: 0,
+        streak: 1, // Start with 1 day streak
+        coins: 100,
         createdAt: new Date(),
         lastActive: new Date(),
         isBlocked: false,
@@ -128,6 +164,41 @@ export async function signin(email: string, password: string): Promise<User> {
       
       // Create the Firestore document
       await setDoc(doc(db, "users", user.uid), userData);
+      
+      // Initialize user analytics
+      const now = new Date();
+      const weekKey = `${now.getFullYear()}-W${Math.ceil((now.getTime() - new Date(now.getFullYear(), 0, 1).getTime()) / (7 * 24 * 60 * 60 * 1000)).toString().padStart(2, '0')}`;
+      const monthKey = `${now.getFullYear()}-${(now.getMonth() + 1).toString().padStart(2, '0')}`;
+      
+      const initialAnalytics = {
+        userId: user.uid,
+        totalStudyTime: 0,
+        totalXP: 0,
+        currentStreak: 1, // Start with 1 day streak
+        longestStreak: 1,
+        coursesCompleted: 0,
+        unitsCompleted: 0,
+        quizzesPassed: 0,
+        averageScore: 0,
+        lastActive: Timestamp.now(),
+        weeklyProgress: {
+          [weekKey]: {
+            xp: 0,
+            studyTime: 0,
+            unitsCompleted: 0,
+            quizzesPassed: 0
+          }
+        },
+        monthlyProgress: {
+          [monthKey]: {
+            xp: 0,
+            studyTime: 0,
+            coursesCompleted: 0
+          }
+        }
+      };
+      
+      await setDoc(doc(db, "userAnalytics", user.uid), initialAnalytics);
     } else {
       // User exists in both Auth and Firestore
       userData = userDoc.data() as User;

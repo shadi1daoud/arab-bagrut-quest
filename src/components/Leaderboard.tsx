@@ -5,32 +5,28 @@ import { Avatar, AvatarFallback } from './ui/avatar';
 import { Tabs, TabsList, TabsTrigger, TabsContent } from './ui/tabs';
 import { Card, CardContent } from './ui/card';
 
-interface LeaderboardUser {
-  id: number;
-  name: string;
-  level: number;
-  xp: number;
-  streak?: number;
-  badge?: string | null;
-  isCurrentUser?: boolean;
-  avatar: string;
+interface LeaderboardEntry {
+  userId: string;
   rank: number;
+  score: number;
+  name: string;
+  avatar?: string;
 }
 
 interface LeaderboardProps {
-  data: LeaderboardUser[];
+  data: LeaderboardEntry[];
   filter?: string;
   onFilterChange?: (filter: string) => void;
 }
 
 // Helper functions
-const getBadgeStyle = (badge: string | null) => {
-  switch(badge) {
-    case 'legendary':
+const getBadgeStyle = (rank: number) => {
+  switch(rank) {
+    case 1:
       return { icon: '👑', color: 'text-yellow-400', bg: 'bg-yellow-500/20' };
-    case 'expert':
+    case 2:
       return { icon: '🏆', color: 'text-purple-400', bg: 'bg-purple-500/20' };  
-    case 'master':
+    case 3:
       return { icon: '⭐', color: 'text-blue-400', bg: 'bg-blue-500/20' };
     default:
       return null;
@@ -55,13 +51,11 @@ export const Leaderboard: React.FC<LeaderboardProps> = ({
             <TabsContent value="week">
               <div className="divide-y divide-white/5">
                 {data.slice(0, 10).map((user) => {
-                  const badgeStyle = getBadgeStyle(user.badge);
+                  const badgeStyle = getBadgeStyle(user.rank);
                   return (
                     <div 
-                      key={user.id} 
-                      className={`flex items-center gap-2 p-2 ${
-                        user.isCurrentUser ? 'bg-[#FF4B1A]/5 border-r-2 border-[#FF4B1A]' : ''
-                      }`}
+                      key={user.userId} 
+                      className="flex items-center gap-2 p-2"
                     >
                       <div className={`h-6 w-6 rounded-full flex items-center justify-center border ${
                         user.rank === 1 ? 'border-yellow-500/50 text-yellow-400' : 
@@ -74,25 +68,22 @@ export const Leaderboard: React.FC<LeaderboardProps> = ({
                       
                       <div className="relative">
                         <div className="h-8 w-8 rounded-full bg-game-card-bg-alt flex items-center justify-center text-lg">
-                          {user.avatar}
+                          {user.avatar || '👤'}
                         </div>
-                        {user.streak && user.streak > 0 && (
-                          <div className="absolute -bottom-1 -right-1 h-4 w-4 rounded-full bg-orange-500 flex items-center justify-center text-white text-xs">
-                            <Flame className="h-2.5 w-2.5" />
-                          </div>
-                        )}
                       </div>
                       
                       <div className="flex-1">
                         <div className="flex justify-between items-center">
                           <span className="text-sm text-white">{user.name}</span>
-                          <span className="text-xs text-[#FF4B1A] font-share-tech">{user.xp.toLocaleString()} XP</span>
+                          <span className="text-xs text-[#FF4B1A] font-share-tech">
+                            {user.score ? user.score.toLocaleString() : '0'} XP
+                          </span>
                         </div>
                         
                         <div className="flex items-center justify-between">
                           <div className="flex items-center gap-1">
                             <Trophy className="h-3 w-3 text-yellow-400" />
-                            <span className="text-xs text-gray-400">Lv {user.level}</span>
+                            <span className="text-xs text-gray-400">Rank {user.rank}</span>
                           </div>
                           
                           {badgeStyle && (

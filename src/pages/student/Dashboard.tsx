@@ -20,8 +20,12 @@ import {
   getUserCourseProgress, 
   getLeaderboard,
   subscribeToCourses,
+  calculateDashboardStats,
+  DashboardStats,
   Course as FirebaseCourse,
-  UserCourse
+  UserCourse,
+  getUserCourses,
+  testProgressionSystems
 } from '@/lib/firebaseUtils';
 
 // Weekly activity data - this could be fetched from Firebase in the future
@@ -50,6 +54,7 @@ const weeklyActivity = [{
 
 const Dashboard = () => {
   const { user } = useAuth();
+  const [dashboardStats, setDashboardStats] = useState<DashboardStats | null>(null);
   const [courses, setCourses] = useState<FirebaseCourse[]>([]);
   const [userCourses, setUserCourses] = useState<UserCourse[]>([]);
   const [leaderboardData, setLeaderboardData] = useState<any[]>([]);
@@ -57,36 +62,43 @@ const Dashboard = () => {
 
   console.log('Dashboard: Rendering with user:', user);
 
-  // Fetch courses and user progress
+  // Fetch dashboard data
   useEffect(() => {
-    const fetchData = async () => {
+    const fetchDashboardData = async () => {
       if (!user) {
         console.log('Dashboard: No user, skipping data fetch');
         return;
       }
 
       try {
-        console.log('Dashboard: Starting to fetch data');
+        console.log('Dashboard: Starting to fetch dashboard data');
         setLoading(true);
         
+        // Calculate comprehensive dashboard stats
+        const stats = await calculateDashboardStats(user.id);
+        console.log('Dashboard: Calculated stats:', stats);
+        setDashboardStats(stats);
+
         // Fetch all courses
         const allCourses = await getCourses();
         console.log('Dashboard: Fetched courses:', allCourses.length);
         setCourses(allCourses);
 
-        // Fetch user progress for each course
-        const userProgressPromises = allCourses.map(course => 
-          getUserCourseProgress(user.id, course.id)
-        );
-        const userProgressResults = await Promise.all(userProgressPromises);
-        const validUserCourses = userProgressResults.filter(progress => progress !== null) as UserCourse[];
-        console.log('Dashboard: Fetched user courses:', validUserCourses.length);
-        setUserCourses(validUserCourses);
+        // Get user courses from the stats
+        const userCoursesData = await getUserCourses(user.id);
+        console.log('Dashboard: Fetched user courses:', userCoursesData.length);
+        setUserCourses(userCoursesData);
 
         // Fetch leaderboard
         const leaderboard = await getLeaderboard('weekly', 'xp');
         console.log('Dashboard: Fetched leaderboard:', leaderboard.length);
         setLeaderboardData(leaderboard);
+
+        // Test progression systems
+        if (user) {
+          const testResults = await testProgressionSystems(user.id);
+          console.log('Dashboard: Progression systems test completed:', testResults);
+        }
 
       } catch (error) {
         console.error('Dashboard: Error fetching dashboard data:', error);
@@ -95,7 +107,7 @@ const Dashboard = () => {
       }
     };
 
-    fetchData();
+    fetchDashboardData();
 
     // Subscribe to real-time course updates
     const unsubscribe = subscribeToCourses((updatedCourses) => {
@@ -105,16 +117,6 @@ const Dashboard = () => {
 
     return () => unsubscribe();
   }, [user]);
-
-  // Calculate user stats
-  const userStats = {
-    totalCourses: userCourses.length,
-    completedCourses: userCourses.filter(course => course.progress === 100).length,
-    totalXP: userCourses.reduce((sum, course) => sum + course.totalXP, 0),
-    averageProgress: userCourses.length > 0 
-      ? Math.round(userCourses.reduce((sum, course) => sum + course.progress, 0) / userCourses.length)
-      : 0
-  };
 
   // Transform courses for CourseProgress component
   const courseProgressData = userCourses.map(userCourse => {
@@ -126,7 +128,6 @@ const Dashboard = () => {
     };
   });
 
-  console.log('Dashboard: Calculated stats:', userStats);
   console.log('Dashboard: Course progress data:', courseProgressData);
 
   if (loading) {
@@ -151,29 +152,29 @@ const Dashboard = () => {
       <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-4">
         <SimpleStatsCard
           title="الكورسات المسجلة"
-          value={userStats.totalCourses}
-          change="+2"
+          value={dashboardStats?.totalCourses || 0}
+          change={`+${dashboardStats?.totalCourses || 0}`}
           isPositive={true}
           icon={BookOpen}
         />
         <SimpleStatsCard
           title="الكورسات المكتملة"
-          value={userStats.completedCourses}
-          change="+1"
+          value={dashboardStats?.completedCourses || 0}
+          change={`+${dashboardStats?.completedCourses || 0}`}
           isPositive={true}
           icon={Trophy}
         />
         <SimpleStatsCard
           title="إجمالي النقاط"
-          value={userStats.totalXP}
-          change="+150"
+          value={dashboardStats?.totalXP || 0}
+          change={`+${dashboardStats?.weeklyStats?.currentWeekXP || 0}`}
           isPositive={true}
           icon={Star}
         />
         <SimpleStatsCard
           title="متوسط التقدم"
-          value={`${userStats.averageProgress}%`}
-          change="+5%"
+          value={`${dashboardStats?.averageProgress || 0}%`}
+          change={`+${dashboardStats?.averageProgress || 0}%`}
           isPositive={true}
           icon={TrendingUp}
         />
@@ -213,12 +214,12 @@ const Dashboard = () => {
 
           {/* Weekly Progress Comparison */}
           <WeeklyProgressComparison 
-            currentWeekXP={51}
-            previousWeekXP={43}
-            currentWeekHours={8.7}
-            previousWeekHours={7.2}
-            streak={5}
-            weeklyGoal={100}
+            currentWeekXP={dashboardStats?.weeklyStats?.currentWeekXP || 0}
+            previousWeekXP={dashboardStats?.weeklyStats?.previousWeekXP || 0}
+            currentWeekHours={dashboardStats?.weeklyStats?.currentWeekHours || 0}
+            previousWeekHours={dashboardStats?.weeklyStats?.previousWeekHours || 0}
+            streak={dashboardStats?.currentStreak || 0}
+            weeklyGoal={dashboardStats?.weeklyStats?.weeklyGoal || 1000}
           />
         </div>
 
@@ -226,8 +227,11 @@ const Dashboard = () => {
         <div className="space-y-6">
           {/* User Stats Widget */}
           <div className="grid grid-cols-2 gap-4">
-            <StreakCounter streak={5} />
-            <TodayGoalsCard completedGoals={3} totalGoals={5} />
+            <StreakCounter streak={dashboardStats?.currentStreak || 0} />
+            <TodayGoalsCard 
+              completedGoals={dashboardStats?.weeklyStats?.currentWeekXP || 0} 
+              totalGoals={dashboardStats?.weeklyStats?.weeklyGoal || 1000} 
+            />
           </div>
 
           {/* Student of the Week */}
@@ -240,11 +244,18 @@ const Dashboard = () => {
           <Card className="bg-black/40 border border-white/10">
             <CardContent className="p-6">
               <h2 className="text-xl font-bold text-white mb-4">المتصدرون</h2>
-              <Leaderboard 
-                data={leaderboardData} 
-                filter="week"
-                onFilterChange={() => {}}
-              />
+              {leaderboardData.length > 0 ? (
+                <Leaderboard 
+                  data={leaderboardData} 
+                  filter="week"
+                  onFilterChange={() => {}}
+                />
+              ) : (
+                <div className="text-center text-gray-400 py-4">
+                  <Trophy className="h-8 w-8 mx-auto mb-2 opacity-50" />
+                  <p>لا توجد بيانات متصدرين متاحة حالياً</p>
+                </div>
+              )}
             </CardContent>
           </Card>
 
