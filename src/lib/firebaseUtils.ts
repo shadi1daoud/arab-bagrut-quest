@@ -637,6 +637,8 @@ export const calculateDashboardStats = async (userId: string): Promise<Dashboard
     
     // Get user analytics
     const analytics = await getUserAnalytics(userId);
+    console.log('calculateDashboardStats: User analytics:', analytics);
+    console.log('calculateDashboardStats: Current streak from analytics:', analytics?.currentStreak);
     const weeklyStats = await calculateWeeklyStats(userId);
 
     // Calculate course statistics

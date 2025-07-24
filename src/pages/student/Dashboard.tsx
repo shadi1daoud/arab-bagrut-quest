@@ -60,6 +60,7 @@ const Dashboard = () => {
   const [loading, setLoading] = useState(true);
 
   console.log('Dashboard: Rendering with user:', user);
+  console.log('Dashboard: Current dashboardStats:', dashboardStats);
 
   // Fetch dashboard data
   useEffect(() => {
@@ -76,6 +77,8 @@ const Dashboard = () => {
         // Calculate comprehensive dashboard stats
         const stats = await calculateDashboardStats(user.id);
         console.log('Dashboard: Calculated stats:', stats);
+        console.log('Dashboard: Current streak from stats:', stats.currentStreak);
+        console.log('Dashboard: Weekly stats:', stats.weeklyStats);
         setDashboardStats(stats);
 
         // Fetch all courses
