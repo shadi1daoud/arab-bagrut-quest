@@ -556,8 +556,11 @@ export const getUserAnalytics = async (userId: string): Promise<UserAnalytics | 
     const docRef = doc(db, 'userAnalytics', userId);
     const docSnap = await getDoc(docRef);
     if (docSnap.exists()) {
-      return { id: docSnap.id, ...docSnap.data() } as UserAnalytics;
+      const data = { id: docSnap.id, ...docSnap.data() } as UserAnalytics;
+      console.log('getUserAnalytics: Found analytics for user:', userId, 'currentStreak:', data.currentStreak);
+      return data;
     }
+    console.log('getUserAnalytics: No analytics found for user:', userId);
     return null;
   } catch (error) {
     console.error('Error fetching user analytics:', error);
@@ -814,11 +817,12 @@ export const updateUserAnalyticsFromActivity = async (
 // Update user streak and daily login tracking
 export const updateUserStreak = async (userId: string): Promise<void> => {
   try {
+    console.log('updateUserStreak: Starting streak update for user:', userId);
     const analytics = await getUserAnalytics(userId);
     
     // If no analytics exist, this is the first login - create initial streak
     if (!analytics) {
-      console.log('First time login - creating initial streak');
+      console.log('updateUserStreak: First time login - creating initial streak');
       const now = new Date();
       const weekKey = getWeekKey(now);
       const monthKey = getMonthKey(now);
@@ -886,11 +890,13 @@ export const updateUserStreak = async (userId: string): Promise<void> => {
       console.log(`Same day login, streak remains: ${newStreak} days`);
     }
 
+    console.log('updateUserStreak: Updating analytics with new streak:', newStreak);
     await updateUserAnalytics(userId, {
       currentStreak: newStreak,
       longestStreak,
       lastActive: Timestamp.now()
     });
+    console.log('updateUserStreak: Analytics updated successfully');
 
     // Record daily login activity
     await recordUserActivity(
@@ -900,6 +906,7 @@ export const updateUserStreak = async (userId: string): Promise<void> => {
       50, // Daily login bonus
       { type: 'daily_login', streak: newStreak }
     );
+    console.log('updateUserStreak: Activity recorded successfully');
 
   } catch (error) {
     console.error('Error updating user streak:', error);
