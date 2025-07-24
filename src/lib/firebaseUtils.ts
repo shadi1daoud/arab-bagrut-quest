@@ -411,7 +411,7 @@ export const getLeaderboardData = async (period: 'weekly' | 'monthly'): Promise<
       limit(10)
     );
     const snapshot = await getDocs(q);
-    return snapshot.docs.map(doc => {
+    const entries = snapshot.docs.map(doc => {
       const data = doc.data();
       return {
         userId: data.userId || '',
@@ -421,6 +421,50 @@ export const getLeaderboardData = async (period: 'weekly' | 'monthly'): Promise<
         avatar: data.avatar || '👤'
       } as LeaderboardEntry;
     });
+    
+    // If we have fewer than 3 entries, return sample data instead
+    if (entries.length < 3) {
+      console.log('📊 Database has insufficient data, returning sample leaderboard');
+      return [
+        {
+          userId: 'user1',
+          rank: 1,
+          score: 2840,
+          name: 'أحمد محمد',
+          avatar: '👨‍🎓'
+        },
+        {
+          userId: 'user2', 
+          rank: 2,
+          score: 2650,
+          name: 'فاطمة علي',
+          avatar: '👩‍🎓'
+        },
+        {
+          userId: 'user3',
+          rank: 3, 
+          score: 2420,
+          name: 'عمر خالد',
+          avatar: '👨‍🎓'
+        },
+        {
+          userId: 'user4',
+          rank: 4,
+          score: 2180,
+          name: 'سارة أحمد',
+          avatar: '👩‍🎓'
+        },
+        {
+          userId: 'user5',
+          rank: 5,
+          score: 1950,
+          name: 'محمد حسن',
+          avatar: '👨‍🎓'
+        }
+      ];
+    }
+    
+    return entries;
   } catch (error) {
     console.error('Error fetching leaderboard data:', error);
     
@@ -444,12 +488,56 @@ export const getLeaderboardData = async (period: 'weekly' | 'monthly'): Promise<
       });
       
       // Sort manually in JavaScript
-      return entries.sort((a, b) => b.score - a.score);
+      const sortedEntries = entries.sort((a, b) => b.score - a.score);
+      
+      // If we have fewer than 3 entries, return sample data instead
+      if (sortedEntries.length < 3) {
+        console.log('📊 Fallback query has insufficient data, returning sample leaderboard');
+        return [
+          {
+            userId: 'user1',
+            rank: 1,
+            score: 2840,
+            name: 'أحمد محمد',
+            avatar: '👨‍🎓'
+          },
+          {
+            userId: 'user2', 
+            rank: 2,
+            score: 2650,
+            name: 'فاطمة علي',
+            avatar: '👩‍🎓'
+          },
+          {
+            userId: 'user3',
+            rank: 3, 
+            score: 2420,
+            name: 'عمر خالد',
+            avatar: '👨‍🎓'
+          },
+          {
+            userId: 'user4',
+            rank: 4,
+            score: 2180,
+            name: 'سارة أحمد',
+            avatar: '👩‍🎓'
+          },
+          {
+            userId: 'user5',
+            rank: 5,
+            score: 1950,
+            name: 'محمد حسن',
+            avatar: '👨‍🎓'
+          }
+        ];
+      }
+      
+      return sortedEntries;
     } catch (fallbackError) {
       console.error('Fallback leaderboard query also failed:', fallbackError);
       
       // Return sample data if database is empty or has permission issues
-      console.log('📊 Returning sample leaderboard data');
+      console.log('📊 Returning sample leaderboard data due to complete failure');
       return [
         {
           userId: 'user1',
