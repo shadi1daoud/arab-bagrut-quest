@@ -12,12 +12,12 @@ interface WeeklyProgressComparisonProps {
 }
 
 const WeeklyProgressComparison: React.FC<WeeklyProgressComparisonProps> = ({
-  currentWeekXP = 51,
-  previousWeekXP = 43,
-  currentWeekHours = 8.7,
-  previousWeekHours = 7.2,
-  streak = 5,
-  weeklyGoal = 100
+  currentWeekXP,
+  previousWeekXP,
+  currentWeekHours,
+  previousWeekHours,
+  streak,
+  weeklyGoal
 }) => {
   // Calculate percentage changes
   const xpChange = previousWeekXP > 0 ? ((currentWeekXP - previousWeekXP) / previousWeekXP) * 100 : 100;

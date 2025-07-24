@@ -28,29 +28,28 @@ import {
   testProgressionSystems
 } from '@/lib/firebaseUtils';
 
-// Weekly activity data - this could be fetched from Firebase in the future
-const weeklyActivity = [{
-  day: 'الأحد',
-  xp: 12
-}, {
-  day: 'الإثنين',
-  xp: 8
-}, {
-  day: 'الثلاثاء',
-  xp: 5
-}, {
-  day: 'الأربعاء',
-  xp: 6
-}, {
-  day: 'الخميس',
-  xp: 9
-}, {
-  day: 'الجمعة',
-  xp: 4
-}, {
-  day: 'السبت',
-  xp: 7
-}];
+// Generate weekly activity data from user analytics
+const generateWeeklyActivity = (analytics: any) => {
+  const days = ['الأحد', 'الإثنين', 'الثلاثاء', 'الأربعاء', 'الخميس', 'الجمعة', 'السبت'];
+  
+  if (!analytics?.weeklyProgress) {
+    // Return default data if no analytics available
+    return days.map(day => ({ day, xp: 0 }));
+  }
+
+  // Get current week key
+  const now = new Date();
+  const weekKey = `${now.getFullYear()}-W${Math.ceil((now.getDate() + now.getDay()) / 7)}`;
+  const currentWeekData = analytics.weeklyProgress[weekKey];
+
+  if (!currentWeekData) {
+    return days.map(day => ({ day, xp: 0 }));
+  }
+
+  // For now, distribute XP evenly across days (this could be enhanced with actual daily data)
+  const dailyXP = Math.floor(currentWeekData.xp / 7);
+  return days.map(day => ({ day, xp: dailyXP }));
+};
 
 const Dashboard = () => {
   const { user } = useAuth();
@@ -208,7 +207,7 @@ const Dashboard = () => {
           <Card className="bg-black/40 border border-white/10">
             <CardContent className="p-6">
               <h2 className="text-xl font-bold text-white mb-4">النشاط الأسبوعي</h2>
-              <WeeklyChart data={weeklyActivity} />
+              <WeeklyChart data={generateWeeklyActivity(dashboardStats)} />
             </CardContent>
           </Card>
 
@@ -235,7 +234,7 @@ const Dashboard = () => {
           </div>
 
           {/* Student of the Week */}
-          <StudentOfWeekWidget />
+          <StudentOfWeekWidget leaderboardData={leaderboardData} />
 
           {/* Daily Motivation */}
           <DailyMotivationCard />
