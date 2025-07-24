@@ -142,13 +142,15 @@ export const AuthProvider = ({ children }: { children: ReactNode }) => {
     try {
       const userData = await signin(email, password);
       console.log('AuthProvider: Login successful:', userData);
-      setUser(userData);
-      localStorage.setItem('darsni_user', JSON.stringify(userData));
       
       // Update user streak on successful login
       console.log('AuthProvider: Updating user streak for:', userData.id);
       await updateUserStreak(userData.id);
       console.log('AuthProvider: User streak update completed');
+      
+      // Set user state after streak update is complete
+      setUser(userData);
+      localStorage.setItem('darsni_user', JSON.stringify(userData));
       
       setIsLoading(false);
       return true;
