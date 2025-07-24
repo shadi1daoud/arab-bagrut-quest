@@ -303,6 +303,28 @@ VITE_FIREBASE_API_KEY=your-api-key
 VITE_ANALYTICS_ID=your-analytics-id
 ```
 
+## 🗄️ Database Population Script
+
+### Setup
+1. **Install dependencies**: `cd scripts && npm install`
+2. **Add service account key**: Place `serviceAccountKey.json` in `config/` directory
+3. **Update Firebase rules**: Use the rules from `firebase-security-rules-update.md`
+
+### Run Script
+```bash
+cd scripts
+npm run populate
+```
+
+### What it adds:
+- **📊 15 leaderboard entries** (10 weekly + 5 monthly)
+- **💬 10 motivational quotes** in Arabic
+- **🎯 Realistic data** with Arabic names and scores
+
+### Data Structure:
+- **Leaderboards**: `leaderboards` collection with `period`, `score`, `rank`
+- **Quotes**: `motivationalQuotes` collection with `text`, `author`, `category`
+
 ## 📚 Additional Resources
 
 - [Lovable Documentation](https://docs.lovable.dev/)

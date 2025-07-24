@@ -25,9 +25,7 @@ import {
   Course as FirebaseCourse,
   UserCourse,
   getUserCourses,
-  getDailyQuote,
-  addSampleLeaderboardData,
-  addSampleQuotesData
+  getDailyQuote
 } from '@/lib/firebaseUtils';
 
 // Generate weekly activity data from user analytics
@@ -144,30 +142,7 @@ const Dashboard = () => {
         <h1 className="text-2xl font-bold mb-2">مرحباً، {user?.name}</h1>
         <p className="text-white/90">استمر في رحلتك التعليمية واكتشف المزيد من المعرفة</p>
         
-        {/* Temporary button for testing - remove in production */}
-        <div className="mt-4 flex gap-2">
-          <Button 
-            onClick={async () => {
-              try {
-                await addSampleLeaderboardData();
-                await addSampleQuotesData();
-                // Refresh data
-                const leaderboard = await getLeaderboardData('weekly');
-                setLeaderboardData(leaderboard);
-              } catch (error) {
-                console.error('Error adding sample data:', error);
-              }
-            }}
-            variant="outline"
-            size="sm"
-            className="text-white border-white/30 hover:bg-white/10"
-          >
-            تحديث البيانات التجريبية
-          </Button>
-          <div className="text-xs text-white/70 mt-2">
-            💡 البيانات التجريبية ستظهر تلقائياً حتى لو لم يتم تحديث قاعدة البيانات
-          </div>
-        </div>
+
       </div>
 
       {/* Stats Cards */}
