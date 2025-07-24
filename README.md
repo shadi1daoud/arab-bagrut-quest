@@ -13,6 +13,7 @@ Darsni is a modern educational platform built with React and TypeScript that pro
 - **Student Dashboard**: Progress tracking and performance analytics
 - **Admin Panel**: Course management and user administration
 - **Responsive Design**: Optimized for desktop and mobile devices
+- **Real-Time Analytics**: Live progress tracking and performance insights
 
 ## 🛠 Tech Stack
 
@@ -23,6 +24,7 @@ Darsni is a modern educational platform built with React and TypeScript that pro
 - **State Management**: React Context, TanStack Query
 - **Animations**: Framer Motion, Canvas Confetti
 - **Charts**: Recharts
+- **Backend**: Firebase (Authentication, Firestore, Storage)
 - **Development**: ESLint, TypeScript strict mode
 
 ## 📁 Project Structure
@@ -43,6 +45,9 @@ src/
 ├── styles/             # Global styles and themes
 ├── types/              # TypeScript type definitions
 └── lib/                # Utility functions and configurations
+    ├── firebase.ts     # Firebase configuration
+    ├── firebaseUtils.ts # Real-time analytics and data functions
+    └── authUtils.ts    # Authentication utilities
 ```
 
 ## 🚀 Quick Start
@@ -50,6 +55,7 @@ src/
 ### Prerequisites
 - Node.js 18+ 
 - npm or yarn package manager
+- Firebase project setup
 
 ### Installation
 
@@ -64,13 +70,19 @@ src/
    npm install
    ```
 
-3. **Start development server**
+3. **Firebase Setup**
+   - Create a Firebase project
+   - Enable Authentication and Firestore
+   - Add your Firebase config to `config/firebaseConfig.ts`
+   - Set up Firestore security rules
+
+4. **Start development server**
    ```bash
    npm run dev
    ```
 
-4. **Open in browser**
-   Navigate to `http://localhost:5173`
+5. **Open in browser**
+   Navigate to `http://localhost:8080`
 
 ### Test Accounts
 
@@ -92,12 +104,50 @@ src/
 - **Gamified Learning**: Coins, leaderboards, and weekly challenges
 - **Social Features**: Friends, study groups, and community interaction
 - **Responsive Design**: Seamless experience across devices
+- **Real-Time Analytics**: Live progress tracking and performance insights
 
 ### For Administrators
 - **Course Management**: Upload, edit, and organize course content
 - **User Administration**: Monitor student progress and engagement
 - **Analytics Dashboard**: Platform usage and performance metrics
 - **Content Tools**: Bulk upload and content organization features
+
+## 📊 Real-Time Analytics System
+
+### **NEW: Comprehensive Progress Tracking**
+The platform now includes a complete real-time analytics system that tracks:
+
+#### **User Analytics**
+- **Total XP**: Accumulated from all activities
+- **Study Time**: Minutes spent learning
+- **Streak System**: Daily login tracking with bonuses
+- **Course Progress**: Real-time completion tracking
+- **Achievement Tracking**: All user activities and milestones
+
+#### **Weekly Progress**
+- **Current Week XP**: Real-time weekly XP accumulation
+- **Previous Week Comparison**: Week-over-week progress analysis
+- **Study Hours**: Actual time spent studying
+- **Weekly Goals**: Configurable XP targets with progress tracking
+
+#### **Activity System**
+- **Unit Completion**: Records when users complete course units
+- **Quiz Passing**: Tracks quiz achievements and scores
+- **Course Enrollment**: Records course starts and progress
+- **Daily Login Bonuses**: Automatic XP rewards for consistent usage
+
+#### **Streak System**
+- **First Login**: Users start with 1-day streak immediately
+- **Daily Bonuses**: 50 XP for daily logins, 100 XP for first login
+- **Streak Tracking**: Visual feedback for consecutive days
+- **Streak Breaking**: Automatic reset when users miss days
+
+### **Dashboard Features**
+- **Real Statistics**: All numbers calculated from actual user data
+- **Live Updates**: Dashboard refreshes automatically with new data
+- **Progress Visualization**: Charts and graphs showing real progress
+- **Goal Tracking**: Weekly XP goals with progress bars
+- **Achievement Display**: Recent activities and milestones
 
 ## 🔧 Development Guidelines
 
@@ -138,6 +188,12 @@ export default ComponentName;
 4. Update routing in `App.tsx`
 5. Add proper TypeScript interfaces
 6. Test across different screen sizes
+
+### Firebase Integration
+- All user data is stored in Firebase Firestore
+- Real-time listeners provide live updates
+- Analytics are calculated from actual user activities
+- Security rules ensure data protection
 
 ## 🎨 Theming
 
@@ -194,6 +250,7 @@ Currently using manual testing. Future improvements:
 - [React Documentation](https://react.dev/)
 - [Tailwind CSS](https://tailwindcss.com/)
 - [Radix UI](https://www.radix-ui.com/)
+- [Firebase Documentation](https://firebase.google.com/docs)
 
 ## 📄 License
 
