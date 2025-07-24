@@ -488,6 +488,15 @@ export const testFirebaseConnection = async (): Promise<boolean> => {
     // Test reading from a collection that should exist
     const testSnapshot = await getDocs(collection(db, 'users'));
     console.log('Firebase connection successful. Users collection accessible.');
+    
+    // Test reading from userAnalytics collection
+    try {
+      const analyticsSnapshot = await getDocs(collection(db, 'userAnalytics'));
+      console.log('Firebase connection successful. userAnalytics collection accessible.');
+    } catch (analyticsError) {
+      console.error('Firebase userAnalytics collection access failed:', analyticsError);
+    }
+    
     return true;
   } catch (error) {
     console.error('Firebase connection test failed:', error);
