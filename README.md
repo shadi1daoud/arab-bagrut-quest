@@ -57,6 +57,28 @@ src/
 - npm or yarn package manager
 - Firebase project setup
 
+### **📋 Development Rules**
+
+#### **Rule 1: Code Commits**
+When a section is completed with all tests passing and everything working correctly:
+- ✅ Commit the code with descriptive commit messages
+- ✅ Include the specific features/functionality in the commit
+- ✅ Ensure all tests are passing before committing
+
+#### **Rule 2: README Updates**
+When new features or logic are implemented that are crucial for the client/owner to be aware of:
+- ✅ Update the README.md file
+- ✅ Document the new features clearly
+- ✅ Include setup instructions if needed
+- ✅ Add any important notes for the client
+
+#### **Rule 3: Key Management**
+When adding API keys, service account keys, or any sensitive credentials:
+- ✅ **Add to `.gitignore`**: Ensure the file is listed in `.gitignore` before committing
+- ✅ **Update README**: Document what keys are needed and how to obtain them
+- ✅ **Environment Variables**: Use `.env` files for client-side keys when possible
+- ✅ **Never Commit**: Never commit actual key files to version control
+
 ### Installation
 
 1. **Clone the repository**
@@ -243,6 +265,43 @@ Currently using manual testing. Future improvements:
 3. Test on multiple screen sizes
 4. Update documentation for new features
 5. Ensure Arabic text displays correctly
+
+### **🔒 Security Rules**
+
+#### **Rule 3: Key Management**
+When adding API keys, service account keys, or any sensitive credentials:
+- ✅ **Add to `.gitignore`**: Ensure the file is listed in `.gitignore` before committing
+- ✅ **Update README**: Document what keys are needed and how to obtain them
+- ✅ **Environment Variables**: Use `.env` files for client-side keys when possible
+- ✅ **Never Commit**: Never commit actual key files to version control
+
+#### **Required Keys Setup**
+The following keys are required for the project:
+
+**Firebase Configuration (`config/firebaseConfig.ts`):**
+```typescript
+// Create this file with your Firebase project settings
+export const firebaseConfig = {
+  apiKey: "your-api-key",
+  authDomain: "your-project.firebaseapp.com",
+  projectId: "your-project-id",
+  storageBucket: "your-project.appspot.com",
+  messagingSenderId: "123456789",
+  appId: "your-app-id"
+};
+```
+
+**Firebase Admin SDK (`scripts/serviceAccountKey.json`):**
+- Download from Firebase Console > Project Settings > Service Accounts
+- Used for server-side operations (database population scripts)
+- **NEVER commit this file to version control**
+
+**Environment Variables (`.env`):**
+```bash
+# Create .env file for any additional API keys
+VITE_FIREBASE_API_KEY=your-api-key
+VITE_ANALYTICS_ID=your-analytics-id
+```
 
 ## 📚 Additional Resources
 
