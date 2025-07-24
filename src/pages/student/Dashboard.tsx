@@ -1,9 +1,10 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import { Activity, Award, BookOpen, Clock, Trophy, TrendingUp, Target, Flame, Star } from 'lucide-react';
 import { Card, CardContent, CardFooter } from '@/components/ui/card';
 import { ScrollArea } from '@/components/ui/scroll-area';
 import { Button } from '@/components/ui/button';
 import StatsCard from '@/components/StatsCard';
+import SimpleStatsCard from '@/components/SimpleStatsCard';
 import WeeklyProgressComparison from '@/components/WeeklyProgressComparison';
 import AdCard from '@/components/AdCard';
 import WeeklyChart from '@/components/WeeklyChart';
@@ -13,8 +14,17 @@ import StudentOfWeekWidget from '@/components/widgets/StudentOfWeekWidget';
 import DailyMotivationCard from '@/components/widgets/DailyMotivationCard';
 import StreakCounter from '@/components/widgets/StreakCounter';
 import TodayGoalsCard from '@/components/widgets/TodayGoalsCard';
+import { useAuth } from '@/contexts/AuthContext';
+import { 
+  getCourses, 
+  getUserCourseProgress, 
+  getLeaderboard,
+  subscribeToCourses,
+  Course as FirebaseCourse,
+  UserCourse
+} from '@/lib/firebaseUtils';
 
-// Weekly activity data
+// Weekly activity data - this could be fetched from Firebase in the future
 const weeklyActivity = [{
   day: 'الأحد',
   xp: 12
@@ -38,172 +48,212 @@ const weeklyActivity = [{
   xp: 7
 }];
 
-// Leaderboard data
-const leaderboardData = [{
-  id: 1,
-  name: 'سارة',
-  level: 15,
-  xp: 8450,
-  avatar: '👧',
-  rank: 1,
-  streak: 5,
-  badge: 'legendary'
-}, {
-  id: 2,
-  name: 'محمد',
-  level: 14,
-  xp: 7920,
-  avatar: '👦',
-  rank: 2,
-  streak: 3,
-  badge: 'master'
-}, {
-  id: 3,
-  name: 'أحمد',
-  level: 12,
-  xp: 6540,
-  avatar: '👨',
-  rank: 3,
-  badge: 'expert'
-}];
-
-// Course progress data
-const courseProgress = [{
-  id: 1,
-  name: 'رياضيات',
-  progress: 75
-}, {
-  id: 2,
-  name: 'إنجليزي',
-  progress: 45
-}, {
-  id: 3,
-  name: 'فيزياء',
-  progress: 60
-}, {
-  id: 4,
-  name: 'كيمياء',
-  progress: 28
-}];
 const Dashboard = () => {
-  const [leaderboardFilter, setLeaderboardFilter] = useState('week');
+  const { user } = useAuth();
+  const [courses, setCourses] = useState<FirebaseCourse[]>([]);
+  const [userCourses, setUserCourses] = useState<UserCourse[]>([]);
+  const [leaderboardData, setLeaderboardData] = useState<any[]>([]);
+  const [loading, setLoading] = useState(true);
 
-  // Calculate total weekly hours and XP
-  const totalWeeklyHours = '8.7';
-  const totalWeeklyXP = '870';
-  return <ScrollArea className="h-full w-full">
-      <div className="grid grid-cols-12 gap-4 pb-4 px-4">
-        {/* LEFT COLUMN - 4 cols */}
-        <div className="col-span-12 md:col-span-4 flex flex-col gap-4">
-          {/* Profile Card with Stats */}
-          <Card>
-            <CardContent className="p-3">
-              <StatsCard name="شادي داود" level={5} grade="الثاني عشر - دار الأرقم" xp={2450} maxXp={3000} effort={12} points={8900} iq={8.9} />
-            </CardContent>
-          </Card>
-          
-          {/* Weekly Progress Comparison - NEW */}
-          <Card>
-            <CardContent className="p-3">
-              <WeeklyProgressComparison 
-                currentWeekXP={51}
-                previousWeekXP={43}
-                currentWeekHours={8.7}
-                previousWeekHours={7.2}
-                streak={5}
-                weeklyGoal={100}
-              />
-            </CardContent>
-            <CardFooter>
-              <h3 className="text-sm font-bold text-white font-changa flex items-center gap-2">
-                <TrendingUp className="h-4 w-4 text-[#FF4800]" strokeWidth={2} />
-                مقارنة أسبوعية
-              </h3>
-              <Button variant="link" className="text-xs text-[#FF4800] p-0 h-auto">عرض التفاصيل</Button>
-            </CardFooter>
-          </Card>
-        </div>
+  console.log('Dashboard: Rendering with user:', user);
+
+  // Fetch courses and user progress
+  useEffect(() => {
+    const fetchData = async () => {
+      if (!user) {
+        console.log('Dashboard: No user, skipping data fetch');
+        return;
+      }
+
+      try {
+        console.log('Dashboard: Starting to fetch data');
+        setLoading(true);
         
-        {/* MIDDLE COLUMN - 4 cols */}
-        <div className="col-span-12 md:col-span-4 flex flex-col gap-4">
-          {/* Weekly Activity Chart */}
-          <Card>
-            <CardContent className="p-3">
-              <div className="flex-1 flex flex-col">
-                <div className="h-36 w-full">
-                  <WeeklyChart data={weeklyActivity} />
-                </div>
-                
-                <div className="flex items-center gap-2 mt-2">
-                  <div className="py-1 px-2 bg-[#FF4800]/10 rounded-full text-xs text-[#FF4800] font-['Share_Tech_Mono'] flex items-center gap-1">
-                    <Clock className="h-3 w-3 text-[#FF4800]" />
-                    {totalWeeklyHours} ساعة
+        // Fetch all courses
+        const allCourses = await getCourses();
+        console.log('Dashboard: Fetched courses:', allCourses.length);
+        setCourses(allCourses);
+
+        // Fetch user progress for each course
+        const userProgressPromises = allCourses.map(course => 
+          getUserCourseProgress(user.id, course.id)
+        );
+        const userProgressResults = await Promise.all(userProgressPromises);
+        const validUserCourses = userProgressResults.filter(progress => progress !== null) as UserCourse[];
+        console.log('Dashboard: Fetched user courses:', validUserCourses.length);
+        setUserCourses(validUserCourses);
+
+        // Fetch leaderboard
+        const leaderboard = await getLeaderboard('weekly', 'xp');
+        console.log('Dashboard: Fetched leaderboard:', leaderboard.length);
+        setLeaderboardData(leaderboard);
+
+      } catch (error) {
+        console.error('Dashboard: Error fetching dashboard data:', error);
+      } finally {
+        setLoading(false);
+      }
+    };
+
+    fetchData();
+
+    // Subscribe to real-time course updates
+    const unsubscribe = subscribeToCourses((updatedCourses) => {
+      console.log('Dashboard: Received course updates:', updatedCourses.length);
+      setCourses(updatedCourses);
+    });
+
+    return () => unsubscribe();
+  }, [user]);
+
+  // Calculate user stats
+  const userStats = {
+    totalCourses: userCourses.length,
+    completedCourses: userCourses.filter(course => course.progress === 100).length,
+    totalXP: userCourses.reduce((sum, course) => sum + course.totalXP, 0),
+    averageProgress: userCourses.length > 0 
+      ? Math.round(userCourses.reduce((sum, course) => sum + course.progress, 0) / userCourses.length)
+      : 0
+  };
+
+  // Transform courses for CourseProgress component
+  const courseProgressData = userCourses.map(userCourse => {
+    const course = courses.find(c => c.id === userCourse.courseId);
+    return {
+      id: parseInt(userCourse.courseId),
+      name: course?.title || 'Unknown Course',
+      progress: userCourse.progress
+    };
+  });
+
+  console.log('Dashboard: Calculated stats:', userStats);
+  console.log('Dashboard: Course progress data:', courseProgressData);
+
+  if (loading) {
+    console.log('Dashboard: Showing loading state');
+    return (
+      <div className="flex items-center justify-center h-64">
+        <div className="text-white">جاري التحميل...</div>
+      </div>
+    );
+  }
+
+  console.log('Dashboard: Rendering dashboard content');
+  return (
+    <div className="space-y-6">
+      {/* Welcome Section */}
+      <div className="bg-gradient-to-r from-[#FF4800] to-[#FFA56E] rounded-xl p-6 text-white">
+        <h1 className="text-2xl font-bold mb-2">مرحباً، {user?.name}</h1>
+        <p className="text-white/90">استمر في رحلتك التعليمية واكتشف المزيد من المعرفة</p>
+      </div>
+
+      {/* Stats Cards */}
+      <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-4">
+        <SimpleStatsCard
+          title="الكورسات المسجلة"
+          value={userStats.totalCourses}
+          change="+2"
+          isPositive={true}
+          icon={BookOpen}
+        />
+        <SimpleStatsCard
+          title="الكورسات المكتملة"
+          value={userStats.completedCourses}
+          change="+1"
+          isPositive={true}
+          icon={Trophy}
+        />
+        <SimpleStatsCard
+          title="إجمالي النقاط"
+          value={userStats.totalXP}
+          change="+150"
+          isPositive={true}
+          icon={Star}
+        />
+        <SimpleStatsCard
+          title="متوسط التقدم"
+          value={`${userStats.averageProgress}%`}
+          change="+5%"
+          isPositive={true}
+          icon={TrendingUp}
+        />
+      </div>
+
+      {/* Main Content Grid */}
+      <div className="grid grid-cols-1 lg:grid-cols-3 gap-6">
+        {/* Left Column */}
+        <div className="lg:col-span-2 space-y-6">
+          {/* Course Progress */}
+          <Card className="bg-black/40 border border-white/10">
+            <CardContent className="p-6">
+              <h2 className="text-xl font-bold text-white mb-4">تقدم الكورسات</h2>
+              <div className="space-y-4">
+                {courseProgressData.length > 0 ? (
+                  <CourseProgress courses={courseProgressData} />
+                ) : (
+                  <div className="text-center text-gray-400 py-8">
+                    <BookOpen className="h-12 w-12 mx-auto mb-4 opacity-50" />
+                    <p>لم تسجل في أي كورس بعد</p>
+                    <Button className="mt-4" variant="outline">
+                      استكشف الكورسات
+                    </Button>
                   </div>
-                  
-                  <div className="py-1 px-2 bg-[#FF4800]/10 rounded-full text-xs text-[#FF4800] font-['Share_Tech_Mono'] flex items-center gap-1">
-                    +{totalWeeklyXP} XP
-                  </div>
-                </div>
+                )}
               </div>
             </CardContent>
-            <CardFooter>
-              <h3 className="text-sm font-bold text-white font-changa flex items-center gap-2">
-                <Activity className="h-4 w-4 text-[#FF4800]" strokeWidth={2} />
-                إنجاز أسبوعي
-              </h3>
-              <Button variant="link" className="text-xs text-[#FF4800] p-0 h-auto">عرض التفاصيل</Button>
-            </CardFooter>
-          </Card>
-          
-          {/* Course Progress */}
-          <Card>
-            <CardContent className="p-3">
-              <CourseProgress courses={courseProgress} />
-            </CardContent>
-            <CardFooter>
-              <h3 className="text-sm font-bold text-white font-changa flex items-center gap-2">
-                <BookOpen className="h-4 w-4 text-[#FF4800]" strokeWidth={2} />
-                تقدم الكورسات
-              </h3>
-              <Button variant="link" className="text-xs text-[#FF4800] p-0 h-auto">عرض الكل</Button>
-            </CardFooter>
           </Card>
 
-          {/* Daily Motivational Quote */}
-          <Card>
-            <CardContent className="p-3">
-              <DailyMotivationCard />
+          {/* Weekly Activity */}
+          <Card className="bg-black/40 border border-white/10">
+            <CardContent className="p-6">
+              <h2 className="text-xl font-bold text-white mb-4">النشاط الأسبوعي</h2>
+              <WeeklyChart data={weeklyActivity} />
             </CardContent>
           </Card>
+
+          {/* Weekly Progress Comparison */}
+          <WeeklyProgressComparison 
+            currentWeekXP={51}
+            previousWeekXP={43}
+            currentWeekHours={8.7}
+            previousWeekHours={7.2}
+            streak={5}
+            weeklyGoal={100}
+          />
         </div>
-        
-        {/* RIGHT COLUMN - 4 cols */}
-        <div className="col-span-12 md:col-span-4 flex flex-col gap-4">
+
+        {/* Right Column */}
+        <div className="space-y-6">
+          {/* User Stats Widget */}
+          <div className="grid grid-cols-2 gap-4">
+            <StreakCounter streak={5} />
+            <TodayGoalsCard completedGoals={3} totalGoals={5} />
+          </div>
+
           {/* Student of the Week */}
           <StudentOfWeekWidget />
-          
+
+          {/* Daily Motivation */}
+          <DailyMotivationCard />
+
           {/* Leaderboard */}
-          <Card>
-            <CardContent className="p-3">
-              <Leaderboard data={leaderboardData} filter={leaderboardFilter} onFilterChange={setLeaderboardFilter} />
-            </CardContent>
-            <CardFooter>
-              <h3 className="text-sm font-bold text-white font-changa flex items-center gap-2">
-                <Trophy className="h-4 w-4 text-[#FF4800]" strokeWidth={2} />
-                المتصدرون
-              </h3>
-              <Button variant="link" className="text-xs text-[#FF4800] p-0 h-auto">عرض المزيد</Button>
-            </CardFooter>
-          </Card>
-          
-          {/* Ad Space */}
-          <Card>
-            <CardContent className="p-3">
-              <AdCard />
+          <Card className="bg-black/40 border border-white/10">
+            <CardContent className="p-6">
+              <h2 className="text-xl font-bold text-white mb-4">المتصدرون</h2>
+              <Leaderboard 
+                data={leaderboardData} 
+                filter="week"
+                onFilterChange={() => {}}
+              />
             </CardContent>
           </Card>
+
+          {/* Ad Card */}
+          <AdCard />
         </div>
       </div>
-    </ScrollArea>;
+    </div>
+  );
 };
+
 export default Dashboard;

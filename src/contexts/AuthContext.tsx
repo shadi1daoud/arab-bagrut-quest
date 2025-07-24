@@ -46,21 +46,33 @@ export const AuthProvider = ({ children }: { children: ReactNode }) => {
   const navigate = useNavigate();
 
   useEffect(() => {
+    console.log('AuthProvider: Setting up auth state listener');
+    
     // Listen for Firebase auth state changes
     const unsubscribe = onAuthStateChanged(auth, async (firebaseUser) => {
+      console.log('AuthProvider: Firebase auth state changed:', firebaseUser?.uid);
+      
       if (firebaseUser) {
         try {
+          console.log('AuthProvider: Fetching user data from Firestore for:', firebaseUser.uid);
+          
           // Get user data from Firestore
           const userDoc = await getDoc(doc(db, 'users', firebaseUser.uid));
           if (userDoc.exists()) {
             const userData = userDoc.data() as FirebaseUser;
+            console.log('AuthProvider: User data found:', userData);
             setUser(userData);
             localStorage.setItem('darsni_user', JSON.stringify(userData));
+          } else {
+            console.log('AuthProvider: No user document found in Firestore');
+            setUser(null);
           }
         } catch (error) {
-          console.error('Error fetching user data:', error);
+          console.error('AuthProvider: Error fetching user data:', error);
+          setUser(null);
         }
       } else {
+        console.log('AuthProvider: No Firebase user, clearing state');
         setUser(null);
         localStorage.removeItem('darsni_user');
       }
@@ -71,43 +83,48 @@ export const AuthProvider = ({ children }: { children: ReactNode }) => {
   }, []);
 
   const login = async (email: string, password: string): Promise<boolean> => {
+    console.log('AuthProvider: Login attempt for:', email);
     setIsLoading(true);
     try {
       const userData = await signin(email, password);
+      console.log('AuthProvider: Login successful:', userData);
       setUser(userData);
       localStorage.setItem('darsni_user', JSON.stringify(userData));
       setIsLoading(false);
       return true;
     } catch (error) {
-      console.error('Login error:', error);
+      console.error('AuthProvider: Login error:', error);
       setIsLoading(false);
       return false;
     }
   };
 
   const signUp = async (signUpData: SignUpData): Promise<boolean> => {
+    console.log('AuthProvider: Signup attempt for:', signUpData.email);
     setIsLoading(true);
     try {
       const userData = await signup(signUpData.email, signUpData.password, signUpData.name);
+      console.log('AuthProvider: Signup successful:', userData);
       setUser(userData);
       localStorage.setItem('darsni_user', JSON.stringify(userData));
       setIsLoading(false);
       return true;
     } catch (error) {
-      console.error('Signup error:', error);
+      console.error('AuthProvider: Signup error:', error);
       setIsLoading(false);
       return false;
     }
   };
 
   const logout = async () => {
+    console.log('AuthProvider: Logout attempt');
     try {
       await signOut(auth);
       setUser(null);
       localStorage.removeItem('darsni_user');
       navigate('/login');
     } catch (error) {
-      console.error('Logout error:', error);
+      console.error('AuthProvider: Logout error:', error);
     }
   };
 
@@ -127,6 +144,8 @@ export const AuthProvider = ({ children }: { children: ReactNode }) => {
     logout,
     updateUser
   };
+
+  console.log('AuthProvider: Current state - user:', user, 'isLoading:', isLoading);
 
   return (
     <AuthContext.Provider value={value}>

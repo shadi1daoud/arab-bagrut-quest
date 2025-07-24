@@ -18,6 +18,8 @@ const StudentLayout = () => {
   const [isMenuCollapsed, setIsMenuCollapsed] = useState(false);
   const location = useLocation();
   
+  console.log('StudentLayout: Rendering with user:', user, 'location:', location.pathname);
+  
   useEffect(() => {
     setIsMobileMenuOpen(false);
   }, [location.pathname]);
@@ -101,6 +103,8 @@ const StudentLayout = () => {
     return stars;
   };
   const stars = createStars();
+  
+  console.log('StudentLayout: About to render layout');
   
   return <div className="h-screen w-full flex overflow-hidden bg-transparent">
       {/* Background effects */}
