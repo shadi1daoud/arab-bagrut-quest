@@ -838,6 +838,17 @@ export const updateUserAnalyticsFromActivity = async (
 export const updateUserStreak = async (userId: string): Promise<void> => {
   try {
     console.log('updateUserStreak: Starting streak update for user:', userId);
+    
+    // Check if XP was already given today using session storage
+    const today = new Date().toDateString();
+    const sessionKey = `daily_xp_${userId}_${today}`;
+    const xpAlreadyGiven = sessionStorage.getItem(sessionKey);
+    
+    if (xpAlreadyGiven) {
+      console.log('updateUserStreak: XP already given today, skipping');
+      return;
+    }
+    
     const analytics = await getUserAnalytics(userId);
     
     // If no analytics exist, this is the first login - create initial streak
@@ -850,7 +861,7 @@ export const updateUserStreak = async (userId: string): Promise<void> => {
       const initialAnalytics = {
         userId,
         totalStudyTime: 0,
-        totalXP: 0,
+        totalXP: 100, // Start with 100 XP for first login
         currentStreak: 1, // Start with 1 day streak
         longestStreak: 1,
         coursesCompleted: 0,
@@ -860,7 +871,7 @@ export const updateUserStreak = async (userId: string): Promise<void> => {
         lastActive: Timestamp.now(),
         weeklyProgress: {
           [weekKey]: {
-            xp: 0,
+            xp: 100,
             studyTime: 0,
             unitsCompleted: 0,
             quizzesPassed: 0
@@ -868,7 +879,7 @@ export const updateUserStreak = async (userId: string): Promise<void> => {
         },
         monthlyProgress: {
           [monthKey]: {
-            xp: 0,
+            xp: 100,
             studyTime: 0,
             coursesCompleted: 0
           }
@@ -886,6 +897,9 @@ export const updateUserStreak = async (userId: string): Promise<void> => {
         { type: 'first_login', streak: 1 }
       );
       
+      // Mark XP as given for today
+      sessionStorage.setItem(sessionKey, 'true');
+      
       return;
     }
 
@@ -895,18 +909,21 @@ export const updateUserStreak = async (userId: string): Promise<void> => {
 
     let newStreak = analytics.currentStreak;
     let longestStreak = analytics.longestStreak;
+    let xpToAdd = 0;
 
     if (daysSinceLastActive === 1) {
       // Consecutive day
       newStreak += 1;
       longestStreak = Math.max(longestStreak, newStreak);
+      xpToAdd = 50; // Daily login bonus
       console.log(`Streak continued: ${newStreak} days`);
     } else if (daysSinceLastActive > 1) {
       // Streak broken
       newStreak = 1;
+      xpToAdd = 50; // Daily login bonus
       console.log('Streak broken, starting new streak');
     } else if (daysSinceLastActive === 0) {
-      // Same day login, keep current streak
+      // Same day login, keep current streak, no XP
       console.log(`Same day login, streak remains: ${newStreak} days`);
     }
 
@@ -914,19 +931,32 @@ export const updateUserStreak = async (userId: string): Promise<void> => {
     await updateUserAnalytics(userId, {
       currentStreak: newStreak,
       longestStreak,
-      lastActive: Timestamp.now()
+      lastActive: Timestamp.now(),
+      totalXP: analytics.totalXP + xpToAdd,
+      weeklyProgress: {
+        ...analytics.weeklyProgress,
+        [getWeekKey(now)]: {
+          ...analytics.weeklyProgress[getWeekKey(now)],
+          xp: (analytics.weeklyProgress[getWeekKey(now)]?.xp || 0) + xpToAdd
+        }
+      }
     });
     console.log('updateUserStreak: Analytics updated successfully');
 
-    // Record daily login activity
-    await recordUserActivity(
-      userId,
-      'xp_earned',
-      'Daily login bonus',
-      50, // Daily login bonus
-      { type: 'daily_login', streak: newStreak }
-    );
-    console.log('updateUserStreak: Activity recorded successfully');
+    // Record daily login activity only if XP was given
+    if (xpToAdd > 0) {
+      await recordUserActivity(
+        userId,
+        'xp_earned',
+        'Daily login bonus',
+        xpToAdd,
+        { type: 'daily_login', streak: newStreak }
+      );
+      console.log('updateUserStreak: Activity recorded successfully');
+      
+      // Mark XP as given for today
+      sessionStorage.setItem(sessionKey, 'true');
+    }
 
   } catch (error) {
     console.error('Error updating user streak:', error);

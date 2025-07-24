@@ -166,13 +166,17 @@ const StudentLayout = () => {
                   <p className="text-[var(--color-text-muted)] text-xs mb-1 font-['Noto_Sans_Arabic'] truncate">{user?.grade || 'الثاني عشر'}</p>
                   
                   <div className="flex justify-between items-center text-sm mb-1">
-                    <span className="text-[#FF4800] font-medium font-['Share_Tech_Mono']">Lv 5</span>
-                    <span className="text-xs font-['Share_Tech_Mono'] text-[#ff4800]">2450/3000</span>
+                    <span className="text-[#FF4800] font-medium font-['Share_Tech_Mono']">
+                      Lv {Math.floor((user?.xp || 0) / 100) + 1}
+                    </span>
+                    <span className="text-xs font-['Share_Tech_Mono'] text-[#ff4800]">
+                      {user?.xp || 0}/{((Math.floor((user?.xp || 0) / 100) + 1) * 100)}
+                    </span>
                   </div>
                   
                   <div className="progress-bar">
                     <div className="progress-bar-fill" style={{
-                width: "60%"
+                width: `${((user?.xp || 0) % 100)}%`
               }}></div>
                   </div>
                 </motion.div>}

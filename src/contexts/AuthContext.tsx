@@ -5,7 +5,7 @@ import { onAuthStateChanged, signOut } from 'firebase/auth';
 import { doc, getDoc, setDoc } from 'firebase/firestore';
 import { auth, db } from '@/lib/firebase';
 import { signin, signup, User as FirebaseUser } from '@/lib/authUtils';
-import { updateUserStreak } from '@/lib/firebaseUtils';
+import { updateUserStreak, getUserAnalytics } from '@/lib/firebaseUtils';
 
 // User types
 export interface User {
@@ -62,11 +62,23 @@ export const AuthProvider = ({ children }: { children: ReactNode }) => {
           if (userDoc.exists()) {
             const userData = userDoc.data() as FirebaseUser;
             console.log('AuthProvider: User data found:', userData);
-            setUser(userData);
-            localStorage.setItem('darsni_user', JSON.stringify(userData));
             
             // Update user streak for existing user
             await updateUserStreak(userData.id);
+            
+            // Fetch updated analytics to get current XP
+            const analytics = await getUserAnalytics(userData.id);
+            if (analytics) {
+              const updatedUserData = {
+                ...userData,
+                xp: analytics.totalXP
+              };
+              setUser(updatedUserData);
+              localStorage.setItem('darsni_user', JSON.stringify(updatedUserData));
+            } else {
+              setUser(userData);
+              localStorage.setItem('darsni_user', JSON.stringify(userData));
+            }
           } else {
             console.log('AuthProvider: No user document found, creating basic user profile');
             // Create a basic user profile if it doesn't exist
@@ -155,18 +167,30 @@ export const AuthProvider = ({ children }: { children: ReactNode }) => {
       const userData = await signin(email, password);
       console.log('AuthProvider: Login successful:', userData);
       
-      // Update user streak on successful login
-      console.log('AuthProvider: Updating user streak for:', userData.id);
-      try {
-        await updateUserStreak(userData.id);
-        console.log('AuthProvider: User streak update completed');
-      } catch (streakError) {
-        console.error('AuthProvider: Error updating streak:', streakError);
-      }
-      
-      // Set user state after streak update is complete
-      setUser(userData);
-      localStorage.setItem('darsni_user', JSON.stringify(userData));
+              // Update user streak on successful login
+        console.log('AuthProvider: Updating user streak for:', userData.id);
+        try {
+          await updateUserStreak(userData.id);
+          console.log('AuthProvider: User streak update completed');
+          
+          // Fetch updated analytics to get current XP
+          const analytics = await getUserAnalytics(userData.id);
+          if (analytics) {
+            const updatedUserData = {
+              ...userData,
+              xp: analytics.totalXP
+            };
+            setUser(updatedUserData);
+            localStorage.setItem('darsni_user', JSON.stringify(updatedUserData));
+          } else {
+            setUser(userData);
+            localStorage.setItem('darsni_user', JSON.stringify(userData));
+          }
+        } catch (streakError) {
+          console.error('AuthProvider: Error updating streak:', streakError);
+          setUser(userData);
+          localStorage.setItem('darsni_user', JSON.stringify(userData));
+        }
       
       setIsLoading(false);
       return true;
