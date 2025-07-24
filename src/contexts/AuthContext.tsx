@@ -100,7 +100,13 @@ export const AuthProvider = ({ children }: { children: ReactNode }) => {
               localStorage.setItem('darsni_user', JSON.stringify(basicUserData));
               
               // Update user streak even in error case
-              await updateUserStreak(basicUserData.id);
+              try {
+                console.log('AuthProvider: Updating streak for basic user data:', basicUserData.id);
+                await updateUserStreak(basicUserData.id);
+                console.log('AuthProvider: Basic user streak update completed');
+              } catch (streakError) {
+                console.error('AuthProvider: Error updating basic user streak:', streakError);
+              }
             }
           }
         } catch (error) {
@@ -123,7 +129,13 @@ export const AuthProvider = ({ children }: { children: ReactNode }) => {
           localStorage.setItem('darsni_user', JSON.stringify(basicUserData));
           
           // Update user streak even in error case
-          await updateUserStreak(basicUserData.id);
+          try {
+            console.log('AuthProvider: Updating streak for error case basic user data:', basicUserData.id);
+            await updateUserStreak(basicUserData.id);
+            console.log('AuthProvider: Error case basic user streak update completed');
+          } catch (streakError) {
+            console.error('AuthProvider: Error updating error case basic user streak:', streakError);
+          }
         }
       } else {
         console.log('AuthProvider: No Firebase user, clearing state');
@@ -145,8 +157,12 @@ export const AuthProvider = ({ children }: { children: ReactNode }) => {
       
       // Update user streak on successful login
       console.log('AuthProvider: Updating user streak for:', userData.id);
-      await updateUserStreak(userData.id);
-      console.log('AuthProvider: User streak update completed');
+      try {
+        await updateUserStreak(userData.id);
+        console.log('AuthProvider: User streak update completed');
+      } catch (streakError) {
+        console.error('AuthProvider: Error updating streak:', streakError);
+      }
       
       // Set user state after streak update is complete
       setUser(userData);

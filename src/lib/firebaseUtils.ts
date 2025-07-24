@@ -942,6 +942,55 @@ export const getUserCourses = async (userId: string): Promise<UserCourse[]> => {
 }; 
 
 // Test function to verify all progression systems
+export const ensureUserAnalytics = async (userId: string): Promise<void> => {
+  try {
+    console.log('ensureUserAnalytics: Checking for user analytics:', userId);
+    const analytics = await getUserAnalytics(userId);
+    
+    if (!analytics) {
+      console.log('ensureUserAnalytics: No analytics found, creating initial analytics');
+      const now = new Date();
+      const weekKey = getWeekKey(now);
+      const monthKey = getMonthKey(now);
+      
+      const initialAnalytics = {
+        userId,
+        totalStudyTime: 0,
+        totalXP: 0,
+        currentStreak: 1, // Start with 1 day streak
+        longestStreak: 1,
+        coursesCompleted: 0,
+        unitsCompleted: 0,
+        quizzesPassed: 0,
+        averageScore: 0,
+        lastActive: Timestamp.now(),
+        weeklyProgress: {
+          [weekKey]: {
+            xp: 0,
+            studyTime: 0,
+            unitsCompleted: 0,
+            quizzesPassed: 0
+          }
+        },
+        monthlyProgress: {
+          [monthKey]: {
+            xp: 0,
+            studyTime: 0,
+            coursesCompleted: 0
+          }
+        }
+      };
+      
+      await setDoc(doc(db, 'userAnalytics', userId), initialAnalytics);
+      console.log('ensureUserAnalytics: Initial analytics created successfully');
+    } else {
+      console.log('ensureUserAnalytics: Analytics found, current streak:', analytics.currentStreak);
+    }
+  } catch (error) {
+    console.error('ensureUserAnalytics: Error ensuring user analytics:', error);
+  }
+};
+
 export const testProgressionSystems = async (userId: string): Promise<{
   analytics: boolean;
   streak: boolean;

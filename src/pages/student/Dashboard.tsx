@@ -25,7 +25,9 @@ import {
   Course as FirebaseCourse,
   UserCourse,
   getUserCourses,
-  testProgressionSystems
+  testProgressionSystems,
+  testFirebaseConnection,
+  ensureUserAnalytics
 } from '@/lib/firebaseUtils';
 
 // Generate weekly activity data from user analytics
@@ -73,6 +75,15 @@ const Dashboard = () => {
       try {
         console.log('Dashboard: Starting to fetch dashboard data');
         setLoading(true);
+        
+        // Test Firebase connection first
+        console.log('Dashboard: Testing Firebase connection...');
+        const firebaseTest = await testFirebaseConnection();
+        console.log('Dashboard: Firebase connection test result:', firebaseTest);
+        
+        // Ensure user analytics exist
+        console.log('Dashboard: Ensuring user analytics exist...');
+        await ensureUserAnalytics(user.id);
         
         // Calculate comprehensive dashboard stats
         const stats = await calculateDashboardStats(user.id);
