@@ -305,16 +305,21 @@ VITE_ANALYTICS_ID=your-analytics-id
 
 ## 🗄️ Database Population Script
 
-### Setup
+### Option 1: Client-Side (Recommended)
+**No service account key required!**
+
+1. **Update Firebase rules**: Use the rules from `firebase-security-rules-update.md`
+2. **Open the HTML file**: Open `scripts/populate-database.html` in your browser
+3. **Click the button**: Click "🚀 Populate Database" to add sample data
+4. **Check the logs**: Watch the real-time progress in the browser
+
+### Option 2: Node.js Script
+**Requires service account key**
+
 1. **Install dependencies**: `cd scripts && npm install`
 2. **Add service account key**: Place `serviceAccountKey.json` in `config/` directory
 3. **Update Firebase rules**: Use the rules from `firebase-security-rules-update.md`
-
-### Run Script
-```bash
-cd scripts
-npm run populate
-```
+4. **Run script**: `npm run populate`
 
 ### What it adds:
 - **📊 15 leaderboard entries** (10 weekly + 5 monthly)
@@ -324,6 +329,12 @@ npm run populate
 ### Data Structure:
 - **Leaderboards**: `leaderboards` collection with `period`, `score`, `rank`
 - **Quotes**: `motivationalQuotes` collection with `text`, `author`, `category`
+
+### Quick Start:
+```bash
+# Open the HTML file in your browser
+open scripts/populate-database.html
+```
 
 ## 📚 Additional Resources
 

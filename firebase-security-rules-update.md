@@ -15,29 +15,8 @@ rules_version = '2';
 service cloud.firestore {
   match /databases/{database}/documents {
     // Allow authenticated users to read most collections
-    match /courses/{document} {
+    match /{document=**} {
       allow read: if request.auth != null;
-      allow write: if request.auth != null && get(/databases/$(database)/documents/users/$(request.auth.uid)).data.role == 'admin';
-    }
-    
-    match /units/{document} {
-      allow read: if request.auth != null;
-      allow write: if request.auth != null && get(/databases/$(database)/documents/users/$(request.auth.uid)).data.role == 'admin';
-    }
-    
-    match /quizzes/{document} {
-      allow read: if request.auth != null;
-      allow write: if request.auth != null && get(/databases/$(database)/documents/users/$(request.auth.uid)).data.role == 'admin';
-    }
-    
-    match /achievements/{document} {
-      allow read: if request.auth != null;
-      allow write: if request.auth != null && get(/databases/$(database)/documents/users/$(request.auth.uid)).data.role == 'admin';
-    }
-    
-    match /shopItems/{document} {
-      allow read: if request.auth != null;
-      allow write: if request.auth != null && get(/databases/$(database)/documents/users/$(request.auth.uid)).data.role == 'admin';
     }
     
     // Allow users to read/write their own data
@@ -45,47 +24,76 @@ service cloud.firestore {
       allow read, write: if request.auth != null && request.auth.uid == userId;
     }
     
-    match /userCourses/{document} {
-      allow read, write: if request.auth != null && resource.data.userId == request.auth.uid;
+    match /userCourses/{docId} {
+      allow read, write: if request.auth != null && 
+        (resource == null || resource.data.userId == request.auth.uid);
     }
     
-    match /userUnits/{document} {
-      allow read, write: if request.auth != null && resource.data.userId == request.auth.uid;
+    match /userUnits/{docId} {
+      allow read, write: if request.auth != null && 
+        (resource == null || resource.data.userId == request.auth.uid);
     }
     
-    match /userInventory/{document} {
-      allow read, write: if request.auth != null && resource.data.userId == request.auth.uid;
+    match /userInventory/{docId} {
+      allow read, write: if request.auth != null && 
+        (resource == null || resource.data.userId == request.auth.uid);
     }
     
+    // Allow users to read/write their own analytics
     match /userAnalytics/{userId} {
       allow read, write: if request.auth != null && request.auth.uid == userId;
     }
     
-    // NEW: Allow authenticated users to read/write userActivity
-    match /userActivity/{document} {
-      allow read, write: if request.auth != null && resource.data.userId == request.auth.uid;
-    }
-    
-    // NEW: Allow authenticated users to read leaderboards
-    match /leaderboards/{document} {
-      allow read: if request.auth != null;
-      allow write: if request.auth != null;
-    }
-    
-    // NEW: Allow authenticated users to read motivational quotes
-    match /motivationalQuotes/{document} {
-      allow read: if request.auth != null;
-      allow write: if request.auth != null;
-    }
-    
-    // Admin collections
-    match /adminAnalytics/{document} {
-      allow read, write: if request.auth != null && get(/databases/$(database)/documents/users/$(request.auth.uid)).data.role == 'admin';
+    // Allow users to write their own activity
+    match /userActivity/{docId} {
+      allow read, write: if request.auth != null && 
+        (resource == null || resource.data.userId == request.auth.uid);
     }
     
     // Allow admin users to write to core collections
-    match /{document=**} {
-      allow read, write: if request.auth != null && get(/databases/$(database)/documents/users/$(request.auth.uid)).data.role == 'admin';
+    match /courses/{docId} {
+      allow read: if request.auth != null;
+      allow write: if request.auth != null && 
+        get(/databases/$(database)/documents/users/$(request.auth.uid)).data.role == 'admin';
+    }
+    
+    match /units/{docId} {
+      allow read: if request.auth != null;
+      allow write: if request.auth != null && 
+        get(/databases/$(database)/documents/users/$(request.auth.uid)).data.role == 'admin';
+    }
+    
+    match /quizzes/{docId} {
+      allow read: if request.auth != null;
+      allow write: if request.auth != null && 
+        get(/databases/$(database)/documents/users/$(request.auth.uid)).data.role == 'admin';
+    }
+    
+    match /achievements/{docId} {
+      allow read: if request.auth != null;
+      allow write: if request.auth != null && 
+        get(/databases/$(database)/documents/users/$(request.auth.uid)).data.role == 'admin';
+    }
+    
+    match /shopItems/{docId} {
+      allow read: if request.auth != null;
+      allow write: if request.auth != null && 
+        get(/databases/$(database)/documents/users/$(request.auth.uid)).data.role == 'admin';
+    }
+    
+    // UPDATED: Allow authenticated users to read/write leaderboards and quotes
+    // This allows the Node.js script to populate data
+    match /leaderboards/{docId} {
+      allow read, write: if request.auth != null;
+    }
+    
+    match /motivationalQuotes/{docId} {
+      allow read, write: if request.auth != null;
+    }
+    
+    match /adminAnalytics/{docId} {
+      allow read, write: if request.auth != null && 
+        get(/databases/$(database)/documents/users/$(request.auth.uid)).data.role == 'admin';
     }
   }
 }

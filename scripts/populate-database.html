@@ -1,0 +1,274 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Darsni Database Population</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            max-width: 800px;
+            margin: 0 auto;
+            padding: 20px;
+            background: #0E0E0E;
+            color: white;
+        }
+        .container {
+            background: #1a1a1a;
+            padding: 30px;
+            border-radius: 10px;
+            border: 1px solid #333;
+        }
+        h1 {
+            color: #FF4B1A;
+            text-align: center;
+        }
+        .button {
+            background: linear-gradient(135deg, #FF4B1A, #FF794B);
+            color: white;
+            border: none;
+            padding: 15px 30px;
+            border-radius: 8px;
+            font-size: 16px;
+            cursor: pointer;
+            margin: 20px 0;
+            width: 100%;
+            transition: transform 0.2s;
+        }
+        .button:hover {
+            transform: translateY(-2px);
+        }
+        .button:disabled {
+            opacity: 0.6;
+            cursor: not-allowed;
+        }
+        .status {
+            margin: 20px 0;
+            padding: 15px;
+            border-radius: 8px;
+            background: #2a2a2a;
+            border-left: 4px solid #FF4B1A;
+        }
+        .log {
+            background: #000;
+            padding: 15px;
+            border-radius: 8px;
+            font-family: monospace;
+            font-size: 14px;
+            max-height: 300px;
+            overflow-y: auto;
+            white-space: pre-wrap;
+        }
+        .instructions {
+            background: #2a2a2a;
+            padding: 20px;
+            border-radius: 8px;
+            margin: 20px 0;
+        }
+        .warning {
+            background: #4a1a1a;
+            border-left: 4px solid #ff4444;
+            padding: 15px;
+            border-radius: 8px;
+            margin: 20px 0;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <h1>🗄️ Darsni Database Population</h1>
+        
+        <div class="instructions">
+            <h3>📋 Instructions:</h3>
+            <ol>
+                <li>Make sure you have updated Firebase security rules to allow writes to <code>leaderboards</code> and <code>motivationalQuotes</code></li>
+                <li>Click the button below to populate the database</li>
+                <li>Check the console for detailed logs</li>
+                <li>Refresh your app to see the new data</li>
+            </ol>
+        </div>
+
+        <div class="warning">
+            <strong>⚠️ Important:</strong> This will add sample data to your Firebase database. Make sure you have the correct Firebase project selected.
+        </div>
+
+        <button id="populateBtn" class="button" onclick="runPopulation()">
+            🚀 Populate Database
+        </button>
+
+        <div class="status" id="status">
+            <strong>Status:</strong> Ready to populate database
+        </div>
+
+        <div class="log" id="log"></div>
+    </div>
+
+    <!-- Firebase SDK -->
+    <script type="module">
+        import { initializeApp } from 'https://www.gstatic.com/firebasejs/10.7.1/firebase-app.js';
+        import { getFirestore, collection, addDoc, setDoc, doc } from 'https://www.gstatic.com/firebasejs/10.7.1/firebase-firestore.js';
+        import { getAuth, signInAnonymously } from 'https://www.gstatic.com/firebasejs/10.7.1/firebase-auth.js';
+
+        // Firebase config - UPDATE THIS WITH YOUR ACTUAL CONFIG
+        const firebaseConfig = {
+            apiKey: "AIzaSyBvQvQvQvQvQvQvQvQvQvQvQvQvQvQvQvQ",
+            authDomain: "darsni-platform.firebaseapp.com",
+            projectId: "darsni-platform",
+            storageBucket: "darsni-platform.appspot.com",
+            messagingSenderId: "123456789",
+            appId: "1:123456789:web:abcdef123456"
+        };
+
+        // Initialize Firebase
+        const app = initializeApp(firebaseConfig);
+        const db = getFirestore(app);
+        const auth = getAuth(app);
+
+        // Sample data
+        const leaderboardData = [
+            {
+                userId: 'user1',
+                rank: 1,
+                score: 2840,
+                name: 'أحمد محمد',
+                avatar: '👨‍🎓',
+                period: 'weekly',
+                weekKey: '2024-W01',
+                timestamp: new Date()
+            },
+            {
+                userId: 'user2', 
+                rank: 2,
+                score: 2650,
+                name: 'فاطمة علي',
+                avatar: '👩‍🎓',
+                period: 'weekly',
+                weekKey: '2024-W01',
+                timestamp: new Date()
+            },
+            {
+                userId: 'user3',
+                rank: 3, 
+                score: 2420,
+                name: 'عمر خالد',
+                avatar: '👨‍🎓',
+                period: 'weekly',
+                weekKey: '2024-W01',
+                timestamp: new Date()
+            },
+            {
+                userId: 'user4',
+                rank: 4,
+                score: 2180,
+                name: 'سارة أحمد',
+                avatar: '👩‍🎓',
+                period: 'weekly',
+                weekKey: '2024-W01',
+                timestamp: new Date()
+            },
+            {
+                userId: 'user5',
+                rank: 5,
+                score: 1950,
+                name: 'محمد حسن',
+                avatar: '👨‍🎓',
+                period: 'weekly',
+                weekKey: '2024-W01',
+                timestamp: new Date()
+            }
+        ];
+
+        const motivationalQuotes = [
+            {
+                id: 'quote1',
+                text: 'النجاح هو نتيجة التحضير والعمل الجاد والتعلم من الفشل',
+                author: 'نابليون هيل',
+                category: 'success',
+                language: 'ar'
+            },
+            {
+                id: 'quote2',
+                text: 'كل يوم فرصة جديدة للتعلم والنمو',
+                author: 'مجهول',
+                category: 'growth',
+                language: 'ar'
+            },
+            {
+                id: 'quote3',
+                text: 'الثقة بالنفس هي أول سر من أسرار النجاح',
+                author: 'نابليون هيل',
+                category: 'confidence',
+                language: 'ar'
+            },
+            {
+                id: 'quote4',
+                text: 'التعليم هو أقوى سلاح يمكنك استخدامه لتغيير العالم',
+                author: 'نيلسون مانديلا',
+                category: 'education',
+                language: 'ar'
+            },
+            {
+                id: 'quote5',
+                text: 'لا تخف من النمو ببطء، خف فقط من البقاء واقفاً',
+                author: 'كونفوشيوس',
+                category: 'perseverance',
+                language: 'ar'
+            }
+        ];
+
+        // Global function to run population
+        window.runPopulation = async function() {
+            const btn = document.getElementById('populateBtn');
+            const status = document.getElementById('status');
+            const log = document.getElementById('log');
+
+            btn.disabled = true;
+            btn.textContent = '⏳ Populating...';
+            status.innerHTML = '<strong>Status:</strong> Starting population...';
+            log.textContent = '';
+
+            function addLog(message) {
+                log.textContent += new Date().toLocaleTimeString() + ': ' + message + '\n';
+                log.scrollTop = log.scrollHeight;
+            }
+
+            try {
+                addLog('🚀 Starting client-side database population...');
+
+                // Sign in anonymously
+                addLog('🔐 Signing in anonymously...');
+                await signInAnonymously(auth);
+                addLog('✅ Signed in successfully');
+
+                // Add leaderboard data
+                addLog('📊 Adding leaderboard data...');
+                for (const entry of leaderboardData) {
+                    await addDoc(collection(db, 'leaderboards'), entry);
+                }
+                addLog('✅ Added leaderboard data');
+
+                // Add motivational quotes
+                addLog('💬 Adding motivational quotes...');
+                for (const quote of motivationalQuotes) {
+                    await setDoc(doc(db, 'motivationalQuotes', quote.id), quote);
+                }
+                addLog('✅ Added motivational quotes');
+
+                addLog('🎉 Database population completed successfully!');
+                addLog(`📊 Added ${leaderboardData.length} leaderboard entries`);
+                addLog(`💬 Added ${motivationalQuotes.length} motivational quotes`);
+
+                status.innerHTML = '<strong>Status:</strong> ✅ Population completed successfully!';
+                btn.textContent = '✅ Completed!';
+
+            } catch (error) {
+                addLog('❌ Error populating database: ' + error.message);
+                addLog('💡 Make sure you have updated the Firebase security rules');
+                status.innerHTML = '<strong>Status:</strong> ❌ Error occurred. Check console for details.';
+                btn.textContent = '❌ Error';
+                btn.disabled = false;
+            }
+        };
+    </script>
+</body>
+</html> 
