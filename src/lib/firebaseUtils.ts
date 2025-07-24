@@ -497,6 +497,17 @@ export const testFirebaseConnection = async (): Promise<boolean> => {
       console.error('Firebase userAnalytics collection access failed:', analyticsError);
     }
     
+    // Test writing to userAnalytics collection (this will help identify permission issues)
+    try {
+      const testDoc = doc(db, 'userAnalytics', 'test-write-permission');
+      await setDoc(testDoc, { test: true, timestamp: Timestamp.now() });
+      console.log('Firebase connection successful. userAnalytics collection writable.');
+      // Clean up test document
+      await deleteDoc(testDoc);
+    } catch (writeError) {
+      console.error('Firebase userAnalytics collection write failed:', writeError);
+    }
+    
     return true;
   } catch (error) {
     console.error('Firebase connection test failed:', error);
