@@ -401,6 +401,188 @@ export const getLeaderboard = async (period: 'weekly' | 'monthly', category: 'xp
   }
 };
 
+// Get leaderboard data from collection (new structure)
+export const getLeaderboardData = async (period: 'weekly' | 'monthly'): Promise<LeaderboardEntry[]> => {
+  try {
+    const q = query(
+      collection(db, 'leaderboards'),
+      where('period', '==', period),
+      orderBy('score', 'desc'),
+      limit(10)
+    );
+    const snapshot = await getDocs(q);
+    return snapshot.docs.map(doc => {
+      const data = doc.data();
+      return {
+        userId: data.userId || '',
+        rank: data.rank || 0,
+        score: data.score || 0,
+        name: data.name || '',
+        avatar: data.avatar || '👤'
+      } as LeaderboardEntry;
+    });
+  } catch (error) {
+    console.error('Error fetching leaderboard data:', error);
+    return [];
+  }
+};
+
+// Get motivational quotes
+export const getMotivationalQuotes = async (): Promise<Array<{
+  id: string;
+  text: string;
+  author: string;
+  category: string;
+  language: string;
+}>> => {
+  try {
+    const snapshot = await getDocs(collection(db, 'motivationalQuotes'));
+    return snapshot.docs.map(doc => ({ id: doc.id, ...doc.data() })) as any[];
+  } catch (error) {
+    console.error('Error fetching motivational quotes:', error);
+    return [];
+  }
+};
+
+// Get daily quote (based on day of year)
+export const getDailyQuote = async (): Promise<{
+  id: string;
+  text: string;
+  author: string;
+  category: string;
+  language: string;
+} | null> => {
+  try {
+    const quotes = await getMotivationalQuotes();
+    if (quotes.length === 0) return null;
+    
+    const dayOfYear = Math.floor((Date.now() - new Date(new Date().getFullYear(), 0, 0).getTime()) / (1000 * 60 * 60 * 24));
+    const quoteIndex = dayOfYear % quotes.length;
+    
+    return quotes[quoteIndex] || null;
+  } catch (error) {
+    console.error('Error fetching daily quote:', error);
+    return null;
+  }
+};
+
+// Add sample leaderboard data (for development/testing)
+export const addSampleLeaderboardData = async (): Promise<void> => {
+  try {
+    const sampleData = [
+      {
+        userId: 'user1',
+        rank: 1,
+        score: 2840,
+        name: 'أحمد محمد',
+        avatar: '👨‍🎓',
+        period: 'weekly',
+        weekKey: '2024-W01',
+        timestamp: Timestamp.now()
+      },
+      {
+        userId: 'user2', 
+        rank: 2,
+        score: 2650,
+        name: 'فاطمة علي',
+        avatar: '👩‍🎓',
+        period: 'weekly',
+        weekKey: '2024-W01',
+        timestamp: Timestamp.now()
+      },
+      {
+        userId: 'user3',
+        rank: 3, 
+        score: 2420,
+        name: 'عمر خالد',
+        avatar: '👨‍🎓',
+        period: 'weekly',
+        weekKey: '2024-W01',
+        timestamp: Timestamp.now()
+      },
+      {
+        userId: 'user4',
+        rank: 4,
+        score: 2180,
+        name: 'سارة أحمد',
+        avatar: '👩‍🎓',
+        period: 'weekly',
+        weekKey: '2024-W01',
+        timestamp: Timestamp.now()
+      },
+      {
+        userId: 'user5',
+        rank: 5,
+        score: 1950,
+        name: 'محمد حسن',
+        avatar: '👨‍🎓',
+        period: 'weekly',
+        weekKey: '2024-W01',
+        timestamp: Timestamp.now()
+      }
+    ];
+
+    for (const entry of sampleData) {
+      await addDoc(collection(db, 'leaderboards'), entry);
+    }
+
+    console.log('✅ Added sample leaderboard data');
+  } catch (error) {
+    console.error('Error adding sample leaderboard data:', error);
+  }
+};
+
+// Add sample motivational quotes (for development/testing)
+export const addSampleQuotesData = async (): Promise<void> => {
+  try {
+    const sampleQuotes = [
+      {
+        id: 'quote1',
+        text: 'النجاح هو نتيجة التحضير والعمل الجاد والتعلم من الفشل',
+        author: 'نابليون هيل',
+        category: 'success',
+        language: 'ar'
+      },
+      {
+        id: 'quote2',
+        text: 'كل يوم فرصة جديدة للتعلم والنمو',
+        author: 'مجهول',
+        category: 'growth',
+        language: 'ar'
+      },
+      {
+        id: 'quote3',
+        text: 'الثقة بالنفس هي أول سر من أسرار النجاح',
+        author: 'نابليون هيل',
+        category: 'confidence',
+        language: 'ar'
+      },
+      {
+        id: 'quote4',
+        text: 'التعليم هو أقوى سلاح يمكنك استخدامه لتغيير العالم',
+        author: 'نيلسون مانديلا',
+        category: 'education',
+        language: 'ar'
+      },
+      {
+        id: 'quote5',
+        text: 'لا تخف من النمو ببطء، خف فقط من البقاء واقفاً',
+        author: 'كونفوشيوس',
+        category: 'perseverance',
+        language: 'ar'
+      }
+    ];
+
+    for (const quote of sampleQuotes) {
+      await setDoc(doc(db, 'motivationalQuotes', quote.id), quote);
+    }
+
+    console.log('✅ Added sample quotes data');
+  } catch (error) {
+    console.error('Error adding sample quotes data:', error);
+  }
+};
+
 // Real-time listeners
 export const subscribeToUserProgress = (
   userId: string,

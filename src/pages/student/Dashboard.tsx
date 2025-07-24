@@ -18,13 +18,16 @@ import { useAuth } from '@/contexts/AuthContext';
 import { 
   getCourses, 
   getUserCourseProgress, 
-  getLeaderboard,
+  getLeaderboardData,
   subscribeToCourses,
   calculateDashboardStats,
   DashboardStats,
   Course as FirebaseCourse,
   UserCourse,
-  getUserCourses
+  getUserCourses,
+  getDailyQuote,
+  addSampleLeaderboardData,
+  addSampleQuotesData
 } from '@/lib/firebaseUtils';
 
 // Generate weekly activity data from user analytics
@@ -88,7 +91,7 @@ const Dashboard = () => {
         setUserCourses(userCoursesData);
 
         // Fetch leaderboard
-        const leaderboard = await getLeaderboard('weekly', 'xp');
+        const leaderboard = await getLeaderboardData('weekly');
         console.log('Dashboard: Fetched leaderboard:', leaderboard.length);
         setLeaderboardData(leaderboard);
 
@@ -140,7 +143,28 @@ const Dashboard = () => {
       <div className="bg-gradient-to-r from-[#FF4800] to-[#FFA56E] rounded-xl p-6 text-white">
         <h1 className="text-2xl font-bold mb-2">مرحباً، {user?.name}</h1>
         <p className="text-white/90">استمر في رحلتك التعليمية واكتشف المزيد من المعرفة</p>
-
+        
+        {/* Temporary button for testing - remove in production */}
+        <div className="mt-4 flex gap-2">
+          <Button 
+            onClick={async () => {
+              try {
+                await addSampleLeaderboardData();
+                await addSampleQuotesData();
+                // Refresh data
+                const leaderboard = await getLeaderboardData('weekly');
+                setLeaderboardData(leaderboard);
+              } catch (error) {
+                console.error('Error adding sample data:', error);
+              }
+            }}
+            variant="outline"
+            size="sm"
+            className="text-white border-white/30 hover:bg-white/10"
+          >
+            إضافة بيانات تجريبية
+          </Button>
+        </div>
       </div>
 
       {/* Stats Cards */}
