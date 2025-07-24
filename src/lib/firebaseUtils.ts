@@ -667,10 +667,14 @@ export const calculateDashboardStats = async (userId: string): Promise<Dashboard
     // Calculate course statistics
     const totalCourses = userCourses.length;
     const completedCourses = userCourses.filter(course => course.progress === 100).length;
-    const totalXP = userCourses.reduce((sum, course) => sum + course.totalXP, 0);
+    const totalXP = analytics?.totalXP || 0; // Use analytics totalXP instead of course XP
     const averageProgress = totalCourses > 0 
       ? Math.round(userCourses.reduce((sum, course) => sum + course.progress, 0) / totalCourses)
       : 0;
+    
+    console.log('calculateDashboardStats: Analytics totalXP:', analytics?.totalXP);
+    console.log('calculateDashboardStats: Calculated totalXP:', totalXP);
+    console.log('calculateDashboardStats: User courses XP sum:', userCourses.reduce((sum, course) => sum + course.totalXP, 0));
 
     // Get recent activity
     const recentActivity = await getRecentActivity(userId);
