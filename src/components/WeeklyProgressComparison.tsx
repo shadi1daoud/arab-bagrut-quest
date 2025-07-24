@@ -19,6 +19,14 @@ const WeeklyProgressComparison: React.FC<WeeklyProgressComparisonProps> = ({
   streak,
   weeklyGoal
 }) => {
+  console.log('WeeklyProgressComparison: Received props:', {
+    currentWeekXP,
+    previousWeekXP,
+    currentWeekHours,
+    previousWeekHours,
+    streak,
+    weeklyGoal
+  });
   // Calculate percentage changes
   const xpChange = previousWeekXP > 0 ? ((currentWeekXP - previousWeekXP) / previousWeekXP) * 100 : 100;
   const hoursChange = previousWeekHours > 0 ? ((currentWeekHours - previousWeekHours) / previousWeekHours) * 100 : 100;

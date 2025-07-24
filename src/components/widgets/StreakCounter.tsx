@@ -7,6 +7,7 @@ interface StreakCounterProps {
 }
 
 const StreakCounter: React.FC<StreakCounterProps> = ({ streak }) => {
+  console.log('StreakCounter: Received streak value:', streak);
   return (
     <div className="text-center">
       <div className="relative mb-2">
