@@ -28,7 +28,8 @@ import {
   testProgressionSystems,
   testFirebaseConnection,
   ensureUserAnalytics,
-  getUserAnalytics
+  getUserAnalytics,
+  updateUserStreak
 } from '@/lib/firebaseUtils';
 
 // Generate weekly activity data from user analytics
@@ -97,6 +98,16 @@ const Dashboard = () => {
         console.log('Dashboard: Current streak from stats:', stats.currentStreak);
         console.log('Dashboard: Weekly stats:', stats.weeklyStats);
         setDashboardStats(stats);
+        
+        // Force a re-render after a short delay to ensure data is updated
+        setTimeout(() => {
+          console.log('Dashboard: Force refreshing dashboard data...');
+          calculateDashboardStats(user.id).then(refreshedStats => {
+            console.log('Dashboard: Refreshed stats:', refreshedStats);
+            console.log('Dashboard: Refreshed streak:', refreshedStats.currentStreak);
+            setDashboardStats(refreshedStats);
+          });
+        }, 2000);
 
         // Fetch all courses
         const allCourses = await getCourses();
@@ -165,6 +176,18 @@ const Dashboard = () => {
       <div className="bg-gradient-to-r from-[#FF4800] to-[#FFA56E] rounded-xl p-6 text-white">
         <h1 className="text-2xl font-bold mb-2">مرحباً، {user?.name}</h1>
         <p className="text-white/90">استمر في رحلتك التعليمية واكتشف المزيد من المعرفة</p>
+        <button 
+          onClick={async () => {
+            console.log('Manual streak update test...');
+            await updateUserStreak(user?.id || '');
+            const refreshedStats = await calculateDashboardStats(user?.id || '');
+            console.log('Manual test - refreshed stats:', refreshedStats);
+            setDashboardStats(refreshedStats);
+          }}
+          className="mt-2 px-4 py-2 bg-white/20 rounded-lg text-white hover:bg-white/30"
+        >
+          اختبار تحديث الشريط
+        </button>
       </div>
 
       {/* Stats Cards */}
