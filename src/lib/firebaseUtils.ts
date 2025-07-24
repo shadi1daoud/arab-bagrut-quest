@@ -423,7 +423,32 @@ export const getLeaderboardData = async (period: 'weekly' | 'monthly'): Promise<
     });
   } catch (error) {
     console.error('Error fetching leaderboard data:', error);
-    return [];
+    
+    // Fallback: try without orderBy if index doesn't exist
+    try {
+      const fallbackQ = query(
+        collection(db, 'leaderboards'),
+        where('period', '==', period),
+        limit(10)
+      );
+      const snapshot = await getDocs(fallbackQ);
+      const entries = snapshot.docs.map(doc => {
+        const data = doc.data();
+        return {
+          userId: data.userId || '',
+          rank: data.rank || 0,
+          score: data.score || 0,
+          name: data.name || '',
+          avatar: data.avatar || '👤'
+        } as LeaderboardEntry;
+      });
+      
+      // Sort manually in JavaScript
+      return entries.sort((a, b) => b.score - a.score);
+    } catch (fallbackError) {
+      console.error('Fallback leaderboard query also failed:', fallbackError);
+      return [];
+    }
   }
 };
 
@@ -910,7 +935,28 @@ export const getRecentActivity = async (userId: string): Promise<Array<{
     return snapshot.docs.map(doc => ({ id: doc.id, ...doc.data() })) as any[];
   } catch (error) {
     console.error('Error fetching recent activity:', error);
-    return [];
+    
+    // Fallback: try without orderBy if index doesn't exist
+    try {
+      const fallbackQ = query(
+        collection(db, 'userActivity'),
+        where('userId', '==', userId),
+        limit(10)
+      );
+      const snapshot = await getDocs(fallbackQ);
+      const activities = snapshot.docs.map(doc => ({ id: doc.id, ...doc.data() })) as any[];
+      
+      // Sort manually in JavaScript
+      return activities.sort((a, b) => {
+        if (a.timestamp && b.timestamp) {
+          return b.timestamp.toMillis() - a.timestamp.toMillis();
+        }
+        return 0;
+      });
+    } catch (fallbackError) {
+      console.error('Fallback activity query also failed:', fallbackError);
+      return [];
+    }
   }
 };
 
