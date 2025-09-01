@@ -24,7 +24,7 @@ dist-ssr
 *.sw?
 
 # Firebase and sensitive files
-config/firebaseConfig.ts
+frontend/config/firebaseConfig.ts
 scripts/serviceAccountKey.json
 *.serviceAccountKey.json
 serviceAccountKey.json
