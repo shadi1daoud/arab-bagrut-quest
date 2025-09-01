@@ -45,3 +45,10 @@ serviceAccountKey.json
 # Firebase Admin SDK
 **/firebase-admin-key.json
 **/firebase-service-account.json
+
+
+backend/sdk.json
+backend/env.example
+backend/scripts/serviceAccountKey.json
+
+frontend/env.example
