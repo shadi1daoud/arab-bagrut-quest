@@ -22,33 +22,3 @@ dist-ssr
 *.njsproj
 *.sln
 *.sw?
-
-# Firebase and sensitive files
-frontend/config/firebaseConfig.ts
-scripts/serviceAccountKey.json
-*.serviceAccountKey.json
-serviceAccountKey.json
-.env
-.env.local
-.env.development
-.env.production
-.env.test
-
-# API Keys and Secrets
-**/api-keys.json
-**/secrets.json
-**/credentials.json
-**/*.key
-**/*.pem
-**/*.p12
-
-# Firebase Admin SDK
-**/firebase-admin-key.json
-**/firebase-service-account.json
-
-
-backend/sdk.json
-backend/env.example
-backend/scripts/serviceAccountKey.json
-
-frontend/env.example

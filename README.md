@@ -1,100 +1,211 @@
 
-# Darsni Platform
+# درسني - Darsni Educational Platform
 
-A comprehensive educational platform built with React frontend and Node.js backend.
+منصة تعليمية تفاعلية للتحضير لامتحانات البجروت مع واجهة ألعاب تحفيزية
 
-## 🏗️ Project Structure
+An interactive educational platform for Bagrut exam preparation with gamified learning interface.
+
+## 🚀 Project Overview
+
+Darsni is a modern educational platform built with React and TypeScript that provides:
+- **Gamified Learning Experience**: XP, levels, streaks, and achievements
+- **Interactive Course Content**: Video lessons, quizzes, and practice materials
+- **Student Dashboard**: Progress tracking and performance analytics
+- **Admin Panel**: Course management and user administration
+- **Responsive Design**: Optimized for desktop and mobile devices
+
+## 🛠 Tech Stack
+
+- **Frontend**: React 18, TypeScript, Vite
+- **Styling**: Tailwind CSS, Custom CSS animations
+- **UI Components**: Radix UI (shadcn/ui)
+- **Routing**: React Router DOM
+- **State Management**: React Context, TanStack Query
+- **Animations**: Framer Motion, Canvas Confetti
+- **Charts**: Recharts
+- **Development**: ESLint, TypeScript strict mode
+
+## 📁 Project Structure
 
 ```
-arab-bagrut-quest/
-├── frontend/          # React + Vite frontend application
-│   ├── src/          # Source code
-│   ├── public/       # Static assets
-│   ├── package.json  # Frontend dependencies
-│   └── env.example   # Frontend environment variables
-├── backend/           # Node.js + Express backend API
-│   ├── src/          # Source code
-│   ├── package.json  # Backend dependencies
-│   └── env.example   # Backend environment variables
-└── README.md         # This file
+src/
+├── components/          # Reusable UI components
+│   ├── ui/             # Base UI components (shadcn/ui)
+│   ├── course/         # Course-specific components
+│   ├── friends/        # Social features components
+│   └── widgets/        # Dashboard widgets
+├── contexts/           # React contexts for state management
+├── hooks/              # Custom React hooks
+├── layouts/            # Page layout components
+├── pages/              # Route components
+│   ├── admin/          # Admin panel pages
+│   └── student/        # Student dashboard pages
+├── styles/             # Global styles and themes
+├── types/              # TypeScript type definitions
+└── lib/                # Utility functions and configurations
 ```
 
 ## 🚀 Quick Start
 
-### Backend Setup
-```bash
-cd backend
-cp env.example .env
-# Edit .env with your Firebase credentials
-npm install
-npm run dev
+### Prerequisites
+- Node.js 18+ 
+- npm or yarn package manager
+
+### Installation
+
+1. **Clone the repository**
+   ```bash
+   git clone <YOUR_GIT_URL>
+   cd <YOUR_PROJECT_NAME>
+   ```
+
+2. **Install dependencies**
+   ```bash
+   npm install
+   ```
+
+3. **Start development server**
+   ```bash
+   npm run dev
+   ```
+
+4. **Open in browser**
+   Navigate to `http://localhost:5173`
+
+### Test Accounts
+
+**Student Account:**
+- Email: `student@darsni.com`
+- Password: Any password
+- Features: Course access, progress tracking, gamification
+
+**Admin Account:**
+- Email: `admin@darsni.com`
+- Password: Any password  
+- Features: Course management, user administration
+
+## 🎮 Key Features
+
+### For Students
+- **Interactive Courses**: Video lessons with chapters and notes
+- **Progress Tracking**: XP system, levels, and achievement streaks
+- **Gamified Learning**: Coins, leaderboards, and weekly challenges
+- **Social Features**: Friends, study groups, and community interaction
+- **Responsive Design**: Seamless experience across devices
+
+### For Administrators
+- **Course Management**: Upload, edit, and organize course content
+- **User Administration**: Monitor student progress and engagement
+- **Analytics Dashboard**: Platform usage and performance metrics
+- **Content Tools**: Bulk upload and content organization features
+
+## 🔧 Development Guidelines
+
+### Code Style
+- Use TypeScript for all new files
+- Follow React functional components with hooks
+- Implement proper error boundaries where needed
+- Use Tailwind CSS for styling with semantic class names
+- Follow the existing file naming conventions
+
+### Component Structure
+```typescript
+// Component template
+import React from 'react';
+import { ComponentProps } from '@/types/component';
+
+interface ComponentNameProps {
+  // Define props with proper types
+}
+
+const ComponentName = ({ ...props }: ComponentNameProps) => {
+  // Component logic
+  
+  return (
+    <div className="semantic-class-names">
+      {/* Component JSX */}
+    </div>
+  );
+};
+
+export default ComponentName;
 ```
 
-### Frontend Setup
-```bash
-cd frontend
-cp env.example .env
-npm install
-npm run dev
+### Adding New Features
+1. Create types in `/src/types/` if needed
+2. Build reusable components in `/src/components/`
+3. Add pages to appropriate `/src/pages/` subdirectory
+4. Update routing in `App.tsx`
+5. Add proper TypeScript interfaces
+6. Test across different screen sizes
+
+## 🎨 Theming
+
+The platform uses a custom cosmic/gaming theme with:
+- **Dark Background**: Deep space aesthetic
+- **Accent Colors**: Orange/red gradient (`#FF4B1A` to `#FF794B`)
+- **Typography**: Arabic support with Noto Sans Arabic, Changa fonts
+- **Animations**: Smooth transitions and particle effects
+
+### Color Palette
+```css
+--game-primary: #FF4B1A;    /* Primary orange */
+--game-accent: #FF794B;     /* Secondary orange */
+--cosmic-primary: #00D4FF;  /* Cyan blue */
+--background: #0E0E0E;      /* Dark background */
 ```
 
-## 🔧 Development
+## 📱 Responsive Design
 
-- **Backend**: Runs on `http://localhost:5000`
-- **Frontend**: Runs on `http://localhost:5173` (Vite default)
-- **API**: Available at `http://localhost:5000/api/*`
+The platform is optimized for:
+- **Desktop**: Full feature experience (1024px+)
+- **Tablet**: Adapted layouts (768px - 1023px)
+- **Mobile**: Mobile-first approach (320px - 767px)
 
-## 📚 Features
+## 🧪 Testing
 
-- **User Authentication** with Firebase Auth
-- **Course Management** system
-- **Progress Tracking** for students
-- **Admin Panel** for content management
-- **Real-time Updates** with Firebase
-- **Responsive Design** with Tailwind CSS
-
-## 🛠️ Tech Stack
-
-### Frontend
-- React 18 + TypeScript
-- Vite for build tooling
-- Tailwind CSS for styling
-- Shadcn/ui components
-- Firebase Web SDK
-
-### Backend
-- Node.js + Express
-- TypeScript
-- Firebase Admin SDK
-- JWT authentication
-- RESTful API design
-
-## 📖 Documentation
-
-- [Backend README](./backend/README.md) - Backend setup and API docs
-- [Frontend README](./frontend/README.md) - Frontend development guide
-- [Developer Guide](./DEVELOPER_GUIDE.md) - General development guidelines
-- [Contributing Guide](./CONTRIBUTING.md) - How to contribute
-
-## 🔐 Environment Variables
-
-### Backend (.env)
-- Firebase Admin SDK credentials
-- Server configuration
-- JWT secrets
-
-### Frontend (.env)
-- Firebase Web SDK credentials
-- API endpoints
-- App configuration
+Currently using manual testing. Future improvements:
+- Unit tests with Jest and React Testing Library
+- Integration tests for user flows
+- End-to-end testing with Playwright
 
 ## 🚀 Deployment
 
-- **Frontend**: Deploy to Vercel, Netlify, or similar
-- **Backend**: Deploy to Vercel, Railway, or similar
-- **Database**: Firebase Firestore (hosted)
-- **Storage**: Firebase Storage (hosted)
+### Lovable Platform
+1. Click "Publish" in the Lovable editor
+2. Your app will be deployed to `yoursite.lovable.app`
 
-## 📝 License
+### Custom Domain
+1. Navigate to Project > Settings > Domains
+2. Connect your custom domain
+3. Follow DNS configuration instructions
 
-This project is licensed under the MIT License.
+## 🤝 Contributing
+
+1. Follow the existing code style and patterns
+2. Add proper TypeScript types for new features
+3. Test on multiple screen sizes
+4. Update documentation for new features
+5. Ensure Arabic text displays correctly
+
+## 📚 Additional Resources
+
+- [Lovable Documentation](https://docs.lovable.dev/)
+- [React Documentation](https://react.dev/)
+- [Tailwind CSS](https://tailwindcss.com/)
+- [Radix UI](https://www.radix-ui.com/)
+
+## 📄 License
+
+All rights reserved © 2023 Darsni Educational Platform
+
+---
+
+## 🆘 Need Help?
+
+- Check the [troubleshooting guide](https://docs.lovable.dev/tips-tricks/troubleshooting)
+- Review component documentation in `/src/components/`
+- Examine existing code patterns for reference
+- Test with the provided demo accounts
+
+**Happy coding! 🎓**
