@@ -14,6 +14,16 @@ export const useWaitlist = () => {
   const { toast } = useToast();
 
   const submitToWaitlist = async (data: WaitlistData) => {
+    // Check if Supabase is properly configured
+    if (!supabase) {
+      console.error('Supabase client not initialized');
+      toast({
+        title: "Configuration Error",
+        description: "Please refresh the page and try again.",
+        variant: "destructive"
+      });
+      return false;
+    }
     setIsSubmitting(true);
     try {
       const { error } = await supabase
