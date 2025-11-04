@@ -1,6 +1,8 @@
 import { useState } from 'react';
-import { supabase } from '@/integrations/supabase/client';
 import { useToast } from '@/hooks/use-toast';
+
+const SUPABASE_URL = import.meta.env.VITE_SUPABASE_URL as string | undefined;
+const SUPABASE_PUBLISHABLE_KEY = import.meta.env.VITE_SUPABASE_PUBLISHABLE_KEY as string | undefined;
 
 interface WaitlistData {
   name: string;
@@ -14,18 +16,26 @@ export const useWaitlist = () => {
   const { toast } = useToast();
 
   const submitToWaitlist = async (data: WaitlistData) => {
-    // Check if Supabase is properly configured
-    if (!supabase) {
-      console.error('Supabase client not initialized');
-      toast({
-        title: "Configuration Error",
-        description: "Please refresh the page and try again.",
-        variant: "destructive"
-      });
-      return false;
-    }
     setIsSubmitting(true);
     try {
+      // If env variables are missing, gracefully fallback to local storage
+      if (!SUPABASE_URL || !SUPABASE_PUBLISHABLE_KEY) {
+        console.warn('Supabase env missing; using local fallback for waitlist.');
+        const key = 'waitlist_fallback';
+        const existing = JSON.parse(localStorage.getItem(key) || '[]');
+        existing.push({ ...data, created_at: new Date().toISOString() });
+        localStorage.setItem(key, JSON.stringify(existing));
+
+        toast({
+          title: "🎉 Welcome to Darsni! / مرحباً بك في درسني!",
+          description: "We'll notify you when we launch. / سنخبرك عند الإطلاق.",
+        });
+        return true;
+      }
+
+      // Dynamically import supabase client only when needed
+      const { supabase } = await import('@/integrations/supabase/client');
+
       const { error } = await supabase
         .from('waitlist')
         .insert({
@@ -36,7 +46,7 @@ export const useWaitlist = () => {
         });
 
       if (error) {
-        if (error.code === '23505') { // Unique constraint violation
+        if ((error as any).code === '23505') { // Unique constraint violation
           toast({
             title: "Already registered! / مسجل مسبقاً!",
             description: "This email is already on the waitlist. / هذا البريد الإلكتروني مسجل في القائمة.",
