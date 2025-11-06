@@ -25,7 +25,8 @@ const StudentLayout = () => {
   const navItems = [{
     path: '/dashboard',
     label: 'الرئيسية',
-    icon: Home
+    icon: Home,
+    end: true
   }, {
     path: '/dashboard/my-courses',
     label: 'كورساتي الخاصة',
@@ -51,14 +52,16 @@ const StudentLayout = () => {
   const NavItem = ({
     path,
     label,
-    icon: Icon
+    icon: Icon,
+    end = false
   }: {
     path: string;
     label: string;
     icon: any;
+    end?: boolean;
   }) => {
     const isActive = location.pathname === path;
-    return <NavLink to={path} className={({
+    return <NavLink to={path} end={end} className={({
       isActive
     }) => cn("sidebar-item flex items-center gap-3 py-3 px-4 rounded-xl transition-all", isActive ? "active border border-[rgba(255,72,0,0.2)]" : "text-gray-400 hover:text-white hover:bg-white/5")}>
         <div className={cn("sidebar-icon flex items-center justify-center w-8 h-8 rounded-lg transition-all", isActive ? "bg-[#FF4800] text-white shadow-[0_0_15px_rgba(255,72,0,0.4)]" : "bg-white/5 text-gray-400")}>
