@@ -2,10 +2,12 @@ import { motion, useInView } from 'framer-motion';
 import { useRef } from 'react';
 import { landingContent } from '@/lib/landing-content';
 import { Users } from 'lucide-react';
+import { useLanguage } from '@/contexts/LanguageContext';
 
 export const CommunitySection = () => {
   const ref = useRef(null);
   const isInView = useInView(ref, { once: true, amount: 0.3 });
+  const { language } = useLanguage();
   const { community } = landingContent;
 
   // Simulated town locations for visual effect

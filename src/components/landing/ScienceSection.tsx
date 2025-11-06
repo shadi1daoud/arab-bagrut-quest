@@ -2,10 +2,12 @@ import { motion, useInView } from 'framer-motion';
 import { useRef } from 'react';
 import { landingContent } from '@/lib/landing-content';
 import { Brain, TrendingUp, Award } from 'lucide-react';
+import { useLanguage } from '@/contexts/LanguageContext';
 
 export const ScienceSection = () => {
   const ref = useRef(null);
   const isInView = useInView(ref, { once: true, amount: 0.3 });
+  const { language } = useLanguage();
   const { science } = landingContent;
 
   const icons = [Brain, TrendingUp, Award];
@@ -24,17 +26,11 @@ export const ScienceSection = () => {
           animate={isInView ? { opacity: 1, y: 0 } : {}}
           transition={{ duration: 0.8 }}
         >
-          <h2 className="text-4xl md:text-6xl font-['Changa'] font-bold mb-4">
-            <span className="text-white">{science.headline.en}</span>
-            <span className="block text-[#FF4800] mt-2 font-['Noto_Sans_Arabic']">
-              {science.headline.ar}
-            </span>
+          <h2 className={`text-4xl md:text-6xl font-['Changa'] font-bold mb-4 ${language === 'ar' ? 'font-[\'Noto_Sans_Arabic\']' : ''}`}>
+            <span className="text-[#FF4800]">{science.headline[language]}</span>
           </h2>
-          <p className="text-white/60 text-lg mt-6">
-            {science.subheadline.en}
-          </p>
-          <p className="text-white/50 font-['Noto_Sans_Arabic'] mt-2">
-            {science.subheadline.ar}
+          <p className={`text-white/60 text-lg mt-6 ${language === 'ar' ? 'font-[\'Noto_Sans_Arabic\']' : ''}`}>
+            {science.subheadline[language]}
           </p>
         </motion.div>
 

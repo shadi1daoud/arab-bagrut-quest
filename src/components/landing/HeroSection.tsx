@@ -2,8 +2,10 @@ import { motion } from 'framer-motion';
 import { Button } from '@/components/ui/button';
 import { landingContent } from '@/lib/landing-content';
 import { Sparkles } from 'lucide-react';
+import { useLanguage } from '@/contexts/LanguageContext';
 
 export const HeroSection = ({ onJoinWaitlist }: { onJoinWaitlist: () => void }) => {
+  const { language } = useLanguage();
   const { hero } = landingContent;
 
   return (
@@ -62,34 +64,25 @@ export const HeroSection = ({ onJoinWaitlist }: { onJoinWaitlist: () => void }) 
           </motion.div>
 
           {/* Main Headline */}
-          <h1 className="text-5xl md:text-7xl lg:text-8xl font-['Changa'] font-bold mb-6">
+          <h1 className={`text-5xl md:text-7xl lg:text-8xl font-['Changa'] font-bold mb-6 ${language === 'ar' ? 'font-[\'Noto_Sans_Arabic\']' : ''}`}>
             <motion.span
               className="block text-shimmer"
               initial={{ opacity: 0, scale: 0.9 }}
               animate={{ opacity: 1, scale: 1 }}
               transition={{ delay: 0.2, duration: 0.8 }}
             >
-              {hero.headline.en}
-            </motion.span>
-            <motion.span
-              className="block text-[#FF4800] mt-2"
-              initial={{ opacity: 0, scale: 0.9 }}
-              animate={{ opacity: 1, scale: 1 }}
-              transition={{ delay: 0.4, duration: 0.8 }}
-            >
-              {hero.headline.ar}
+              {hero.headline[language]}
             </motion.span>
           </h1>
 
           {/* Subheadline */}
           <motion.p
-            className="text-lg md:text-xl text-white/70 max-w-2xl mx-auto mb-12"
+            className={`text-lg md:text-xl text-white/70 max-w-2xl mx-auto mb-12 ${language === 'ar' ? 'font-[\'Noto_Sans_Arabic\']' : ''}`}
             initial={{ opacity: 0 }}
             animate={{ opacity: 1 }}
             transition={{ delay: 0.6, duration: 0.8 }}
           >
-            <span className="block mb-2">{hero.subheadline.en}</span>
-            <span className="block font-['Noto_Sans_Arabic']">{hero.subheadline.ar}</span>
+            {hero.subheadline[language]}
           </motion.p>
 
           {/* CTA Buttons */}
@@ -102,16 +95,16 @@ export const HeroSection = ({ onJoinWaitlist }: { onJoinWaitlist: () => void }) 
             <Button
               size="lg"
               onClick={onJoinWaitlist}
-              className="btn-hover-glow glow-pulse text-lg px-8 py-6 rounded-2xl"
+              className={`btn-hover-glow glow-pulse text-lg px-8 py-6 rounded-2xl ${language === 'ar' ? 'font-[\'Noto_Sans_Arabic\']' : ''}`}
             >
-              {hero.ctaPrimary.en}
+              {hero.ctaPrimary[language]}
             </Button>
             <Button
               size="lg"
               variant="outline"
-              className="text-lg px-8 py-6 rounded-2xl"
+              className={`text-lg px-8 py-6 rounded-2xl ${language === 'ar' ? 'font-[\'Noto_Sans_Arabic\']' : ''}`}
             >
-              {hero.ctaSecondary.en}
+              {hero.ctaSecondary[language]}
             </Button>
           </motion.div>
         </motion.div>

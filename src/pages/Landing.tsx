@@ -9,6 +9,8 @@ import { ScienceSection } from '@/components/landing/ScienceSection';
 import { VisionSection } from '@/components/landing/VisionSection';
 import { FinalCTA } from '@/components/landing/FinalCTA';
 import { ParticleSystem } from '@/components/landing/ParticleSystem';
+import { LanguageSelector } from '@/components/landing/LanguageSelector';
+import { LanguageProvider } from '@/contexts/LanguageContext';
 import '@/styles/landing-animations.css';
 
 const Landing = () => {
@@ -40,23 +42,28 @@ const Landing = () => {
   }, []);
 
   return (
-    <div className="relative min-h-screen bg-[#0A0A0A] overflow-x-hidden">
-      {/* Particle Background */}
-      <ParticleSystem density={40} color="#FF4800" />
-      
-      {/* All Sections */}
-      <HeroSection onJoinWaitlist={scrollToWaitlist} />
-      <ProblemSection />
-      <DarsniWorld />
-      <HowItWorks />
-      <CommunitySection />
-      <RewardsCarousel />
-      <ScienceSection />
-      <VisionSection />
-      <div ref={finalCTARef}>
-        <FinalCTA />
+    <LanguageProvider>
+      <div className="relative min-h-screen bg-[#0A0A0A] overflow-x-hidden">
+        {/* Language Selector */}
+        <LanguageSelector />
+        
+        {/* Particle Background */}
+        <ParticleSystem density={40} color="#FF4800" />
+        
+        {/* All Sections */}
+        <HeroSection onJoinWaitlist={scrollToWaitlist} />
+        <ProblemSection />
+        <DarsniWorld />
+        <HowItWorks />
+        <CommunitySection />
+        <RewardsCarousel />
+        <ScienceSection />
+        <VisionSection />
+        <div ref={finalCTARef}>
+          <FinalCTA />
+        </div>
       </div>
-    </div>
+    </LanguageProvider>
   );
 };
 

@@ -2,10 +2,12 @@ import { motion, useInView } from 'framer-motion';
 import { useRef } from 'react';
 import { landingContent } from '@/lib/landing-content';
 import { ArrowRight } from 'lucide-react';
+import { useLanguage } from '@/contexts/LanguageContext';
 
 export const HowItWorks = () => {
   const ref = useRef(null);
   const isInView = useInView(ref, { once: true, amount: 0.3 });
+  const { language } = useLanguage();
   const { howItWorks } = landingContent;
 
   return (

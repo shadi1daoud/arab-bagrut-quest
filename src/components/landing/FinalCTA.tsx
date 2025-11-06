@@ -8,10 +8,12 @@ import { RadioGroup, RadioGroupItem } from '@/components/ui/radio-group';
 import { useWaitlist } from '@/hooks/useWaitlist';
 import confetti from 'canvas-confetti';
 import { Check } from 'lucide-react';
+import { useLanguage } from '@/contexts/LanguageContext';
 
 export const FinalCTA = () => {
   const ref = useRef(null);
   const isInView = useInView(ref, { once: true, amount: 0.3 });
+  const { language } = useLanguage();
   const { finalCTA, footer } = landingContent;
   const { submitToWaitlist, isSubmitting } = useWaitlist();
 
@@ -70,17 +72,11 @@ export const FinalCTA = () => {
           animate={isInView ? { opacity: 1, y: 0 } : {}}
           transition={{ duration: 0.8 }}
         >
-          <h2 className="text-5xl md:text-7xl font-['Changa'] font-bold mb-6">
-            <span className="text-white">{finalCTA.headline.en}</span>
-            <span className="block text-[#FF4800] mt-2 font-['Noto_Sans_Arabic']">
-              {finalCTA.headline.ar}
-            </span>
+          <h2 className={`text-5xl md:text-7xl font-['Changa'] font-bold mb-6 ${language === 'ar' ? 'font-[\'Noto_Sans_Arabic\']' : ''}`}>
+            <span className="text-[#FF4800]">{finalCTA.headline[language]}</span>
           </h2>
-          <p className="text-xl text-white/70 max-w-2xl mx-auto">
-            {finalCTA.subheadline.en}
-          </p>
-          <p className="text-lg text-white/60 font-['Noto_Sans_Arabic'] mt-2">
-            {finalCTA.subheadline.ar}
+          <p className={`text-xl text-white/70 max-w-2xl mx-auto ${language === 'ar' ? 'font-[\'Noto_Sans_Arabic\']' : ''}`}>
+            {finalCTA.subheadline[language]}
           </p>
         </motion.div>
 
@@ -109,22 +105,19 @@ export const FinalCTA = () => {
                 >
                   <Check className="w-12 h-12 text-white" />
                 </motion.div>
-                <h3 className="text-3xl font-bold text-white mb-4 font-['Changa']">
-                  {finalCTA.successMessage.en.split('!')[0]}!
+                <h3 className={`text-3xl font-bold text-white mb-4 font-['Changa'] ${language === 'ar' ? 'font-[\'Noto_Sans_Arabic\']' : ''}`}>
+                  {finalCTA.successMessage[language].split('!')[0]}!
                 </h3>
-                <p className="text-xl text-white/70 mb-2">
-                  {finalCTA.successMessage.en.split('!')[1]}
-                </p>
-                <p className="text-lg text-[#FF4800] font-['Noto_Sans_Arabic']">
-                  {finalCTA.successMessage.ar}
+                <p className={`text-xl text-white/70 ${language === 'ar' ? 'font-[\'Noto_Sans_Arabic\']' : ''}`}>
+                  {finalCTA.successMessage[language].split('!')[1]}
                 </p>
               </motion.div>
             ) : (
               <form onSubmit={handleSubmit} className="relative space-y-6">
                 {/* Name */}
                 <div>
-                  <Label htmlFor="name" className="text-white mb-2 block">
-                    {finalCTA.formLabels.name.en} / {finalCTA.formLabels.name.ar}
+                  <Label htmlFor="name" className={`text-white mb-2 block ${language === 'ar' ? 'font-[\'Noto_Sans_Arabic\']' : ''}`}>
+                    {finalCTA.formLabels.name[language]}
                   </Label>
                   <Input
                     id="name"
@@ -139,8 +132,8 @@ export const FinalCTA = () => {
 
                 {/* Email */}
                 <div>
-                  <Label htmlFor="email" className="text-white mb-2 block">
-                    {finalCTA.formLabels.email.en} / {finalCTA.formLabels.email.ar}
+                  <Label htmlFor="email" className={`text-white mb-2 block ${language === 'ar' ? 'font-[\'Noto_Sans_Arabic\']' : ''}`}>
+                    {finalCTA.formLabels.email[language]}
                   </Label>
                   <Input
                     id="email"
@@ -155,8 +148,8 @@ export const FinalCTA = () => {
 
                 {/* User Type */}
                 <div>
-                  <Label className="text-white mb-3 block">
-                    {finalCTA.formLabels.userType.en} / {finalCTA.formLabels.userType.ar}
+                  <Label className={`text-white mb-3 block ${language === 'ar' ? 'font-[\'Noto_Sans_Arabic\']' : ''}`}>
+                    {finalCTA.formLabels.userType[language]}
                   </Label>
                   <RadioGroup
                     value={formData.userType}
@@ -165,14 +158,14 @@ export const FinalCTA = () => {
                   >
                     <div className="flex items-center space-x-2 glass-card px-4 py-3 rounded-xl flex-1">
                       <RadioGroupItem value="student" id="student" />
-                      <Label htmlFor="student" className="text-white cursor-pointer">
-                        {finalCTA.formLabels.student.en} / {finalCTA.formLabels.student.ar}
+                      <Label htmlFor="student" className={`text-white cursor-pointer ${language === 'ar' ? 'font-[\'Noto_Sans_Arabic\']' : ''}`}>
+                        {finalCTA.formLabels.student[language]}
                       </Label>
                     </div>
                     <div className="flex items-center space-x-2 glass-card px-4 py-3 rounded-xl flex-1">
                       <RadioGroupItem value="parent" id="parent" />
-                      <Label htmlFor="parent" className="text-white cursor-pointer">
-                        {finalCTA.formLabels.parent.en} / {finalCTA.formLabels.parent.ar}
+                      <Label htmlFor="parent" className={`text-white cursor-pointer ${language === 'ar' ? 'font-[\'Noto_Sans_Arabic\']' : ''}`}>
+                        {finalCTA.formLabels.parent[language]}
                       </Label>
                     </div>
                   </RadioGroup>
@@ -180,8 +173,8 @@ export const FinalCTA = () => {
 
                 {/* School (Optional) */}
                 <div>
-                  <Label htmlFor="school" className="text-white/70 mb-2 block text-sm">
-                    {finalCTA.formLabels.school.en} / {finalCTA.formLabels.school.ar}
+                  <Label htmlFor="school" className={`text-white/70 mb-2 block text-sm ${language === 'ar' ? 'font-[\'Noto_Sans_Arabic\']' : ''}`}>
+                    {finalCTA.formLabels.school[language]}
                   </Label>
                   <Input
                     id="school"
@@ -198,9 +191,9 @@ export const FinalCTA = () => {
                   type="submit"
                   size="lg"
                   disabled={isSubmitting}
-                  className="w-full glow-pulse text-lg py-6"
+                  className={`w-full glow-pulse text-lg py-6 ${language === 'ar' ? 'font-[\'Noto_Sans_Arabic\']' : ''}`}
                 >
-                  {isSubmitting ? '⏳ Joining...' : `${finalCTA.formLabels.submit.en} / ${finalCTA.formLabels.submit.ar}`}
+                  {isSubmitting ? '⏳ Joining...' : finalCTA.formLabels.submit[language]}
                 </Button>
               </form>
             )}
@@ -214,11 +207,8 @@ export const FinalCTA = () => {
           animate={isInView ? { opacity: 1 } : {}}
           transition={{ delay: 0.8, duration: 0.8 }}
         >
-          <p className="text-white/60 mb-4">
-            {footer.tagline.en}
-          </p>
-          <p className="text-white/50 font-['Noto_Sans_Arabic'] mb-6">
-            {footer.tagline.ar}
+          <p className={`text-white/60 mb-6 ${language === 'ar' ? 'font-[\'Noto_Sans_Arabic\']' : ''}`}>
+            {footer.tagline[language]}
           </p>
 
           <div className="flex justify-center gap-8 mb-8">
@@ -242,12 +232,12 @@ export const FinalCTA = () => {
             ))}
           </div>
 
-          <div className="flex justify-center gap-6 text-sm text-white/40">
-            <a href="#" className="hover:text-[#FF4800] transition-colors">{footer.links.privacy.en}</a>
+          <div className={`flex justify-center gap-6 text-sm text-white/40 ${language === 'ar' ? 'font-[\'Noto_Sans_Arabic\']' : ''}`}>
+            <a href="#" className="hover:text-[#FF4800] transition-colors">{footer.links.privacy[language]}</a>
             <span>•</span>
-            <a href="#" className="hover:text-[#FF4800] transition-colors">{footer.links.terms.en}</a>
+            <a href="#" className="hover:text-[#FF4800] transition-colors">{footer.links.terms[language]}</a>
             <span>•</span>
-            <a href="#" className="hover:text-[#FF4800] transition-colors">{footer.links.contact.en}</a>
+            <a href="#" className="hover:text-[#FF4800] transition-colors">{footer.links.contact[language]}</a>
           </div>
 
           <p className="text-white/30 text-xs mt-6">

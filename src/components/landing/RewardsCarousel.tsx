@@ -3,10 +3,12 @@ import { useRef } from 'react';
 import { landingContent } from '@/lib/landing-content';
 import useEmblaCarousel from 'embla-carousel-react';
 import AutoScroll from 'embla-carousel-auto-scroll';
+import { useLanguage } from '@/contexts/LanguageContext';
 
 export const RewardsCarousel = () => {
   const ref = useRef(null);
   const isInView = useInView(ref, { once: true, amount: 0.3 });
+  const { language } = useLanguage();
   const { rewards } = landingContent;
 
   const [emblaRef] = useEmblaCarousel(
@@ -30,11 +32,8 @@ export const RewardsCarousel = () => {
           animate={isInView ? { opacity: 1, y: 0 } : {}}
           transition={{ duration: 0.8 }}
         >
-          <h2 className="text-4xl md:text-6xl font-['Changa'] font-bold mb-4">
-            <span className="text-white">{rewards.headline.en}</span>
-            <span className="block text-[#FF4800] mt-2 font-['Noto_Sans_Arabic']">
-              {rewards.headline.ar}
-            </span>
+          <h2 className={`text-4xl md:text-6xl font-['Changa'] font-bold mb-4 ${language === 'ar' ? 'font-[\'Noto_Sans_Arabic\']' : ''}`}>
+            <span className="text-[#FF4800]">{rewards.headline[language]}</span>
           </h2>
         </motion.div>
 

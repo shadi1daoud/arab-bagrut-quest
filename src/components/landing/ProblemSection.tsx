@@ -2,10 +2,12 @@ import { motion, useInView } from 'framer-motion';
 import { useRef } from 'react';
 import { landingContent } from '@/lib/landing-content';
 import { XCircle } from 'lucide-react';
+import { useLanguage } from '@/contexts/LanguageContext';
 
 export const ProblemSection = () => {
   const ref = useRef(null);
   const isInView = useInView(ref, { once: true, amount: 0.3 });
+  const { language } = useLanguage();
   const { problem } = landingContent;
 
   return (
@@ -24,15 +26,12 @@ export const ProblemSection = () => {
         >
           {/* Title */}
           <motion.h2
-            className="text-4xl md:text-6xl font-['Changa'] font-bold mb-16"
+            className={`text-4xl md:text-6xl font-['Changa'] font-bold mb-16 ${language === 'ar' ? 'font-[\'Noto_Sans_Arabic\']' : ''}`}
             initial={{ opacity: 0, y: 30 }}
             animate={isInView ? { opacity: 1, y: 0 } : {}}
             transition={{ delay: 0.2, duration: 0.8 }}
           >
-            <span className="text-white/40 line-through">{problem.headline.en}</span>
-            <span className="block text-white/30 font-['Noto_Sans_Arabic'] mt-2 line-through">
-              {problem.headline.ar}
-            </span>
+            <span className="text-white/40 line-through">{problem.headline[language]}</span>
           </motion.h2>
 
           {/* Problem Points - Grayscale/Boring */}
@@ -46,8 +45,7 @@ export const ProblemSection = () => {
                 transition={{ delay: 0.4 + i * 0.1, duration: 0.6 }}
               >
                 <XCircle className="w-12 h-12 mx-auto mb-4 text-white/20" />
-                <p className="text-xl font-bold text-white/40 mb-2">{point.en}</p>
-                <p className="text-lg text-white/30 font-['Noto_Sans_Arabic']">{point.ar}</p>
+                <p className={`text-xl font-bold text-white/40 ${language === 'ar' ? 'font-[\'Noto_Sans_Arabic\']' : ''}`}>{point[language]}</p>
               </motion.div>
             ))}
           </div>
