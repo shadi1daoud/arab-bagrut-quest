@@ -23,23 +23,23 @@ const StudentLayout = () => {
   }, [location.pathname]);
   
   const navItems = [{
-    path: '/',
+    path: '/dashboard',
     label: 'الرئيسية',
     icon: Home
   }, {
-    path: '/my-courses',
+    path: '/dashboard/my-courses',
     label: 'كورساتي الخاصة',
     icon: Award
   }, {
-    path: '/shop',
+    path: '/dashboard/shop',
     label: 'المتجر',
     icon: ShoppingCart
   }, {
-    path: '/community',
+    path: '/dashboard/community',
     label: 'المجتمع',
     icon: Users
   }, {
-    path: '/settings',
+    path: '/dashboard/settings',
     label: 'الإعدادات',
     icon: Settings
   }];

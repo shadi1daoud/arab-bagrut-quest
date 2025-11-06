@@ -61,7 +61,7 @@ const Login = () => {
           if (email === 'admin@darsni.com') {
             navigate('/admin');
           } else {
-            navigate('/');
+            navigate('/dashboard');
           }
         }, 1000);
       } else {
