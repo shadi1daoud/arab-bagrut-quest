@@ -2,6 +2,10 @@
 
 export const landingContent = {
   hero: {
+    badge: {
+      en: 'The Game of Learning Begins',
+      ar: 'لعبة التعلم بدأت'
+    },
     headline: {
       en: "Play. Learn. Win.",
       ar: "إلعب. تعلّم. إربح."
@@ -17,6 +21,13 @@ export const landingContent = {
     ctaSecondary: {
       en: "▶ Watch How It Works",
       ar: "▶ شوف كيف بتشتغل"
+    },
+    previewLabels: {
+      level: { en: 'Level', ar: 'مستوى' },
+      xp: { en: 'XP', ar: 'نقطة' },
+      streak: { en: 'Day Streak', ar: 'يوم متواصل' },
+      totalXP: { en: 'Total XP', ar: 'مجموع النقاط' },
+      rank: { en: 'Rank', ar: 'الترتيب' }
     }
   },
   problem: {
@@ -28,7 +39,11 @@ export const landingContent = {
       { en: "No motivation", ar: "ما في دافع" },
       { en: "No fun", ar: "ما في متعة" },
       { en: "No progress", ar: "ما في تقدّم" }
-    ]
+    ],
+    transition: {
+      en: 'Until now...',
+      ar: 'حتى الآن...'
+    }
   },
   darsniWorld: {
     headline: {
@@ -159,6 +174,10 @@ export const landingContent = {
       author: {
         en: "Dr. Sarah Mitchell, Educational Psychologist",
         ar: "د. سارة ميتشيل، عالمة نفس تربوية"
+      },
+      role: {
+        en: "Educational Psychologist",
+        ar: "عالمة نفس تربوية"
       }
     },
     stats: [
@@ -176,8 +195,28 @@ export const landingContent = {
       en: "We're building a world where Arab students don't just study — they play to succeed.",
       ar: "عم نبني عالم وين الطلاب العرب مش بس بيدرسوا — بيلعبوا لينجحوا."
     },
+    badge: {
+      en: 'Our Vision',
+      ar: 'رؤيتنا'
+    },
     beforeLabel: { en: "Before Darsni", ar: "قبل درسني" },
-    afterLabel: { en: "With Darsni", ar: "مع درسني" }
+    afterLabel: { en: "With Darsni", ar: "مع درسني" },
+    beforePoints: [
+      { en: 'No motivation', ar: 'ما في دافع' },
+      { en: 'Boring lessons', ar: 'دروس مملة' },
+      { en: 'Studying alone', ar: 'دراسة لوحدك' },
+      { en: 'No progress tracking', ar: 'ما في تتبع تقدم' }
+    ],
+    afterPoints: [
+      { en: 'Game-like motivation', ar: 'تحفيز زي الألعاب' },
+      { en: 'Engaging content', ar: 'محتوى جذاب' },
+      { en: 'Learn with friends', ar: 'تعلم مع رفقاتك' },
+      { en: 'Track every win', ar: 'تتبع كل فوز' }
+    ],
+    bottomTagline: {
+      en: 'Join us in revolutionizing education for Arab students',
+      ar: 'إنضم إلينا بإحداث ثورة بالتعليم للطلاب العرب'
+    }
   },
   finalCTA: {
     headline: {

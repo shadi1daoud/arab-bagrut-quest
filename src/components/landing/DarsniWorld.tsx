@@ -35,11 +35,8 @@ export const DarsniWorld = () => {
           animate={isInView ? { opacity: 1, y: 0 } : {}}
           transition={{ duration: 0.8 }}
         >
-          <h2 className="text-4xl md:text-6xl font-['Changa'] font-bold mb-4">
-            <span className="text-white">{darsniWorld.headline.en}</span>
-            <span className="block text-[#FF4800] mt-2 font-['Noto_Sans_Arabic']">
-              {darsniWorld.headline.ar}
-            </span>
+          <h2 className={`text-4xl md:text-6xl font-['Changa'] font-bold mb-4 text-[#FF4800] ${language === 'ar' ? 'font-[\'Noto_Sans_Arabic\']' : ''}`}>
+            {darsniWorld.headline[language]}
           </h2>
         </motion.div>
 
@@ -129,14 +126,11 @@ export const DarsniWorld = () => {
               <div className="text-5xl mb-4 group-hover:scale-110 transition-transform">
                 {feature.icon}
               </div>
-              <h3 className="text-xl font-bold text-white mb-3 font-['Changa']">
-                {feature.title.en}
+              <h3 className={`text-xl font-bold text-white mb-3 ${language === 'ar' ? 'font-[\'Noto_Sans_Arabic\'] font-[\'Changa\']' : 'font-[\'Changa\']'}`}>
+                {feature.title[language]}
               </h3>
-              <p className="text-white/60 mb-2">
-                {feature.description.en}
-              </p>
-              <p className="text-white/50 text-sm font-['Noto_Sans_Arabic']">
-                {feature.title.ar}
+              <p className={`text-white/60 ${language === 'ar' ? 'font-[\'Noto_Sans_Arabic\']' : ''}`}>
+                {feature.description[language]}
               </p>
             </motion.div>
           ))}

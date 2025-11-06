@@ -44,33 +44,22 @@ export const VisionSection = () => {
             transition={{ duration: 2, repeat: Infinity }}
           >
             <Sparkles className="w-4 h-4 text-[#FF4800]" />
-            <span className="text-[#FF4800] text-sm font-['Share_Tech_Mono']">
-              Our Vision
+            <span className={`text-[#FF4800] text-sm font-['Share_Tech_Mono'] ${language === 'ar' ? 'font-[\'Noto_Sans_Arabic\']' : ''}`}>
+              {vision.badge[language]}
             </span>
           </motion.div>
 
-          <h2 className="text-4xl md:text-6xl font-['Changa'] font-bold mb-6">
-            <span className="text-white">{vision.headline.en}</span>
-            <span className="block text-[#FF4800] mt-2 font-['Noto_Sans_Arabic']">
-              {vision.headline.ar}
-            </span>
+          <h2 className={`text-4xl md:text-6xl font-['Changa'] font-bold mb-6 text-white ${language === 'ar' ? 'font-[\'Noto_Sans_Arabic\']' : ''}`}>
+            {vision.headline[language]}
           </h2>
 
           <motion.p
-            className="text-xl md:text-2xl text-white/70 max-w-3xl mx-auto"
+            className={`text-xl md:text-2xl text-white/70 max-w-3xl mx-auto ${language === 'ar' ? 'font-[\'Noto_Sans_Arabic\']' : ''}`}
             initial={{ opacity: 0 }}
             animate={isInView ? { opacity: 1 } : {}}
             transition={{ delay: 0.4, duration: 0.8 }}
           >
-            {vision.description.en}
-          </motion.p>
-          <motion.p
-            className="text-lg text-white/60 max-w-3xl mx-auto mt-4 font-['Noto_Sans_Arabic']"
-            initial={{ opacity: 0 }}
-            animate={isInView ? { opacity: 1 } : {}}
-            transition={{ delay: 0.6, duration: 0.8 }}
-          >
-            {vision.description.ar}
+            {vision.description[language]}
           </motion.p>
         </motion.div>
 
@@ -91,17 +80,13 @@ export const VisionSection = () => {
                 <div className="relative aspect-[4/5] bg-gradient-to-br from-gray-800 to-gray-900 flex items-center justify-center p-8">
                   <div className="relative z-20 text-center">
                     <div className="text-8xl mb-6 grayscale opacity-40">😴</div>
-                    <h3 className="text-2xl font-bold text-white/40 mb-3 font-['Changa']">
-                      {vision.beforeLabel.en}
+                    <h3 className={`text-2xl font-bold text-white/40 mb-3 ${language === 'ar' ? 'font-[\'Noto_Sans_Arabic\'] font-[\'Changa\']' : 'font-[\'Changa\']'}`}>
+                      {vision.beforeLabel[language]}
                     </h3>
-                    <p className="text-white/30 font-['Noto_Sans_Arabic']">
-                      {vision.beforeLabel.ar}
-                    </p>
-                    <ul className="mt-6 space-y-2 text-white/30 text-sm">
-                      <li>❌ No motivation</li>
-                      <li>❌ Boring lessons</li>
-                      <li>❌ Studying alone</li>
-                      <li>❌ No progress tracking</li>
+                    <ul className={`mt-6 space-y-2 text-white/30 text-sm ${language === 'ar' ? 'font-[\'Noto_Sans_Arabic\']' : ''}`}>
+                      {vision.beforePoints.map((point, idx) => (
+                        <li key={idx}>❌ {point[language]}</li>
+                      ))}
                     </ul>
                   </div>
                 </div>
@@ -151,17 +136,13 @@ export const VisionSection = () => {
                     >
                       🚀
                     </motion.div>
-                    <h3 className="text-2xl font-bold text-white mb-3 font-['Changa']">
-                      {vision.afterLabel.en}
+                    <h3 className={`text-2xl font-bold text-[#FF4800] mb-3 ${language === 'ar' ? 'font-[\'Noto_Sans_Arabic\'] font-[\'Changa\']' : 'font-[\'Changa\']'}`}>
+                      {vision.afterLabel[language]}
                     </h3>
-                    <p className="text-[#FF4800] font-['Noto_Sans_Arabic']">
-                      {vision.afterLabel.ar}
-                    </p>
-                    <ul className="mt-6 space-y-2 text-white/80 text-sm">
-                      <li>✅ Game-like motivation</li>
-                      <li>✅ Engaging content</li>
-                      <li>✅ Learn with friends</li>
-                      <li>✅ Track every win</li>
+                    <ul className={`mt-6 space-y-2 text-white/80 text-sm ${language === 'ar' ? 'font-[\'Noto_Sans_Arabic\']' : ''}`}>
+                      {vision.afterPoints.map((point, idx) => (
+                        <li key={idx}>✅ {point[language]}</li>
+                      ))}
                     </ul>
                   </div>
                 </div>
@@ -184,11 +165,8 @@ export const VisionSection = () => {
           animate={isInView ? { opacity: 1, y: 0 } : {}}
           transition={{ delay: 0.8, duration: 0.8 }}
         >
-          <p className="text-xl text-white/60 max-w-2xl mx-auto">
-            Join us in revolutionizing education for Arab students
-          </p>
-          <p className="text-lg text-white/50 font-['Noto_Sans_Arabic'] mt-2">
-            انضم إلينا في إحداث ثورة في التعليم للطلاب العرب
+          <p className={`text-xl text-white/60 max-w-2xl mx-auto ${language === 'ar' ? 'font-[\'Noto_Sans_Arabic\']' : ''}`}>
+            {vision.bottomTagline[language]}
           </p>
         </motion.div>
       </div>

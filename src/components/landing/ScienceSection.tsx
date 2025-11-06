@@ -51,14 +51,11 @@ export const ScienceSection = () => {
                       <div className="w-16 h-16 mx-auto mb-4 rounded-full bg-gradient-to-br from-[#FF4800]/20 to-[#FFD700]/10 flex items-center justify-center">
                         <Icon className="w-8 h-8 text-[#FF4800]" />
                       </div>
-                      <h3 className="text-lg font-bold text-white mb-2 font-['Changa']">
-                        {step.title.en}
+                      <h3 className={`text-lg font-bold text-white mb-2 ${language === 'ar' ? 'font-[\'Noto_Sans_Arabic\'] font-[\'Changa\']' : 'font-[\'Changa\']'}`}>
+                        {step.title[language]}
                       </h3>
-                      <p className="text-sm text-white/60">
-                        {step.description.en}
-                      </p>
-                      <p className="text-xs text-white/40 font-['Noto_Sans_Arabic'] mt-2">
-                        {step.title.ar}
+                      <p className={`text-sm text-white/60 ${language === 'ar' ? 'font-[\'Noto_Sans_Arabic\']' : ''}`}>
+                        {step.description[language]}
                       </p>
                     </div>
                   </motion.div>
@@ -105,8 +102,9 @@ export const ScienceSection = () => {
               >
                 {stat.value}
               </motion.div>
-              <p className="text-white/70">{stat.label.en}</p>
-              <p className="text-white/50 text-sm font-['Noto_Sans_Arabic']">{stat.label.ar}</p>
+              <p className={`text-white/70 ${language === 'ar' ? 'font-[\'Noto_Sans_Arabic\']' : ''}`}>
+                {stat.label[language]}
+              </p>
             </motion.div>
           ))}
         </motion.div>
@@ -123,19 +121,20 @@ export const ScienceSection = () => {
             <div className="absolute top-6 left-6 text-6xl text-[#FF4800]/20 font-serif">"</div>
             
             <div className="relative">
-              <p className="text-lg md:text-xl text-white/80 mb-6 italic pl-8">
-                {science.quote.text.en}
-              </p>
-              <p className="text-base text-white/60 font-['Noto_Sans_Arabic'] mb-6 italic pl-8">
-                {science.quote.text.ar}
+              <p className={`text-lg md:text-xl text-white/80 mb-6 italic pl-8 ${language === 'ar' ? 'font-[\'Noto_Sans_Arabic\']' : ''}`}>
+                "{science.quote.text[language]}"
               </p>
               <div className="flex items-center gap-4 pl-8">
                 <div className="w-12 h-12 rounded-full bg-gradient-to-br from-[#FF4800] to-[#FFD700] flex items-center justify-center">
                   <Brain className="w-6 h-6 text-white" />
                 </div>
                 <div>
-                  <p className="text-white font-bold">{science.quote.author.en}</p>
-                  <p className="text-white/50 text-sm font-['Noto_Sans_Arabic']">{science.quote.author.ar}</p>
+                  <p className={`text-white font-bold ${language === 'ar' ? 'font-[\'Noto_Sans_Arabic\']' : ''}`}>
+                    {science.quote.author[language]}
+                  </p>
+                  <p className={`text-white/60 text-sm ${language === 'ar' ? 'font-[\'Noto_Sans_Arabic\']' : ''}`}>
+                    {science.quote.role[language]}
+                  </p>
                 </div>
               </div>
             </div>

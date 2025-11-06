@@ -17,7 +17,7 @@ export const LanguageSelector = () => {
       >
         <Globe className="w-4 h-4 text-[#FF4800] group-hover:rotate-12 transition-transform" />
         <span className="text-sm font-medium">
-          {language === 'ar' ? '🇵🇸 العربية' : '🇬🇧 English'}
+          {language === 'ar' ? 'العربية' : 'English'}
         </span>
       </button>
     </motion.div>

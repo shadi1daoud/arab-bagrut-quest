@@ -58,8 +58,8 @@ export const HeroSection = ({ onJoinWaitlist }: { onJoinWaitlist: () => void }) 
             transition={{ duration: 2, repeat: Infinity }}
           >
             <Sparkles className="w-4 h-4 text-[#FF4800]" />
-            <span className="text-[#FF4800] text-sm font-['Share_Tech_Mono']">
-              The Game of Learning Begins
+            <span className={`text-[#FF4800] text-sm font-['Share_Tech_Mono'] ${language === 'ar' ? 'font-[\'Noto_Sans_Arabic\']' : ''}`}>
+              {hero.badge[language]}
             </span>
           </motion.div>
 
@@ -132,15 +132,17 @@ export const HeroSection = ({ onJoinWaitlist }: { onJoinWaitlist: () => void }) 
                       transition={{ delay: 1.5, duration: 1.5, ease: 'easeOut' }}
                     />
                   </div>
-                  <p className="text-xs text-white/60 mt-1 font-['Share_Tech_Mono']">Level 8 • 7,500 XP</p>
+                  <p className={`text-xs text-white/60 mt-1 font-['Share_Tech_Mono'] ${language === 'ar' ? 'font-[\'Noto_Sans_Arabic\']' : ''}`}>
+                    {hero.previewLabels.level[language]} 8 • 7,500 {hero.previewLabels.xp[language]}
+                  </p>
                 </div>
               </div>
               
               <div className="grid grid-cols-3 gap-4">
                 {[
-                  { icon: '🔥', label: '12 Day Streak', value: 'FIRE!' },
-                  { icon: '⭐', label: 'Total XP', value: '7.5K' },
-                  { icon: '🏆', label: 'Rank', value: '#23' },
+                  { icon: '🔥', value: '12', key: 'streak' },
+                  { icon: '⭐', value: '7.5K', key: 'totalXP' },
+                  { icon: '🏆', value: '#23', key: 'rank' },
                 ].map((stat, i) => (
                   <motion.div
                     key={i}
@@ -151,7 +153,9 @@ export const HeroSection = ({ onJoinWaitlist }: { onJoinWaitlist: () => void }) 
                   >
                     <div className="text-2xl mb-2">{stat.icon}</div>
                     <div className="text-xl font-bold text-[#FF4800] font-['Share_Tech_Mono']">{stat.value}</div>
-                    <div className="text-xs text-white/60">{stat.label}</div>
+                    <div className={`text-xs text-white/60 ${language === 'ar' ? 'font-[\'Noto_Sans_Arabic\']' : ''}`}>
+                      {hero.previewLabels[stat.key as keyof typeof hero.previewLabels][language]}
+                    </div>
                   </motion.div>
                 ))}
               </div>

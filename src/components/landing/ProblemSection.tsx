@@ -78,12 +78,12 @@ export const ProblemSection = () => {
 
           {/* Transition Text */}
           <motion.p
-            className="text-2xl md:text-3xl font-['Changa'] font-bold text-[#FF4800] mb-8"
+            className={`text-2xl md:text-3xl font-['Changa'] font-bold text-[#FF4800] mb-8 ${language === 'ar' ? 'font-[\'Noto_Sans_Arabic\']' : ''}`}
             initial={{ opacity: 0, y: 20 }}
             animate={isInView ? { opacity: 1, y: 0 } : {}}
             transition={{ delay: 1, duration: 0.8 }}
           >
-            Until now... حتى الآن...
+            {problem.transition[language]}
           </motion.p>
         </motion.div>
       </div>

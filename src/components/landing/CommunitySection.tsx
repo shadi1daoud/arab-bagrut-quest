@@ -39,17 +39,11 @@ export const CommunitySection = () => {
           animate={isInView ? { opacity: 1, y: 0 } : {}}
           transition={{ duration: 0.8 }}
         >
-          <h2 className="text-4xl md:text-6xl font-['Changa'] font-bold mb-4">
-            <span className="text-white">{community.headline.en}</span>
-            <span className="block text-[#FF4800] mt-2 font-['Noto_Sans_Arabic']">
-              {community.headline.ar}
-            </span>
+          <h2 className={`text-4xl md:text-6xl font-['Changa'] font-bold mb-4 text-white ${language === 'ar' ? 'font-[\'Noto_Sans_Arabic\']' : ''}`}>
+            {community.headline[language]}
           </h2>
-          <p className="text-xl text-white/60 mt-6 max-w-2xl mx-auto">
-            {community.subheadline.en}
-          </p>
-          <p className="text-lg text-white/50 font-['Noto_Sans_Arabic'] mt-2">
-            {community.subheadline.ar}
+          <p className={`text-xl text-white/60 mt-6 max-w-2xl mx-auto ${language === 'ar' ? 'font-[\'Noto_Sans_Arabic\']' : ''}`}>
+            {community.subheadline[language]}
           </p>
         </motion.div>
 
@@ -151,8 +145,9 @@ export const CommunitySection = () => {
                 <div className="text-5xl font-bold text-[#FF4800] font-['Share_Tech_Mono'] mb-2">
                   2,547
                 </div>
-                <div className="text-white/70 text-sm">Students Playing</div>
-                <div className="text-white/50 text-xs font-['Noto_Sans_Arabic']">طالب يلعب</div>
+                <div className={`text-white/70 text-sm ${language === 'ar' ? 'font-[\'Noto_Sans_Arabic\']' : ''}`}>
+                  {language === 'ar' ? 'طالب يلعب' : 'Students Playing'}
+                </div>
               </div>
             </motion.div>
           </div>
