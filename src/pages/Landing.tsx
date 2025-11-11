@@ -1,13 +1,12 @@
-import { useRef, useState, useEffect } from 'react';
-import { HeroSection } from '@/components/landing/HeroSection';
-import { ProblemSection } from '@/components/landing/ProblemSection';
-import { DarsniWorld } from '@/components/landing/DarsniWorld';
-import { HowItWorks } from '@/components/landing/HowItWorks';
-import { CommunitySection } from '@/components/landing/CommunitySection';
-import { RewardsCarousel } from '@/components/landing/RewardsCarousel';
-import { ScienceSection } from '@/components/landing/ScienceSection';
-import { VisionSection } from '@/components/landing/VisionSection';
-import { FinalCTA } from '@/components/landing/FinalCTA';
+import { useRef, useEffect } from 'react';
+import { NewHeroSection } from '@/components/landing/NewHeroSection';
+import { PainPointSection } from '@/components/landing/PainPointSection';
+import { SolutionSection } from '@/components/landing/SolutionSection';
+import { TestimonialsSection } from '@/components/landing/TestimonialsSection';
+import { ValueSection } from '@/components/landing/ValueSection';
+import { FinalCallToAction } from '@/components/landing/FinalCallToAction';
+import { LandingFooter } from '@/components/landing/LandingFooter';
+import { StickyMobileCTA } from '@/components/landing/StickyMobileCTA';
 import { ParticleSystem } from '@/components/landing/ParticleSystem';
 import { LanguageSelector } from '@/components/landing/LanguageSelector';
 import { LanguageProvider } from '@/contexts/LanguageContext';
@@ -43,25 +42,26 @@ const Landing = () => {
 
   return (
     <LanguageProvider>
-      <div className="relative min-h-screen bg-[#0A0A0A] overflow-x-hidden">
+      <div className="relative min-h-screen bg-black overflow-x-hidden">
         {/* Language Selector */}
         <LanguageSelector />
         
-        {/* Particle Background */}
-        <ParticleSystem density={40} color="#FF4800" />
+        {/* Particle Background - more subtle */}
+        <ParticleSystem density={20} color="#A855F7" />
         
         {/* All Sections */}
-        <HeroSection onJoinWaitlist={scrollToWaitlist} />
-        <ProblemSection />
-        <DarsniWorld />
-        <HowItWorks />
-        <CommunitySection />
-        <RewardsCarousel />
-        <ScienceSection />
-        <VisionSection />
+        <NewHeroSection onJoinWaitlist={scrollToWaitlist} />
+        <PainPointSection />
+        <SolutionSection />
+        <TestimonialsSection />
+        <ValueSection />
         <div ref={finalCTARef}>
-          <FinalCTA />
+          <FinalCallToAction />
         </div>
+        <LandingFooter />
+        
+        {/* Sticky mobile CTA */}
+        <StickyMobileCTA onJoinWaitlist={scrollToWaitlist} />
       </div>
     </LanguageProvider>
   );

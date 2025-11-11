@@ -17,7 +17,7 @@
     --popover: 0 0% 8%;
     --popover-foreground: 0 0% 91%;
     
-    --primary: 16 100% 50%; /* Updated to match #FF4800 */
+    --primary: 16 100% 50%; /* #FF4800 */
     --primary-foreground: 0 0% 100%;
     
     --secondary: 0 0% 15%;
@@ -26,7 +26,7 @@
     --muted: 0 0% 15%;
     --muted-foreground: 0 0% 71%;
     
-    --accent: 16 100% 70%; /* Updated to match #FFA56E */
+    --accent: 16 100% 70%; /* #FFA56E */
     --accent-foreground: 0 0% 100%;
     
     --destructive: 0 62.8% 30.6%;
@@ -34,9 +34,20 @@
     
     --border: 0 0% 15%;
     --input: 0 0% 15%;
-    --ring: 16 100% 50%; /* Updated to match #FF4800 */
+    --ring: 16 100% 50%;
     
     --radius: 1rem;
+    
+    /* Neon gradient colors */
+    --neon-purple: 280 100% 70%;
+    --neon-cyan: 180 100% 60%;
+    --neon-blue: 220 100% 65%;
+    --neon-pink: 320 100% 70%;
+    
+    /* Gradient definitions */
+    --gradient-neon: linear-gradient(135deg, hsl(280 100% 70%), hsl(180 100% 60%), hsl(220 100% 65%));
+    --gradient-primary: linear-gradient(135deg, hsl(16 100% 50%), hsl(16 100% 60%));
+    --gradient-glow: radial-gradient(circle at 50% 50%, hsl(16 100% 50% / 0.2), transparent 70%);
   }
 }
 
