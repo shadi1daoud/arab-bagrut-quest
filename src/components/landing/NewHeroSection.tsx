@@ -126,12 +126,13 @@ export const NewHeroSection = ({ onJoinWaitlist }: NewHeroSectionProps) => {
               <motion.div
                 animate={{ 
                   scale: [1, 1.05, 1],
-                  rotate: [0, 5, -5, 0],
+                  rotate: [0, 360],
                 }}
                 transition={{ 
                   duration: 4,
                   repeat: Infinity,
-                  ease: "easeInOut"
+                  ease: "linear",
+                  type: "tween"
                 }}
                 className="w-32 h-32 mx-auto mb-6 rounded-full bg-gradient-to-br from-purple-500 to-cyan-500 p-1 shadow-lg shadow-purple-500/50"
               >

@@ -155,7 +155,7 @@ export const SolutionSection = () => {
                 }}
                 whileHover={{ 
                   scale: 1.05,
-                  rotate: [0, 1, -1, 0]
+                  rotate: 2
                 }}
                 className="group relative"
               >

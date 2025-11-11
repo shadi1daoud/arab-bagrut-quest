@@ -158,13 +158,15 @@ export const TestimonialsSection = () => {
                     {/* Badge */}
                     <motion.div
                       animate={{ 
-                        rotate: [0, 10, -10, 0],
+                        rotate: [0, 10, -10, 10, -10, 0],
                         scale: [1, 1.1, 1]
                       }}
                       transition={{ 
                         duration: 2,
                         repeat: Infinity,
-                        delay: index * 0.2
+                        delay: index * 0.2,
+                        ease: "easeInOut",
+                        type: "tween"
                       }}
                       className="text-4xl"
                     >
