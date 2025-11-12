@@ -6,31 +6,15 @@
  * used throughout the application.
  */
 
-/**
- * Sample Users for MVP Demo
- */
-export const SAMPLE_USERS = [
-  {
-    id: '1',
-    name: 'شادي داود',
-    email: 'student@darsni.com',
-    role: 'student' as const,
-    avatar: '/assets/avatars/student.png',
-    grade: 'الثاني عشر',
-    city: 'مار إلياس',
-    level: 3,
-    xp: 8966,
-    streak: 20,
-    coins: 450
-  },
-  {
-    id: '2',
-    name: 'مدرسة ليلى',
-    email: 'admin@darsni.com',
-    role: 'admin' as const,
-    avatar: '/assets/avatars/admin.png'
-  }
-] as const;
+// Grade options for student registration
+export const GRADE_OPTIONS = [
+  'السابع',
+  'الثامن',
+  'التاسع',
+  'العاشر',
+  'الحادي عشر',
+  'الثاني عشر'
+];
 
 /**
  * Grade Levels (Arabic)
