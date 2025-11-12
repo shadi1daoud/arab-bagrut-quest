@@ -33,8 +33,7 @@ export const useWaitlist = () => {
         return true;
       }
 
-      // Dynamically import supabase client only when needed
-      const { supabase } = await import('@/integrations/supabase/client');
+      const { supabase } = await import('@/lib/supabaseClient');
 
       const { error } = await supabase
         .from('waitlist')
