@@ -1,15 +1,13 @@
-import { useState } from 'react';
-import { motion, useInView } from 'framer-motion';
-import { useRef } from 'react';
-import confetti from 'canvas-confetti';
-import { useWaitlist } from '@/hooks/useWaitlist';
-import { z } from 'zod';
+import { motion } from 'framer-motion';
+import { useInView } from 'framer-motion';
+import { useRef, useState } from 'react';
 import { Rocket, Clock, Sparkles, TrendingUp } from 'lucide-react';
-
-const waitlistSchema = z.object({
-  name: z.string().trim().min(2, 'الاسم يجب أن يكون حرفين على الأقل').max(100, 'الاسم طويل جداً'),
-  email: z.string().email('البريد الإلكتروني غير صحيح').max(255, 'البريد الإلكتروني طويل جداً'),
-});
+import { Button } from '@/components/ui/button';
+import { Input } from '@/components/ui/input';
+import { useLanguage } from '@/contexts/LanguageContext';
+import { useWaitlist } from '@/hooks/useWaitlist';
+import { useToast } from '@/hooks/use-toast';
+import confetti from 'canvas-confetti';
 
 interface FinalCallToActionProps {
   onSubmit?: () => void;
@@ -18,35 +16,35 @@ interface FinalCallToActionProps {
 export const FinalCallToAction = ({ onSubmit }: FinalCallToActionProps) => {
   const ref = useRef(null);
   const isInView = useInView(ref, { once: true, amount: 0.5 });
+  const { language } = useLanguage();
+  const isArabic = language === 'ar';
   const { submitToWaitlist, isSubmitting } = useWaitlist();
+  const { toast } = useToast();
   
   const [email, setEmail] = useState('');
   const [name, setName] = useState('');
   const [submitted, setSubmitted] = useState(false);
-  const [errors, setErrors] = useState<{ name?: string; email?: string }>({});
 
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
-    setErrors({});
     
-    const validation = waitlistSchema.safeParse({ name, email });
-    if (!validation.success) {
-      const fieldErrors: { name?: string; email?: string } = {};
-      validation.error.errors.forEach((err) => {
-        if (err.path[0] === 'name') fieldErrors.name = err.message;
-        if (err.path[0] === 'email') fieldErrors.email = err.message;
+    if (!email || !name) {
+      toast({
+        title: isArabic ? 'خطأ' : 'Error',
+        description: isArabic ? 'الرجاء ملء جميع الحقول' : 'Please fill all fields',
+        variant: 'destructive'
       });
-      setErrors(fieldErrors);
       return;
     }
 
-    const success = await submitToWaitlist({
-      name,
-      email,
-      userType: 'student'
-    });
+    try {
+      await submitToWaitlist({
+        email,
+        name,
+        userType: 'student'
+      });
 
-    if (success) {
+      // Trigger confetti
       confetti({
         particleCount: 100,
         spread: 70,
@@ -55,6 +53,8 @@ export const FinalCallToAction = ({ onSubmit }: FinalCallToActionProps) => {
 
       setSubmitted(true);
       onSubmit?.();
+    } catch (error) {
+      console.error('Submission error:', error);
     }
   };
 
@@ -110,14 +110,15 @@ export const FinalCallToAction = ({ onSubmit }: FinalCallToActionProps) => {
 
             <h2 className="text-5xl md:text-7xl font-changa font-bold mb-6">
               <span className="bg-gradient-to-r from-purple-400 via-pink-400 to-cyan-400 bg-clip-text text-transparent">
-                ابدأ اليوم...
+                {isArabic ? 'ابدأ اليوم...' : 'Start Today...'}
               </span>
             </h2>
             <p className="text-3xl md:text-4xl font-changa font-bold text-white mb-4">
-              وادخل عالم الدراسة الممتع
+              {isArabic ? 'وادخل عالم الدراسة الممتع' : 'And enter the fun world of studying'}
               <span className="ml-2">🎮</span>
             </p>
 
+            {/* Urgency message */}
             <motion.div
               animate={{
                 scale: [1, 1.05, 1],
@@ -130,7 +131,7 @@ export const FinalCallToAction = ({ onSubmit }: FinalCallToActionProps) => {
             >
               <Clock className="w-5 h-5 text-orange-400" />
               <p className="text-orange-400 font-lexend font-semibold">
-                العرض المجاني لفترة محدودة فقط
+                {isArabic ? 'العرض المجاني لفترة محدودة فقط' : 'Free offer for a limited time only'}
                 <span className="ml-2">⏳</span>
               </p>
             </motion.div>
@@ -147,46 +148,39 @@ export const FinalCallToAction = ({ onSubmit }: FinalCallToActionProps) => {
             >
               <div className="p-8 rounded-3xl bg-gradient-to-br from-gray-800/50 to-gray-900/50 border-2 border-purple-500/30 backdrop-blur-sm shadow-2xl shadow-purple-500/20">
                 <div className="space-y-4 mb-6">
-                  <div>
-                    <input
-                      type="text"
-                      value={name}
-                      onChange={(e) => setName(e.target.value)}
-                      placeholder="اسمك الكامل"
-                      disabled={submitted}
-                      className="w-full h-14 px-4 text-lg rounded-xl bg-gray-900/50 border border-gray-700 focus:border-purple-500 text-white placeholder:text-gray-500 focus:outline-none focus:ring-2 focus:ring-purple-500/50 transition-all disabled:opacity-50"
-                    />
-                    {errors.name && (
-                      <p className="mt-2 text-sm text-red-400">{errors.name}</p>
-                    )}
-                  </div>
-                  <div>
-                    <input
-                      type="email"
-                      value={email}
-                      onChange={(e) => setEmail(e.target.value)}
-                      placeholder="بريدك الإلكتروني"
-                      disabled={submitted}
-                      className="w-full h-14 px-4 text-lg rounded-xl bg-gray-900/50 border border-gray-700 focus:border-purple-500 text-white placeholder:text-gray-500 focus:outline-none focus:ring-2 focus:ring-purple-500/50 transition-all disabled:opacity-50"
-                    />
-                    {errors.email && (
-                      <p className="mt-2 text-sm text-red-400">{errors.email}</p>
-                    )}
-                  </div>
+                  <Input
+                    type="text"
+                    placeholder={isArabic ? 'اسمك' : 'Your Name'}
+                    value={name}
+                    onChange={(e) => setName(e.target.value)}
+                    className="h-14 text-lg bg-gray-900/50 border-gray-700 focus:border-purple-500 text-white placeholder:text-gray-500"
+                    dir={isArabic ? 'rtl' : 'ltr'}
+                  />
+                  <Input
+                    type="email"
+                    placeholder={isArabic ? 'بريدك الإلكتروني' : 'Your Email'}
+                    value={email}
+                    onChange={(e) => setEmail(e.target.value)}
+                    className="h-14 text-lg bg-gray-900/50 border-gray-700 focus:border-purple-500 text-white placeholder:text-gray-500"
+                    dir={isArabic ? 'rtl' : 'ltr'}
+                  />
                 </div>
 
-                <button
+                <Button
                   type="submit"
                   disabled={isSubmitting}
-                  className="w-full h-16 text-xl font-changa font-bold bg-gradient-to-r from-purple-600 via-pink-600 to-cyan-600 hover:from-purple-500 hover:via-pink-500 hover:to-cyan-500 rounded-2xl shadow-2xl shadow-purple-500/50 border-2 border-purple-400/50 transition-all duration-300 hover:scale-105 group disabled:opacity-50 disabled:cursor-not-allowed text-white flex items-center justify-center gap-3"
+                  size="lg"
+                  className="w-full h-16 text-xl font-changa font-bold bg-gradient-to-r from-purple-600 via-pink-600 to-cyan-600 hover:from-purple-500 hover:via-pink-500 hover:to-cyan-500 rounded-2xl shadow-2xl shadow-purple-500/50 border-2 border-purple-400/50 transition-all duration-300 hover:scale-105 group"
                 >
-                  <Sparkles className="w-6 h-6" />
-                  ابدأ الآن – أول أسبوع مجانًا
-                  <TrendingUp className="w-6 h-6" />
-                </button>
+                  <span className="flex items-center gap-3">
+                    <Sparkles className="w-6 h-6" />
+                    {isArabic ? 'ابدأ الآن – أول أسبوع مجانًا' : 'Start Now – First Week Free'}
+                    <TrendingUp className="w-6 h-6" />
+                  </span>
+                </Button>
 
                 <p className="text-center text-gray-400 text-sm mt-4 font-lexend">
-                  بدون بطاقة ائتمان • إلغاء في أي وقت
+                  {isArabic ? 'بدون بطاقة ائتمان • إلغاء في أي وقت' : 'No credit card • Cancel anytime'}
                 </p>
               </div>
             </motion.form>
@@ -213,10 +207,13 @@ export const FinalCallToAction = ({ onSubmit }: FinalCallToActionProps) => {
                   🎉
                 </motion.div>
                 <h3 className="text-3xl font-changa font-bold text-white mb-2">
-                  مبروك!
+                  {isArabic ? 'مبروك!' : 'Congratulations!'}
                 </h3>
                 <p className="text-xl text-green-300 font-lexend">
-                  أنت الآن في قائمة الانتظار! سنتواصل معك قريبًا 🚀
+                  {isArabic 
+                    ? 'أنت الآن في قائمة الانتظار! سنتواصل معك قريبًا 🚀'
+                    : 'You\'re now on the waitlist! We\'ll contact you soon 🚀'
+                  }
                 </p>
               </div>
             </motion.div>

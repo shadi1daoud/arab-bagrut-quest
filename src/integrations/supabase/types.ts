@@ -14,99 +14,6 @@ export type Database = {
   }
   public: {
     Tables: {
-      profiles: {
-        Row: {
-          avatar_url: string | null
-          bio: string | null
-          city: string | null
-          coins: number
-          country: string | null
-          created_at: string
-          date_of_birth: string | null
-          first_name: string | null
-          full_name: string | null
-          gender: string | null
-          grade: string | null
-          id: string
-          is_online: boolean | null
-          last_active_at: string | null
-          last_name: string | null
-          level: number
-          phone_number: string | null
-          streak_days: number
-          updated_at: string
-          username: string | null
-          xp: number
-        }
-        Insert: {
-          avatar_url?: string | null
-          bio?: string | null
-          city?: string | null
-          coins?: number
-          country?: string | null
-          created_at?: string
-          date_of_birth?: string | null
-          first_name?: string | null
-          full_name?: string | null
-          gender?: string | null
-          grade?: string | null
-          id: string
-          is_online?: boolean | null
-          last_active_at?: string | null
-          last_name?: string | null
-          level?: number
-          phone_number?: string | null
-          streak_days?: number
-          updated_at?: string
-          username?: string | null
-          xp?: number
-        }
-        Update: {
-          avatar_url?: string | null
-          bio?: string | null
-          city?: string | null
-          coins?: number
-          country?: string | null
-          created_at?: string
-          date_of_birth?: string | null
-          first_name?: string | null
-          full_name?: string | null
-          gender?: string | null
-          grade?: string | null
-          id?: string
-          is_online?: boolean | null
-          last_active_at?: string | null
-          last_name?: string | null
-          level?: number
-          phone_number?: string | null
-          streak_days?: number
-          updated_at?: string
-          username?: string | null
-          xp?: number
-        }
-        Relationships: []
-      }
-      user_roles: {
-        Row: {
-          created_at: string
-          id: string
-          role: Database["public"]["Enums"]["app_role"]
-          user_id: string
-        }
-        Insert: {
-          created_at?: string
-          id?: string
-          role: Database["public"]["Enums"]["app_role"]
-          user_id: string
-        }
-        Update: {
-          created_at?: string
-          id?: string
-          role?: Database["public"]["Enums"]["app_role"]
-          user_id?: string
-        }
-        Relationships: []
-      }
       waitlist: {
         Row: {
           created_at: string
@@ -139,20 +46,10 @@ export type Database = {
       [_ in never]: never
     }
     Functions: {
-      get_user_role: {
-        Args: { _user_id: string }
-        Returns: Database["public"]["Enums"]["app_role"]
-      }
-      has_role: {
-        Args: {
-          _role: Database["public"]["Enums"]["app_role"]
-          _user_id: string
-        }
-        Returns: boolean
-      }
+      [_ in never]: never
     }
     Enums: {
-      app_role: "admin" | "student" | "teacher"
+      [_ in never]: never
     }
     CompositeTypes: {
       [_ in never]: never
@@ -279,8 +176,6 @@ export type CompositeTypes<
 
 export const Constants = {
   public: {
-    Enums: {
-      app_role: ["admin", "student", "teacher"],
-    },
+    Enums: {},
   },
 } as const

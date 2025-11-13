@@ -14,7 +14,7 @@ export interface User {
   /** User's email address */
   email: string;
   /** User role determining access permissions */
-  role: 'student' | 'admin' | 'teacher';
+  role: 'student' | 'admin';
   /** Optional profile avatar URL */
   avatar?: string;
   /** Student's grade level (Arabic) */
