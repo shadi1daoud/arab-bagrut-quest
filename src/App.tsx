@@ -16,7 +16,6 @@ import Settings from "./pages/student/Settings";
 import CourseDetail from "./pages/student/CourseDetail";
 import Login from "./pages/Login";
 import SignUp from "./pages/SignUp";
-import Landing from "./pages/Landing";
 import AdminDashboard from "./pages/admin/Dashboard";
 import AdminCourses from "./pages/admin/Courses";
 import AdminUsers from "./pages/admin/Users";
@@ -35,13 +34,12 @@ const App = () => (
           <Toaster />
           <Sonner />
           <Routes>
-            <Route path="/" element={<Landing />} />
             <Route path="/login" element={<Login />} />
             <Route path="/signup" element={<SignUp />} />
             
             {/* Student Routes */}
             <Route 
-              path="/dashboard" 
+              path="/" 
               element={
                 <ProtectedRoute>
                   <StudentLayout />

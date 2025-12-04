@@ -14,33 +14,7 @@ export type Database = {
   }
   public: {
     Tables: {
-      waitlist: {
-        Row: {
-          created_at: string
-          email: string
-          id: string
-          name: string
-          school: string | null
-          user_type: string | null
-        }
-        Insert: {
-          created_at?: string
-          email: string
-          id?: string
-          name: string
-          school?: string | null
-          user_type?: string | null
-        }
-        Update: {
-          created_at?: string
-          email?: string
-          id?: string
-          name?: string
-          school?: string | null
-          user_type?: string | null
-        }
-        Relationships: []
-      }
+      [_ in never]: never
     }
     Views: {
       [_ in never]: never
